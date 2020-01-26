@@ -20,5 +20,14 @@ while True:
     #  Do some 'work'
     time.sleep(1)
 
+    if message["name_c"] == "connect":
+        print("Le bot : " + message["name_pl"] + " est connecté")
+        socket.send_string('1')
+
+
+
     #  Send reply back to client
-    socket.send_string(message["name_p"])
+    elif message["name_c"] == "mine":
+        socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
+    else:
+        socket.send_string(message["name_p"])
