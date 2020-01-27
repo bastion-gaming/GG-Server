@@ -7,6 +7,7 @@ from gems import gemsItems as GI, gemsStats as GS
 from operator import itemgetter
 
 idBaBot = 604776153458278415
+idGetGems = 620558080551157770
 
 def checkDB_Guilde():
 	if DB.dbExist("DB/guildesDB"):
