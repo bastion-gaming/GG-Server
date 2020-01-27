@@ -8,11 +8,11 @@ import zmq
 import gg_lib as gg
 import time
 
-name_pl = "bot" # Nom de la plateforme
+name_pl = "discord" # Nom de la plateforme
 
 check = True
 error = 0
-ListCommands = ["mine", "fish"]
+ListCommands = ["mine", "crime"]
 
 REQUEST_TIMEOUT = 2500
 REQUEST_RETRIES = 3
@@ -43,7 +43,7 @@ else:
     socket.close()
     poll.unregister(socket)
 
-    
+
 while check:
     print("\nCommande:")
     x = input()
@@ -56,7 +56,7 @@ while check:
             socket.send_string(gg.std_send_command("stop", "gnouf1", name_pl))
             check = False
         elif x in ListCommands:
-            socket.send_string(gg.std_send_command(x, "gnouf1", name_pl))
+            socket.send_string(gg.std_send_command(x, 129362501187010561, name_pl))
 
         #  Get the reply.
         socks = dict(poll.poll(REQUEST_TIMEOUT))

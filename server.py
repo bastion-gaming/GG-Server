@@ -1,24 +1,34 @@
-#
-#   Hello World server in Python
-#   Binds REP socket to tcp://*:5555
-#   Expects b"Hello" from client, replies with b"World"
-#
-
 import time
 import zmq
 import gg_lib as gg
+from gems import gemsPlay as GP
+from DB import SQLite as sql
 
 context = zmq.Context()
 socket = context.socket(zmq.REP)
 socket.bind("tcp://*:5555")
 check = True
 msg = ""
-print("GG Server")
+VERSION = open("core/version.txt").read().replace("\n","")
+
+# Initialisation
+print('\nGet Gems - Server '+VERSION)
+print(sql.init())
+flag = sql.checkField()
+if flag == 0:
+	print("SQL >> Aucun champ n'a été ajouté, supprimé ou modifié.")
+elif "add" in flag:
+	print("SQL >> Un ou plusieurs champs ont été ajoutés à la DB.")
+elif "sup" in flag:
+	print("SQL >> Un ou plusieurs champs ont été supprimés de la DB.")
+elif "type" in flag:
+	print("SQL >> Un ou plusieurs type ont été modifié sur la DB.")
+
 
 while check:
     #  Wait for next request from client
     message = gg.std_receive_command(socket.recv())
-    print("Received request: %s" % message)
+    print("\n•••••\nReceived request: %s" % message)
 
     #  Do some 'work'
     time.sleep(1)
@@ -33,7 +43,13 @@ while check:
 
 
     #  Send reply back to client
-    elif message["name_c"] == "mine":
-        socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
     else:
-        socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Commande non reconnu"))
+        if message["name_pl"] == "discord":
+            ID = sql.get_PlayerID(message["name_p"], "gems", "discord")
+
+        if message["name_c"] == "mine":
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
+        elif message["name_c"] == "crime":
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GP.crime(ID)))
+        else:
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Commande non reconnu"))
