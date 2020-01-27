@@ -51,13 +51,11 @@ while check:
 
         #  Get the reply.
         socks = dict(poll.poll(REQUEST_TIMEOUT))
-        print(socks)
-        print(zmq.POLLIN)
         if socks.get(socket) == zmq.POLLIN:
             message = gg.std_receive_command(socket.recv())
             print(message['msg'])
         else:
-            print("W: No response from server, retrying…")
+            print("Aucune réponse du serveur")
             # Socket is confused. Close and remove it.
             socket.setsockopt(zmq.LINGER, 0)
             socket.close()
