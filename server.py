@@ -30,9 +30,6 @@ while check:
     message = gg.std_receive_command(socket.recv())
     print("\n•••••\nReceived request: %s" % message)
 
-    #  Do some 'work'
-    time.sleep(1)
-
     if message["name_c"] == "connect":
         print("Le bot : " + message["name_pl"] + " est connecté")
         socket.send_string('1')

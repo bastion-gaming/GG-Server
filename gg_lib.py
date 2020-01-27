@@ -1,6 +1,5 @@
 import yaml
 import time
-from termcolor import colored
 
 def std_send_command(name_c, name_p, name_pl, param_c = None):
     """
