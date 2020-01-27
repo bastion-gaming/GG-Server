@@ -46,9 +46,10 @@ while check:
     else:
         if message["name_pl"] == "discord":
             ID = sql.get_PlayerID(message["name_p"], "gems", "discord")
-        # Mine
-        if message["name_c"] == "mine":
-            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
+
+        # Daily
+        if message["name_c"] == "daily":
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GP.daily(ID)))
 
         # Crime
         elif message["name_c"] == "crime":
@@ -58,6 +59,10 @@ while check:
         elif message["name_c"] == "stealing":
             print(message["param_c"])
             socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GP.stealing(ID, message["param_c"])))
+
+        # Mine
+        elif message["name_c"] == "mine":
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
 
         # Autre
         else:
