@@ -36,4 +36,4 @@ while check:
     elif message["name_c"] == "mine":
         socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
     else:
-        socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], message["name_p"]))
+        socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Commande non reconnu"))
