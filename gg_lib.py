@@ -36,7 +36,7 @@ def std_receive_command(send):
         Return :
         Dict
     """
-    return yaml.load(send)
+    return yaml.safe_load(send)
 
 #def std_log(type = "INFO", str):
 #    """
