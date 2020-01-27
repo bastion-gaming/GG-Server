@@ -85,6 +85,7 @@ celerybeat-schedule
 .env
 .venv
 env/
+env2/
 venv/
 ENV/
 env.bak/
@@ -102,3 +103,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# DB
+*.db
+guildesDB.json
+
+# Autres

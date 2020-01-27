@@ -1,6 +1,5 @@
 import yaml
 import time
-from termcolor import colored
 
 def std_send_command(name_c, name_p, name_pl, param_c = None):
     """
@@ -36,7 +35,7 @@ def std_receive_command(send):
         Return :
         Dict
     """
-    return yaml.load(send)
+    return yaml.safe_load(send)
 
 #def std_log(type = "INFO", str):
 #    """

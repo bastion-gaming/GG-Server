@@ -1,33 +1,66 @@
-#
-#   Hello World server in Python
-#   Binds REP socket to tcp://*:5555
-#   Expects b"Hello" from client, replies with b"World"
-#
-
 import time
 import zmq
 import gg_lib as gg
+from gems import gemsPlay as GP
+from DB import SQLite as sql
 
 context = zmq.Context()
 socket = context.socket(zmq.REP)
 socket.bind("tcp://*:5555")
+check = True
+msg = ""
+VERSION = open("core/version.txt").read().replace("\n","")
 
-while True:
+# Initialisation
+print('\nGet Gems - Server '+VERSION)
+print(sql.init())
+flag = sql.checkField()
+if flag == 0:
+	print("SQL >> Aucun champ n'a été ajouté, supprimé ou modifié.")
+elif "add" in flag:
+	print("SQL >> Un ou plusieurs champs ont été ajoutés à la DB.")
+elif "sup" in flag:
+	print("SQL >> Un ou plusieurs champs ont été supprimés de la DB.")
+elif "type" in flag:
+	print("SQL >> Un ou plusieurs type ont été modifié sur la DB.")
+
+
+while check:
     #  Wait for next request from client
     message = gg.std_receive_command(socket.recv())
-    print("Received request: %s" % message)
-
-    #  Do some 'work'
-    time.sleep(1)
+    print("\n•••••\nReceived request: %s" % message)
 
     if message["name_c"] == "connect":
         print("Le bot : " + message["name_pl"] + " est connecté")
         socket.send_string('1')
-
+    elif message["name_c"] == "stop":
+        print("Arret de GG Serveur ...")
+        check = False
+        socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "GG serveur c'est arrêté"))
 
 
     #  Send reply back to client
-    elif message["name_c"] == "mine":
-        socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
     else:
-        socket.send_string(message["name_p"])
+        if message["name_pl"] == "discord":
+            ID = sql.get_PlayerID(message["name_p"], "gems", "discord")
+
+        # Daily
+        if message["name_c"] == "daily":
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GP.daily(ID)))
+
+        # Crime
+        elif message["name_c"] == "crime":
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GP.crime(ID)))
+
+        # Stealing
+        elif message["name_c"] == "stealing":
+            print(message["param_c"])
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GP.stealing(ID, message["param_c"])))
+
+        # Mine
+        elif message["name_c"] == "mine":
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
+
+        # Autre
+        else:
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Commande non reconnu"))
