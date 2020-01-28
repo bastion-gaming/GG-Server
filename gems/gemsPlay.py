@@ -24,10 +24,11 @@ def daily(ID):
     if DailyTime == str(jour - dt.timedelta(days=1)):
         sql.updateField(PlayerID, "DailyTime", str(jour), "daily")
         sql.updateField(PlayerID, "DailyMult", DailyMult + 1, "daily")
-        if DailyMult >= 60:
-            bonus = 500
-        elif DailyMult >= 30:
-            bonus = 200
+
+        # Un = 200 × (2.5)^(n-1)
+        if DailyMult >= 30:
+            f = 200 x (2.5**((DailyMult//30)-1))
+            bonus = int(f)
         else:
             bonus = 125
         gain = 100 + bonus*DailyMult
