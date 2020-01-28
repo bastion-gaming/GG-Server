@@ -4,7 +4,6 @@ from DB import SQLite as sql
 from gems import gemsFonctions as GF
 import json
 
-lvlmax = 19
 # Un = 100 × (1.4)^n
 
 def addxp(ID, nb, nameDB):
