@@ -7,34 +7,6 @@ import json
 lvlmax = 19
 # Un = 100 × (1.4)^n
 
-class XP:
-
-    def __init__(self,level,somMsg):
-        self.level = level
-        self.somMsg = somMsg
-
-objetXP = [XP(0,100)
-,XP(1,256)
-,XP(2,625)
-,XP(3,1210)
-,XP(4,2401)
-,XP(5,4096)
-,XP(6,6561)
-,XP(7,10930)
-,XP(8,16342)
-,XP(9,20000)
-,XP(10,27473)
-,XP(11,34965)
-,XP(12,42042)
-,XP(13,55739)
-,XP(14,66778)
-,XP(15,78912)
-,XP(16,86493)
-,XP(17,95105)
-,XP(18,10187)
-,XP(19,111111)]
-
-
 def addxp(ID, nb, nameDB):
     balXP = sql.valueAtNumber(ID, "xp", nameDB)
     if balXP != None:
