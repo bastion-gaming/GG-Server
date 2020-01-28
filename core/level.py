@@ -5,6 +5,7 @@ from gems import gemsFonctions as GF
 import json
 
 lvlmax = 19
+# Un = 100 × (1.4)^n
 
 class XP:
 
