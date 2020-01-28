@@ -27,7 +27,7 @@ def daily(ID):
 
         # Un = 200 × (2.5)^(n-1)
         if DailyMult >= 30:
-            f = 200 x (2.5**((DailyMult//30)-1))
+            f = 200 * (2.5**((DailyMult//30)-1))
             bonus = int(f)
         else:
             bonus = 125

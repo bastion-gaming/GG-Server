@@ -18,44 +18,36 @@ def begin(ID, platform):
     return msg
 
 
-# @commands.command(pass_context=True)
-# async def bal(self, ctx, nom = None):
-#     """**[nom]** | Êtes vous riche ou pauvre ?"""
-#     ID = ctx.author.id
-#     if sql.spam(ID, GF.couldown_4s, "bal", "gems"):
-#         #print(nom)
-#         if nom != None:
-#             ID = sql.nom_ID(nom)
-#             nom = ctx.guild.get_member(ID)
-#             nom = nom.name
-#         else:
-#             nom = ctx.author.name
-#         solde = sql.valueAtNumber(ID, "gems", "gems")
-#         title = "Compte principal de {}".format(nom)
-#         msg = discord.Embed(title = title,color= 13752280, description = "")
-#         desc = "{} :gem:`gems`\n".format(solde)
-#         soldeSpinelles = sql.valueAtNumber(ID,"spinelles", "gems")
-#         if soldeSpinelles > 0:
-#             desc+= "{0} <:spinelle:{1}>`spinelles`".format(soldeSpinelles, GF.get_idmoji("spinelle"))
-#         msg.add_field(name="**_Balance_**", value=desc, inline=False)
-#         lvlValue = sql.valueAtNumber(ID, "lvl", "gems")
-#         xp = sql.valueAtNumber(ID, "xp", "gems")
-#         # Niveaux part
-#         for x in lvl.objetXPgems:
-#             if lvlValue == x.level:
-#                 desc = "XP: `{0}/{1}`".format(xp,x.somMsg)
-#         msg.add_field(name="**_Niveau_: {0}**".format(lvlValue), value=desc, inline=False)
-#         sql.updateComTime(ID, "bal", "gems")
-#         await ctx.channel.send(embed = msg)
-#         # Message de réussite dans la console
-#         print("Gems >> Balance de {} affichée".format(nom))
-#         return
-#     else:
-#         msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
-#     await ctx.channel.send(msg)
-#
-#
-#
+def bal(ID):
+    """Êtes vous riche ou pauvre ?"""
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+
+    if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
+        solde = sql.valueAtNumber(PlayerID, "gems", "gems")
+        desc = "{} :gem:`gems`\n".format(solde)
+        soldeSpinelles = sql.valueAtNumber(PlayerID,"spinelles", "gems")
+        if soldeSpinelles > 0:
+            desc+= "{0} <:spinelle:{1}>`spinelles`".format(soldeSpinelles, "{idmoji[spinelle]}")
+        msg.append(desc)
+        lvlValue = sql.valueAtNumber(PlayerID, "lvl", "gems")
+        xp = sql.valueAtNumber(PlayerID, "xp", "gems")
+        # Niveaux part
+        desc = "XP: `{0}/{1}`".format(xp,lvl.lvlPalier(lvlValue))
+        titre = "**_Niveau_: {0}**".format(lvlValue)
+        msg.append(titre)
+        msg.append(desc)
+        sql.updateComTime(ID, "bal", "gems")
+        # Message de réussite dans la console
+        print("Gems >> Balance de {} affichée".format(PlayerID))
+    else:
+        msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+    return msg
+
+
+
 # @commands.command(pass_context=True)
 # async def baltop(self, ctx, n = None, m = None):
 #     """**_{filtre}_ [nombre]** | Classement des joueurs (10 premiers par défaut)"""

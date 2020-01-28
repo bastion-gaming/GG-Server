@@ -1,7 +1,8 @@
 import time
 import zmq
 import gg_lib as gg
-from gems import gemsPlay as GGplay, gemsBase as GGbase
+from core import level as lvl
+from gems import gemsPlay as GGplay, gemsBase as GGbase, gemsFonctions as GF
 from DB import SQLite as sql
 
 context = zmq.Context()
@@ -24,6 +25,7 @@ elif "sup" in flag:
 elif "type" in flag:
     print("SQL >> Un ou plusieurs type ont été modifié sur la DB.")
 
+GF.loadItem()
 
 while check:
     #  Wait for next request from client
@@ -69,6 +71,12 @@ while check:
         elif message["name_c"] == "mine":
             socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
 
+        # Bal
+        elif message["name_c"] == "bal":
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGbase.bal(ID)))
+
         # Autre
+        elif message["name_c"] == "level":
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], lvl.checklevel(ID)))
         else:
             socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Commande non reconnu"))

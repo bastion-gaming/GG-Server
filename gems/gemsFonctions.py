@@ -244,7 +244,7 @@ def loadItem(F = None):
     ,Trophy("Super Gamble Jackpot", "`Gagner plus de 100000`:gem:`gems au gamble`", "special", 100000)
     ,Trophy("Hyper Gamble Jackpot", "`Gagner plus de 1000000`:gem:`gems au gamble`", "special", 1000000)
     ,Trophy("Super Jackpot :seven::seven::seven:", "`Gagner le super jackpot sur la machine à sous`", "special", 0)
-    ,Trophy("Mineur de Merveilles", "`Trouvez un `<:gem_ruby:{}>`ruby`".format(get_idmoji("ruby")), "special", 0)
+    ,Trophy("Mineur de Merveilles", "`Trouvez un ruby`", "special", 0)
     ,Trophy("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`", "special", 0)
     ,Trophy("Gems 500", "`Avoir 500`:gem:`gems`", "unique", 500)
     ,Trophy("Gems 1k", "`Avoir 1k`:gem:`gems`", "unique", 1000)
@@ -271,7 +271,7 @@ def loadItem(F = None):
     ,StatGems("DiscordCop Amende", "`Nombre d'ammende recue par la DiscordCop`")
     ,StatGems("Gamble Win", "`Nombre de gamble gagné`")
     ,StatGems("Super Jackpot :seven::seven::seven:", "`Nombre de super jackpot gagné sur la machine à sous`")
-    ,StatGems("Mineur de Merveilles", "`Nombre de `<:gem_ruby:{}>`ruby` trouvé".format(get_idmoji("ruby")))
+    ,StatGems("Mineur de Merveilles", "`Nombre de ruby trouvé`")
     ,StatGems("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`")]
 
 
@@ -323,8 +323,6 @@ objetRecette = [Recette("iron_pickaxe", "forge", 10, "iron", 1, "pickaxe", 0, ""
 ,Recette("iron_shovel", "forge", 4, "iron", 1, "shovel", 0, "", 0, "")
 ,Recette("diamond_shovel", "forge", 10, "diamond", 1, "iron_shovel", 0, "", 0, "")
 ,Recette("sword", "forge", 6, "iron", 1, "oak", 0, "", 0, "")]
-
-
 
 
 #========== Couldown pour la fonction antispam ==========

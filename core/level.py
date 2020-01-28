@@ -47,36 +47,36 @@ def addxp(ID, nb, nameDB):
         return False
 
 
-async def checklevel(message, nameDB):
-    ID = message.author.id
-    Nom = message.author.name
-    member = message.guild.get_member(ID)
-    objet = objetXP
+def checklevel(ID):
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    # print(PlayerID)
     try:
-        lvl = sql.valueAtNumber(ID, "lvl", nameDB)
-        xp = sql.valueAtNumber(ID, "xp", nameDB)
-        check = True
-        for x in objet:
-            if lvl == x.level and check:
-                if xp >= x.somMsg:
-                    sql.updateField(ID, "lvl", lvl+1, nameDB)
-                    desc = ":tada: {1} a atteint le niveau **{0}**".format(lvl+1, Nom)
-                    title = "Level UP"
-                    if nameDB == "gems":
-                        lvl3 = sql.valueAtNumber(ID, "lvl", nameDB)
-                        title += " | Get Gems"
-                        nbS = lvl3 // 5
-                        nbG = lvl3 % 5
-                        if nbS != 0:
-                            sql.addSpinelles(ID, nbS)
-                            desc += "\nTu gagne {} <:spinelle:{}>`spinelles`".format(nbS, GF.get_idmoji("spinelle"))
-                        if nbG != 0:
-                            nbG = nbG * 50000
-                            sql.addGems(ID, nbG)
-                            desc += "\nTu gagne {} :gem:`gems`".format(nbG)
-                    msg = discord.Embed(title = title,color= 6466585, description = desc)
-                    msg.set_thumbnail(url=message.author.avatar_url)
-                    await message.channel.send(embed = msg)
-                    check = False
+        lvl = sql.valueAtNumber(PlayerID, "lvl", "gems")
+        xp = sql.valueAtNumber(PlayerID, "xp", "gems")
+        palier = lvlPalier(lvl)
+        desc = ""
+        if xp >= palier:
+            sql.updateField(PlayerID, "lvl", lvl+1, "gems")
+            desc = ":tada: {1} a atteint le niveau **{0}**".format(lvl+1, "{PlayerName}")
+
+            nbS = lvl // 5
+            nbG = lvl % 5
+            if nbS != 0:
+                sql.addSpinelles(PlayerID, nbS)
+                desc += "\nTu gagne {} <:spinelle:{}>`spinelles`".format(nbS, "{idmoji[spinelle]}")
+            if nbG != 0:
+                nbG = nbG * 50000
+                sql.addGems(PlayerID, nbG)
+                desc += "\nTu gagne {} :gem:`gems`".format(nbG)
+        return desc
     except:
-        return print("Le joueur n'existe pas.")
+        print("Le joueur n'existe pas.")
+        return ""
+
+def lvlPalier(lvl):
+    if lvl >= 0:
+        return int(100 * (1.4)**lvl)
+    else:
+        return 60
