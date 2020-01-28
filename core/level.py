@@ -8,9 +8,9 @@ lvlmax = 19
 
 class XP:
 
-	def __init__(self,level,somMsg):
-		self.level = level
-		self.somMsg = somMsg
+    def __init__(self,level,somMsg):
+        self.level = level
+        self.somMsg = somMsg
 
 objetXP = [XP(0,100)
 ,XP(1,256)
@@ -35,43 +35,47 @@ objetXP = [XP(0,100)
 
 
 def addxp(ID, nb, nameDB):
-	balXP = sql.valueAtNumber(ID, "xp", nameDB)
-	ns = balXP + int(nb)
-	if ns <= 0:
-		ns = 0
-	sql.updateField(ID, "xp", ns, nameDB)
+    balXP = sql.valueAtNumber(ID, "xp", nameDB)
+    if balXP != None:
+        ns = balXP + int(nb)
+        if ns <= 0:
+            ns = 0
+        sql.updateField(ID, "xp", ns, nameDB)
+        return True
+    else:
+        return False
 
 
 async def checklevel(message, nameDB):
-	ID = message.author.id
-	Nom = message.author.name
-	member = message.guild.get_member(ID)
-	objet = objetXP
-	try:
-		lvl = sql.valueAtNumber(ID, "lvl", nameDB)
-		xp = sql.valueAtNumber(ID, "xp", nameDB)
-		check = True
-		for x in objet:
-			if lvl == x.level and check:
-				if xp >= x.somMsg:
-					sql.updateField(ID, "lvl", lvl+1, nameDB)
-					desc = ":tada: {1} a atteint le niveau **{0}**".format(lvl+1, Nom)
-					title = "Level UP"
-					if nameDB == "gems":
-						lvl3 = sql.valueAtNumber(ID, "lvl", nameDB)
-						title += " | Get Gems"
-						nbS = lvl3 // 5
-						nbG = lvl3 % 5
-						if nbS != 0:
-							sql.addSpinelles(ID, nbS)
-							desc += "\nTu gagne {} <:spinelle:{}>`spinelles`".format(nbS, GF.get_idmoji("spinelle"))
-						if nbG != 0:
-							nbG = nbG * 50000
-							sql.addGems(ID, nbG)
-							desc += "\nTu gagne {} :gem:`gems`".format(nbG)
-					msg = discord.Embed(title = title,color= 6466585, description = desc)
-					msg.set_thumbnail(url=message.author.avatar_url)
-					await message.channel.send(embed = msg)
-					check = False
-	except:
-		return print("Le joueur n'existe pas.")
+    ID = message.author.id
+    Nom = message.author.name
+    member = message.guild.get_member(ID)
+    objet = objetXP
+    try:
+        lvl = sql.valueAtNumber(ID, "lvl", nameDB)
+        xp = sql.valueAtNumber(ID, "xp", nameDB)
+        check = True
+        for x in objet:
+            if lvl == x.level and check:
+                if xp >= x.somMsg:
+                    sql.updateField(ID, "lvl", lvl+1, nameDB)
+                    desc = ":tada: {1} a atteint le niveau **{0}**".format(lvl+1, Nom)
+                    title = "Level UP"
+                    if nameDB == "gems":
+                        lvl3 = sql.valueAtNumber(ID, "lvl", nameDB)
+                        title += " | Get Gems"
+                        nbS = lvl3 // 5
+                        nbG = lvl3 % 5
+                        if nbS != 0:
+                            sql.addSpinelles(ID, nbS)
+                            desc += "\nTu gagne {} <:spinelle:{}>`spinelles`".format(nbS, GF.get_idmoji("spinelle"))
+                        if nbG != 0:
+                            nbG = nbG * 50000
+                            sql.addGems(ID, nbG)
+                            desc += "\nTu gagne {} :gem:`gems`".format(nbG)
+                    msg = discord.Embed(title = title,color= 6466585, description = desc)
+                    msg.set_thumbnail(url=message.author.avatar_url)
+                    await message.channel.send(embed = msg)
+                    check = False
+    except:
+        return print("Le joueur n'existe pas.")

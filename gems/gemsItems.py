@@ -7,10 +7,10 @@ exception = ["bank_upgrade", "backpack", "hyperpack", "candy", "lollipop", "fish
 #========== Items ==========
 class Item:
 
-	def __init__(self,nom,vente,achat):
-		self.nom = nom
-		self.vente = vente
-		self.achat = achat
+    def __init__(self,nom,vente,achat):
+        self.nom = nom
+        self.vente = vente
+        self.achat = achat
 
 PrixItem = [Item("backpack", 3000, 3000)
 ,Item("hyperpack", 1, 1)
@@ -50,10 +50,10 @@ PrixItem += [Item("cupcake", 2500, 3000)]
 #========== Outils ==========
 class Outil:
 
-	def __init__(self,nom,vente,achat):
-		self.nom = nom
-		self.vente = vente
-		self.achat = achat
+    def __init__(self,nom,vente,achat):
+        self.nom = nom
+        self.vente = vente
+        self.achat = achat
 
 
 PrixOutil = [Outil("pickaxe", 40, 80)
@@ -71,53 +71,53 @@ PrixOutil = [Outil("pickaxe", 40, 80)
 
 
 def initBourse():
-	try:
-		# essaie de lire le fichier bourse.json
-		with open('gems/bourse.json', 'r') as fp:
-			value = json.load(fp)
-		for x in PrixItem:
-			checkItemBourse(value, x.nom)
-		for x in PrixOutil:
-			checkItemBourse(value, x.nom)
-	except:
-		# Création du fichier bourse.json avec les valeurs par défaut
-		dict = {}
-		for x in PrixItem:
-			dict[x.nom] = {"vente": x.vente, "achat": x.achat, "precVente": x.vente, "precAchat": x.achat}
-		for x in PrixOutil:
-			dict[x.nom] = {"vente": x.vente, "achat": x.achat, "precVente": x.vente, "precAchat": x.achat}
-		with open('gems/bourse.json', 'w') as fp:
-		    json.dump(dict, fp, indent=4)
+    try:
+        # essaie de lire le fichier bourse.json
+        with open('gems/bourse.json', 'r') as fp:
+            value = json.load(fp)
+        for x in PrixItem:
+            checkItemBourse(value, x.nom)
+        for x in PrixOutil:
+            checkItemBourse(value, x.nom)
+    except:
+        # Création du fichier bourse.json avec les valeurs par défaut
+        dict = {}
+        for x in PrixItem:
+            dict[x.nom] = {"vente": x.vente, "achat": x.achat, "precVente": x.vente, "precAchat": x.achat}
+        for x in PrixOutil:
+            dict[x.nom] = {"vente": x.vente, "achat": x.achat, "precVente": x.vente, "precAchat": x.achat}
+        with open('gems/bourse.json', 'w') as fp:
+            json.dump(dict, fp, indent=4)
 
 
 def checkItemBourse(value, item):
-	check = False
-	key = value.keys()
-	# print("## {} ##".format(item))
-	for x in PrixItem:
-		if x.nom == item:
-			for one in key:
-				if item == one:
-					# print(">> {}".format(x.nom))
-					check = True
-		# else:
-		# 	print(x.nom)
-	for x in PrixOutil:
-		if x.nom == item:
-			for one in key:
-				if item == one:
-					# print(">> {}".format(x.nom))
-					check = True
-	# 	else:
-	# 		print(x.nom)
-	# print("===============")
-	if not check:
-		for x in PrixItem:
-			if x.nom == item:
-				dict[x.nom] = {"vente": x.vente, "achat": x.achat, "precVente": x.vente, "precAchat": x.achat}
-		for x in PrixOutil:
-			if x.nom == item:
-				dict[x.nom] = {"vente": x.vente, "achat": x.achat, "precVente": x.vente, "precAchat": x.achat}
-		with open('gems/bourse.json', 'w') as fp:
-		    json.dump(dict, fp, indent=4)
-	return True
+    check = False
+    key = value.keys()
+    # print("## {} ##".format(item))
+    for x in PrixItem:
+        if x.nom == item:
+            for one in key:
+                if item == one:
+                    # print(">> {}".format(x.nom))
+                    check = True
+        # else:
+        #     print(x.nom)
+    for x in PrixOutil:
+        if x.nom == item:
+            for one in key:
+                if item == one:
+                    # print(">> {}".format(x.nom))
+                    check = True
+    #     else:
+    #         print(x.nom)
+    # print("===============")
+    if not check:
+        for x in PrixItem:
+            if x.nom == item:
+                dict[x.nom] = {"vente": x.vente, "achat": x.achat, "precVente": x.vente, "precAchat": x.achat}
+        for x in PrixOutil:
+            if x.nom == item:
+                dict[x.nom] = {"vente": x.vente, "achat": x.achat, "precVente": x.vente, "precAchat": x.achat}
+        with open('gems/bourse.json', 'w') as fp:
+            json.dump(dict, fp, indent=4)
+    return True
