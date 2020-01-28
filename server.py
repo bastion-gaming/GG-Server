@@ -2,7 +2,7 @@ import time
 import zmq
 import gg_lib as gg
 from core import level as lvl
-from gems import gemsPlay as GGplay, gemsBase as GGbase, gemsFonctions as GF
+from gems import gemsPlay as GGplay, gemsBase as GGbase, gemsFonctions as GF, gemsItems as GI
 from DB import SQLite as sql
 
 context = zmq.Context()
@@ -25,7 +25,10 @@ elif "sup" in flag:
 elif "type" in flag:
     print("SQL >> Un ou plusieurs type ont été modifié sur la DB.")
 
-GF.loadItem()
+try :
+    GF.loadItem()
+except FileNotFoundError :
+    GI.initBourse() # Cas où la bourse n'existait pas
 
 while check:
     #  Wait for next request from client

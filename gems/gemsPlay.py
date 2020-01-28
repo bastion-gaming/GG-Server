@@ -2,6 +2,7 @@ import random as r
 import time as t
 import datetime as dt
 from DB import TinyDB as DB, SQLite as sql
+import sqlite3
 from gems import gemsFonctions as GF
 from core import level as lvl
 from operator import itemgetter
@@ -278,7 +279,10 @@ def crime(ID):
             else:
                 msg = "{1} {0} :gem:`gems`".format(gain, GF.message_crime[r.randint(0,3)])
                 sql.addGems(PlayerID, gain)
-                sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")), -gain)
+                try :
+                    sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")), -gain) # Vole l'équivalent du crime au bot
+                except sqlite3.OperationalError :
+                    pass
                 if (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):
                     if r.randint(0,10) == 0:
                         nbgift = r.randint(1,3)
