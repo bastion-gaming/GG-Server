@@ -2,5 +2,7 @@
   "ID":
     "PRIMARYKEY_INTEGER",
   "ID_discord":
+    "INTEGER",
+  "ID_messenger":
     "INTEGER"
 }
