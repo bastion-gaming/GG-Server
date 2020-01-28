@@ -168,17 +168,33 @@ def checkField():
 # Gestion des utilisateurs
 #===============================================================================
 
-def get_PlayerID(ID, nameDB = None, name_pl = None):
+def get_SuperID(ID, name_pl):
+    """
+    Permet de convertir un ID discord en PlayerID interne à la base de données
+    """
+    script = "SELECT * FROM IDs WHERE ID_{1} = {0}".format(ID, name_pl)
+
+    cursor = conn.cursor()
+    # print(script)
+    cursor.execute(script)
+    rows = cursor.fetchall()
+    if rows == []:
+        # Le PlayerID n'as pas été trouvé. Envoie un code Erreur
+        print("SuperID 404 not found")
+        return "Error 404"
+    else:
+        for x in rows:
+            return "{}".format(x[0])
+
+#-------------------------------------------------------------------------------
+def get_PlayerID(ID, nameDB = None):
     """
     Permet de convertir un ID discord en PlayerID interne à la base de données
     """
     if nameDB == None:
         nameDB = "gems"
 
-    if name_pl != None:
-        script = "SELECT * FROM IDs WHERE ID_{1} = {0}".format(ID, name_pl)
-    else:
-        script = "SELECT ID, id{0} FROM {0} JOIN IDs USING(ID) WHERE ID_discord = {1}".format(nameDB, ID)
+    script = "SELECT id{0} FROM {0} WHERE ID = {1}".format(nameDB, ID)
     cursor = conn.cursor()
     # print(script)
     cursor.execute(script)
@@ -202,7 +218,7 @@ def userID(i, nameDB = None):
     return ID[0][0]
 
 #-------------------------------------------------------------------------------
-def newPlayer(ID, nameDB):
+def newPlayer(ID, nameDB, platform):
     """
     Permet d'ajouter un nouveau joueur à la base de donnée en fonction de son ID.
 
@@ -216,16 +232,16 @@ def newPlayer(ID, nameDB):
         with open("DB/Templates/bankTemplate.json", "r") as f:
             t3 = json.load(f)
 
-    PlayerID = get_PlayerID(ID)
+    SuperID = get_SuperID(ID, platform)
     cursor = conn.cursor()
-    if PlayerID == "Error 404":
+    if SuperID == "Error 404":
         #Init du joueur avec les champs de base
-        script = "INSERT INTO IDs (ID_discord) VALUES ({})".format(ID)
+        script = "INSERT INTO IDs (ID_{1}) VALUES ({0})".format(ID, platform)
         cursor.execute(script)
         conn.commit()
-        PlayerID = get_PlayerID(ID, "gems", "discord")
+        SuperID = get_SuperID(ID, platform)
         data = "ID"
-        values = PlayerID
+        values = SuperID
         for x in t:
             if x != "id{}".format(nameDB) and x != "ID":
                 data += ", {}".format(x)
@@ -238,7 +254,7 @@ def newPlayer(ID, nameDB):
         conn.commit()
         if nameDB == "gems":
             #Init du joueur dans Get Gems avec les champs de base
-            PlayerID = get_PlayerID(ID, "gems")
+            PlayerID = get_PlayerID(SuperID, "gems")
             data = "idgems"
             values = PlayerID
             for x in t2:
@@ -338,20 +354,22 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
             # print("DB >> Le champ n'existe pas")
             return "201"
         else:
-            if nameDB == "gems":
-                IDname = "id{}".format(nameDB)
-                script = "UPDATE {0} SET {1} = '{2}' WHERE {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
-            else:
-                cursor.execute("PRAGMA table_info({0});".format(nameDB))
-                rows = cursor.fetchall()
-                for x in rows:
-                    if x[1] == "idgems":
-                        IDname = "gems"
-                script = "SELECT id{2} FROM {0} WHERE id{2} = '{1}'".format(nameDB, PlayerID, IDname)
-                cursor.execute(script)
-                for z in cursor.fetchall():
-                    PlayerID = z[0]
-                script = "UPDATE {0} SET {1} = '{2}' WHERE id{4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
+            IDname = "idgems"
+            script = "UPDATE {0} SET {1} = '{2}' WHERE {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
+            # if nameDB == "gems":
+            #     IDname = "id{}".format(nameDB)
+            #     script = "UPDATE {0} SET {1} = '{2}' WHERE {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
+            # else:
+            #     cursor.execute("PRAGMA table_info({0});".format(nameDB))
+            #     rows = cursor.fetchall()
+            #     for x in rows:
+            #         if x[1] == "idgems":
+            #             IDname = "gems"
+            #     script = "SELECT id{2} FROM {0} WHERE id{2} = '{1}'".format(nameDB, PlayerID, IDname)
+            #     cursor.execute(script)
+            #     for z in cursor.fetchall():
+            #         PlayerID = z[0]
+            #     script = "UPDATE {0} SET {1} = '{2}' WHERE id{4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
             for x in nameDBexcept:
                 if x == nameDB:
                     if x == "inventory":
@@ -393,9 +411,10 @@ def valueAt(PlayerID, fieldName, nameDB):
             try:
                 # Récupération de la valeur de fieldName dans la table nameDB
                 if nameDB == "gems":
-                    script = "SELECT {1} FROM {0} JOIN IDs USING(ID) WHERE ID = '{2}'".format(nameDB, fieldName, PlayerID)
+                    script = "SELECT {1} FROM {0} WHERE id{0} = '{2}'".format(nameDB, fieldName, PlayerID)
                 else:
-                    script = "SELECT {1} FROM {0} JOIN gems USING(idgems) JOIN IDs USING(ID) WHERE ID = '{2}'".format(nameDB, fieldName, PlayerID)
+                    script = "SELECT {1} FROM {0} JOIN gems USING(idgems) WHERE idgems = '{2}'".format(nameDB, fieldName, PlayerID)
+                # print(script)
                 cursor.execute(script)
                 value = cursor.fetchall()
             except:
@@ -431,11 +450,10 @@ def valueAt(PlayerID, fieldName, nameDB):
                 # Paramètre spécial (à mettre a la place du fieldName) permettant de retourner toutes les valeurs liées à un PlayerID dans la table nameDB
                 if fieldName == "all":
                     script = "SELECT {2} FROM {0} JOIN {3} USING(id{3}) WHERE id{3} = '{4}'".format(nameDB, fieldName, fieldName3, link, PlayerID)
-                    # print(script)
                 else:
                     # Récupération de la valeur de fieldName dans la table nameDB
                     script = "SELECT {5} FROM {0} JOIN {3} USING(id{3}) WHERE id{3} = '{4}' and {2} = '{1}'".format(nameDB, fieldName, fieldName2, link, PlayerID, fieldName3)
-                    # print(script)
+                # print(script)
                 cursor.execute(script)
                 value = cursor.fetchall()
             except:
@@ -468,8 +486,8 @@ def addGems(PlayerID, nb):
     Si il n'y a pas assez d'argent sur le compte la fonction retourne un nombre
     strictement inférieur à 0.
     """
-    old_value = valueAt(PlayerID, "gems", "gems")
-    new_value = int(old_value[0]) + int(nb)
+    old_value = valueAtNumber(PlayerID, "gems", "gems")
+    new_value = int(old_value) + int(nb)
     if new_value >= 0:
         updateField(PlayerID, "gems", new_value, "gems")
         print("DB >> Le compte de "+str(PlayerID)+ " est maintenant de: "+str(new_value))
@@ -485,8 +503,8 @@ def addSpinelles(PlayerID, nb):
     Si il n'y a pas assez d'argent sur le compte la fonction retourne un nombre
     strictement inférieur à 0.
     """
-    old_value = valueAt(PlayerID, "spinelles", "gems")
-    new_value = int(old_value[0]) + int(nb)
+    old_value = valueAtNumber(PlayerID, "spinelles", "gems")
+    new_value = int(old_value) + int(nb)
     if new_value >= 0:
         updateField(PlayerID, "spinelles", new_value, "gems")
         print("DB >> Le compte de "+str(PlayerID)+ " est maintenant de: "+str(new_value))
@@ -528,7 +546,7 @@ def updateComTime(PlayerID, nameElem, nameDB):
             updateField(PlayerID, nameElem, new_value, nameDB)
             return 100
         else:
-            print(add(PlayerID, nameElem, t.time(), nameDB))
+            add(PlayerID, nameElem, t.time(), nameDB)
             return 101
     except:
         return 404
@@ -539,8 +557,9 @@ def add(PlayerID, nameElem, nbElem, nameDB):
     Permet de modifier le nombre de nameElem pour PlayerID dans la table nameDB
     Pour en retirer mettez nbElemn en négatif
     """
-
+    # print("PlayerID: {}".format(PlayerID))
     old_value = valueAt(PlayerID, nameElem, nameDB)
+    # print(old_value)
     if old_value != 0:
         if nameDB == "hothouse" or nameDB == "cooking" or nameDB == "daily" or nameDB == "ferment":
             updateField(PlayerID, nameElem, nbElem, nameDB)
@@ -572,9 +591,9 @@ def add(PlayerID, nameElem, nbElem, nameDB):
                 if x == nameElem:
                     values += ",'{}'".format(nbElem)
                 elif y2 == "INTEGER":
-                    values = ",'0'"
+                    values += ",'0'"
                 elif y2 == "TEXT":
-                    values = ",''"
+                    values += ",''"
         else:
             if nameDB == "inventory" or nameDB == "durability" or nameDB == "trophy" or nameDB == "statgems" or nameDB == "gems_com_time":
                 if nameDB == "inventory":

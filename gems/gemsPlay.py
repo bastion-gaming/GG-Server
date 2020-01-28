@@ -11,18 +11,19 @@ def daily(ID):
     """Récupère ta récompense journalière!"""
     if ID == "Error 404":
         return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
     #=======================================================================
     # Initialisation des variables générales de la fonction
     #=======================================================================
-    DailyTime = sql.valueAtNumber(ID, "DailyTime", "daily")
-    DailyMult = sql.valueAtNumber(ID, "DailyMult", "daily")
+    DailyTime = sql.valueAtNumber(PlayerID, "DailyTime", "daily")
+    DailyMult = sql.valueAtNumber(PlayerID, "DailyMult", "daily")
     jour = dt.date.today()
     #=======================================================================
     # Détermination du daily
     #=======================================================================
     if DailyTime == str(jour - dt.timedelta(days=1)):
-        sql.updateField(ID, "DailyTime", str(jour), "daily")
-        sql.updateField(ID, "DailyMult", DailyMult + 1, "daily")
+        sql.updateField(PlayerID, "DailyTime", str(jour), "daily")
+        sql.updateField(PlayerID, "DailyMult", DailyMult + 1, "daily")
         if DailyMult >= 60:
             bonus = 500
         elif DailyMult >= 30:
@@ -30,22 +31,22 @@ def daily(ID):
         else:
             bonus = 125
         gain = 100 + bonus*DailyMult
-        sql.addGems(ID, gain)
+        sql.addGems(PlayerID, gain)
         msg = "Récompense journalière! Tu as gagné 100:gem:`gems`"
         msg += "\nNouvelle série: `{}`, Bonus: {} :gem:`gems`".format(DailyMult, bonus*DailyMult)
-        lvl.addxp(ID, 10*(DailyMult/2), "gems")
+        lvl.addxp(PlayerID, 10*(DailyMult/2), "gems")
         if DailyMult%30 == 0:
             m = (DailyMult//30)*5
-            sql.addSpinelles(ID, m)
+            sql.addSpinelles(PlayerID, m)
             msg+="\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}<:spinelle:{2}>`spinelles`".format(DailyMult, m, GF.get_idmoji("spinelle"))
 
     elif DailyTime == str(jour):
         msg = "Tu as déja reçu ta récompense journalière aujourd'hui. Reviens demain pour gagner plus de :gem:`gems`"
     else:
-        sql.add(ID, "DailyMult", 1, "daily")
-        sql.add(ID, "DailyTime", str(jour), "daily")
+        sql.add(PlayerID, "DailyMult", 1, "daily")
+        sql.add(PlayerID, "DailyTime", str(jour), "daily")
         msg = "Récompense journalière! Tu as gagné 100 :gem:`gems`"
-        lvl.addxp(ID, 10, "gems")
+        lvl.addxp(PlayerID, 10, "gems")
     return msg
 
 
@@ -205,10 +206,11 @@ def stealing(ID, name = None):
     """**[nom]** | Vole des :gem:`gems` aux autres joueurs!"""
     if ID == "Error 404":
         return GF.WarningMsg[1]
-    if sql.spam(ID, GF.couldown_14h, "stealing", "gems") and name != None:
-        ID_Vol = sql.get_PlayerID(sql.nom_ID(name))
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems") and name != None:
+        ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name)))
         # Calcul du pourcentage
-        if ID_Vol == sql.get_PlayerID(GF.idBaBot) or ID_Vol == sql.get_PlayerID(GF.idGetGems):
+        if ID_Vol == sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")) or ID_Vol == sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")):
             R = r.randint(1,6)
         else:
             R = "05"
@@ -217,31 +219,31 @@ def stealing(ID, name = None):
             Solde = sql.valueAtNumber(ID_Vol, "gems", "gems")
             gain = int(Solde*P)
             if r.randint(0,9) == 0:
-                sql.add(ID, "DiscordCop Arrestation", 1, "statgems")
-                if int(sql.addGems(ID, int(gain/4))) >= 100:
+                sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
+                if int(sql.addGems(PlayerID, int(gain/4))) >= 100:
                     msg = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de **{}** :gem:`gems`".format(int(gain/4))
                 else:
-                    sql.updateField(ID, "gems", 100, "gems")
+                    sql.updateField(PlayerID, "gems", 100, "gems")
                     msg = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer l'intégralité de l'amende! Votre compte est maintenant de 100 :gem:`gems`"
             else:
-                sql.addGems(ID, gain)
+                sql.addGems(PlayerID, gain)
                 sql.addGems(ID_Vol, -gain)
                 # Message
                 msg = "Tu viens de voler {n} :gem:`gems` à {nom}".format(n=gain, nom=name)
-                print("Gems >> PlayerID {author} viens de voler {n} gems à {nom}".format(n=gain, nom=ID_Vol, author=ID))
-            sql.updateComTime(ID, "stealing", "gems")
-            lvl.addxp(ID, 1, "gems")
+                print("Gems >> PlayerID {author} viens de voler {n} gems à {nom}".format(n=gain, nom=ID_Vol, author=PlayerID))
+            sql.updateComTime(PlayerID, "stealing", "gems")
+            lvl.addxp(PlayerID, 1, "gems")
         except:
             msg = "Ce joueur est introuvable!"
     else:
-        ComTime = sql.valueAtNumber(ID, "stealing", "gems_com_time")
+        ComTime = sql.valueAtNumber(PlayerID, "stealing", "gems_com_time")
         time = float(ComTime) - (t.time()-GF.couldown_14h)
         timeH = int(time / 60 / 60)
         time = time - timeH * 3600
         timeM = int(time / 60)
         timeS = int(time - timeM * 60)
         msg = "Il te faut attendre :clock2:`{}h {}m {}s` avant de pourvoir voler des :gem:`gems` à nouveau!".format(timeH,timeM,timeS)
-        if sql.spam(ID, GF.couldown_14h, "stealing", "gems"):
+        if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems"):
             msg = "Tu peux voler des :gem:`gems`"
     return msg
 
@@ -251,11 +253,12 @@ def crime(ID):
     """Commets un crime et gagne des :gem:`gems` Attention au DiscordCop!"""
     if ID == "Error 404":
         return GF.WarningMsg[1]
-    if sql.spam(ID,GF.couldown_6s, "crime", "gems"):
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    if sql.spam(PlayerID,GF.couldown_6s, "crime", "gems"):
         # si 10 sec c'est écoulé depuis alors on peut en  faire une nouvelle
         if r.randint(0,9) == 0:
-            sql.add(ID, "DiscordCop Arrestation", 1, "statgems")
-            if int(sql.addGems(ID, -10)) >= 0:
+            sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
+            if int(sql.addGems(PlayerID, -10)) >= 0:
                 msg = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de 10 :gem:`gems`"
             else:
                 msg = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer une amende"
@@ -267,26 +270,26 @@ def crime(ID):
                 msg += GF.message_crime[r.randint(0,3)]+" "+str(gain)
                 if r.randint(0,1) == 0:
                     msg += " :candy:`candy`"
-                    sql.add(ID, "candy", gain, "inventory")
+                    sql.add(PlayerID, "candy", gain, "inventory")
                 else:
                     msg += " :lollipop:`lollipop`"
-                    sql.add(ID, "lollipop", gain, "inventory")
+                    sql.add(PlayerID, "lollipop", gain, "inventory")
             else:
                 msg = "{1} {0} :gem:`gems`".format(gain, GF.message_crime[r.randint(0,3)])
-                sql.addGems(ID, gain)
-                sql.addGems(sql.get_PlayerID(GF.idBaBot, "gems", "discord"), -gain)
+                sql.addGems(PlayerID, gain)
+                sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")), -gain)
                 if (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):
                     if r.randint(0,10) == 0:
                         nbgift = r.randint(1,3)
-                        sql.add(ID, "lootbox_gift", nbgift, "inventory")
+                        sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
                         msg += "\n\nTu as trouvé {} :gift:`cadeau de Noël (gift)`".format(nbgift)
                 elif (jour.month == 12 and jour.day >= 30) or (jour.month == 1 and jour.day <= 2):
                     if r.randint(0,10) == 0:
                         nbgift = r.randint(1,3)
-                        sql.add(ID, "lootbox_gift", nbgift, "inventory")
+                        sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
                         msg += "\n\nTu as trouvé {} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:".format(nbgift)
-        sql.updateComTime(ID, "crime", "gems")
-        lvl.addxp(ID, 1, "gems")
+        sql.updateComTime(PlayerID, "crime", "gems")
+        lvl.addxp(PlayerID, 1, "gems")
     else:
         msg = "Il faut attendre "+str(GF.couldown_6s)+" secondes entre chaque commande !"
     return msg
