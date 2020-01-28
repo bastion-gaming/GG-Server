@@ -368,8 +368,8 @@ couldown_4s = 4
 
 # def recette(ctx):
 #     """Liste de toutes les recettes disponibles !"""
-#     d_recette="Permet de voir la liste de toutes les recettes disponible !\n\n"
-#     d_recette+="▬▬▬▬▬▬▬▬▬▬▬▬▬\n**Forge**\n"
+#     d_recette = "Permet de voir la liste de toutes les recettes disponible !\n\n"
+#     d_recette += "▬▬▬▬▬▬▬▬▬▬▬▬▬\n**Forge**\n"
 #     for c in objetOutil:
 #         for r in objetRecette :
 #             if c.type == "forge":

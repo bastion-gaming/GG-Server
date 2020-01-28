@@ -90,9 +90,9 @@ def bal(ID):
 #                 if j <= n:
 #                     baltop += "{2} | _{3} _<@{0}> {1}:gem:".format(one[0], one[1], j, one[3])
 #                     if one[2] != 0:
-#                         baltop+=" | {0}<:spinelle:{1}>\n".format(one[2], GF.get_idmoji("spinelle"))
+#                         baltop += " | {0}<:spinelle:{1}>\n".format(one[2], GF.get_idmoji("spinelle"))
 #                     else:
-#                         baltop+="\n"
+#                         baltop += "\n"
 #                 j += 1
 #             msg = discord.Embed(title = Titre, color= 13752280, description = baltop)
 #             # Message de réussite dans la console
@@ -292,11 +292,11 @@ def bal(ID):
 #                         sql.addSpinelles(ID, gain)
 #                         argent = "<:spinelle:{}>`spinelles`".format(GF.get_idmoji("spinelle"))
 #                     if c.type != "emoji":
-#                         msg ="Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4} !".format(nb, item, gain, GF.get_idmoji(c.nom), argent)
+#                         msg = "Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4} !".format(nb, item, gain, GF.get_idmoji(c.nom), argent)
 #                         # Message de réussite dans la console
 #                         print("Gems >> {} a vendu {} {}".format(ctx.author.name, nb, item))
 #                     else:
-#                         msg ="Tu as vendu {0} :{1}:`{1}` pour {2} {3} !".format(nb, item, gain, argent)
+#                         msg = "Tu as vendu {0} :{1}:`{1}` pour {2} {3} !".format(nb, item, gain, argent)
 #                         # Message de réussite dans la console
 #                         print("Gems >> {} a vendu {} {}".format(ctx.author.name, nb, item))
 #
@@ -310,7 +310,7 @@ def bal(ID):
 #                     else:
 #                         sql.addSpinelles(ID, gain)
 #                         argent = "<:spinelle:{}>`spinelles`".format(GF.get_idmoji("spinelle"))
-#                     msg ="Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4} !".format(nb, item, gain, GF.get_idmoji(c.nom), argent)
+#                     msg = "Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4} !".format(nb, item, gain, GF.get_idmoji(c.nom), argent)
 #                     if nbItem == 1:
 #                         if sql.valueAt(ID, item, "durability") != 0:
 #                             sql.add(ID, item, -1, "durability")
@@ -475,7 +475,7 @@ def bal(ID):
 #     if fct != None:
 #         fct = fct.lower()
 #     if sql.spam(ID,GF.couldown_4s, "market", "gems"):
-#         d_market="Permet de voir tout les objets que l'on peux acheter ou vendre !\n\n"
+#         d_market = "Permet de voir tout les objets que l'on peux acheter ou vendre !\n\n"
 #         if sql.spam(GF.idBaBot, GF.couldown_10s, "bourse", "gems"):
 #             GF.loadItem()
 #         ComTime = sql.valueAtNumber(GF.idBaBot, "bourse", "gems_com_time")
@@ -485,7 +485,7 @@ def bal(ID):
 #         time = time - timeH * 3600
 #         timeM = int(time / 60)
 #         timeS = int(time - timeM * 60)
-#         d_market+="Actualisation de la bourse dans :clock2:`{}h {}m {}s`\n".format(timeH,timeM,timeS)
+#         d_market += "Actualisation de la bourse dans :clock2:`{}h {}m {}s`\n".format(timeH,timeM,timeS)
 #         if fct != None:
 #             msg = discord.Embed(title = "Le marché | {name}".format(name=fct),color= 2461129, description = d_market)
 #         else:

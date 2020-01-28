@@ -36,10 +36,10 @@ def daily(ID):
         msg = "Récompense journalière! Tu as gagné 100:gem:`gems`"
         msg += "\nNouvelle série: `{}`, Bonus: {} :gem:`gems`".format(DailyMult, bonus*DailyMult)
         lvl.addxp(PlayerID, 10*(DailyMult/2), "gems")
-        if DailyMult%30 == 0:
+        if DailyMult % 30 == 0:
             m = (DailyMult//30)*5
             sql.addSpinelles(PlayerID, m)
-            msg+="\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}<:spinelle:{2}>`spinelles`".format(DailyMult, m, GF.get_idmoji("spinelle"))
+            msg += "\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}<:spinelle:{2}>`spinelles`".format(DailyMult, m, GF.get_idmoji("spinelle"))
 
     elif DailyTime == str(jour):
         msg = "Tu as déja reçu ta récompense journalière aujourd'hui. Reviens demain pour gagner plus de :gem:`gems`"
