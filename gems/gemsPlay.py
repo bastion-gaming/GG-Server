@@ -18,9 +18,9 @@ def daily(ID):
     DailyTime = sql.valueAtNumber(PlayerID, "DailyTime", "daily")
     DailyMult = sql.valueAtNumber(PlayerID, "DailyMult", "daily")
     jour = dt.date.today()
-    #=======================================================================
+    # =======================================================================
     # Détermination du daily
-    #=======================================================================
+    # =======================================================================
     if DailyTime == str(jour - dt.timedelta(days=1)):
         sql.updateField(PlayerID, "DailyTime", str(jour), "daily")
         sql.updateField(PlayerID, "DailyMult", DailyMult + 1, "daily")
