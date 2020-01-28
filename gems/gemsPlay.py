@@ -9,15 +9,15 @@ from operator import itemgetter
 
 def daily(ID):
     """Récupère ta récompense journalière!"""
-    #=======================================================================
+    # =======================================================================
     # Initialisation des variables générales de la fonction
-    #=======================================================================
+    # =======================================================================
     DailyTime = sql.valueAtNumber(ID, "DailyTime", "daily")
     DailyMult = sql.valueAtNumber(ID, "DailyMult", "daily")
     jour = dt.date.today()
-    #=======================================================================
+    # =======================================================================
     # Détermination du daily
-    #=======================================================================
+    # =======================================================================
     if DailyTime == str(jour - dt.timedelta(days=1)):
         sql.updateField(ID, "DailyTime", str(jour), "daily")
         sql.updateField(ID, "DailyMult", DailyMult + 1, "daily")
@@ -32,10 +32,10 @@ def daily(ID):
         msg = "Récompense journalière! Tu as gagné 100:gem:`gems`"
         msg += "\nNouvelle série: `{}`, Bonus: {} :gem:`gems`".format(DailyMult, bonus*DailyMult)
         lvl.addxp(ID, 10*(DailyMult/2), "gems")
-        if DailyMult%30 == 0:
+        if DailyMult % 30 == 0:
             m = (DailyMult//30)*5
             sql.addSpinelles(ID, m)
-            msg+="\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}<:spinelle:{2}>`spinelles`".format(DailyMult, m, GF.get_idmoji("spinelle"))
+            msg += "\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}<:spinelle:{2}>`spinelles`".format(DailyMult, m, GF.get_idmoji("spinelle"))
 
     elif DailyTime == str(jour):
         msg = "Tu as déja reçu ta récompense journalière aujourd'hui. Reviens demain pour gagner plus de :gem:`gems`"

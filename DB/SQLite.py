@@ -6,25 +6,28 @@ import json
 
 DB_NOM = 'bastionDB'
 
+
 def nom_ID(nom):
 	"""Convertis un nom en ID discord """
-	if len(nom) == 21 :
+	if len(nom) == 21:
 		ID = int(nom[2:20])
-	elif len(nom) == 22 :
+	elif len(nom) == 22:
 		ID = int(nom[3:21])
-	else :
+	else:
 		print("DB >> mauvais nom")
 		ID = -1
 	return(ID)
 
-#===============================================================================
+
+# ===============================================================================
 # Ouverture du fichier DB
-#===============================================================================
+# ===============================================================================
 conn = sql.connect('DB/{}.db'.format(DB_NOM))
 
-#===============================================================================
+
+# ===============================================================================
 # Initialisation et vérification de la DB
-#===============================================================================
+# ===============================================================================
 def init():
 	# Liste des tables
 	with open("DB/DBlist.json", "r") as f:
@@ -74,7 +77,8 @@ def init():
 	# Quand toute les tables ont été créée (si elles n'existait pas), envoie un message de fin
 	return "SQL >> DB initialisée"
 
-#-------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------
 def checkField():
 	# Init de la variable flag
 	flag = 0
@@ -94,7 +98,7 @@ def checkField():
 				cursor.execute("PRAGMA table_info({0});".format(one))
 				rows = cursor.fetchall()
 
-				#Suppression
+				# Suppression
 				for x in rows:
 					if x[1] not in t:
 						script = "ALTER TABLE {0} RENAME TO {0}_old".format(one)
@@ -113,7 +117,7 @@ def checkField():
 						conn.commit()
 						flag = "sup"+str(flag)
 
-				#Type & add
+				# Type & add
 				for x in t:
 					check = False
 					NotCheck = False
@@ -164,9 +168,9 @@ def checkField():
 	return flag
 
 
-#===============================================================================
+# ===============================================================================
 # Gestion des utilisateurs
-#===============================================================================
+# ===============================================================================
 
 def get_PlayerID(ID, nameDB = None, name_pl = None):
 	"""
@@ -468,7 +472,11 @@ def addGems(PlayerID, nb):
 	strictement inférieur à 0.
 	"""
 	old_value = valueAt(PlayerID, "gems", "gems")
-	new_value = int(old_value[0]) + int(nb)
+	try:
+		new_value = int(old_value[0]) + int(nb)
+	except TypeError:
+		new_value = int(nb)
+
 	if new_value >= 0:
 		updateField(PlayerID, "gems", new_value, "gems")
 		print("DB >> Le compte de "+str(PlayerID)+ " est maintenant de: "+str(new_value))
