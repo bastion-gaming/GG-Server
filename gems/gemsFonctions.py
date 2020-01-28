@@ -366,7 +366,29 @@ couldown_10s = 10
 couldown_8s = 8
 couldown_6s = 6
 couldown_4s = 4
-# nb de sec nécessaire entre 2 commandes
+
+
+# def recette(ctx):
+#     """Liste de toutes les recettes disponibles !"""
+#     d_recette="Permet de voir la liste de toutes les recettes disponible !\n\n"
+#     d_recette+="▬▬▬▬▬▬▬▬▬▬▬▬▬\n**Forge**\n"
+#     for c in objetOutil:
+#         for r in objetRecette :
+#             if c.type == "forge":
+#                 if c.nom == r.nom:
+#                     d_recette += "<:gem_{0}:{1}>`{0}`: ".format(c.nom,get_idmoji(c.nom))
+#                     if r.nb1 > 0:
+#                         d_recette += "{0} <:gem_{1}:{2}>`{1}` ".format(r.nb1, r.item1, get_idmoji(r.item1))
+#                     if r.nb2 > 0:
+#                         d_recette += "et {0} <:gem_{1}:{2}>`{1}` ".format(r.nb2, r.item2, get_idmoji(r.item2))
+#                     if r.nb3 > 0:
+#                         d_recette += "et {0} <:gem_{1}:{2}>`{1}` ".format(r.nb3, r.item3, get_idmoji(r.item3))
+#                     if r.nb4 > 0:
+#                         d_recette += "et {0} <:gem_{1}:{2}>`{1}` ".format(r.nb4, r.item4, get_idmoji(r.item4))
+#                     d_recette += "\n"
+#
+#     msg = discord.Embed(title = "Recettes",color= 15778560, description = d_recette)
+#     return msg
 
 
 def get_price(nameElem, type = None):
