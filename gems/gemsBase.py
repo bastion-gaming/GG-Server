@@ -11,9 +11,8 @@ import json
 
 def begin(param):
     """Pour créer son compte joueur et obtenir son starter Kit!"""
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
-    msg = sql.newPlayer(ID, "gems", param["name_pl"])
-    SuperID = sql.get_SuperID(ID, param["name_pl"])
+    msg = sql.newPlayer(param["ID"], "gems", param["name_pl"])
+    SuperID = sql.get_SuperID(param["ID"], param["name_pl"])
     GF.startKit(SuperID)
     return msg
 

@@ -12,7 +12,8 @@ def exec_commands(c):
     return :
     dict => name_c, name_p, name_pl, reponse
     """
-    list_here = gems.list_GG_module # On récuppère tous les modules dans gems
+    list_here = gems.list_GG_module # On récupère tous les modules dans gems
+
     packets_list = list()
     function_dict = dict()
     res = dict()
