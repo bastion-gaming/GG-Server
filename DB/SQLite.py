@@ -200,6 +200,8 @@ def get_PlayerID(ID, nameDB = None):
     """
     if nameDB == None:
         nameDB = "gems"
+    if ID == "Error 404":
+        return "Error 404"
 
     script = "SELECT id{0} FROM {0} WHERE ID = {1}".format(nameDB, ID)
     cursor = conn.cursor()
@@ -378,19 +380,19 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
             for x in nameDBexcept:
                 if x == nameDB:
                     if x == "inventory":
-                        script = "UPDATE {0} SET Stock = '{2}' WHERE Item = '{1}' and idgems = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID)
+                        script = "UPDATE {0} SET Stock = '{2}' WHERE Item = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID)
                     elif x == "trophy" or x == "statgems":
-                        script = "UPDATE {0} SET Stock = '{2}' WHERE Nom = '{1}' and idgems = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
+                        script = "UPDATE {0} SET Stock = '{2}' WHERE Nom = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
                     elif x == "durability":
-                        script = "UPDATE {0} SET Durability = '{2}' WHERE Item = '{1}' and idgems = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
+                        script = "UPDATE {0} SET Durability = '{2}' WHERE Item = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
                     elif x == "gems_com_time":
-                        script = "UPDATE {0} SET Com_time = '{2}' WHERE Commande = '{1}' and id{4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
+                        script = "UPDATE {0} SET Com_time = '{2}' WHERE Commande = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
                     elif x == "hothouse":
-                        script = "UPDATE {0} SET Time = '{2}', Plante = '{5}' WHERE idPlantation = '{1}' and idgems = '{3}'".format(nameDB, fieldName, fieldValue[0], PlayerID, IDname, fieldValue[1])
+                        script = "UPDATE {0} SET Time = '{2}', Plante = '{5}' WHERE idPlantation = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue[0], PlayerID, IDname, fieldValue[1])
                     elif x == "cooking":
-                        script = "UPDATE {0} SET Time = '{2}', Plat = '{5}'  WHERE idFour = '{1}' and idgems = '{3}'".format(nameDB, fieldName, fieldValue[0], PlayerID, IDname, fieldValue[1])
+                        script = "UPDATE {0} SET Time = '{2}', Plat = '{5}'  WHERE idFour = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue[0], PlayerID, IDname, fieldValue[1])
                     elif x == "ferment":
-                        script = "UPDATE {0} SET Time = '{2}', Alcool = '{5}'  WHERE idBarrel = '{1}' and idgems = '{3}'".format(nameDB, fieldName, fieldValue[0], PlayerID, IDname, fieldValue[1])
+                        script = "UPDATE {0} SET Time = '{2}', Alcool = '{5}'  WHERE idBarrel = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue[0], PlayerID, IDname, fieldValue[1])
                     else:
                         return "202"
             # print("==== updateField ====")
@@ -599,7 +601,7 @@ def add(PlayerID, nameElem, nbElem, nameDB):
             else:
                 data += ",{}".format(x)
 
-        if not nameDB in nameDBexcept:
+        if nameDB not in nameDBexcept:
             values = "{}".format(PlayerID)
             for x in t:
                 y = t[x].split("_")

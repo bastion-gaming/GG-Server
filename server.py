@@ -2,6 +2,7 @@ import zmq
 import gg_lib as gg
 from DB import SQLite as sql
 from gems import gemsFonctions as GF, gemsItems as GI
+from core import level as lvl
 import manage_commands as mc
 
 # Ouverture du port
@@ -34,7 +35,12 @@ except FileNotFoundError:
 while check:
     #  Wait for next request from client
     message = gg.std_receive_command(socket.recv())
-    platform = message["name_pl"]
+    if message["name_pl"] == "discord" or message["name_pl"] == "babot":
+        platform = "discord"
+        message["name_pl"] = "discord"
+    elif message["name_pl"] == "messenger":
+        platform = "messenger"
+
     print("\n•••••\nReceived request: %s" % message)
 
     if message["name_c"] == "connect":
@@ -44,16 +50,12 @@ while check:
         print("Arret de GG Serveur ...")
         check = False
         socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "GG serveur c'est arrêté"))
+    elif message["name_c"] == "level":
+        ID = sql.get_SuperID(message["name_p"], platform)
+        socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], lvl.checklevel(ID)))
 
     # Send reply back to client
     else:
-        # ID = sql.get_SuperID(message["name_p"], platform)
-        if message["name_pl"] == "discord" or message["name_pl"] == "babot":
-            platform = "discord"
-            message["name_pl"] = "discord"
-        elif message["name_pl"] == "messenger":
-            platform = "messenger"
-
         retDict = mc.exec_commands(message)
 
         if retDict is not None:

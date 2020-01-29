@@ -54,7 +54,6 @@ while check:
     else:
         if x == "stop server":
             socket.send_string(gg.std_send_command("stop", "gnouf1", name_pl))
-            check = False
         elif x in ListCommands:
             socket.send_string(gg.std_send_command(x, 129362501187010561, name_pl))
 

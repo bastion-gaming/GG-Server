@@ -280,7 +280,7 @@ def crime(param):
                 msg = "{1} {0} :gem:`gems`".format(gain, GF.message_crime[r.randint(0, 3)])
                 sql.addGems(PlayerID, gain)
                 try:
-                    sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")), -gain) # Vole l'équivalent du crime au bot
+                    sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, param["name_pl"])), -gain) # Vole l'équivalent du crime au bot
                 except sqlite3.OperationalError:
                     pass
                 if (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):

@@ -12,17 +12,17 @@ def exec_commands(c):
     return :
     dict => name_c, name_p, name_pl, reponse
     """
-    list_here = gems.list_GG_module # On récupère tous les modules dans gems
+    # On récupère tous les modules dans gems
+    list_here = gems.list_GG_module
 
     packets_list = list()
     function_dict = dict()
     res = dict()
 
-
     for i in list_here:
-        if "gems" in i: # On exclut les magic func
+        # On exclut les magic func
+        if "gems" in i:
             packets_list.append(i)
-
 
     for j in packets_list:
         tmp_list = list()
@@ -37,7 +37,8 @@ def exec_commands(c):
 
     for mod_name in packets_list:
         if commande in function_dict[mod_name]:
-            file_c = mod_name # Où a été trouvé la commande
+            # Où a été trouvé la commande
+            file_c = mod_name
             break
         else:
             file_c = None
