@@ -2,9 +2,9 @@ import time
 import zmq
 import gg_lib as gg
 from core import level as lvl
-from gems import gemsPlay as GGplay, gemsBase as GGbase, gemsFonctions as GF, gemsItems as GI
 from DB import SQLite as sql
 
+# Ouverture du port
 context = zmq.Context()
 socket = context.socket(zmq.REP)
 socket.bind("tcp://*:5555")
@@ -47,39 +47,41 @@ while check:
 
     #  Send reply back to client
     else:
+        ID = sql.get_SuperID(message["name_p"], platform)
         if message["name_pl"] == "discord" or message["name_pl"] == "babot":
             platform = "discord"
         elif message["name_pl"] == "messenger":
             platform = "messenger"
-        ID = sql.get_SuperID(message["name_p"], platform)
 
-        # Daily
-        if message["name_c"] == "daily":
-            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGplay.daily(ID)))
+        #
+        # # Daily
+        # if message["name_c"] == "daily":
+        #     socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGplay.daily(ID)))
+        #
+        # # Begin
+        # elif message["name_c"] == "begin":
+        #     socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGbase.begin(message["name_p"], platform)))
+        #
+        # # Crime
+        # elif message["name_c"] == "crime":
+        #     socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGplay.crime(ID)))
+        #
+        # # Stealing
+        # elif message["name_c"] == "stealing":
+        #     print(message["param_c"])
+        #     socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGplay.stealing(ID, message["param_c"])))
+        #
+        # # Mine
+        # elif message["name_c"] == "mine":
+        #     socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
+        #
+        # # Bal
+        # elif message["name_c"] == "bal":
+        #     socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGbase.bal(ID)))
+        #
+        # # Autre
+        # elif message["name_c"] == "level":
+        #     socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], lvl.checklevel(ID)))
 
-        # Begin
-        elif message["name_c"] == "begin":
-            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGbase.begin(message["name_p"], platform)))
-
-        # Crime
-        elif message["name_c"] == "crime":
-            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGplay.crime(ID)))
-
-        # Stealing
-        elif message["name_c"] == "stealing":
-            print(message["param_c"])
-            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGplay.stealing(ID, message["param_c"])))
-
-        # Mine
-        elif message["name_c"] == "mine":
-            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Vous avez bien miné !"))
-
-        # Bal
-        elif message["name_c"] == "bal":
-            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], GGbase.bal(ID)))
-
-        # Autre
-        elif message["name_c"] == "level":
-            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], lvl.checklevel(ID)))
         else:
             socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Commande non reconnu"))
