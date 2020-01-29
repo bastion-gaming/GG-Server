@@ -4,13 +4,16 @@ import datetime as dt
 jour = dt.date.today()
 exception = ["bank_upgrade", "backpack", "hyperpack", "candy", "lollipop", "fishhook", "pickaxe", "shovel", "fishingrod"]
 
-#========== Items ==========
+# ========== Items ==========
+
+
 class Item:
 
-    def __init__(self,nom,vente,achat):
+    def __init__(self, nom, vente, achat):
         self.nom = nom
         self.vente = vente
         self.achat = achat
+
 
 PrixItem = [Item("backpack", 3000, 3000)
 ,Item("hyperpack", 1, 1)
@@ -47,10 +50,12 @@ PrixItem += [Item("pumpkin", 120, 330)
 ObjetChristmas = ["cupcake"]
 PrixItem += [Item("cupcake", 2500, 3000)]
 
-#========== Outils ==========
+# ========== Outils ==========
+
+
 class Outil:
 
-    def __init__(self,nom,vente,achat):
+    def __init__(self, nom, vente, achat):
         self.nom = nom
         self.vente = vente
         self.achat = achat

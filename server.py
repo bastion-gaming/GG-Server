@@ -1,8 +1,7 @@
-import time
 import zmq
 import gg_lib as gg
-from core import level as lvl
 from DB import SQLite as sql
+from gems import gemsFonctions as GF, gemsItems as GI
 
 # Ouverture du port
 context = zmq.Context()
@@ -10,7 +9,7 @@ socket = context.socket(zmq.REP)
 socket.bind("tcp://*:5555")
 check = True
 msg = ""
-VERSION = open("core/version.txt").read().replace("\n","")
+VERSION = open("core/version.txt").read().replace("\n", "")
 
 # Initialisation
 print('\nGet Gems - Server '+VERSION)
@@ -25,9 +24,9 @@ elif "sup" in flag:
 elif "type" in flag:
     print("SQL >> Un ou plusieurs type ont été modifié sur la DB.")
 
-try :
+try:
     GF.loadItem()
-except FileNotFoundError :
+except FileNotFoundError:
     GI.initBourse() # Cas où la bourse n'existait pas
 
 while check:
@@ -44,8 +43,7 @@ while check:
         check = False
         socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "GG serveur c'est arrêté"))
 
-
-    #  Send reply back to client
+    # Send reply back to client
     else:
         ID = sql.get_SuperID(message["name_p"], platform)
         if message["name_pl"] == "discord" or message["name_pl"] == "babot":

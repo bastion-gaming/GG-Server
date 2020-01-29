@@ -1,11 +1,10 @@
 import random as r
 import time as t
 import datetime as dt
-from DB import TinyDB as DB, SQLite as sql
+from DB import SQLite as sql
 import sqlite3
 from gems import gemsFonctions as GF
 from core import level as lvl
-from operator import itemgetter
 
 
 def daily(ID):
@@ -13,9 +12,9 @@ def daily(ID):
     if ID == "Error 404":
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
-    #=======================================================================
+    # =======================================================================
     # Initialisation des variables générales de la fonction
-    #=======================================================================
+    # =======================================================================
     DailyTime = sql.valueAtNumber(PlayerID, "DailyTime", "daily")
     DailyMult = sql.valueAtNumber(PlayerID, "DailyMult", "daily")
     jour = dt.date.today()
@@ -50,7 +49,6 @@ def daily(ID):
         msg = "Récompense journalière! Tu as gagné 100 :gem:`gems`"
         lvl.addxp(PlayerID, 10, "gems")
     return msg
-
 
 
 # @commands.command(pass_context=True)
@@ -203,7 +201,6 @@ def daily(ID):
 #         return
 
 
-
 def stealing(ID, name = None):
     """**[nom]** | Vole des :gem:`gems` aux autres joueurs!"""
     if ID == "Error 404":
@@ -213,14 +210,14 @@ def stealing(ID, name = None):
         ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name)))
         # Calcul du pourcentage
         if ID_Vol == sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")) or ID_Vol == sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")):
-            R = r.randint(1,6)
+            R = r.randint(1, 6)
         else:
             R = "05"
         P = float("0.0{}".format(R))
         try:
             Solde = sql.valueAtNumber(ID_Vol, "gems", "gems")
             gain = int(Solde*P)
-            if r.randint(0,9) == 0:
+            if r.randint(0, 9) == 0:
                 sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
                 if int(sql.addGems(PlayerID, int(gain/4))) >= 100:
                     msg = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de **{}** :gem:`gems`".format(int(gain/4))
@@ -244,11 +241,10 @@ def stealing(ID, name = None):
         time = time - timeH * 3600
         timeM = int(time / 60)
         timeS = int(time - timeM * 60)
-        msg = "Il te faut attendre :clock2:`{}h {}m {}s` avant de pourvoir voler des :gem:`gems` à nouveau!".format(timeH,timeM,timeS)
+        msg = "Il te faut attendre :clock2:`{}h {}m {}s` avant de pourvoir voler des :gem:`gems` à nouveau!".format(timeH, timeM, timeS)
         if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems"):
             msg = "Tu peux voler des :gem:`gems`"
     return msg
-
 
 
 def crime(ID):
@@ -256,41 +252,41 @@ def crime(ID):
     if ID == "Error 404":
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
-    if sql.spam(PlayerID,GF.couldown_6s, "crime", "gems"):
+    if sql.spam(PlayerID, GF.couldown_6s, "crime", "gems"):
         # si 10 sec c'est écoulé depuis alors on peut en  faire une nouvelle
-        if r.randint(0,9) == 0:
+        if r.randint(0, 9) == 0:
             sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
             if int(sql.addGems(PlayerID, -10)) >= 0:
                 msg = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de 10 :gem:`gems`"
             else:
                 msg = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer une amende"
-        else :
-            gain = r.randint(2,8)
+        else:
+            gain = r.randint(2, 8)
             jour = dt.date.today()
-            if (jour.month == 10 and jour.day >= 23) or (jour.month == 11 and jour.day <= 10): #Special Halloween
+            if (jour.month == 10 and jour.day >= 23) or (jour.month == 11 and jour.day <= 10): # Special Halloween
                 msg = "**Halloween** | Des bonbons ou un sort ?\n"
-                msg += GF.message_crime[r.randint(0,3)]+" "+str(gain)
-                if r.randint(0,1) == 0:
+                msg += GF.message_crime[r.randint(0, 3)]+" "+str(gain)
+                if r.randint(0, 1) == 0:
                     msg += " :candy:`candy`"
                     sql.add(PlayerID, "candy", gain, "inventory")
                 else:
                     msg += " :lollipop:`lollipop`"
                     sql.add(PlayerID, "lollipop", gain, "inventory")
             else:
-                msg = "{1} {0} :gem:`gems`".format(gain, GF.message_crime[r.randint(0,3)])
+                msg = "{1} {0} :gem:`gems`".format(gain, GF.message_crime[r.randint(0, 3)])
                 sql.addGems(PlayerID, gain)
-                try :
+                try:
                     sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")), -gain) # Vole l'équivalent du crime au bot
-                except sqlite3.OperationalError :
+                except sqlite3.OperationalError:
                     pass
                 if (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):
-                    if r.randint(0,10) == 0:
-                        nbgift = r.randint(1,3)
+                    if r.randint(0, 10) == 0:
+                        nbgift = r.randint(1, 3)
                         sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
                         msg += "\n\nTu as trouvé {} :gift:`cadeau de Noël (gift)`".format(nbgift)
                 elif (jour.month == 12 and jour.day >= 30) or (jour.month == 1 and jour.day <= 2):
-                    if r.randint(0,10) == 0:
-                        nbgift = r.randint(1,3)
+                    if r.randint(0, 10) == 0:
+                        nbgift = r.randint(1, 3)
                         sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
                         msg += "\n\nTu as trouvé {} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:".format(nbgift)
         sql.updateComTime(PlayerID, "crime", "gems")

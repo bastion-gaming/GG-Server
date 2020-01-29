@@ -9,7 +9,6 @@ from gems import gemsFonctions as GF, gemsItems as GI, gemsStats as GS
 import json
 
 
-
 def begin(ID, platform):
     """Pour créer son compte joueur et obtenir son starter Kit!"""
     msg = sql.newPlayer(ID, "gems", platform)
@@ -28,14 +27,14 @@ def bal(ID):
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         desc = "{} :gem:`gems`\n".format(solde)
-        soldeSpinelles = sql.valueAtNumber(PlayerID,"spinelles", "gems")
+        soldeSpinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
         if soldeSpinelles > 0:
-            desc+= "{0} <:spinelle:{1}>`spinelles`".format(soldeSpinelles, "{idmoji[spinelle]}")
+            desc += "{0} <:spinelle:{1}>`spinelles`".format(soldeSpinelles, "{idmoji[spinelle]}")
         msg.append(desc)
         lvlValue = sql.valueAtNumber(PlayerID, "lvl", "gems")
         xp = sql.valueAtNumber(PlayerID, "xp", "gems")
         # Niveaux part
-        desc = "XP: `{0}/{1}`".format(xp,lvl.lvlPalier(lvlValue))
+        desc = "XP: `{0}/{1}`".format(xp, lvl.lvlPalier(lvlValue))
         titre = "**_Niveau_: {0}**".format(lvlValue)
         msg.append(titre)
         msg.append(desc)
@@ -45,7 +44,6 @@ def bal(ID):
     else:
         msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
     return msg
-
 
 
 # @commands.command(pass_context=True)

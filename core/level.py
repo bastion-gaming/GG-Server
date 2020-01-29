@@ -1,10 +1,8 @@
-import random as r
-import datetime as dt
 from DB import SQLite as sql
 from gems import gemsFonctions as GF
-import json
 
 # Un = 100 × (1.4)^n
+
 
 def addxp(ID, nb, nameDB):
     balXP = sql.valueAtNumber(ID, "xp", nameDB)
@@ -45,6 +43,7 @@ def checklevel(ID):
     except:
         print("Le joueur n'existe pas.")
         return ""
+
 
 def lvlPalier(lvl):
     if lvl >= 0:

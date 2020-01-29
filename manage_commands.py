@@ -1,5 +1,6 @@
 from gems import *
 
+
 def exec_commands(c):
     """
     Va se charger d'exécuter toutes les commandes
@@ -15,7 +16,7 @@ def exec_commands(c):
     function_dict = dict()
     res = dict()
 
-    for i in list_here :
+    for i in list_here:
         if "gems" in i: # On exclut les magic func
             packets_list.append(i)
 
@@ -34,12 +35,12 @@ def exec_commands(c):
         if commande in function_dict[mod_name]:
             file_c = mod_name # Où a été trouvé la commande
             break
-        else :
+        else:
             file_c = None
 
-    if file_c != None : # S'il a trouvé une commande
+    if file_c != None: # S'il a trouvé une commande
         commande_forgee = "getattr(eval(file_c), commande)"
-        try :
+        try:
             commande_forgee = commande_forgee + c["param_c"]
         except KeyError:
             pass
