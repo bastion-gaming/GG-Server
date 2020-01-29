@@ -7,8 +7,9 @@ from gems import gemsFonctions as GF
 from core import level as lvl
 
 
-def daily(ID):
+def daily(param):
     """Récupère ta récompense journalière!"""
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     if ID == "Error 404":
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
@@ -201,13 +202,15 @@ def daily(ID):
 #         return
 
 
-def stealing(ID, name = None):
+def stealing(param):
     """**[nom]** | Vole des :gem:`gems` aux autres joueurs!"""
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    name = param["name"]
     if ID == "Error 404":
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
-    if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems") and name != None:
-        ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name)))
+    if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems") and name is not None:
+        ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name), param["name_pl"]))
         # Calcul du pourcentage
         if ID_Vol == sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")) or ID_Vol == sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")):
             R = r.randint(1, 6)
@@ -247,8 +250,9 @@ def stealing(ID, name = None):
     return msg
 
 
-def crime(ID):
+def crime(param):
     """Commets un crime et gagne des :gem:`gems` Attention au DiscordCop!"""
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     if ID == "Error 404":
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")

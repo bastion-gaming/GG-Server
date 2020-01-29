@@ -1,4 +1,5 @@
 from gems import *
+import gems
 
 
 def exec_commands(c):
@@ -11,18 +12,20 @@ def exec_commands(c):
     return :
     dict => name_c, name_p, name_pl, reponse
     """
-    list_here = dir() # On récuppère tous les modules dans gems
+    list_here = gems.list_GG_module # On récuppère tous les modules dans gems
     packets_list = list()
     function_dict = dict()
     res = dict()
+
 
     for i in list_here:
         if "gems" in i: # On exclut les magic func
             packets_list.append(i)
 
+
     for j in packets_list:
         tmp_list = list()
-        tmp = dir(eval(j))
+        tmp = dir(eval("gems."+j))
 
         for k in tmp:
             tmp_list.append(k)
@@ -38,12 +41,18 @@ def exec_commands(c):
         else:
             file_c = None
 
-    if file_c != None: # S'il a trouvé une commande
+    # S'il a trouvé une commande
+    if file_c is not None:
         commande_forgee = "getattr(eval(file_c), commande)"
         try:
-            commande_forgee = commande_forgee + c["param_c"]
+            c["param_c"]["name_pl"] = c["name_pl"]
+            commande_forgee = commande_forgee + '(' + str(c["param_c"]) + ')'
         except KeyError:
             pass
+        # Appelle la fonction
+
+        print(commande_forgee)
+
         ret = eval(commande_forgee)
 
         res["name_c"] = commande
@@ -51,4 +60,8 @@ def exec_commands(c):
         res["name_pl"] = c["name_pl"]
         res["reponse"] = ret
 
-        return res
+    else:
+        res = None
+
+    print(res)
+    return res

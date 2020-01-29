@@ -8,11 +8,11 @@ DB_NOM = 'bastionDB'
 
 def nom_ID(nom):
     """Convertis un nom en ID discord """
-    if len(nom) == 21 :
+    if len(nom) == 21:
         ID = int(nom[2:20])
-    elif len(nom) == 22 :
+    elif len(nom) == 22:
         ID = int(nom[3:21])
-    else :
+    else:
         print("DB >> mauvais nom")
         ID = -1
     return(ID)

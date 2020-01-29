@@ -2,6 +2,7 @@ import zmq
 import gg_lib as gg
 from DB import SQLite as sql
 from gems import gemsFonctions as GF, gemsItems as GI
+import manage_commands as mc
 
 # Ouverture du port
 context = zmq.Context()
@@ -27,12 +28,13 @@ elif "type" in flag:
 try:
     GF.loadItem()
 except FileNotFoundError:
-    GI.initBourse() # Cas où la bourse n'existait pas
+    # Cas où la bourse n'existait pas
+    GI.initBourse()
 
 while check:
     #  Wait for next request from client
-    platform = ""
     message = gg.std_receive_command(socket.recv())
+    platform = message["name_pl"]
     print("\n•••••\nReceived request: %s" % message)
 
     if message["name_c"] == "connect":
@@ -45,12 +47,20 @@ while check:
 
     # Send reply back to client
     else:
-        ID = sql.get_SuperID(message["name_p"], platform)
+        # ID = sql.get_SuperID(message["name_p"], platform)
         if message["name_pl"] == "discord" or message["name_pl"] == "babot":
             platform = "discord"
+            message["name_pl"] = "discord"
         elif message["name_pl"] == "messenger":
             platform = "messenger"
 
+        retDict = mc.exec_commands(message)
+
+        if retDict is not None:
+            socket.send_string(gg.std_answer_command(retDict["name_c"], retDict["name_p"], retDict["name_pl"], retDict["reponse"]))
+
+        else:
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Commande non reconnu"))
         #
         # # Daily
         # if message["name_c"] == "daily":
@@ -80,6 +90,3 @@ while check:
         # # Autre
         # elif message["name_c"] == "level":
         #     socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], lvl.checklevel(ID)))
-
-        else:
-            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Commande non reconnu"))

@@ -9,16 +9,18 @@ from gems import gemsFonctions as GF, gemsItems as GI, gemsStats as GS
 import json
 
 
-def begin(ID, platform):
+def begin(param):
     """Pour créer son compte joueur et obtenir son starter Kit!"""
-    msg = sql.newPlayer(ID, "gems", platform)
-    SuperID = sql.get_SuperID(ID, platform)
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    msg = sql.newPlayer(ID, "gems", param["name_pl"])
+    SuperID = sql.get_SuperID(ID, param["name_pl"])
     GF.startKit(SuperID)
     return msg
 
 
-def bal(ID):
+def bal(param):
     """Êtes vous riche ou pauvre ?"""
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     if ID == "Error 404":
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
