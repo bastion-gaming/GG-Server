@@ -949,101 +949,112 @@ def pay(param):
     msg.append(desc)
     return msg
 
-# @commands.command(pass_context=True)
-# async def give(self, ctx, nom, item, nb = None):
-#     """**[nom] [item] [nombre]** | Donner des items à vos amis !"""
-#     ID = ctx.author.id
-#     name = ctx.author.name
-#     checkLB = False
-#     if item == "bank_upgrade":
-#         await ctx.channel.send("Tu ne peux pas donner cette item!")
-#         return False
-#     if sql.spam(ID,GF.couldown_4s, "give", "gems"):
-#         try:
-#             if nb == None:
-#                 nb = 1
-#             else:
-#                 nb = int(nb)
-#             if nb < 0 and nb != -1:
-#                 sql.addGems(ID, -100)
-#                 msg = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
-#                 slq.add(ID, "DiscordCop Amende", 1, "statgems")
-#                 await ctx.channel.send(msg)
-#                 return "anticheat"
-#             elif nb > 0:
-#                 ID_recu = sql.nom_ID(nom)
-#                 Nom_recu = ctx.guild.get_member(ID_recu).name
-#                 for lootbox in GF.objetBox:
-#                     if item == lootbox.nom:
-#                         checkLB = True
-#                         itemLB = lootbox.nom
-#                         item = "lootbox_{}".format(lootbox.nom)
-#                 nbItem = int(sql.valueAtNumber(ID, item, "inventory"))
-#                 if nbItem >= nb and nb > 0:
-#                     if GF.testInvTaille(ID_recu):
-#                         sql.add(ID, item, -nb, "inventory")
-#                         sql.add(ID_recu, item, nb, "inventory")
-#                         if checkLB:
-#                             msg = "{0} donne {1} <:gem_lootbox:{3}>`{2}` à {4} !".format(name,nb,itemLB,"{idmoji[gem_" + itemLB + "]}",Nom_recu)
-#                         else:
-#                             for c in GF.objetItem:
-#                                 if c.nom == item:
-#                                     if c.type == "emoji":
-#                                         msg = "{0} donne {1} :{2}:`{2}` à {3} !".format(name, nb, item, Nom_recu)
-#                                     else:
-#                                         msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,"{idmoji[gem_" + item + "]}",Nom_recu)
-#                             for c in GF.objetOutil:
-#                                 if c.nom == item:
-#                                     if c.type == "emoji":
-#                                         msg = "{0} donne {1} :{2}:`{2}` à {3} !".format(name, nb, item, Nom_recu)
-#                                     else:
-#                                         msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,"{idmoji[gem_" + item + "]}",Nom_recu)
-#                         # Message de réussite dans la console
-#                         print("Gems >> {0} a donné {1} {2} à {3}".format(name, nb, item, Nom_recu))
-#                     else:
-#                         msg = "L'inventaire de {} est plein".format(Nom_recu)
-#                 else:
-#                     msg = "{0} n'a pas assez pour donner à {1} !".format(name, Nom_recu)
-#
-#             elif nb == -1:
-#                 ID_recu = sql.nom_ID(nom)
-#                 Nom_recu = ctx.guild.get_member(ID_recu).name
-#                 nbItem = int(sql.valueAtNumber(ID, item, "inventory"))
-#                 if nb > 0:
-#                     if GF.testInvTaille(ID_recu):
-#                         sql.add(ID, item, -nb, "inventory")
-#                         sql.add(ID_recu, item, nb, "inventory")
-#                         for c in GF.objetItem:
-#                             if c.nom == item:
-#                                 if c.type == "emoji":
-#                                     msg = "{0} donne {1} :{2}:`{2}` à {3} !".format(name, nb, item, Nom_recu)
-#                                 else:
-#                                     msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,"{idmoji[gem_" + item + "]}",Nom_recu)
-#                         for c in GF.objetOutil:
-#                             if c.nom == item:
-#                                 if c.type == "emoji":
-#                                     msg = "{0} donne {1} :{2}:`{2}` à {3} !".format(name, nb, item, Nom_recu)
-#                                 else:
-#                                     msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,"{idmoji[gem_" + item + "]}",Nom_recu)
-#                         # Message de réussite dans la console
-#                         print("Gems >> {0} a donné {1} {2} à {3}".format(name, nb, item, Nom_recu))
-#                     else:
-#                         msg = "L'inventaire de {} est plein".format(Nom_recu)
-#                 else:
-#                     msg = "{0} n'a pas assez pour donner à {1} !".format(name, Nom_recu)
-#
-#             else :
-#                 msg = "Tu ne peux pas donner une somme négative ! N'importe quoi enfin !"
-#             sql.updateComTime(ID, "give", "gems")
-#         except ValueError:
-#             msg = "La commande est mal formulée"
-#             pass
-#     else:
-#         msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
-#     await ctx.channel.send(msg)
-#
-#
-#
+
+def give(param):
+    """**[nom] [item] [nombre]** | Donner des items à vos amis !"""
+    nom = param["nom"]
+    item = param["item"]
+    nb = param["nb"]
+    ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["platform"]))
+    Nom_recu = param["Nom_recu"]
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+
+    checkLB = False
+    if item == "bank_upgrade":
+        msg.append("NOK")
+        msg.append("Tu ne peux pas donner cette item!")
+        return msg
+        return False
+    if sql.spam(PlayerID, GF.couldown_4s, "give", "gems"):
+        try:
+            if nb == None:
+                nb = 1
+            else:
+                nb = int(nb)
+            if nb < 0 and nb != -1:
+                sql.addGems(PlayerID, -100)
+                desc = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
+                sql.add(PlayerID, "DiscordCop Amende", 1, "statgems")
+                msg.append("anticheat")
+                msg.append(desc)
+                return msg
+            elif nb > 0:
+                for lootbox in GF.objetBox:
+                    if item == lootbox.nom:
+                        checkLB = True
+                        itemLB = lootbox.nom
+                        item = "lootbox_{}".format(lootbox.nom)
+                nbItem = int(sql.valueAtNumber(PlayerID, item, "inventory"))
+                if nbItem >= nb and nb > 0:
+                    if GF.testInvTaille(ID_recu) or item == "hyperpack" or item == "backpack":
+                        sql.add(PlayerID, item, -nb, "inventory")
+                        sql.add(ID_recu, item, nb, "inventory")
+                        if checkLB:
+                            desc = "{0} donne {1} <:gem_lootbox:{3}>`{2}` à {4} !".format(nom, nb, itemLB, "{idmoji[gem_" + itemLB + "]}", Nom_recu)
+                        else:
+                            for c in GF.objetItem:
+                                if c.nom == item:
+                                    if c.type == "emoji":
+                                        desc = "{0} donne {1} :{2}:`{2}` à {3} !".format(nom, nb, item, Nom_recu)
+                                    else:
+                                        desc = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(nom, nb, item, "{idmoji[gem_" + item + "]}", Nom_recu)
+                            for c in GF.objetOutil:
+                                if c.nom == item:
+                                    if c.type == "emoji":
+                                        desc = "{0} donne {1} :{2}:`{2}` à {3} !".format(nom, nb, item, Nom_recu)
+                                    else:
+                                        desc = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(nom, nb, item, "{idmoji[gem_" + item + "]}", Nom_recu)
+                        # Message de réussite dans la console
+                        print("Gems >> {0} a donné {1} {2} à {3}".format(nom, nb, item, Nom_recu))
+                    else:
+                        desc = "L'inventaire de {} est plein".format(Nom_recu)
+                else:
+                    desc = "{0} n'a pas assez pour donner à {1} !".format(nom, Nom_recu)
+                msg.append("OK")
+            elif nb == -1:
+                nbItem = int(sql.valueAtNumber(PlayerID, item, "inventory"))
+                if nb > 0:
+                    if GF.testInvTaille(ID_recu) or item == "hyperpack" or item == "backpack":
+                        sql.add(PlayerID, item, -nb, "inventory")
+                        sql.add(ID_recu, item, nb, "inventory")
+                        for c in GF.objetItem:
+                            if c.nom == item:
+                                if c.type == "emoji":
+                                    desc = "{0} donne {1} :{2}:`{2}` à {3} !".format(nom, nb, item, Nom_recu)
+                                else:
+                                    desc = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(nom, nb, item, "{idmoji[gem_" + item + "]}", Nom_recu)
+                        for c in GF.objetOutil:
+                            if c.nom == item:
+                                if c.type == "emoji":
+                                    desc = "{0} donne {1} :{2}:`{2}` à {3} !".format(nom, nb, item, Nom_recu)
+                                else:
+                                    desc = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(nom, nb, item, "{idmoji[gem_" + item + "]}", Nom_recu)
+                        # Message de réussite dans la console
+                        print("Gems >> {0} a donné {1} {2} à {3}".format(nom, nb, item, Nom_recu))
+                    else:
+                        desc = "L'inventaire de {} est plein".format(Nom_recu)
+                else:
+                    desc = "{0} n'a pas assez pour donner à {1} !".format(nom, Nom_recu)
+                msg.append("OK")
+            else :
+                desc = "Tu ne peux pas donner une somme négative ! N'importe quoi enfin !"
+                msg.append("NOK")
+            sql.updateComTime(PlayerID, "give", "gems")
+        except ValueError:
+            desc = "La commande est mal formulée"
+            msg.append("NOK")
+            pass
+    else:
+        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+    msg.append(desc)
+    return msg
+
+
 # @commands.command(pass_context=True)
 # async def forge(self, ctx, item = None, nb = 1):
 #     """**[item] [nombre]** | Permet de concevoir des items spécifiques"""
