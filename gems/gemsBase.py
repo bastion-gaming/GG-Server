@@ -317,130 +317,125 @@ def sell(param):
         msg.append(desc)
     return msg
 
-# @commands.command(pass_context=True)
-# async def inv (self, ctx, fct = None, type = None):
-#     """**[nom de la poche]** | Permet de voir ce que vous avez dans le ventre !"""
-#     ID = ctx.author.id
-#     nom = ctx.author.name
-#     if sql.spam(ID,GF.couldown_4s, "inv", "gems"):
-#         if fct == None or fct == "principale" or fct == "main":
-#             msg_inv = ""
-#             msg_invOutils = ""
-#             msg_invSpeciaux = ""
-#             msg_invItems = ""
-#             msg_invItemsMinerai = ""
-#             msg_invItemsPoisson = ""
-#             msg_invItemsPlante = ""
-#             msg_invItemsEvent = ""
-#             msg_invBox = ""
-#             tailleMax = GF.invMax
-#             inv = sql.valueAt(ID, "all", "inventory")
-#             tailletot = 0
-#             for c in GF.objetOutil:
-#                 for x in inv:
-#                     if c.nom == str(x[1]):
-#                         if int(x[0]) > 0:
-#                             if c.type == "consommable":
-#                                 msg_invSpeciaux += "<:gem_{0}:{2}>`{0}`: `x{1}` | Durabilité: `{3}/{4}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}", sql.valueAtNumber(ID, c.nom, "durability"), c.durabilite)
-#                             else:
-#                                 msg_invOutils += "<:gem_{0}:{2}>`{0}`: `x{1}` | Durabilité: `{3}/{4}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}", sql.valueAtNumber(ID, c.nom, "durability"), c.durabilite)
-#                             tailletot += c.poids*int(x[0])
-#
-#             for c in GF.objetItem:
-#                 for x in inv:
-#                     if c.nom == str(x[1]):
-#                         if int(x[0]) > 0:
-#                             if c.type == "minerai":
-#                                 msg_invItemsMinerai += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
-#                             elif c.type == "poisson":
-#                                 msg_invItemsPoisson += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
-#                             elif c.type == "plante":
-#                                 msg_invItemsPlante += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
-#                             elif c.type == "emoji":
-#                                 msg_invItems += ":{0}:`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]))
-#                             elif c.type == "halloween" or c.type == "christmas" or c.type == "event":
-#                                 msg_invItemsEvent += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
-#                             elif c.type == "spinelle" or c.type == "special":
-#                                 msg_invSpeciaux += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
-#                             else:
-#                                 if c.type == "emoji":
-#                                     msg_invItems += ":{0}:`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]))
-#                                 else:
-#                                     msg_invItems += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
-#                             if c.nom == "backpack" or c.nom == "hyperpack":
-#                                 tailleMax += -1 * c.poids * int(x[0])
-#                             else:
-#                                 tailletot += c.poids*int(x[0])
-#
-#             for c in GF.objetBox :
-#                 for x in inv:
-#                     name = "lootbox_{}".format(c.nom)
-#                     if name == str(x[1]):
-#                         if int(x[0]) > 0:
-#                             if c.nom != "gift" and c.nom != "gift_heart":
-#                                 msg_invBox += "<:gem_lootbox:{2}>`{0}`: `x{1}`\n".format(c.nom, str(x[0]), "{idmoji[lootbox]}")
-#                             else:
-#                                 msg_invBox += ":{0}:`{0}`: `x{1}`\n".format(c.nom, str(x[0]))
-#
-#             if int(tailletot) >= tailleMax:
-#                 msg_inv += "\nTaille: `{}/{}` :bangbang:".format(int(tailletot),tailleMax)
-#             else:
-#                 msg_inv += "\nTaille: `{}/{}`".format(int(tailletot),tailleMax)
-#             msg_titre = "Inventaire de {} | Poche principale".format(nom)
-#             msg = discord.Embed(title = msg_titre,color= 6466585, description = msg_inv)
-#             if msg_invOutils != "":
-#                 msg.add_field(name="Outils", value=msg_invOutils, inline=False)
-#             if msg_invSpeciaux != "":
-#                 msg.add_field(name="Spéciaux", value=msg_invSpeciaux, inline=False)
-#             if msg_invItems != "":
-#                 msg.add_field(name="Items", value=msg_invItems, inline=False)
-#             if msg_invItemsMinerai != "":
-#                 msg.add_field(name="Minerais", value=msg_invItemsMinerai, inline=False)
-#             if msg_invItemsPoisson != "":
-#                 msg.add_field(name="Poissons", value=msg_invItemsPoisson, inline=False)
-#             if msg_invItemsPlante != "":
-#                 msg.add_field(name="Plantes", value=msg_invItemsPlante, inline=False)
-#             if msg_invItemsEvent != "":
-#                 msg.add_field(name="Événement", value=msg_invItemsEvent, inline=False)
-#             if msg_invBox != "":
-#                 msg.add_field(name="Loot Box", value=msg_invBox, inline=False)
-#             sql.updateComTime(ID, "inv", "gems")
-#             await ctx.channel.send(embed = msg)
-#             # Message de réussite dans la console
-#             print("Gems >> {} a afficher son inventaire".format(nom))
-#         elif fct == "capability" or fct == "capabilities" or fct == "capacité" or fct == "capacités" or fct == "aptitude" or fct == "aptitudes":
-#             cap = GF.checkCapability(ID)
-#             msg_invCapAtt = ""
-#             msg_invCapDef = ""
-#             desc = "Voici la liste de tes aptitudes.\n\nD'autres aptitudes sont disponible sur le marché `!market capabilities`\n"
-#             msg = discord.Embed(title = "Inventaire de {} | Poche Aptitudes".format(nom),color= 6466585, description = desc)
-#             for c in GF.objetCapability:
-#                 for x in cap:
-#                     if "{}".format(c.ID) == str(x[0]):
-#                         if c.type == "attaque" and type != "defense":
-#                             msg_invCapAtt = "**{0}**\n___Utilisation_:__ {1}\n___Puissance max_:__ **{2}**\n\n".format(c.nom, c.desc, c.puissancemax)
-#                             msg.add_field(name="Attaque | ID: _{0}_".format(c.ID), value=msg_invCapAtt, inline=False)
-#                         elif c.type == "defense" and (type != "attaque" and type != "attack"):
-#                             msg_invCapDef = "**{0}**\n___Utilisation_:__ {1}\n___Puissance max_:__ **{2}**\n\n".format(c.nom, c.desc, c.puissancemax)
-#                             msg.add_field(name="Defense | ID: _{0}_".format(c.ID), value=msg_invCapDef, inline=False)
-#
-#             sql.updateComTime(ID, "inv", "gems")
-#             await ctx.channel.send(embed = msg)
-#             # Message de réussite dans la console
-#             print("Gems >> {} a afficher la poche `capabilities` de son inventaire".format(nom))
-#         elif fct == "pockets" or fct == "poches":
-#             desc = "• Principale >> `!inv`\n• Aptitudes >> `!inv capabilities`"
-#             msg = discord.Embed(title = "Liste des poches de l'inventaire".format(nom),color= 6466585, description = desc)
-#             await ctx.channel.send(embed = msg)
-#         else:
-#             msg = "Cette poche n'existe pas"
-#             await ctx.channel.send(msg)
-#     else:
-#         msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
-#         await ctx.channel.send(msg)
-#
-#
-#
+
+def inv(param):
+    """**[nom de la poche]** | Permet de voir ce que vous avez dans le ventre !"""
+    fct = param["fct"]
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+
+    if sql.spam(PlayerID, GF.couldown_4s, "inv", "gems"):
+        if fct == "None" or fct == "principale" or fct == "main":
+            msg_inv = ""
+            msg_invOutils = ""
+            msg_invSpeciaux = ""
+            msg_invItems = ""
+            msg_invItemsMinerai = ""
+            msg_invItemsPoisson = ""
+            msg_invItemsPlante = ""
+            msg_invItemsEvent = ""
+            msg_invBox = ""
+            tailleMax = GF.invMax
+            inv = sql.valueAt(PlayerID, "all", "inventory")
+            tailletot = 0
+            for c in GF.objetOutil:
+                for x in inv:
+                    if c.nom == str(x[1]):
+                        if int(x[0]) > 0:
+                            if c.type == "consommable":
+                                msg_invSpeciaux += "<:gem_{0}:{2}>`{0}`: `x{1}` | Durabilité: `{3}/{4}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}", sql.valueAtNumber(PlayerID, c.nom, "durability"), c.durabilite)
+                            else:
+                                msg_invOutils += "<:gem_{0}:{2}>`{0}`: `x{1}` | Durabilité: `{3}/{4}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}", sql.valueAtNumber(PlayerID, c.nom, "durability"), c.durabilite)
+                            tailletot += c.poids*int(x[0])
+
+            for c in GF.objetItem:
+                for x in inv:
+                    if c.nom == str(x[1]):
+                        if int(x[0]) > 0:
+                            if c.type == "minerai":
+                                msg_invItemsMinerai += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                            elif c.type == "poisson":
+                                msg_invItemsPoisson += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                            elif c.type == "plante":
+                                msg_invItemsPlante += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                            elif c.type == "emoji":
+                                msg_invItems += ":{0}:`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]))
+                            elif c.type == "halloween" or c.type == "christmas" or c.type == "event":
+                                msg_invItemsEvent += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                            elif c.type == "spinelle" or c.type == "special":
+                                msg_invSpeciaux += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                            else:
+                                if c.type == "emoji":
+                                    msg_invItems += ":{0}:`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]))
+                                else:
+                                    msg_invItems += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                            if c.nom == "backpack" or c.nom == "hyperpack":
+                                tailleMax += -1 * c.poids * int(x[0])
+                            else:
+                                tailletot += c.poids*int(x[0])
+
+            for c in GF.objetBox :
+                for x in inv:
+                    name = "lootbox_{}".format(c.nom)
+                    if name == str(x[1]):
+                        if int(x[0]) > 0:
+                            if c.nom != "gift" and c.nom != "gift_heart":
+                                msg_invBox += "<:gem_lootbox:{2}>`{0}`: `x{1}`\n".format(c.nom, str(x[0]), "{idmoji[gem_lootbox]}")
+                            else:
+                                msg_invBox += ":{0}:`{0}`: `x{1}`\n".format(c.nom, str(x[0]))
+
+            if int(tailletot) >= tailleMax:
+                msg_inv += "\nTaille: `{}/{}` :bangbang:".format(int(tailletot), tailleMax)
+            else:
+                msg_inv += "\nTaille: `{}/{}`".format(int(tailletot), tailleMax)
+
+            msg.append("OK")
+            msg.append(msg_inv)
+            if msg_invOutils == "":
+                msg_invOutils = "None"
+            if msg_invSpeciaux == "":
+                msg_invSpeciaux = "None"
+            if msg_invItems == "":
+                msg_invItems = "None"
+            if msg_invItemsMinerai == "":
+                msg_invItemsMinerai = "None"
+            if msg_invItemsPoisson == "":
+                msg_invItemsPoisson = "None"
+            if msg_invItemsPlante == "":
+                msg_invItemsPlante = "None"
+            if msg_invItemsEvent == "":
+                msg_invItemsEvent = "None"
+            if msg_invBox == "":
+                msg_invBox = "None"
+            msg.append(msg_invOutils)
+            msg.append(msg_invSpeciaux)
+            msg.append(msg_invItems)
+            msg.append(msg_invItemsMinerai)
+            msg.append(msg_invItemsPoisson)
+            msg.append(msg_invItemsPlante)
+            msg.append(msg_invItemsEvent)
+            msg.append(msg_invBox)
+
+            sql.updateComTime(PlayerID, "inv", "gems")
+
+        elif fct == "pockets" or fct == "poches":
+            desc = "• Principale >> `!inv`"
+            msg.append("pockets")
+            msg.append(desc)
+
+        else:
+            desc = "Cette poche n'existe pas"
+            msg.append("NOK")
+            msg.append(desc)
+    else:
+        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+        msg.append(desc)
+    return msg
+
 # @commands.command(pass_context=True)
 # async def market (self, ctx, fct = None, type = None):
 #     """**[stand]** | Permet de voir tout les objets que l'on peux acheter ou vendre !"""
