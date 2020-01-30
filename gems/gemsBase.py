@@ -18,7 +18,7 @@ def begin(param):
 
 
 def bal(param):
-    """Êtes vous riche ou pauvre ?"""
+    """**[nom]** | Êtes vous riche ou pauvre ?"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     if ID == "Error 404":
         return GF.WarningMsg[1]
@@ -47,83 +47,69 @@ def bal(param):
     return msg
 
 
-# @commands.command(pass_context=True)
-# async def baltop(self, ctx, n = None, m = None):
-#     """**_{filtre}_ [nombre]** | Classement des joueurs (10 premiers par défaut)"""
-#     ID = ctx.author.id
-#     try:
-#         if n == None:
-#             n = 10
-#         else:
-#             n = int(n)
-#         filtre = "spinelles"
-#     except:
-#         if m == None:
-#             filtre = n
-#             n = 10
-#         else:
-#             filtre = n
-#             n = int(m)
-#     filtre = filtre.lower()
-#     baltop = ""
-#     if sql.spam(ID,GF.couldown_4s, "baltop", "gems"):
-#         sql.updateComTime(ID, "baltop", "gems")
-#         if filtre == "gems" or filtre == "gem" or filtre == "spinelles" or filtre == "spinelle":
-#             UserList = []
-#             i = 1
-#             t = sql.taille("gems")
-#             while i <= t:
-#                 user = sql.userID(i, "gems")
-#                 gems = sql.valueAtNumber(user, "gems", "gems")
-#                 spinelles = sql.valueAtNumber(user, "spinelles", "gems")
-#                 guilde = sql.valueAtNumber(user, "guilde", "gems")
-#                 UserList.append((user, gems, spinelles, guilde))
-#                 i = i + 1
-#             UserList = sorted(UserList, key=itemgetter(1),reverse=True)
-#             Titre = "Classement des Joueurs | :gem:`gems`"
-#             if filtre == "spinelles" or filtre == "spinelle":
-#                 UserList = sorted(UserList, key=itemgetter(2),reverse=True)
-#                 Titre = "Classement des Joueurs | <:spinelle:{idmoji}>`spinelles`".format(idmoji=GF.get_idmoji("spinelle"))
-#             j = 1
-#             for one in UserList: # affichage des données trié
-#                 if j <= n:
-#                     baltop += "{2} | _{3} _<@{0}> {1}:gem:".format(one[0], one[1], j, one[3])
-#                     if one[2] != 0:
-#                         baltop += " | {0}<:spinelle:{1}>\n".format(one[2], GF.get_idmoji("spinelle"))
-#                     else:
-#                         baltop += "\n"
-#                 j += 1
-#             msg = discord.Embed(title = Titre, color= 13752280, description = baltop)
-#             # Message de réussite dans la console
-#             print("Gems >> {} a afficher le classement des {} premiers joueurs | Filtre: {}".format(ctx.author.name,n, filtre))
-#         elif filtre == "guild" or filtre == "guilde":
-#             GuildList = []
-#             i = 1
-#             while i <= DB.get_endDocID("DB/guildesDB"):
-#                 try:
-#                     GuildList.append((DB.valueAt(i, "Nom", "DB/guildesDB"), DB.valueAt(i, "Spinelles", "DB/guildesDB")))
-#                     i += 1
-#                 except:
-#                     i += 1
-#             GuildList = sorted(GuildList, key=itemgetter(1),reverse=True)
-#             j = 1
-#             for one in GuildList:
-#                 if j <= n:
-#                     baltop += "{2} | {0} {1} <:spinelle:{3}>\n".format(one[0], one[1], j, GF.get_idmoji("spinelle"))
-#                 j += 1
-#             msg = discord.Embed(title = "Classement des Guildes",color= 13752280, description = baltop)
-#             # Message de réussite dans la console
-#             print("Gems >> {} a afficher le classement des {} premières guildes".format(ctx.author.name,n))
-#         else:
-#             msg = discord.Embed(title = "Classement",color= 13752280, description = "Erreur! Commande incorrect")
-#         await ctx.channel.send(embed = msg)
-#     else:
-#         msg = "Il faut attendre "+str(GF.couldown_6s)+" secondes entre chaque commande !"
-#         await ctx.channel.send(msg)
-#
-#
-#
-#
+def baltop(param):
+    """**_{filtre}_ [nombre]** | Classement des joueurs (10 premiers par défaut)"""
+    n = param["nb"]
+    filtre = param["filtre"]
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+    baltop = ""
+    if sql.spam(PlayerID, GF.couldown_4s, "baltop", "gems"):
+        sql.updateComTime(PlayerID, "baltop", "gems")
+        if filtre == "gems" or filtre == "gem" or filtre == "spinelles" or filtre == "spinelle":
+            UserList = []
+            i = 1
+            taille = sql.taille("gems")
+            while i <= taille:
+                user = sql.userID(i, "gems")
+                gems = sql.valueAtNumber(i, "gems", "gems")
+                spinelles = sql.valueAtNumber(i, "spinelles", "gems")
+                guilde = sql.valueAtNumber(i, "guilde", "gems")
+                UserList.append((user, gems, spinelles, guilde))
+                i = i + 1
+            UserList = sorted(UserList, key=itemgetter(1), reverse=True)
+            if filtre == "spinelles" or filtre == "spinelle":
+                UserList = sorted(UserList, key=itemgetter(2), reverse=True)
+            j = 1
+            for one in UserList: # affichage des données trié
+                if j <= n:
+                    baltop += "{2} | _{3} _<@{0}> {1}:gem:".format(one[0], one[1], j, one[3])
+                    if one[2] != 0:
+                        baltop += " | {0}<:spinelle:{1}>\n".format(one[2], "{idmoji[spinelle]}")
+                    else:
+                        baltop += "\n"
+                j += 1
+            msg.append("OK")
+            msg.append(baltop)
+        elif filtre == "guild" or filtre == "guilde":
+            GuildList = []
+            i = 1
+            while i <= DB.get_endDocID("DB/guildesDB"):
+                try:
+                    GuildList.append((DB.valueAt(i, "Nom", "DB/guildesDB"), DB.valueAt(i, "Spinelles", "DB/guildesDB")))
+                    i += 1
+                except:
+                    i += 1
+            GuildList = sorted(GuildList, key=itemgetter(1), reverse=True)
+            j = 1
+            for one in GuildList:
+                if j <= n:
+                    baltop += "{2} | {0} {1} <:spinelle:{3}>\n".format(one[0], one[1], j, "{idmoji[spinelle]}")
+                j += 1
+            msg.append("OK")
+            msg.append(baltop)
+        else:
+            msg.append("NOK")
+            msg.append("Erreur! Commande incorrect")
+    else:
+        msg.append("couldown")
+        msg.append("Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !")
+    return msg
+
+
 # @commands.command(pass_context=True)
 # async def buy (self, ctx,item,nb = 1):
 #     """**[item] [nombre]** | Permet d'acheter les items vendus au marché"""
