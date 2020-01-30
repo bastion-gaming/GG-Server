@@ -436,458 +436,475 @@ def inv(param):
         msg.append(desc)
     return msg
 
-# @commands.command(pass_context=True)
-# async def market (self, ctx, fct = None, type = None):
-#     """**[stand]** | Permet de voir tout les objets que l'on peux acheter ou vendre !"""
-#     ID = ctx.author.id
-#     jour = dt.date.today()
-#     if fct != None:
-#         fct = fct.lower()
-#     if sql.spam(ID,GF.couldown_4s, "market", "gems"):
-#         d_market = "Permet de voir tout les objets que l'on peux acheter ou vendre !\n\n"
-#         if sql.spam(GF.idBaBot, GF.couldown_10s, "bourse", "gems"):
-#             GF.loadItem()
-#         ComTime = sql.valueAtNumber(GF.idBaBot, "bourse", "gems_com_time")
-#         time = float(ComTime)
-#         time = time - (t.time()-GF.couldown_12h)
-#         timeH = int(time / 60 / 60)
-#         time = time - timeH * 3600
-#         timeM = int(time / 60)
-#         timeS = int(time - timeM * 60)
-#         d_market += "Actualisation de la bourse dans :clock2:`{}h {}m {}s`\n".format(timeH,timeM,timeS)
-#         if fct != None:
-#             msg = discord.Embed(title = "Le marché | {name}".format(name=fct),color= 2461129, description = d_market)
-#         else:
-#             msg = discord.Embed(title = "Le marché",color= 2461129, description = d_market)
-#         if fct == "mobile":
-#             d_marketOutils = ""
-#             d_marketOutilsS = ""
-#             d_marketItems = ""
-#             d_marketItemsMinerai = ""
-#             d_marketItemsPoisson = ""
-#             d_marketItemsPlante = ""
-#             d_marketItemsEvent = ""
-#             d_marketBox = ""
-#             d_marketSpinelle = ""
-#
-#             # récupération du fichier de sauvegarde de la bourse
-#             with open('gems/bourse.json', 'r') as fp:
-#                 dict = json.load(fp)
-#             for c in GF.objetOutil:
-#                 for y in GI.PrixOutil:
-#                     if y.nom == c.nom:
-#                         temp = dict[c.nom]
-#                         if y.vente != 0:
-#                             pourcentageV = ((c.vente*100)//temp["precVente"])-100
-#                         else:
-#                             pourcentageV = 0
-#                         if y.achat != 0:
-#                             pourcentageA = ((c.achat*100)//temp["precAchat"])-100
-#                         else:
-#                             pourcentageA = 0
-#
-#                 if c.type == "consommable" or c.type == "bank":
-#                     d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
-#                     if pourcentageV != 0:
-#                         d_marketOutilsS += "_{}%_ ".format(pourcentageV)
-#                     if c.nom == "bank_upgrade":
-#                         d_marketOutilsS += "| Achat **Le plafond du compte épargne** "
-#                     else:
-#                         d_marketOutilsS += "| Achat **{}** ".format(c.achat)
-#                         if pourcentageA != 0:
-#                             d_marketOutilsS += "_{}%_ ".format(pourcentageA)
-#                     if c.durabilite != None:
-#                         d_marketOutilsS += "| Durabilité: **{}**".format(c.durabilite)
-#                     d_marketOutilsS += "\n"
-#                 else:
-#                     d_marketOutils += "<:gem_{0}:{1}>`{0}`: ".format(c.nom,"{idmoji[gem_" + c.nom + "]}")
-#                     if c.vente != 0:
-#                         d_marketOutils += "Vente **{}** ".format(c.vente)
-#                         if pourcentageV != 0:
-#                             d_marketOutils += "_{}%_ | ".format(pourcentageV)
-#                         else:
-#                             d_marketOutils += "| "
-#                     d_marketOutils += "Achat **{}** ".format(c.achat)
-#                     if pourcentageA != 0:
-#                         d_marketOutils += "_{}%_ ".format(pourcentageA)
-#                     if c.durabilite != None:
-#                         d_marketOutils += "| Durabilité: **{}**".format(c.durabilite)
-#                     d_marketOutils += "\n"
-#
-#             for c in GF.objetItem :
-#                 for y in GI.PrixItem:
-#                     if y.nom == c.nom:
-#                         temp = dict[c.nom]
-#                         if y.vente != 0:
-#                             try:
-#                                 pourcentageV = ((c.vente*100)//temp["precVente"])-100
-#                             except:
-#                                 pourcentageV = 404
-#                         else:
-#                             pourcentageV = 0
-#                         if y.achat != 0:
-#                             try:
-#                                 pourcentageA = ((c.achat*100)//temp["precAchat"])-100
-#                             except:
-#                                 pourcentageA = 404
-#                         else:
-#                             pourcentageA = 0
-#                 #=======================================================================================
-#                 if c.type == "minerai":
-#                     d_marketItemsMinerai += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
-#                     if pourcentageV != 0:
-#                         d_marketItemsMinerai += "_{}%_ ".format(pourcentageV)
-#                     d_marketItemsMinerai += "| Achat **{}** ".format(c.achat)
-#                     if pourcentageA != 0:
-#                         d_marketItemsMinerai += "_{}%_ ".format(pourcentageA)
-#                     d_marketItemsMinerai += "| Poids **{}**\n".format(c.poids)
-#                 #=======================================================================================
-#                 elif c.type == "poisson":
-#                     d_marketItemsPoisson += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
-#                     if pourcentageV != 0:
-#                         d_marketItemsPoisson += "_{}%_ ".format(pourcentageV)
-#                     d_marketItemsPoisson += "| Achat **{}** ".format(c.achat)
-#                     if pourcentageA != 0:
-#                         d_marketItemsPoisson += "_{}%_ ".format(pourcentageA)
-#                     d_marketItemsPoisson += "| Poids **{}**\n".format(c.poids)
-#                 #=======================================================================================
-#                 elif c.type == "plante":
-#                     d_marketItemsPlante += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
-#                     if pourcentageV != 0:
-#                         d_marketItemsPlante += "_{}%_ ".format(pourcentageV)
-#                     d_marketItemsPlante += "| Achat **{}** ".format(c.achat)
-#                     if pourcentageA != 0:
-#                         d_marketItemsPlante += "_{}%_ ".format(pourcentageA)
-#                     d_marketItemsPlante += "| Poids **{}**\n".format(c.poids)
-#                 #=======================================================================================
-#                 elif c.type == "halloween" or c.type == "christmas" or c.type == "event":
-#                     d_marketItemsEvent += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
-#                     if pourcentageV != 0:
-#                         d_marketItemsEvent += "_{}%_ ".format(pourcentageV)
-#                     if c.achat != 0:
-#                         d_marketItemsEvent += "| Achat **{}** ".format(c.achat)
-#                         if pourcentageA != 0:
-#                             d_marketItemsEvent += "_{}%_ ".format(pourcentageA)
-#                     d_marketItemsEvent += "| Poids **{}**\n".format(c.poids)
-#                 #=======================================================================================
-#                 elif c.type == "spinelle":
-#                     d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}**<:spinelle:{3}> ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}", "{idmoji[spinelle]}")
-#                     d_marketOutilsS += "| Achat **{}**<:spinelle:{}> ".format(c.achat, "{idmoji[spinelle]}")
-#                     d_marketOutilsS += "| Poids **{}**\n".format(c.poids)
-#                 #=======================================================================================
-#                 elif c.type == "special":
-#                     d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
-#                     if pourcentageV != 0:
-#                         d_marketOutilsS += "_{}%_ ".format(pourcentageV)
-#                     d_marketOutilsS += "| Achat **{}** ".format(c.achat)
-#                     if pourcentageA != 0:
-#                         d_marketOutilsS += "_{}%_ ".format(pourcentageA)
-#                     d_marketOutilsS += "| Poids **{}**\n".format(c.poids)
-#                 #=======================================================================================
-#                 else:
-#                     if c.type == "emoji":
-#                         d_marketItems += ":{0}:`{0}`: Vente **{1}** ".format(c.nom,c.vente)
-#                         if pourcentageV != 0:
-#                             d_marketItems += "_{}%_ ".format(pourcentageV)
-#                         d_marketItems += "| Achat **{}** ".format(c.achat)
-#                         if pourcentageA != 0:
-#                             d_marketItems += "_{}%_ ".format(pourcentageA)
-#                         d_marketItems += "| Poids **{}**\n".format(c.poids)
-#                     else:
-#                         d_marketItems += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
-#                         if pourcentageV != 0:
-#                             d_marketItems += "_{}%_ ".format(pourcentageV)
-#                         d_marketItems += "| Achat **{}** ".format(c.achat)
-#                         if pourcentageA != 0:
-#                             d_marketItems += "_{}%_ ".format(pourcentageA)
-#                         d_marketItems += "| Poids **{}**\n".format(c.poids)
-#
-#             for c in GF.objetBox :
-#                 if c.type == "gems":
-#                     d_marketBox += "<:gem_lootbox:{4}>`{0}`: Achat **{1}** | Gain: `{2} ▶ {3}`:gem:`gems` \n".format(c.nom,c.achat,c.min,c.max,"{idmoji[lootbox]}")
-#                 elif c.type == "spinelle":
-#                     d_marketBox += ":{nom}:`{nom}`: Achat **{prix}<:gem_spinelle:{idmoji}>** | Gain: Items en folie!\n".format(nom=c.nom,prix=c.achat, idmoji="{idmoji[spinelle]}")
-#
-#
-#             msg.add_field(name="Outils", value=d_marketOutils, inline=False)
-#             msg.add_field(name="Spéciaux", value=d_marketOutilsS, inline=False)
-#             msg.add_field(name="Minerais", value=d_marketItemsMinerai, inline=False)
-#             msg.add_field(name="Poissons", value=d_marketItemsPoisson, inline=False)
-#             msg.add_field(name="Plantes", value=d_marketItemsPlante, inline=False)
-#             if d_marketItems != "":
-#                 msg.add_field(name="Items", value=d_marketItems, inline=False)
-#             if d_marketItemsEvent != "":
-#                 msg.add_field(name="Événement", value=d_marketItemsEvent, inline=False)
-#             if d_marketSpinelle != "":
-#                 msg.add_field(name="Spinelles <:spinelle:{}>".format("{idmoji[spinelle]}"), value=d_marketSpinelle, inline=False)
-#
-#             msg.add_field(name="Loot Box", value=d_marketBox, inline=False)
-#             sql.updateComTime(ID, "market", "gems")
-#             await ctx.channel.send(embed = msg)
-#             # Message de réussite dans la console
-#             print("Gems >> {} a afficher le marché (version mobile)".format(ctx.author.name))
-#         elif fct == "capability" or fct == "capabilities" or fct == "capacité" or fct == "capacités" or fct == "aptitude" or fct == "aptitudes":
-#             desc = "Permet de voir toutes les aptitudes que l'on peux acheter!\n\nUtilise la commande `!buy capability [ID de l'aptitude]` pour acheter une aptitude\n"
-#             descCapAtt = ""
-#             descCapDef = ""
-#             CapList = sql.valueAt(ID, "all", "capability")
-#             msg = discord.Embed(title = "Le marché | Aptitudes",color= 2461129, description = desc)
-#             for c in GF.objetCapability:
-#                 if c.defaut != True:
-#                     checkCap = False
-#                     for one in CapList:
-#                         if str(one[0]) == "{}".format(c.ID):
-#                             checkCap = True
-#                     if not checkCap:
-#                         if c.type == "attaque" and type != "defense":
-#                             descCapAtt += "**{0}**\n___Achat__:_ {3} <:spinelle:{4}>`spinelles`\n___Utilisation_:__ {1}\n___Puissance max_:__ **{2}**\n\n".format(c.nom, c.desc, c.puissancemax, c.achat, "{idmoji[spinelle]}")
-#                             msg.add_field(name="• Attaque | ID: _{0}_".format(c.ID), value=descCapAtt, inline=False)
-#                         elif c.type == "defense" and (type != "attaque" and type != "attack"):
-#                             descCapDef += "**{0}**\n___Achat__:_ {3} <:spinelle:{4}>`spinelles`\n___Utilisation_:__ {1}\n___Puissance max_:__ **{2}**\n\n".format(c.nom, c.desc, c.puissancemax, c.achat, "{idmoji[spinelle]}")
-#                             msg.add_field(name="• Defense | ID: _{0}_".format(c.ID), value=descCapDef, inline=False)
-#
-#             sql.updateComTime(ID, "market", "gems")
-#             await ctx.channel.send(embed = msg)
-#             # Message de réussite dans la console
-#             print("Gems >> {} a afficher le marché".format(ctx.author.name))
-#         elif fct == None or fct == "outil" or fct == "outils" or fct == "item" or fct == "items" or fct == "minerai" or fct == "minerais" or fct == "poissons" or fct == "fish" or fct == "plantes" or fct == "plants" or fct == "event" or fct == "événements" or fct == "lootbox":
-#             dmMinerai = ""
-#             dmMineraiPrix = ""
-#             dmMineraiInfo = ""
-#             dmPoisson = ""
-#             dmPoissonPrix = ""
-#             dmPoissonInfo = ""
-#             dmPlante = ""
-#             dmPlantePrix = ""
-#             dmPlanteInfo = ""
-#             dmItem = ""
-#             dmItemPrix = ""
-#             dmItemInfo = ""
-#             dmEvent = ""
-#             dmEventPrix = ""
-#             dmEventInfo = ""
-#             dmSpeciaux = ""
-#             dmSpeciauxPrix = ""
-#             dmSpeciauxInfo = ""
-#             dmOutils = ""
-#             dmOutilsPrix = ""
-#             dmOutilsInfo = ""
-#             dmBox = ""
-#             dmBoxPrix = ""
-#             dmBoxInfo = ""
-#
-#             # récupération du fichier de sauvegarde de la bourse
-#             with open('gems/bourse.json', 'r') as fp:
-#                 dict = json.load(fp)
-#
-#             if fct == None or fct == "outils" or fct == "outil":
-#                 for c in GF.objetOutil:
-#                     for y in GI.PrixOutil:
-#                         if y.nom == c.nom:
-#                             temp = dict[c.nom]
-#                             if y.vente != 0:
-#                                 try:
-#                                     pourcentageV = ((c.vente*100)//temp["precVente"])-100
-#                                 except:
-#                                     pourcentageV = 0
-#                             else:
-#                                 pourcentageV = 0
-#                             if y.achat != 0:
-#                                 try:
-#                                     pourcentageA = ((c.achat*100)//temp["precAchat"])-100
-#                                 except:
-#                                     pourcentageV = 0
-#                             else:
-#                                 pourcentageA = 0
-#                     #=======================================================================================
-#                     if c.type == "consommable" or c.type == "bank":
-#                         dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
-#                         if c.type != "bank":
-#                             dmSpeciauxPrix += "\n`{}`:gem:".format(c.vente)
-#                             if pourcentageV != 0:
-#                                 dmSpeciauxPrix += " _{}%_ ".format(pourcentageV)
-#                             dmSpeciauxPrix += " | `{}`:gem:".format(c.achat)
-#                             if pourcentageA != 0:
-#                                 dmSpeciauxPrix += " _{}%_ ".format(pourcentageA)
-#                             dmSpeciauxInfo += "\n`Durabilité: `{}".format(c.durabilite)
-#                         else:
-#                             dmSpeciauxPrix += "\n`Le plafond du compte épargne`"
-#                             dmSpeciauxInfo += "\n`Taille:` {}".format(c.poids)
-#                     #=======================================================================================
-#                     else:
-#                         dmOutils += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
-#                         dmOutilsPrix += "\n`{}`:gem:".format(c.vente)
-#                         if pourcentageV != 0:
-#                             dmOutilsPrix += " _{}%_ ".format(pourcentageV)
-#                         dmOutilsPrix += " | `{}`:gem:".format(c.achat)
-#                         if pourcentageA != 0:
-#                             dmOutilsPrix += " _{}%_ ".format(pourcentageA)
-#                         dmOutilsInfo += "\n`Durabilité:` {}".format(c.durabilite)
-#
-#             if fct == None or fct == "item" or fct == "items" or fct == "minerai" or fct == "minerais" or fct == "poissons" or fct == "fish" or fct == "plantes" or fct == "plants" or fct == "event" or fct == "événements":
-#                 for c in GF.objetItem:
-#                     for y in GI.PrixItem:
-#                         if y.nom == c.nom:
-#                             temp = dict[c.nom]
-#                             if y.vente != 0:
-#                                 try:
-#                                     pourcentageV = ((c.vente*100)//temp["precVente"])-100
-#                                 except:
-#                                     pourcentageV = 0
-#                             else:
-#                                 pourcentageV = 0
-#                             if y.achat != 0:
-#                                 try:
-#                                     pourcentageA = ((c.achat*100)//temp["precAchat"])-100
-#                                 except:
-#                                     pourcentageA = 0
-#                             else:
-#                                 pourcentageA = 0
-#                     #=======================================================================================
-#                     if c.type == "minerai":
-#                         dmMinerai += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
-#                         dmMineraiPrix += "\n`{}`:gem:".format(c.vente)
-#                         if pourcentageV != 0:
-#                             dmMineraiPrix += " _{}%_ ".format(pourcentageV)
-#                         dmMineraiPrix += " | `{}`:gem:".format(c.achat)
-#                         if pourcentageA != 0:
-#                             dmMineraiPrix += " _{}%_ ".format(pourcentageA)
-#                         dmMineraiInfo += "\n`Poids:` {}".format(c.poids)
-#                     #=======================================================================================
-#                     elif c.type == "poisson":
-#                         dmPoisson += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
-#                         dmPoissonPrix += "\n`{}`:gem:".format(c.vente)
-#                         if pourcentageV != 0:
-#                             dmPoissonPrix += " _{}%_ ".format(pourcentageV)
-#                         dmPoissonPrix += " | `{}`:gem:".format(c.achat)
-#                         if pourcentageA != 0:
-#                             dmPoissonPrix += " _{}%_ ".format(pourcentageA)
-#                         dmPoissonInfo += "\n`Poids:` {}".format(c.poids)
-#                     #=======================================================================================
-#                     elif c.type == "plante":
-#                         dmPlante += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
-#                         dmPlantePrix += "\n`{}`:gem:".format(c.vente)
-#                         if pourcentageV != 0:
-#                             dmPlantePrix += " _{}%_ ".format(pourcentageV)
-#                         dmPlantePrix += " | `{}`:gem:".format(c.achat)
-#                         if pourcentageA != 0:
-#                             dmPlantePrix += " _{}%_ ".format(pourcentageA)
-#                         dmPlanteInfo += "\n`Poids:` {}".format(c.poids)
-#                     #=======================================================================================
-#                     elif c.type == "halloween" or c.type == "christmas" or c.type == "event":
-#                         dmEvent += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
-#                         dmEventPrix += "\n`{}`:gem:".format(c.vente)
-#                         if pourcentageV != 0:
-#                             dmEventPrix += " _{}%_ ".format(pourcentageV)
-#                         if c.achat != 0:
-#                             dmEventPrix += " | `{}`:gem:".format(c.achat)
-#                             if pourcentageA != 0:
-#                                 dmEventPrix += " _{}%_ ".format(pourcentageA)
-#                         dmEventInfo += "\n`Poids:` {}".format(c.poids)
-#                     #=======================================================================================
-#                     elif c.type == "spinelle":
-#                         dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
-#                         dmSpeciauxPrix += "\n`{prix}`<:spinelle:{idmoji}>".format(prix=c.vente, idmoji="{idmoji[spinelle]}")
-#                         if pourcentageV != 0:
-#                             dmSpeciauxPrix += " _{}%_ ".format(pourcentageV)
-#                         dmSpeciauxPrix += " | `{prix}`<:spinelle:{idmoji}>".format(prix=c.achat, idmoji="{idmoji[spinelle]}")
-#                         if pourcentageA != 0:
-#                             dmSpeciauxPrix += " _{}%_ ".format(pourcentageA)
-#                         dmSpeciauxInfo += "\n`Poids:` {}".format(c.poids)
-#                     #=======================================================================================
-#                     elif c.type == "special":
-#                         dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
-#                         dmSpeciauxPrix += "\n`{}`:gem:".format(c.vente)
-#                         if pourcentageV != 0:
-#                             dmSpeciauxPrix += " _{}%_ ".format(pourcentageV)
-#                         dmSpeciauxPrix += " | `{}`:gem:".format(c.achat)
-#                         if pourcentageA != 0:
-#                             dmSpeciauxPrix += " _{}%_ ".format(pourcentageA)
-#                         dmSpeciauxInfo += "\n`Poids:` {}".format(c.poids)
-#                     #=======================================================================================
-#                     elif c.type == "emoji":
-#                         dmItem += "\n:{nom}:`{nom}`".format(nom=c.nom)
-#                         dmItemPrix += "\n`{}`:gem:".format(c.vente)
-#                         if pourcentageV != 0:
-#                             dmItemPrix += " _{}%_ ".format(pourcentageV)
-#                         dmItemPrix += " | `{}`:gem:".format(c.achat)
-#                         if pourcentageA != 0:
-#                             dmItemPrix += " _{}%_ ".format(pourcentageA)
-#                         dmItemInfo += "\n`Poids:` {}".format(c.poids)
-#                     #=======================================================================================
-#                     else:
-#                         dmItem += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
-#                         dmItemPrix += "\n`{}`:gem:".format(c.vente)
-#                         if pourcentageV != 0:
-#                             dmItemPrix += " _{}%_ ".format(pourcentageV)
-#                         dmItemPrix += " | `{}`:gem:".format(c.achat)
-#                         if pourcentageA != 0:
-#                             dmItemPrix += " _{}%_ ".format(pourcentageA)
-#                         dmItemInfo += "\n`Poids:` {}".format(c.poids)
-#
-#             if fct == None or fct == "lootbox":
-#                 for c in GF.objetBox :
-#                     if c.achat != 0:
-#                         if c.type == "gems":
-#                             dmBox += "\n<:gem_lootbox:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[lootbox]}")
-#                             dmBoxPrix += "\n`{}`:gem:".format(c.achat)
-#                             dmBoxInfo += "\n`{} ▶ {}`:gem:`gems`".format(c.min, c.max)
-#                         elif c.type == "spinelle":
-#                             dmBox += "\n:{nom}:`{nom}`".format(nom=c.nom)
-#                             dmBoxPrix += "\n`{prix}`<:gem_spinelle:{idmoji}>".format(prix=c.achat,idmoji="{idmoji[spinelle]}")
-#                             dmBoxInfo += "\nItems en folie!"
-#
-#             if fct == None or fct == "outil" or fct == "outils":
-#                 msg.add_field(name="Outils", value=dmOutils, inline=True)
-#                 msg.add_field(name="Vente | Achat", value=dmOutilsPrix, inline=True)
-#                 msg.add_field(name="Infos", value=dmOutilsInfo, inline=True)
-#
-#             if fct == None or fct == "outils" or fct == "outil" or fct == "item" or fct == "items" or fct == "minerai" or fct == "minerais" or fct == "poissons" or fct == "fish" or fct == "plantes" or fct == "plants" or fct == "event" or fct == "événements":
-#                 if dmSpeciaux != "":
-#                     msg.add_field(name="Spéciaux", value=dmSpeciaux, inline=True)
-#                     msg.add_field(name="Vente | Achat", value=dmSpeciauxPrix, inline=True)
-#                     msg.add_field(name="Infos", value=dmSpeciauxInfo, inline=True)
-#
-#             if fct == None or fct == "minerai" or fct == "minerais":
-#                 msg.add_field(name="Minerais", value=dmMinerai, inline=True)
-#                 msg.add_field(name="Vente | Achat", value=dmMineraiPrix, inline=True)
-#                 msg.add_field(name="Infos", value=dmMineraiInfo, inline=True)
-#
-#             if fct == None or fct == "fish" or fct == "poissons":
-#                 msg.add_field(name="Poissons", value=dmPoisson, inline=True)
-#                 msg.add_field(name="Vente | Achat", value=dmPoissonPrix, inline=True)
-#                 msg.add_field(name="Infos", value=dmPoissonInfo, inline=True)
-#
-#             if fct == None or fct == "plants" or fct == "plantes":
-#                 msg.add_field(name="Plantes", value=dmPlante, inline=True)
-#                 msg.add_field(name="Vente | Achat", value=dmPlantePrix, inline=True)
-#                 msg.add_field(name="Infos", value=dmPlanteInfo, inline=True)
-#
-#             if fct == None or fct == "item" or fct == "items":
-#                 msg.add_field(name="Items", value=dmItem, inline=True)
-#                 msg.add_field(name="Vente | Achat", value=dmItemPrix, inline=True)
-#                 msg.add_field(name="Infos", value=dmItemInfo, inline=True)
-#
-#             if fct == None or fct == "event" or fct == "événements":
-#                 msg.add_field(name="Événements", value=dmEvent, inline=True)
-#                 msg.add_field(name="Vente | Achat", value=dmEventPrix, inline=True)
-#                 msg.add_field(name="Infos", value=dmEventInfo, inline=True)
-#
-#             if fct == None or fct == "lootbox":
-#                 msg.add_field(name="Loot Box", value=dmBox, inline=True)
-#                 msg.add_field(name="Achat", value=dmBoxPrix, inline=True)
-#                 msg.add_field(name="Gain", value=dmBoxInfo, inline=True)
-#
-#             sql.updateComTime(ID, "market", "gems")
-#             await ctx.channel.send(embed = msg)
-#             # Message de réussite dans la console
-#             print("Gems >> {} a afficher le marché".format(ctx.author.name))
-#         else:
-#             msg = "Ce marché n'existe pas"
-#             await ctx.channel.send(msg)
-#     else:
-#         msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
-#         await ctx.channel.send(msg)
+
+def market(param):
+    """**[stand]** | Permet de voir tout les objets que l'on peux acheter ou vendre !"""
+    fct = param["fct"]
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+    PlayerID_Babot = sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord"))
+
+    if sql.spam(PlayerID, GF.couldown_4s, "market", "gems"):
+        d_market = "Permet de voir tout les objets que l'on peux acheter ou vendre !\n\n"
+        if sql.spam(PlayerID_Babot, GF.couldown_10s, "bourse", "gems"):
+            GF.loadItem()
+        ComTime = sql.valueAtNumber(PlayerID_Babot, "bourse", "gems_com_time")
+        time = float(ComTime)
+        time = time - (t.time()-GF.couldown_12h)
+        timeH = int(time / 60 / 60)
+        time = time - timeH * 3600
+        timeM = int(time / 60)
+        timeS = int(time - timeM * 60)
+        d_market += "Actualisation de la bourse dans :clock2:`{}h {}m {}s`\n".format(timeH, timeM, timeS)
+        msg.append("OK")
+        msg.append(d_market)
+
+        if fct == "mobile":
+            d_marketOutils = ""
+            d_marketOutilsS = ""
+            d_marketItems = ""
+            d_marketItemsMinerai = ""
+            d_marketItemsPoisson = ""
+            d_marketItemsPlante = ""
+            d_marketItemsEvent = ""
+            d_marketBox = ""
+            d_marketSpinelle = ""
+
+            # récupération du fichier de sauvegarde de la bourse
+            with open('gems/bourse.json', 'r') as fp:
+                dict = json.load(fp)
+            for c in GF.objetOutil:
+                for y in GI.PrixOutil:
+                    if y.nom == c.nom:
+                        temp = dict[c.nom]
+                        if y.vente != 0:
+                            pourcentageV = ((c.vente*100)//temp["precVente"])-100
+                        else:
+                            pourcentageV = 0
+                        if y.achat != 0:
+                            pourcentageA = ((c.achat*100)//temp["precAchat"])-100
+                        else:
+                            pourcentageA = 0
+
+                if c.type == "consommable" or c.type == "bank":
+                    d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom, c.vente, "{idmoji[gem_" + c.nom + "]}")
+                    if pourcentageV != 0:
+                        d_marketOutilsS += "_{}%_ ".format(pourcentageV)
+                    if c.nom == "bank_upgrade":
+                        d_marketOutilsS += "| Achat **Le plafond du compte épargne** "
+                    else:
+                        d_marketOutilsS += "| Achat **{}** ".format(c.achat)
+                        if pourcentageA != 0:
+                            d_marketOutilsS += "_{}%_ ".format(pourcentageA)
+                    if c.durabilite != None:
+                        d_marketOutilsS += "| Durabilité: **{}**".format(c.durabilite)
+                    d_marketOutilsS += "\n"
+                else:
+                    d_marketOutils += "<:gem_{0}:{1}>`{0}`: ".format(c.nom, "{idmoji[gem_" + c.nom + "]}")
+                    if c.vente != 0:
+                        d_marketOutils += "Vente **{}** ".format(c.vente)
+                        if pourcentageV != 0:
+                            d_marketOutils += "_{}%_ | ".format(pourcentageV)
+                        else:
+                            d_marketOutils += "| "
+                    d_marketOutils += "Achat **{}** ".format(c.achat)
+                    if pourcentageA != 0:
+                        d_marketOutils += "_{}%_ ".format(pourcentageA)
+                    if c.durabilite != None:
+                        d_marketOutils += "| Durabilité: **{}**".format(c.durabilite)
+                    d_marketOutils += "\n"
+
+            for c in GF.objetItem :
+                for y in GI.PrixItem:
+                    if y.nom == c.nom:
+                        temp = dict[c.nom]
+                        if y.vente != 0:
+                            try:
+                                pourcentageV = ((c.vente*100)//temp["precVente"])-100
+                            except:
+                                pourcentageV = 404
+                        else:
+                            pourcentageV = 0
+                        if y.achat != 0:
+                            try:
+                                pourcentageA = ((c.achat*100)//temp["precAchat"])-100
+                            except:
+                                pourcentageA = 404
+                        else:
+                            pourcentageA = 0
+                # =======================================================================================
+                if c.type == "minerai":
+                    d_marketItemsMinerai += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom, c.vente, "{idmoji[gem_" + c.nom + "]}")
+                    if pourcentageV != 0:
+                        d_marketItemsMinerai += "_{}%_ ".format(pourcentageV)
+                    d_marketItemsMinerai += "| Achat **{}** ".format(c.achat)
+                    if pourcentageA != 0:
+                        d_marketItemsMinerai += "_{}%_ ".format(pourcentageA)
+                    d_marketItemsMinerai += "| Poids **{}**\n".format(c.poids)
+                # =======================================================================================
+                elif c.type == "poisson":
+                    d_marketItemsPoisson += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom, c.vente, "{idmoji[gem_" + c.nom + "]}")
+                    if pourcentageV != 0:
+                        d_marketItemsPoisson += "_{}%_ ".format(pourcentageV)
+                    d_marketItemsPoisson += "| Achat **{}** ".format(c.achat)
+                    if pourcentageA != 0:
+                        d_marketItemsPoisson += "_{}%_ ".format(pourcentageA)
+                    d_marketItemsPoisson += "| Poids **{}**\n".format(c.poids)
+                # =======================================================================================
+                elif c.type == "plante":
+                    d_marketItemsPlante += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom, c.vente, "{idmoji[gem_" + c.nom + "]}")
+                    if pourcentageV != 0:
+                        d_marketItemsPlante += "_{}%_ ".format(pourcentageV)
+                    d_marketItemsPlante += "| Achat **{}** ".format(c.achat)
+                    if pourcentageA != 0:
+                        d_marketItemsPlante += "_{}%_ ".format(pourcentageA)
+                    d_marketItemsPlante += "| Poids **{}**\n".format(c.poids)
+                # =======================================================================================
+                elif c.type == "halloween" or c.type == "christmas" or c.type == "event":
+                    d_marketItemsEvent += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom, c.vente, "{idmoji[gem_" + c.nom + "]}")
+                    if pourcentageV != 0:
+                        d_marketItemsEvent += "_{}%_ ".format(pourcentageV)
+                    if c.achat != 0:
+                        d_marketItemsEvent += "| Achat **{}** ".format(c.achat)
+                        if pourcentageA != 0:
+                            d_marketItemsEvent += "_{}%_ ".format(pourcentageA)
+                    d_marketItemsEvent += "| Poids **{}**\n".format(c.poids)
+                # =======================================================================================
+                elif c.type == "spinelle":
+                    d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}**<:spinelle:{3}> ".format(c.nom, c.vente, "{idmoji[gem_" + c.nom + "]}", "{idmoji[spinelle]}")
+                    d_marketOutilsS += "| Achat **{}**<:spinelle:{}> ".format(c.achat, "{idmoji[spinelle]}")
+                    d_marketOutilsS += "| Poids **{}**\n".format(c.poids)
+                # =======================================================================================
+                elif c.type == "special":
+                    d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom, c.vente, "{idmoji[gem_" + c.nom + "]}")
+                    if pourcentageV != 0:
+                        d_marketOutilsS += "_{}%_ ".format(pourcentageV)
+                    d_marketOutilsS += "| Achat **{}** ".format(c.achat)
+                    if pourcentageA != 0:
+                        d_marketOutilsS += "_{}%_ ".format(pourcentageA)
+                    d_marketOutilsS += "| Poids **{}**\n".format(c.poids)
+                # =======================================================================================
+                else:
+                    if c.type == "emoji":
+                        d_marketItems += ":{0}:`{0}`: Vente **{1}** ".format(c.nom, c.vente)
+                        if pourcentageV != 0:
+                            d_marketItems += "_{}%_ ".format(pourcentageV)
+                        d_marketItems += "| Achat **{}** ".format(c.achat)
+                        if pourcentageA != 0:
+                            d_marketItems += "_{}%_ ".format(pourcentageA)
+                        d_marketItems += "| Poids **{}**\n".format(c.poids)
+                    else:
+                        d_marketItems += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom, c.vente, "{idmoji[gem_" + c.nom + "]}")
+                        if pourcentageV != 0:
+                            d_marketItems += "_{}%_ ".format(pourcentageV)
+                        d_marketItems += "| Achat **{}** ".format(c.achat)
+                        if pourcentageA != 0:
+                            d_marketItems += "_{}%_ ".format(pourcentageA)
+                        d_marketItems += "| Poids **{}**\n".format(c.poids)
+
+            for c in GF.objetBox :
+                if c.type == "gems":
+                    d_marketBox += "<:gem_lootbox:{4}>`{0}`: Achat **{1}** | Gain: `{2} ▶ {3}`:gem:`gems` \n".format(c.nom, c.achat, c.min, c.max, "{idmoji[gem_lootbox]}")
+                elif c.type == "spinelle":
+                    d_marketBox += ":{nom}:`{nom}`: Achat **{prix}<:gem_spinelle:{idmoji}>** | Gain: Items en folie!\n".format(nom=c.nom, prix=c.achat, idmoji="{idmoji[spinelle]}")
+
+            msg.append(d_marketOutils)
+            msg.append(d_marketOutilsS)
+            msg.append(d_marketItemsMinerai)
+            msg.append(d_marketItemsPoisson)
+            msg.append(d_marketItemsPlante)
+            if d_marketItems != "":
+                msg.append(d_marketItems)
+            else:
+                msg.append("None")
+            if d_marketItemsEvent != "":
+                msg.append(d_marketItemsEvent)
+            else:
+                msg.append("None")
+            if d_marketSpinelle != "":
+                msg.append(d_marketSpinelle)
+            else:
+                msg.append("None")
+
+            msg.append(d_marketBox)
+            sql.updateComTime(PlayerID, "market", "gems")
+            return msg
+
+        elif fct == "None" or fct == "outil" or fct == "outils" or fct == "item" or fct == "items" or fct == "minerai" or fct == "minerais" or fct == "poissons" or fct == "fish" or fct == "plantes" or fct == "plants" or fct == "event" or fct == "événements" or fct == "lootbox":
+            dmMinerai = ""
+            dmMineraiPrix = ""
+            dmMineraiInfo = ""
+            dmPoisson = ""
+            dmPoissonPrix = ""
+            dmPoissonInfo = ""
+            dmPlante = ""
+            dmPlantePrix = ""
+            dmPlanteInfo = ""
+            dmItem = ""
+            dmItemPrix = ""
+            dmItemInfo = ""
+            dmEvent = ""
+            dmEventPrix = ""
+            dmEventInfo = ""
+            dmSpeciaux = ""
+            dmSpeciauxPrix = ""
+            dmSpeciauxInfo = ""
+            dmOutils = ""
+            dmOutilsPrix = ""
+            dmOutilsInfo = ""
+            dmBox = ""
+            dmBoxPrix = ""
+            dmBoxInfo = ""
+
+            msg.append(fct)
+
+            # récupération du fichier de sauvegarde de la bourse
+            with open('gems/bourse.json', 'r') as fp:
+                dict = json.load(fp)
+
+            if fct == "None" or fct == "outils" or fct == "outil":
+                for c in GF.objetOutil:
+                    for y in GI.PrixOutil:
+                        if y.nom == c.nom:
+                            temp = dict[c.nom]
+                            if y.vente != 0:
+                                try:
+                                    pourcentageV = ((c.vente*100)//temp["precVente"])-100
+                                except:
+                                    pourcentageV = 0
+                            else:
+                                pourcentageV = 0
+                            if y.achat != 0:
+                                try:
+                                    pourcentageA = ((c.achat*100)//temp["precAchat"])-100
+                                except:
+                                    pourcentageV = 0
+                            else:
+                                pourcentageA = 0
+                    # =======================================================================================
+                    if c.type == "consommable" or c.type == "bank":
+                        dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
+                        if c.type != "bank":
+                            dmSpeciauxPrix += "\n`{}`:gem:".format(c.vente)
+                            if pourcentageV != 0:
+                                dmSpeciauxPrix += " _{}%_ ".format(pourcentageV)
+                            dmSpeciauxPrix += " | `{}`:gem:".format(c.achat)
+                            if pourcentageA != 0:
+                                dmSpeciauxPrix += " _{}%_ ".format(pourcentageA)
+                            dmSpeciauxInfo += "\n`Durabilité: `{}".format(c.durabilite)
+                        else:
+                            dmSpeciauxPrix += "\n`Le plafond du compte épargne`"
+                            dmSpeciauxInfo += "\n`Taille:` {}".format(c.poids)
+                    # =======================================================================================
+                    else:
+                        dmOutils += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
+                        dmOutilsPrix += "\n`{}`:gem:".format(c.vente)
+                        if pourcentageV != 0:
+                            dmOutilsPrix += " _{}%_ ".format(pourcentageV)
+                        dmOutilsPrix += " | `{}`:gem:".format(c.achat)
+                        if pourcentageA != 0:
+                            dmOutilsPrix += " _{}%_ ".format(pourcentageA)
+                        dmOutilsInfo += "\n`Durabilité:` {}".format(c.durabilite)
+
+            if fct == "None" or fct == "item" or fct == "items" or fct == "minerai" or fct == "minerais" or fct == "poissons" or fct == "fish" or fct == "plantes" or fct == "plants" or fct == "event" or fct == "événements":
+                for c in GF.objetItem:
+                    for y in GI.PrixItem:
+                        if y.nom == c.nom:
+                            temp = dict[c.nom]
+                            if y.vente != 0:
+                                try:
+                                    pourcentageV = ((c.vente*100)//temp["precVente"])-100
+                                except:
+                                    pourcentageV = 0
+                            else:
+                                pourcentageV = 0
+                            if y.achat != 0:
+                                try:
+                                    pourcentageA = ((c.achat*100)//temp["precAchat"])-100
+                                except:
+                                    pourcentageA = 0
+                            else:
+                                pourcentageA = 0
+                    # =======================================================================================
+                    if c.type == "minerai":
+                        dmMinerai += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
+                        dmMineraiPrix += "\n`{}`:gem:".format(c.vente)
+                        if pourcentageV != 0:
+                            dmMineraiPrix += " _{}%_ ".format(pourcentageV)
+                        dmMineraiPrix += " | `{}`:gem:".format(c.achat)
+                        if pourcentageA != 0:
+                            dmMineraiPrix += " _{}%_ ".format(pourcentageA)
+                        dmMineraiInfo += "\n`Poids:` {}".format(c.poids)
+                    # =======================================================================================
+                    elif c.type == "poisson":
+                        dmPoisson += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
+                        dmPoissonPrix += "\n`{}`:gem:".format(c.vente)
+                        if pourcentageV != 0:
+                            dmPoissonPrix += " _{}%_ ".format(pourcentageV)
+                        dmPoissonPrix += " | `{}`:gem:".format(c.achat)
+                        if pourcentageA != 0:
+                            dmPoissonPrix += " _{}%_ ".format(pourcentageA)
+                        dmPoissonInfo += "\n`Poids:` {}".format(c.poids)
+                    # =======================================================================================
+                    elif c.type == "plante":
+                        dmPlante += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
+                        dmPlantePrix += "\n`{}`:gem:".format(c.vente)
+                        if pourcentageV != 0:
+                            dmPlantePrix += " _{}%_ ".format(pourcentageV)
+                        dmPlantePrix += " | `{}`:gem:".format(c.achat)
+                        if pourcentageA != 0:
+                            dmPlantePrix += " _{}%_ ".format(pourcentageA)
+                        dmPlanteInfo += "\n`Poids:` {}".format(c.poids)
+                    # =======================================================================================
+                    elif c.type == "halloween" or c.type == "christmas" or c.type == "event":
+                        dmEvent += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
+                        dmEventPrix += "\n`{}`:gem:".format(c.vente)
+                        if pourcentageV != 0:
+                            dmEventPrix += " _{}%_ ".format(pourcentageV)
+                        if c.achat != 0:
+                            dmEventPrix += " | `{}`:gem:".format(c.achat)
+                            if pourcentageA != 0:
+                                dmEventPrix += " _{}%_ ".format(pourcentageA)
+                        dmEventInfo += "\n`Poids:` {}".format(c.poids)
+                    # =======================================================================================
+                    elif c.type == "spinelle":
+                        dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
+                        dmSpeciauxPrix += "\n`{prix}`<:spinelle:{idmoji}>".format(prix=c.vente, idmoji="{idmoji[spinelle]}")
+                        if pourcentageV != 0:
+                            dmSpeciauxPrix += " _{}%_ ".format(pourcentageV)
+                        dmSpeciauxPrix += " | `{prix}`<:spinelle:{idmoji}>".format(prix=c.achat, idmoji="{idmoji[spinelle]}")
+                        if pourcentageA != 0:
+                            dmSpeciauxPrix += " _{}%_ ".format(pourcentageA)
+                        dmSpeciauxInfo += "\n`Poids:` {}".format(c.poids)
+                    # =======================================================================================
+                    elif c.type == "special":
+                        dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
+                        dmSpeciauxPrix += "\n`{}`:gem:".format(c.vente)
+                        if pourcentageV != 0:
+                            dmSpeciauxPrix += " _{}%_ ".format(pourcentageV)
+                        dmSpeciauxPrix += " | `{}`:gem:".format(c.achat)
+                        if pourcentageA != 0:
+                            dmSpeciauxPrix += " _{}%_ ".format(pourcentageA)
+                        dmSpeciauxInfo += "\n`Poids:` {}".format(c.poids)
+                    # =======================================================================================
+                    elif c.type == "emoji":
+                        dmItem += "\n:{nom}:`{nom}`".format(nom=c.nom)
+                        dmItemPrix += "\n`{}`:gem:".format(c.vente)
+                        if pourcentageV != 0:
+                            dmItemPrix += " _{}%_ ".format(pourcentageV)
+                        dmItemPrix += " | `{}`:gem:".format(c.achat)
+                        if pourcentageA != 0:
+                            dmItemPrix += " _{}%_ ".format(pourcentageA)
+                        dmItemInfo += "\n`Poids:` {}".format(c.poids)
+                    # =======================================================================================
+                    else:
+                        dmItem += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
+                        dmItemPrix += "\n`{}`:gem:".format(c.vente)
+                        if pourcentageV != 0:
+                            dmItemPrix += " _{}%_ ".format(pourcentageV)
+                        dmItemPrix += " | `{}`:gem:".format(c.achat)
+                        if pourcentageA != 0:
+                            dmItemPrix += " _{}%_ ".format(pourcentageA)
+                        dmItemInfo += "\n`Poids:` {}".format(c.poids)
+
+            if fct == "None" or fct == "lootbox":
+                for c in GF.objetBox :
+                    if c.achat != 0:
+                        if c.type == "gems":
+                            dmBox += "\n<:gem_lootbox:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_lootbox]}")
+                            dmBoxPrix += "\n`{}`:gem:".format(c.achat)
+                            dmBoxInfo += "\n`{} ▶ {}`:gem:`gems`".format(c.min, c.max)
+                        elif c.type == "spinelle":
+                            dmBox += "\n:{nom}:`{nom}`".format(nom=c.nom)
+                            dmBoxPrix += "\n`{prix}`<:gem_spinelle:{idmoji}>".format(prix=c.achat, idmoji="{idmoji[spinelle]}")
+                            dmBoxInfo += "\nItems en folie!"
+
+            if fct == "None" or fct == "outil" or fct == "outils":
+                msg.append(dmOutils)
+                msg.append(dmOutilsPrix)
+                msg.append(dmOutilsInfo)
+            else:
+                msg.append("None")
+                msg.append("None")
+                msg.append("None")
+
+            if fct == "None" or fct == "outils" or fct == "outil" or fct == "item" or fct == "items" or fct == "minerai" or fct == "minerais" or fct == "poissons" or fct == "fish" or fct == "plantes" or fct == "plants" or fct == "event" or fct == "événements":
+                if dmSpeciaux != "":
+                    msg.append(dmSpeciaux)
+                    msg.append(dmSpeciauxPrix)
+                    msg.append(dmSpeciauxInfo)
+                else:
+                    msg.append("None")
+                    msg.append("None")
+                    msg.append("None")
+
+            if fct == "None" or fct == "minerai" or fct == "minerais":
+                msg.append(dmMinerai)
+                msg.append(dmMineraiPrix)
+                msg.append(dmMineraiInfo)
+            else:
+                msg.append("None")
+                msg.append("None")
+                msg.append("None")
+
+            if fct == "None" or fct == "fish" or fct == "poissons":
+                msg.append(dmPoisson)
+                msg.append(dmPoissonPrix)
+                msg.append(dmPoissonPrix)
+            else:
+                msg.append("None")
+                msg.append("None")
+                msg.append("None")
+
+            if fct == "None" or fct == "plants" or fct == "plantes":
+                msg.append(dmPlante)
+                msg.append(dmPlantePrix)
+                msg.append(dmPlanteInfo)
+            else:
+                msg.append("None")
+                msg.append("None")
+                msg.append("None")
+
+            if fct == "None" or fct == "item" or fct == "items":
+                msg.append(dmItem)
+                msg.append(dmItemPrix)
+                msg.append(dmItemInfo)
+            else:
+                msg.append("None")
+                msg.append("None")
+                msg.append("None")
+
+            if fct == "None" or fct == "event" or fct == "événements":
+                msg.append(dmEvent)
+                msg.append(dmEventPrix)
+                msg.append(dmEventInfo)
+            else:
+                msg.append("None")
+                msg.append("None")
+                msg.append("None")
+
+            if fct == "None" or fct == "lootbox":
+                msg.append(dmBox)
+                msg.append(dmBoxPrix)
+                msg.append(dmBoxInfo)
+            else:
+                msg.append("None")
+                msg.append("None")
+                msg.append("None")
+
+            sql.updateComTime(PlayerID, "market", "gems")
+        else:
+            desc = "Ce marché n'existe pas"
+            msg.append("NOK")
+            msg.append(desc)
+    else:
+        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+        msg.append(desc)
+    return msg
 
 
 def pay(param):
