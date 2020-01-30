@@ -18,7 +18,7 @@ def begin(param):
 
 
 def bal(param):
-    """Êtes vous riche ou pauvre ?"""
+    """**[nom]** | Êtes vous riche ou pauvre ?"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     if ID == "Error 404":
         return GF.WarningMsg[1]
@@ -26,6 +26,7 @@ def bal(param):
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
+        msg.append("OK")
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         desc = "{} :gem:`gems`\n".format(solde)
         soldeSpinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
@@ -43,305 +44,279 @@ def bal(param):
         # Message de réussite dans la console
         print("Gems >> Balance de {} affichée".format(PlayerID))
     else:
-        msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+        msg.append("Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !")
     return msg
 
 
-# @commands.command(pass_context=True)
-# async def baltop(self, ctx, n = None, m = None):
-#     """**_{filtre}_ [nombre]** | Classement des joueurs (10 premiers par défaut)"""
-#     ID = ctx.author.id
-#     try:
-#         if n == None:
-#             n = 10
-#         else:
-#             n = int(n)
-#         filtre = "spinelles"
-#     except:
-#         if m == None:
-#             filtre = n
-#             n = 10
-#         else:
-#             filtre = n
-#             n = int(m)
-#     filtre = filtre.lower()
-#     baltop = ""
-#     if sql.spam(ID,GF.couldown_4s, "baltop", "gems"):
-#         sql.updateComTime(ID, "baltop", "gems")
-#         if filtre == "gems" or filtre == "gem" or filtre == "spinelles" or filtre == "spinelle":
-#             UserList = []
-#             i = 1
-#             t = sql.taille("gems")
-#             while i <= t:
-#                 user = sql.userID(i, "gems")
-#                 gems = sql.valueAtNumber(user, "gems", "gems")
-#                 spinelles = sql.valueAtNumber(user, "spinelles", "gems")
-#                 guilde = sql.valueAtNumber(user, "guilde", "gems")
-#                 UserList.append((user, gems, spinelles, guilde))
-#                 i = i + 1
-#             UserList = sorted(UserList, key=itemgetter(1),reverse=True)
-#             Titre = "Classement des Joueurs | :gem:`gems`"
-#             if filtre == "spinelles" or filtre == "spinelle":
-#                 UserList = sorted(UserList, key=itemgetter(2),reverse=True)
-#                 Titre = "Classement des Joueurs | <:spinelle:{idmoji}>`spinelles`".format(idmoji=GF.get_idmoji("spinelle"))
-#             j = 1
-#             for one in UserList: # affichage des données trié
-#                 if j <= n:
-#                     baltop += "{2} | _{3} _<@{0}> {1}:gem:".format(one[0], one[1], j, one[3])
-#                     if one[2] != 0:
-#                         baltop += " | {0}<:spinelle:{1}>\n".format(one[2], GF.get_idmoji("spinelle"))
-#                     else:
-#                         baltop += "\n"
-#                 j += 1
-#             msg = discord.Embed(title = Titre, color= 13752280, description = baltop)
-#             # Message de réussite dans la console
-#             print("Gems >> {} a afficher le classement des {} premiers joueurs | Filtre: {}".format(ctx.author.name,n, filtre))
-#         elif filtre == "guild" or filtre == "guilde":
-#             GuildList = []
-#             i = 1
-#             while i <= DB.get_endDocID("DB/guildesDB"):
-#                 try:
-#                     GuildList.append((DB.valueAt(i, "Nom", "DB/guildesDB"), DB.valueAt(i, "Spinelles", "DB/guildesDB")))
-#                     i += 1
-#                 except:
-#                     i += 1
-#             GuildList = sorted(GuildList, key=itemgetter(1),reverse=True)
-#             j = 1
-#             for one in GuildList:
-#                 if j <= n:
-#                     baltop += "{2} | {0} {1} <:spinelle:{3}>\n".format(one[0], one[1], j, GF.get_idmoji("spinelle"))
-#                 j += 1
-#             msg = discord.Embed(title = "Classement des Guildes",color= 13752280, description = baltop)
-#             # Message de réussite dans la console
-#             print("Gems >> {} a afficher le classement des {} premières guildes".format(ctx.author.name,n))
-#         else:
-#             msg = discord.Embed(title = "Classement",color= 13752280, description = "Erreur! Commande incorrect")
-#         await ctx.channel.send(embed = msg)
-#     else:
-#         msg = "Il faut attendre "+str(GF.couldown_6s)+" secondes entre chaque commande !"
-#         await ctx.channel.send(msg)
-#
-#
-#
-#
-# @commands.command(pass_context=True)
-# async def buy (self, ctx,item,nb = 1):
-#     """**[item] [nombre]** | Permet d'acheter les items vendus au marché"""
-#     ID = ctx.author.id
-#     jour = dt.date.today()
-#     if sql.spam(ID,GF.couldown_4s, "buy", "gems"):
-#         if int(nb) < 0:
-#             sql.addGems(ID, -100)
-#             lvl.addxp(ID, -10, "gems")
-#             msg = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
-#             slq.add(ID, "DiscordCop Amende", 1, "statgems")
-#             await ctx.channel.send(msg)
-#             return "anticheat"
-#         elif item == "capability" or item == "capabilities" or item == "capacité" or item == "capacités" or item == "aptitude" or item == "aptitudes":
-#             IDCap = nb
-#             CapList = sql.valueAt(ID, "all", "capability")
-#             check = False
-#             for c in GF.objetCapability:
-#                 if IDCap == c.ID:
-#                     check = True
-#                     prix = c.achat
-#                     mygems = sql.valueAtNumber(ID, "spinelles", "gems")
-#                     for one in CapList:
-#                         if str(one[0]) == "{}".format(c.ID):
-#                             await ctx.channel.send("Tu pocèdes déjà cette aptitude!")
-#                             return False
-#                     if mygems >= prix:
-#                         CapList.append("{}".format(c.ID))
-#                         sql.add(ID, IDCap, 1, "capability")
-#                         sql.addSpinelles(ID, -prix)
-#                         msg = "Tu viens d'acquérir l'aptitude **{0}** !".format(c.nom)
-#                     else:
-#                         msg = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de <:spinelle:{}>`spinelles` en banque".format(GF.get_idmoji("spinelle"))
-#             if not check:
-#                 msg = "Désolé, nous ne pouvons pas executer cet achat, cette aptitude n'est pas vendu au marché"
-#         elif GF.testInvTaille(ID) or item == "backpack" or item == "hyperpack" or item == "bank_upgrade":
-#             test = True
-#             nb = int(nb)
-#             solde = sql.valueAtNumber(ID, "gems", "gems")
-#             soldeSpinelles = sql.valueAtNumber(ID, "spinelles", "gems")
-#             for c in GF.objetItem :
-#                 if item == c.nom :
-#                     test = False
-#                     check = False
-#                     if c.achat != 0:
-#                         prix = (c.achat*nb)
-#                         if c.type != "spinelle":
-#                             if solde >= prix:
-#                                 sql.addGems(ID, -prix)
-#                                 check = True
-#                             argent = ":gem:`gems`"
-#                         else:
-#                             if soldeSpinelles >= prix:
-#                                 sql.addSpinelles(ID, -prix)
-#                                 check = True
-#                             argent = "<:spinelle:{}>`spinelles`".format(GF.get_idmoji("spinelle"))
-#                         if check:
-#                             sql.add(ID, c.nom, nb, "inventory")
-#                             if c.type != "emoji":
-#                                 msg = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, GF.get_idmoji(c.nom))
-#                             else:
-#                                 msg = "Tu viens d'acquérir {0} :{1}:`{1}` !".format(nb, c.nom)
-#                             # Message de réussite dans la console
-#                             print("Gems >> {} a acheté {} {}".format(ctx.author.name,nb,item))
-#                         else :
-#                             msg = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {} en banque".format(argent)
-#                     else:
-#                         msg = "Désolé, nous ne pouvons pas executer cet achat, cette item n'est pas vendu au marché"
-#                     break
-#             for c in GF.objetOutil :
-#                 if item == c.nom :
-#                     test = False
-#                     check = False
-#                     if c.type == "bank":
-#                         soldeMax = sql.valueAtNumber(ID, "SoldeMax", "bank")
-#                         if soldeMax == 0:
-#                             soldeMax = c.poids
-#                             sql.add(ID, "soldeMax", c.poids, "bank")
-#                         soldeMult = soldeMax/c.poids
-#                         prix = 0
-#                         i = 1
-#                         while i <= nb:
-#                             prix += c.achat*soldeMult
-#                             soldeMult+=1
-#                             i+=1
-#                         prix = int(prix)
-#                     else:
-#                         prix = c.achat*nb
-#                     if c.type != "spinelle":
-#                         if solde >= prix:
-#                             sql.addGems(ID, -prix)
-#                             check = True
-#                         argent = ":gem:`gems`"
-#                     else:
-#                         if soldeSpinelles >= prix:
-#                             sql.addSpinelles(ID, -prix)
-#                             check = True
-#                         argent = "<:spinelle:{}>`spinelles`".format(GF.get_idmoji("spinelle"))
-#                     if check:
-#                         if c.type == "bank":
-#                             sql.add(ID, "SoldeMax", nb*c.poids, "bank")
-#                             msg = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, GF.get_idmoji(c.nom))
-#                             # Message de réussite dans la console
-#                             print("Gems >> {} a acheté {} {}".format(ctx.author.name,nb,item))
-#                             await ctx.channel.send(msg)
-#                             return
-#                         else:
-#                             sql.add(ID, c.nom, nb, "inventory")
-#                             msg = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, GF.get_idmoji(c.nom))
-#                             if c.nom != "bank_upgrade":
-#                                 if sql.valueAtNumber(ID, c.nom, "durability") == 0:
-#                                     sql.add(ID, c.nom, c.durabilite, "durability")
-#                     else :
-#                         msg = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {} en banque".format(argent)
-#                     break
-#             for c in GF.objetBox :
-#                 if item == "lootbox_{}".format(c.nom) or item == c.nom:
-#                     if c.nom != "gift_heart":
-#                         test = False
-#                         prix = 0 - (c.achat*nb)
-#                         if c.type == "gems" and sql.addGems(ID, prix) >= "0":
-#                             sql.add(ID, "lootbox_{}".format(c.nom), nb, "inventory")
-#                             msg = "Tu viens d'acquérir {0} <:gem_lootbox:630698430313922580>`{1}` !".format(nb, c.titre)
-#                             # Message de réussite dans la console
-#                             print("Gems >> {} a acheté {} Loot Box {}".format(ctx.author.name,nb,c.nom))
-#                         elif c.type == "spinelle" and sql.addSpinelles(ID, prix) >= "0":
-#                             sql.add(ID, "lootbox_{}".format(c.nom), nb, "inventory")
-#                             msg = "Tu viens d'acquérir {nb} :{nom}:`{nom}` !".format(nb=nb, nom=c.titre)
-#                             # Message de réussite dans la console
-#                             print("Gems >> {} a acheté {} Loot Box {}".format(ctx.author.name,nb,c.nom))
-#                         else :
-#                             msg = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de :gem:`gems` en banque"
-#                         break
-#             if test :
-#                 msg = "Cet item n'est pas vendu au marché !"
-#
-#             sql.updateComTime(ID, "buy", "gems")
-#         else:
-#             msg = "Ton inventaire est plein"
-#     else:
-#         msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
-#     await ctx.channel.send(msg)
-#
-#
-#
-# @commands.command(pass_context=True)
-# async def sell (self, ctx,item,nb = 1):
-#     """**[item] [nombre]** | Permet de vendre vos items !"""
-#     ID = ctx.author.id
-#     if sql.spam(ID,GF.couldown_4s, "sell", "gems"):
-#         nbItem = sql.valueAtNumber(ID, item, "inventory")
-#         if int(nb) == -1:
-#             nb = nbItem
-#         nb = int(nb)
-#         if nbItem >= nb and nb > 0:
-#             test = True
-#             for c in GF.objetItem:
-#                 if item == c.nom:
-#                     test = False
-#                     gain = c.vente*nb
-#                     if c.type != "spinelle":
-#                         sql.addGems(ID, gain)
-#                         argent = ":gem:`gems`"
-#                     else:
-#                         sql.addSpinelles(ID, gain)
-#                         argent = "<:spinelle:{}>`spinelles`".format(GF.get_idmoji("spinelle"))
-#                     if c.type != "emoji":
-#                         msg = "Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4} !".format(nb, item, gain, GF.get_idmoji(c.nom), argent)
-#                         # Message de réussite dans la console
-#                         print("Gems >> {} a vendu {} {}".format(ctx.author.name, nb, item))
-#                     else:
-#                         msg = "Tu as vendu {0} :{1}:`{1}` pour {2} {3} !".format(nb, item, gain, argent)
-#                         # Message de réussite dans la console
-#                         print("Gems >> {} a vendu {} {}".format(ctx.author.name, nb, item))
-#
-#             for c in GF.objetOutil:
-#                 if item == c.nom:
-#                     test = False
-#                     gain = c.vente*nb
-#                     if c.type != "spinelle":
-#                         sql.addGems(ID, gain)
-#                         argent = ":gem:`gems`"
-#                     else:
-#                         sql.addSpinelles(ID, gain)
-#                         argent = "<:spinelle:{}>`spinelles`".format(GF.get_idmoji("spinelle"))
-#                     msg = "Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4} !".format(nb, item, gain, GF.get_idmoji(c.nom), argent)
-#                     if nbItem == 1:
-#                         if sql.valueAt(ID, item, "durability") != 0:
-#                             sql.add(ID, item, -1, "durability")
-#                     # Message de réussite dans la console
-#                     print("Gems >> {} a vendu {} {}".format(ctx.author.name, nb, item))
-#                     break
-#
-#             sql.add(ID, item, -nb, "inventory")
-#             if test:
-#                 msg = "Cette objet n'existe pas"
-#         else:
-#             msg = "Tu n'as pas assez de `{i}`. Il t'en reste : {nb}".format(i=item, nb=str(sql.valueAtNumber(ID, item, "inventory")))
-#             for c in GF.objetItem:
-#                 if c.nom == item:
-#                     if c.type == "emoji":
-#                         msg = "Tu n'as pas assez de :{i}:`{i}`. Il t'en reste : {nb}".format(i=item, nb=str(sql.valueAtNumber(ID, item, "inventory")))
-#                     else:
-#                         msg = "Tu n'as pas assez de <:gem_{i}:{idmoji}>`{i}`. Il t'en reste : {nb}".format(i=item, nb=str(sql.valueAtNumber(ID, item, "inventory")), idmoji=GF.get_idmoji(c.nom))
-#             for c in GF.objetOutil:
-#                 if c.nom == item:
-#                     if c.type == "bank":
-#                         msg = "Tu ne peux pas vendre tes <:gem_{i}:{idmoji}>`{i}`".format(idmoji=GF.get_idmoji(c.nom), i=item)
-#                     else:
-#                         msg = "Tu n'as pas assez de <:gem_{i}:{idmoji}>`{i}`. Il t'en reste : {nb}".format(i=item, nb=str(sql.valueAtNumber(ID, item, "inventory")), idmoji=GF.get_idmoji(c.nom))
-#
-#         sql.updateComTime(ID, "sell", "gems")
-#     else:
-#         msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
-#     await ctx.channel.send(msg)
-#
-#
-#
+def baltop(param):
+    """**_{filtre}_ [nombre]** | Classement des joueurs (10 premiers par défaut)"""
+    n = param["nb"]
+    filtre = param["filtre"]
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+    baltop = ""
+    if sql.spam(PlayerID, GF.couldown_4s, "baltop", "gems"):
+        sql.updateComTime(PlayerID, "baltop", "gems")
+        if filtre == "gems" or filtre == "gem" or filtre == "spinelles" or filtre == "spinelle":
+            UserList = []
+            i = 1
+            taille = sql.taille("gems")
+            while i <= taille:
+                user = sql.userID(i, "gems")
+                gems = sql.valueAtNumber(i, "gems", "gems")
+                spinelles = sql.valueAtNumber(i, "spinelles", "gems")
+                guilde = sql.valueAtNumber(i, "guilde", "gems")
+                UserList.append((user, gems, spinelles, guilde))
+                i = i + 1
+            UserList = sorted(UserList, key=itemgetter(1), reverse=True)
+            if filtre == "spinelles" or filtre == "spinelle":
+                UserList = sorted(UserList, key=itemgetter(2), reverse=True)
+            j = 1
+            for one in UserList: # affichage des données trié
+                if j <= n:
+                    baltop += "{2} | _{3} _<@{0}> {1}:gem:".format(one[0], one[1], j, one[3])
+                    if one[2] != 0:
+                        baltop += " | {0}<:spinelle:{1}>\n".format(one[2], "{idmoji[spinelle]}")
+                    else:
+                        baltop += "\n"
+                j += 1
+            msg.append("OK")
+            msg.append(baltop)
+        elif filtre == "guild" or filtre == "guilde":
+            GuildList = []
+            i = 1
+            while i <= DB.get_endDocID("DB/guildesDB"):
+                try:
+                    GuildList.append((DB.valueAt(i, "Nom", "DB/guildesDB"), DB.valueAt(i, "Spinelles", "DB/guildesDB")))
+                    i += 1
+                except:
+                    i += 1
+            GuildList = sorted(GuildList, key=itemgetter(1), reverse=True)
+            j = 1
+            for one in GuildList:
+                if j <= n:
+                    baltop += "{2} | {0} {1} <:spinelle:{3}>\n".format(one[0], one[1], j, "{idmoji[spinelle]}")
+                j += 1
+            msg.append("OK")
+            msg.append(baltop)
+        else:
+            msg.append("NOK")
+            msg.append("Erreur! Commande incorrect")
+    else:
+        msg.append("couldown")
+        msg.append("Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !")
+    return msg
+
+
+def buy(param):
+    """**[item] [nombre]** | Permet d'acheter les items vendus au marché"""
+    nb = param["nb"]
+    item = param["item"]
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+
+    if sql.spam(PlayerID, GF.couldown_4s, "buy", "gems"):
+        if int(nb) < 0:
+            sql.addGems(PlayerID, -100)
+            lvl.addxp(PlayerID, -10, "gems")
+            desc = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
+            sql.add(PlayerID, "DiscordCop Amende", 1, "statgems")
+            msg.append("anticheat")
+            msg.append(desc)
+            return msg
+
+        elif GF.testInvTaille(PlayerID) or item == "backpack" or item == "hyperpack" or item == "bank_upgrade":
+            test = True
+            nb = int(nb)
+            solde = sql.valueAtNumber(PlayerID, "gems", "gems")
+            soldeSpinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
+            for c in GF.objetItem :
+                if item == c.nom :
+                    test = False
+                    check = False
+                    if c.achat != 0:
+                        prix = (c.achat*nb)
+                        if c.type != "spinelle":
+                            if solde >= prix:
+                                sql.addGems(PlayerID, -prix)
+                                check = True
+                            argent = ":gem:`gems`"
+                        else:
+                            if soldeSpinelles >= prix:
+                                sql.addSpinelles(PlayerID, -prix)
+                                check = True
+                            argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
+                        if check:
+                            sql.add(ID, c.nom, nb, "inventory")
+                            if c.type != "emoji":
+                                desc = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                            else:
+                                desc = "Tu viens d'acquérir {0} :{1}:`{1}` !".format(nb, c.nom)
+                        else :
+                            desc = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {} en banque".format(argent)
+                    else:
+                        desc = "Désolé, nous ne pouvons pas executer cet achat, cette item n'est pas vendu au marché"
+                    break
+            for c in GF.objetOutil :
+                if item == c.nom :
+                    test = False
+                    check = False
+                    if c.type == "bank":
+                        soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
+                        if soldeMax == 0:
+                            soldeMax = c.poids
+                            sql.add(PlayerID, "soldeMax", c.poids, "bank")
+                        soldeMult = soldeMax/c.poids
+                        prix = 0
+                        i = 1
+                        while i <= nb:
+                            prix += c.achat*soldeMult
+                            soldeMult += 1
+                            i += 1
+                        prix = int(prix)
+                    else:
+                        prix = c.achat*nb
+                    if c.type != "spinelle":
+                        if solde >= prix:
+                            sql.addGems(PlayerID, -prix)
+                            check = True
+                        argent = ":gem:`gems`"
+                    else:
+                        if soldeSpinelles >= prix:
+                            sql.addSpinelles(PlayerID, -prix)
+                            check = True
+                        argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
+                    if check:
+                        if c.type == "bank":
+                            sql.add(PlayerID, "SoldeMax", nb*c.poids, "bank")
+                            desc = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                            msg.append("bank")
+                            msg.append(desc)
+                            return msg
+                        else:
+                            sql.add(PlayerID, c.nom, nb, "inventory")
+                            desc = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                            if c.nom != "bank_upgrade":
+                                if sql.valueAtNumber(PlayerID, c.nom, "durability") == 0:
+                                    sql.add(PlayerID, c.nom, c.durabilite, "durability")
+                    else :
+                        desc = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {} en banque".format(argent)
+                    break
+            for c in GF.objetBox :
+                if item == "lootbox_{}".format(c.nom) or item == c.nom:
+                    if c.nom != "gift_heart":
+                        test = False
+                        prix = 0 - (c.achat*nb)
+                        if c.type == "gems" and sql.addGems(PlayerID, prix) >= "0":
+                            sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
+                            desc = "Tu viens d'acquérir {0} <:gem_lootbox:630698430313922580>`{1}` !".format(nb, c.titre)
+                        elif c.type == "spinelle" and sql.addSpinelles(PlayerID, prix) >= "0":
+                            sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
+                            desc = "Tu viens d'acquérir {nb} :{nom}:`{nom}` !".format(nb=nb, nom=c.titre)
+                        else :
+                            desc = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de :gem:`gems` en banque"
+                        break
+            if test :
+                desc = "Cet item n'est pas vendu au marché !"
+                msg.append("NOK")
+            else:
+                msg.append("OK")
+            msg.append(desc)
+
+            sql.updateComTime(PlayerID, "buy", "gems")
+        else:
+            desc = "Ton inventaire est plein"
+            msg.append("NOK")
+            msg.append(desc)
+    else:
+        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+        msg.append(desc)
+    return msg
+
+
+def sell(param):
+    """**[item] [nombre]** | Permet de vendre vos items !"""
+    nb = param["nb"]
+    item = param["item"]
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+
+    if sql.spam(PlayerID, GF.couldown_4s, "sell", "gems"):
+        nbItem = sql.valueAtNumber(PlayerID, item, "inventory")
+        if int(nb) == -1:
+            nb = nbItem
+        nb = int(nb)
+        if nbItem >= nb and nb > 0:
+            test = True
+            for c in GF.objetItem:
+                if item == c.nom:
+                    test = False
+                    gain = c.vente*nb
+                    if c.type != "spinelle":
+                        sql.addGems(PlayerID, gain)
+                        argent = ":gem:`gems`"
+                    else:
+                        sql.addSpinelles(PlayerID, gain)
+                        argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
+                    if c.type != "emoji":
+                        desc = "Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4} !".format(nb, item, gain, "{idmoji[gem_" + c.nom + "]}", argent)
+                    else:
+                        desc = "Tu as vendu {0} :{1}:`{1}` pour {2} {3} !".format(nb, item, gain, argent)
+
+            for c in GF.objetOutil:
+                if item == c.nom:
+                    test = False
+                    gain = c.vente*nb
+                    if c.type != "spinelle":
+                        sql.addGems(PlayerID, gain)
+                        argent = ":gem:`gems`"
+                    else:
+                        sql.addSpinelles(PlayerID, gain)
+                        argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
+                    desc = "Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4} !".format(nb, item, gain, "{idmoji[gem_" + c.nom + "]}", argent)
+                    if nbItem == 1:
+                        if sql.valueAt(PlayerID, item, "durability") != 0:
+                            sql.add(PlayerID, item, -1, "durability")
+                    break
+
+            sql.add(PlayerID, item, -nb, "inventory")
+            if test:
+                desc = "Cette objet n'existe pas"
+        else:
+            desc = "Tu n'as pas assez de `{i}`. Il t'en reste : {nb}".format(i=item, nb=str(sql.valueAtNumber(PlayerID, item, "inventory")))
+            for c in GF.objetItem:
+                if c.nom == item:
+                    if c.type == "emoji":
+                        desc = "Tu n'as pas assez de :{i}:`{i}`. Il t'en reste : {nb}".format(i=item, nb=str(sql.valueAtNumber(PlayerID, item, "inventory")))
+                    else:
+                        desc = "Tu n'as pas assez de <:gem_{i}:{idmoji}>`{i}`. Il t'en reste : {nb}".format(i=item, nb=str(sql.valueAtNumber(PlayerID, item, "inventory")), idmoji="{idmoji[gem_" + c.nom + "]}")
+            for c in GF.objetOutil:
+                if c.nom == item:
+                    if c.type == "bank":
+                        desc = "Tu ne peux pas vendre tes <:gem_{i}:{idmoji}>`{i}`".format(idmoji="{idmoji[gem_" + c.nom + "]}", i=item)
+                    else:
+                        desc = "Tu n'as pas assez de <:gem_{i}:{idmoji}>`{i}`. Il t'en reste : {nb}".format(i=item, nb=str(sql.valueAtNumber(PlayerID, item, "inventory")), idmoji="{idmoji[gem_" + c.nom + "]}")
+
+        sql.updateComTime(PlayerID, "sell", "gems")
+        msg.append("OK")
+        msg.append(desc)
+    else:
+        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+        msg.append(desc)
+    return msg
+
 # @commands.command(pass_context=True)
 # async def inv (self, ctx, fct = None, type = None):
 #     """**[nom de la poche]** | Permet de voir ce que vous avez dans le ventre !"""
@@ -366,9 +341,9 @@ def bal(param):
 #                     if c.nom == str(x[1]):
 #                         if int(x[0]) > 0:
 #                             if c.type == "consommable":
-#                                 msg_invSpeciaux += "<:gem_{0}:{2}>`{0}`: `x{1}` | Durabilité: `{3}/{4}`\n".format(str(x[1]), str(x[0]), GF.get_idmoji(c.nom), sql.valueAtNumber(ID, c.nom, "durability"), c.durabilite)
+#                                 msg_invSpeciaux += "<:gem_{0}:{2}>`{0}`: `x{1}` | Durabilité: `{3}/{4}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}", sql.valueAtNumber(ID, c.nom, "durability"), c.durabilite)
 #                             else:
-#                                 msg_invOutils += "<:gem_{0}:{2}>`{0}`: `x{1}` | Durabilité: `{3}/{4}`\n".format(str(x[1]), str(x[0]), GF.get_idmoji(c.nom), sql.valueAtNumber(ID, c.nom, "durability"), c.durabilite)
+#                                 msg_invOutils += "<:gem_{0}:{2}>`{0}`: `x{1}` | Durabilité: `{3}/{4}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}", sql.valueAtNumber(ID, c.nom, "durability"), c.durabilite)
 #                             tailletot += c.poids*int(x[0])
 #
 #             for c in GF.objetItem:
@@ -376,22 +351,22 @@ def bal(param):
 #                     if c.nom == str(x[1]):
 #                         if int(x[0]) > 0:
 #                             if c.type == "minerai":
-#                                 msg_invItemsMinerai += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), GF.get_idmoji(c.nom))
+#                                 msg_invItemsMinerai += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
 #                             elif c.type == "poisson":
-#                                 msg_invItemsPoisson += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), GF.get_idmoji(c.nom))
+#                                 msg_invItemsPoisson += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
 #                             elif c.type == "plante":
-#                                 msg_invItemsPlante += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), GF.get_idmoji(c.nom))
+#                                 msg_invItemsPlante += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
 #                             elif c.type == "emoji":
 #                                 msg_invItems += ":{0}:`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]))
 #                             elif c.type == "halloween" or c.type == "christmas" or c.type == "event":
-#                                 msg_invItemsEvent += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), GF.get_idmoji(c.nom))
+#                                 msg_invItemsEvent += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
 #                             elif c.type == "spinelle" or c.type == "special":
-#                                 msg_invSpeciaux += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), GF.get_idmoji(c.nom))
+#                                 msg_invSpeciaux += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
 #                             else:
 #                                 if c.type == "emoji":
 #                                     msg_invItems += ":{0}:`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]))
 #                                 else:
-#                                     msg_invItems += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), GF.get_idmoji(c.nom))
+#                                     msg_invItems += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
 #                             if c.nom == "backpack" or c.nom == "hyperpack":
 #                                 tailleMax += -1 * c.poids * int(x[0])
 #                             else:
@@ -403,7 +378,7 @@ def bal(param):
 #                     if name == str(x[1]):
 #                         if int(x[0]) > 0:
 #                             if c.nom != "gift" and c.nom != "gift_heart":
-#                                 msg_invBox += "<:gem_lootbox:{2}>`{0}`: `x{1}`\n".format(c.nom, str(x[0]), GF.get_idmoji("lootbox"))
+#                                 msg_invBox += "<:gem_lootbox:{2}>`{0}`: `x{1}`\n".format(c.nom, str(x[0]), "{idmoji[lootbox]}")
 #                             else:
 #                                 msg_invBox += ":{0}:`{0}`: `x{1}`\n".format(c.nom, str(x[0]))
 #
@@ -517,7 +492,7 @@ def bal(param):
 #                             pourcentageA = 0
 #
 #                 if c.type == "consommable" or c.type == "bank":
-#                     d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,GF.get_idmoji(c.nom))
+#                     d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
 #                     if pourcentageV != 0:
 #                         d_marketOutilsS += "_{}%_ ".format(pourcentageV)
 #                     if c.nom == "bank_upgrade":
@@ -530,7 +505,7 @@ def bal(param):
 #                         d_marketOutilsS += "| Durabilité: **{}**".format(c.durabilite)
 #                     d_marketOutilsS += "\n"
 #                 else:
-#                     d_marketOutils += "<:gem_{0}:{1}>`{0}`: ".format(c.nom,GF.get_idmoji(c.nom))
+#                     d_marketOutils += "<:gem_{0}:{1}>`{0}`: ".format(c.nom,"{idmoji[gem_" + c.nom + "]}")
 #                     if c.vente != 0:
 #                         d_marketOutils += "Vente **{}** ".format(c.vente)
 #                         if pourcentageV != 0:
@@ -564,7 +539,7 @@ def bal(param):
 #                             pourcentageA = 0
 #                 #=======================================================================================
 #                 if c.type == "minerai":
-#                     d_marketItemsMinerai += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,GF.get_idmoji(c.nom))
+#                     d_marketItemsMinerai += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
 #                     if pourcentageV != 0:
 #                         d_marketItemsMinerai += "_{}%_ ".format(pourcentageV)
 #                     d_marketItemsMinerai += "| Achat **{}** ".format(c.achat)
@@ -573,7 +548,7 @@ def bal(param):
 #                     d_marketItemsMinerai += "| Poids **{}**\n".format(c.poids)
 #                 #=======================================================================================
 #                 elif c.type == "poisson":
-#                     d_marketItemsPoisson += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,GF.get_idmoji(c.nom))
+#                     d_marketItemsPoisson += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
 #                     if pourcentageV != 0:
 #                         d_marketItemsPoisson += "_{}%_ ".format(pourcentageV)
 #                     d_marketItemsPoisson += "| Achat **{}** ".format(c.achat)
@@ -582,7 +557,7 @@ def bal(param):
 #                     d_marketItemsPoisson += "| Poids **{}**\n".format(c.poids)
 #                 #=======================================================================================
 #                 elif c.type == "plante":
-#                     d_marketItemsPlante += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,GF.get_idmoji(c.nom))
+#                     d_marketItemsPlante += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
 #                     if pourcentageV != 0:
 #                         d_marketItemsPlante += "_{}%_ ".format(pourcentageV)
 #                     d_marketItemsPlante += "| Achat **{}** ".format(c.achat)
@@ -591,7 +566,7 @@ def bal(param):
 #                     d_marketItemsPlante += "| Poids **{}**\n".format(c.poids)
 #                 #=======================================================================================
 #                 elif c.type == "halloween" or c.type == "christmas" or c.type == "event":
-#                     d_marketItemsEvent += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,GF.get_idmoji(c.nom))
+#                     d_marketItemsEvent += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
 #                     if pourcentageV != 0:
 #                         d_marketItemsEvent += "_{}%_ ".format(pourcentageV)
 #                     if c.achat != 0:
@@ -601,12 +576,12 @@ def bal(param):
 #                     d_marketItemsEvent += "| Poids **{}**\n".format(c.poids)
 #                 #=======================================================================================
 #                 elif c.type == "spinelle":
-#                     d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}**<:spinelle:{3}> ".format(c.nom,c.vente,GF.get_idmoji(c.nom), GF.get_idmoji("spinelle"))
-#                     d_marketOutilsS += "| Achat **{}**<:spinelle:{}> ".format(c.achat, GF.get_idmoji("spinelle"))
+#                     d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}**<:spinelle:{3}> ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}", "{idmoji[spinelle]}")
+#                     d_marketOutilsS += "| Achat **{}**<:spinelle:{}> ".format(c.achat, "{idmoji[spinelle]}")
 #                     d_marketOutilsS += "| Poids **{}**\n".format(c.poids)
 #                 #=======================================================================================
 #                 elif c.type == "special":
-#                     d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,GF.get_idmoji(c.nom))
+#                     d_marketOutilsS += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
 #                     if pourcentageV != 0:
 #                         d_marketOutilsS += "_{}%_ ".format(pourcentageV)
 #                     d_marketOutilsS += "| Achat **{}** ".format(c.achat)
@@ -624,7 +599,7 @@ def bal(param):
 #                             d_marketItems += "_{}%_ ".format(pourcentageA)
 #                         d_marketItems += "| Poids **{}**\n".format(c.poids)
 #                     else:
-#                         d_marketItems += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,GF.get_idmoji(c.nom))
+#                         d_marketItems += "<:gem_{0}:{2}>`{0}`: Vente **{1}** ".format(c.nom,c.vente,"{idmoji[gem_" + c.nom + "]}")
 #                         if pourcentageV != 0:
 #                             d_marketItems += "_{}%_ ".format(pourcentageV)
 #                         d_marketItems += "| Achat **{}** ".format(c.achat)
@@ -634,9 +609,9 @@ def bal(param):
 #
 #             for c in GF.objetBox :
 #                 if c.type == "gems":
-#                     d_marketBox += "<:gem_lootbox:{4}>`{0}`: Achat **{1}** | Gain: `{2} ▶ {3}`:gem:`gems` \n".format(c.nom,c.achat,c.min,c.max,GF.get_idmoji("lootbox"))
+#                     d_marketBox += "<:gem_lootbox:{4}>`{0}`: Achat **{1}** | Gain: `{2} ▶ {3}`:gem:`gems` \n".format(c.nom,c.achat,c.min,c.max,"{idmoji[lootbox]}")
 #                 elif c.type == "spinelle":
-#                     d_marketBox += ":{nom}:`{nom}`: Achat **{prix}<:gem_spinelle:{idmoji}>** | Gain: Items en folie!\n".format(nom=c.nom,prix=c.achat, idmoji=GF.get_idmoji("spinelle"))
+#                     d_marketBox += ":{nom}:`{nom}`: Achat **{prix}<:gem_spinelle:{idmoji}>** | Gain: Items en folie!\n".format(nom=c.nom,prix=c.achat, idmoji="{idmoji[spinelle]}")
 #
 #
 #             msg.add_field(name="Outils", value=d_marketOutils, inline=False)
@@ -649,7 +624,7 @@ def bal(param):
 #             if d_marketItemsEvent != "":
 #                 msg.add_field(name="Événement", value=d_marketItemsEvent, inline=False)
 #             if d_marketSpinelle != "":
-#                 msg.add_field(name="Spinelles <:spinelle:{}>".format(GF.get_idmoji("spinelle")), value=d_marketSpinelle, inline=False)
+#                 msg.add_field(name="Spinelles <:spinelle:{}>".format("{idmoji[spinelle]}"), value=d_marketSpinelle, inline=False)
 #
 #             msg.add_field(name="Loot Box", value=d_marketBox, inline=False)
 #             sql.updateComTime(ID, "market", "gems")
@@ -670,10 +645,10 @@ def bal(param):
 #                             checkCap = True
 #                     if not checkCap:
 #                         if c.type == "attaque" and type != "defense":
-#                             descCapAtt += "**{0}**\n___Achat__:_ {3} <:spinelle:{4}>`spinelles`\n___Utilisation_:__ {1}\n___Puissance max_:__ **{2}**\n\n".format(c.nom, c.desc, c.puissancemax, c.achat, GF.get_idmoji("spinelle"))
+#                             descCapAtt += "**{0}**\n___Achat__:_ {3} <:spinelle:{4}>`spinelles`\n___Utilisation_:__ {1}\n___Puissance max_:__ **{2}**\n\n".format(c.nom, c.desc, c.puissancemax, c.achat, "{idmoji[spinelle]}")
 #                             msg.add_field(name="• Attaque | ID: _{0}_".format(c.ID), value=descCapAtt, inline=False)
 #                         elif c.type == "defense" and (type != "attaque" and type != "attack"):
-#                             descCapDef += "**{0}**\n___Achat__:_ {3} <:spinelle:{4}>`spinelles`\n___Utilisation_:__ {1}\n___Puissance max_:__ **{2}**\n\n".format(c.nom, c.desc, c.puissancemax, c.achat, GF.get_idmoji("spinelle"))
+#                             descCapDef += "**{0}**\n___Achat__:_ {3} <:spinelle:{4}>`spinelles`\n___Utilisation_:__ {1}\n___Puissance max_:__ **{2}**\n\n".format(c.nom, c.desc, c.puissancemax, c.achat, "{idmoji[spinelle]}")
 #                             msg.add_field(name="• Defense | ID: _{0}_".format(c.ID), value=descCapDef, inline=False)
 #
 #             sql.updateComTime(ID, "market", "gems")
@@ -731,7 +706,7 @@ def bal(param):
 #                                 pourcentageA = 0
 #                     #=======================================================================================
 #                     if c.type == "consommable" or c.type == "bank":
-#                         dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji=GF.get_idmoji(c.nom))
+#                         dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
 #                         if c.type != "bank":
 #                             dmSpeciauxPrix += "\n`{}`:gem:".format(c.vente)
 #                             if pourcentageV != 0:
@@ -745,7 +720,7 @@ def bal(param):
 #                             dmSpeciauxInfo += "\n`Taille:` {}".format(c.poids)
 #                     #=======================================================================================
 #                     else:
-#                         dmOutils += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji=GF.get_idmoji(c.nom))
+#                         dmOutils += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
 #                         dmOutilsPrix += "\n`{}`:gem:".format(c.vente)
 #                         if pourcentageV != 0:
 #                             dmOutilsPrix += " _{}%_ ".format(pourcentageV)
@@ -775,7 +750,7 @@ def bal(param):
 #                                 pourcentageA = 0
 #                     #=======================================================================================
 #                     if c.type == "minerai":
-#                         dmMinerai += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji=GF.get_idmoji(c.nom))
+#                         dmMinerai += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
 #                         dmMineraiPrix += "\n`{}`:gem:".format(c.vente)
 #                         if pourcentageV != 0:
 #                             dmMineraiPrix += " _{}%_ ".format(pourcentageV)
@@ -785,7 +760,7 @@ def bal(param):
 #                         dmMineraiInfo += "\n`Poids:` {}".format(c.poids)
 #                     #=======================================================================================
 #                     elif c.type == "poisson":
-#                         dmPoisson += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji=GF.get_idmoji(c.nom))
+#                         dmPoisson += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
 #                         dmPoissonPrix += "\n`{}`:gem:".format(c.vente)
 #                         if pourcentageV != 0:
 #                             dmPoissonPrix += " _{}%_ ".format(pourcentageV)
@@ -795,7 +770,7 @@ def bal(param):
 #                         dmPoissonInfo += "\n`Poids:` {}".format(c.poids)
 #                     #=======================================================================================
 #                     elif c.type == "plante":
-#                         dmPlante += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji=GF.get_idmoji(c.nom))
+#                         dmPlante += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
 #                         dmPlantePrix += "\n`{}`:gem:".format(c.vente)
 #                         if pourcentageV != 0:
 #                             dmPlantePrix += " _{}%_ ".format(pourcentageV)
@@ -805,7 +780,7 @@ def bal(param):
 #                         dmPlanteInfo += "\n`Poids:` {}".format(c.poids)
 #                     #=======================================================================================
 #                     elif c.type == "halloween" or c.type == "christmas" or c.type == "event":
-#                         dmEvent += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji=GF.get_idmoji(c.nom))
+#                         dmEvent += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
 #                         dmEventPrix += "\n`{}`:gem:".format(c.vente)
 #                         if pourcentageV != 0:
 #                             dmEventPrix += " _{}%_ ".format(pourcentageV)
@@ -816,17 +791,17 @@ def bal(param):
 #                         dmEventInfo += "\n`Poids:` {}".format(c.poids)
 #                     #=======================================================================================
 #                     elif c.type == "spinelle":
-#                         dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji=GF.get_idmoji(c.nom))
-#                         dmSpeciauxPrix += "\n`{prix}`<:spinelle:{idmoji}>".format(prix=c.vente, idmoji=GF.get_idmoji("spinelle"))
+#                         dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
+#                         dmSpeciauxPrix += "\n`{prix}`<:spinelle:{idmoji}>".format(prix=c.vente, idmoji="{idmoji[spinelle]}")
 #                         if pourcentageV != 0:
 #                             dmSpeciauxPrix += " _{}%_ ".format(pourcentageV)
-#                         dmSpeciauxPrix += " | `{prix}`<:spinelle:{idmoji}>".format(prix=c.achat, idmoji=GF.get_idmoji("spinelle"))
+#                         dmSpeciauxPrix += " | `{prix}`<:spinelle:{idmoji}>".format(prix=c.achat, idmoji="{idmoji[spinelle]}")
 #                         if pourcentageA != 0:
 #                             dmSpeciauxPrix += " _{}%_ ".format(pourcentageA)
 #                         dmSpeciauxInfo += "\n`Poids:` {}".format(c.poids)
 #                     #=======================================================================================
 #                     elif c.type == "special":
-#                         dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji=GF.get_idmoji(c.nom))
+#                         dmSpeciaux += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
 #                         dmSpeciauxPrix += "\n`{}`:gem:".format(c.vente)
 #                         if pourcentageV != 0:
 #                             dmSpeciauxPrix += " _{}%_ ".format(pourcentageV)
@@ -846,7 +821,7 @@ def bal(param):
 #                         dmItemInfo += "\n`Poids:` {}".format(c.poids)
 #                     #=======================================================================================
 #                     else:
-#                         dmItem += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji=GF.get_idmoji(c.nom))
+#                         dmItem += "\n<:gem_{nom}:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_" + c.nom + "]}")
 #                         dmItemPrix += "\n`{}`:gem:".format(c.vente)
 #                         if pourcentageV != 0:
 #                             dmItemPrix += " _{}%_ ".format(pourcentageV)
@@ -859,12 +834,12 @@ def bal(param):
 #                 for c in GF.objetBox :
 #                     if c.achat != 0:
 #                         if c.type == "gems":
-#                             dmBox += "\n<:gem_lootbox:{idmoji}>`{nom}`".format(nom=c.nom, idmoji=GF.get_idmoji("lootbox"))
+#                             dmBox += "\n<:gem_lootbox:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[lootbox]}")
 #                             dmBoxPrix += "\n`{}`:gem:".format(c.achat)
 #                             dmBoxInfo += "\n`{} ▶ {}`:gem:`gems`".format(c.min, c.max)
 #                         elif c.type == "spinelle":
 #                             dmBox += "\n:{nom}:`{nom}`".format(nom=c.nom)
-#                             dmBoxPrix += "\n`{prix}`<:gem_spinelle:{idmoji}>".format(prix=c.achat,idmoji=GF.get_idmoji("spinelle"))
+#                             dmBoxPrix += "\n`{prix}`<:gem_spinelle:{idmoji}>".format(prix=c.achat,idmoji="{idmoji[spinelle]}")
 #                             dmBoxInfo += "\nItems en folie!"
 #
 #             if fct == None or fct == "outil" or fct == "outils":
@@ -991,20 +966,20 @@ def bal(param):
 #                         sql.add(ID, item, -nb, "inventory")
 #                         sql.add(ID_recu, item, nb, "inventory")
 #                         if checkLB:
-#                             msg = "{0} donne {1} <:gem_lootbox:{3}>`{2}` à {4} !".format(name,nb,itemLB,GF.get_idmoji(itemLB),Nom_recu)
+#                             msg = "{0} donne {1} <:gem_lootbox:{3}>`{2}` à {4} !".format(name,nb,itemLB,"{idmoji[gem_" + itemLB + "]}",Nom_recu)
 #                         else:
 #                             for c in GF.objetItem:
 #                                 if c.nom == item:
 #                                     if c.type == "emoji":
 #                                         msg = "{0} donne {1} :{2}:`{2}` à {3} !".format(name, nb, item, Nom_recu)
 #                                     else:
-#                                         msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,GF.get_idmoji(item),Nom_recu)
+#                                         msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,"{idmoji[gem_" + item + "]}",Nom_recu)
 #                             for c in GF.objetOutil:
 #                                 if c.nom == item:
 #                                     if c.type == "emoji":
 #                                         msg = "{0} donne {1} :{2}:`{2}` à {3} !".format(name, nb, item, Nom_recu)
 #                                     else:
-#                                         msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,GF.get_idmoji(item),Nom_recu)
+#                                         msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,"{idmoji[gem_" + item + "]}",Nom_recu)
 #                         # Message de réussite dans la console
 #                         print("Gems >> {0} a donné {1} {2} à {3}".format(name, nb, item, Nom_recu))
 #                     else:
@@ -1025,13 +1000,13 @@ def bal(param):
 #                                 if c.type == "emoji":
 #                                     msg = "{0} donne {1} :{2}:`{2}` à {3} !".format(name, nb, item, Nom_recu)
 #                                 else:
-#                                     msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,GF.get_idmoji(item),Nom_recu)
+#                                     msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,"{idmoji[gem_" + item + "]}",Nom_recu)
 #                         for c in GF.objetOutil:
 #                             if c.nom == item:
 #                                 if c.type == "emoji":
 #                                     msg = "{0} donne {1} :{2}:`{2}` à {3} !".format(name, nb, item, Nom_recu)
 #                                 else:
-#                                     msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,GF.get_idmoji(item),Nom_recu)
+#                                     msg = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(name,nb,item,"{idmoji[gem_" + item + "]}",Nom_recu)
 #                         # Message de réussite dans la console
 #                         print("Gems >> {0} a donné {1} {2} à {3}".format(name, nb, item, Nom_recu))
 #                     else:
@@ -1081,7 +1056,7 @@ def bal(param):
 #                                 sql.add(ID, c.item2, -1*nb2, "inventory")
 #                                 sql.add(ID, c.item3, -1*nb3, "inventory")
 #                                 sql.add(ID, c.item4, -1*nb4, "inventory")
-#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, GF.get_idmoji(c.nom))
+#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
 #                                 print("Gems >> {0} a forgé {1} {2}".format(ctx.author.name, nb, c.nom))
 #                                 Durability = sql.valueAtNumber(ID, c.nom, "durability")
 #                                 if Durability == 0:
@@ -1092,16 +1067,16 @@ def bal(param):
 #                                 msg = ""
 #                                 if sql.valueAtNumber(ID, c.item1, "inventory") < nb1:
 #                                     nbmissing = (sql.valueAtNumber(ID, c.item1, "inventory") - nb1)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, GF.get_idmoji(c.item1))
+#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
 #                                 if sql.valueAtNumber(ID, c.item2, "inventory") < nb2:
 #                                     nbmissing = (sql.valueAtNumber(ID, c.item2, "inventory") - nb2)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, GF.get_idmoji(c.item2))
+#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, "{idmoji[gem_" + c.item2 + "]}")
 #                                 if sql.valueAtNumber(ID, c.item3, "inventory") < nb3:
 #                                     nbmissing = (sql.valueAtNumber(ID, c.item3, "inventory") - nb3)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item3, GF.get_idmoji(c.item3))
+#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item3, "{idmoji[gem_" + c.item3 + "]}")
 #                                 if sql.valueAtNumber(ID, c.item4, "inventory") < nb4:
 #                                     nbmissing = (sql.valueAtNumber(ID, c.item4, "inventory") - nb4)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item4, GF.get_idmoji(c.item4))
+#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item4, "{idmoji[gem_" + c.item4 + "]}")
 #
 #                         elif c.item1 != "" and c.item2 != "" and c.item3 != "":
 #                             if sql.valueAtNumber(ID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(ID, c.item2, "inventory") >= nb2 and sql.valueAtNumber(ID, c.item3, "inventory") >= nb3:
@@ -1109,7 +1084,7 @@ def bal(param):
 #                                 sql.add(ID, c.item1, -1*nb1, "inventory")
 #                                 sql.add(ID, c.item2, -1*nb2, "inventory")
 #                                 sql.add(ID, c.item3, -1*nb3, "inventory")
-#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, GF.get_idmoji(c.nom))
+#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
 #                                 print("Gems >> {0} a forgé {1} {2}".format(ctx.author.name, nb, c.nom))
 #                                 Durability = sql.valueAtNumber(ID, c.nom, "durability")
 #                                 if Durability == 0:
@@ -1120,20 +1095,20 @@ def bal(param):
 #                                 msg = ""
 #                                 if sql.valueAtNumber(ID, c.item1, "inventory") < nb1:
 #                                     nbmissing = (sql.valueAtNumber(ID, c.item1, "inventory") - nb1)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, GF.get_idmoji(c.item1))
+#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
 #                                 if sql.valueAtNumber(ID, c.item2, "inventory") < nb2:
 #                                     nbmissing = (sql.valueAtNumber(ID, c.item2, "inventory") - nb2)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, GF.get_idmoji(c.item2))
+#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, "{idmoji[gem_" + c.item2 + "]}")
 #                                 if sql.valueAtNumber(ID, c.item3, "inventory") < nb3:
 #                                     nbmissing = (sql.valueAtNumber(ID, c.item3, "inventory") - nb3)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item3, GF.get_idmoji(c.item3))
+#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item3, "{idmoji[gem_" + c.item3 + "]}")
 #
 #                         elif c.item1 != "" and c.item2 != "":
 #                             if sql.valueAtNumber(ID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(ID, c.item2, "inventory") >= nb2:
 #                                 sql.add(ID, c.nom, nb, "inventory")
 #                                 sql.add(ID, c.item1, -1*nb1, "inventory")
 #                                 sql.add(ID, c.item2, -1*nb2, "inventory")
-#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, GF.get_idmoji(c.nom))
+#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
 #                                 print("Gems >> {0} a forgé {1} {2}".format(ctx.author.name, nb, c.nom))
 #                                 Durability = sql.valueAtNumber(ID, c.nom, "durability")
 #                                 if Durability == 0:
@@ -1144,16 +1119,16 @@ def bal(param):
 #                                 msg = ""
 #                                 if sql.valueAtNumber(ID, c.item1, "inventory") < nb1:
 #                                     nbmissing = (sql.valueAtNumber(ID, c.item1, "inventory") - nb1)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, GF.get_idmoji(c.item1))
+#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
 #                                 if sql.valueAtNumber(ID, c.item2, "inventory") < nb2:
 #                                     nbmissing = (sql.valueAtNumber(ID, c.item2, "inventory") - nb2)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, GF.get_idmoji(c.item2))
+#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, "{idmoji[gem_" + c.item2 + "]}")
 #
 #                         elif c.item1 != "":
 #                             if sql.valueAtNumber(ID, c.item1, "inventory") >= nb1:
 #                                 sql.add(ID, c.nom, nb, "inventory")
 #                                 sql.add(ID, c.item1, -1*nb1, "inventory")
-#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, GF.get_idmoji(c.nom))
+#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
 #                                 print("Gems >> {0} a forgé {1} {2}".format(ctx.author.name, nb, c.nom))
 #                                 Durability = sql.valueAtNumber(ID, c.nom, "durability")
 #                                 if Durability == 0:
@@ -1162,7 +1137,7 @@ def bal(param):
 #                                             sql.add(ID, x.nom, x.durabilite, "durability")
 #                             else:
 #                                 nbmissing = (sql.valueAtNumber(ID, c.item1, "inventory") - nb1)*-1
-#                                 msg = "Il te manque {0} <:gem_{1}:{2}>`{1}`".format(nbmissing, c.item1, GF.get_idmoji(c.item1))
+#                                 msg = "Il te manque {0} <:gem_{1}:{2}>`{1}`".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
 #                         await ctx.channel.send(msg)
 #                         return True
 #                     else:

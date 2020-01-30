@@ -53,7 +53,7 @@ while check:
         check = False
     else:
         if x == "stop server":
-            socket.send_string(gg.std_send_command("stop", "gnouf1", name_pl))
+            socket.send_string(gg.std_send_command("stop", "admin", name_pl))
         elif x in ListCommands:
             socket.send_string(gg.std_send_command(x, 129362501187010561, name_pl))
 

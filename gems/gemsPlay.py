@@ -19,6 +19,7 @@ def daily(param):
     DailyTime = sql.valueAtNumber(PlayerID, "DailyTime", "daily")
     DailyMult = sql.valueAtNumber(PlayerID, "DailyMult", "daily")
     jour = dt.date.today()
+    msg = []
     # =======================================================================
     # Détermination du daily
     # =======================================================================
@@ -34,21 +35,23 @@ def daily(param):
             bonus = 125
         gain = 100 + bonus*DailyMult
         sql.addGems(PlayerID, gain)
-        msg = "Récompense journalière! Tu as gagné 100:gem:`gems`"
-        msg += "\nNouvelle série: `{}`, Bonus: {} :gem:`gems`".format(DailyMult, bonus*DailyMult)
+        desc = "Récompense journalière! Tu as gagné 100:gem:`gems`"
+        desc += "\nNouvelle série: `{}`, Bonus: {} :gem:`gems`".format(DailyMult, bonus*DailyMult)
         lvl.addxp(PlayerID, 10*(DailyMult/2), "gems")
         if DailyMult % 30 == 0:
             m = (DailyMult//30)*5
             sql.addSpinelles(PlayerID, m)
-            msg += "\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}<:spinelle:{2}>`spinelles`".format(DailyMult, m, GF.get_idmoji("spinelle"))
+            desc += "\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}<:spinelle:{2}>`spinelles`".format(DailyMult, m, GF.get_idmoji("spinelle"))
 
     elif DailyTime == str(jour):
-        msg = "Tu as déja reçu ta récompense journalière aujourd'hui. Reviens demain pour gagner plus de :gem:`gems`"
+        desc = "Tu as déja reçu ta récompense journalière aujourd'hui. Reviens demain pour gagner plus de :gem:`gems`"
     else:
         sql.add(PlayerID, "DailyMult", 1, "daily")
         sql.add(PlayerID, "DailyTime", str(jour), "daily")
-        msg = "Récompense journalière! Tu as gagné 100 :gem:`gems`"
+        desc = "Récompense journalière! Tu as gagné 100 :gem:`gems`"
         lvl.addxp(PlayerID, 10, "gems")
+    msg.append("OK")
+    msg.append(desc)
     return msg
 
 
@@ -209,6 +212,7 @@ def stealing(param):
     if ID == "Error 404":
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
     if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems") and name is not None:
         ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name), param["name_pl"]))
         # Calcul du pourcentage
@@ -223,20 +227,20 @@ def stealing(param):
             if r.randint(0, 9) == 0:
                 sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
                 if int(sql.addGems(PlayerID, int(gain/4))) >= 100:
-                    msg = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de **{}** :gem:`gems`".format(int(gain/4))
+                    desc = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de **{}** :gem:`gems`".format(int(gain/4))
                 else:
                     sql.updateField(PlayerID, "gems", 100, "gems")
-                    msg = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer l'intégralité de l'amende! Votre compte est maintenant de 100 :gem:`gems`"
+                    desc = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer l'intégralité de l'amende! Votre compte est maintenant de 100 :gem:`gems`"
             else:
                 sql.addGems(PlayerID, gain)
                 sql.addGems(ID_Vol, -gain)
                 # Message
-                msg = "Tu viens de voler {n} :gem:`gems` à {nom}".format(n=gain, nom=name)
+                desc = "Tu viens de voler {n} :gem:`gems` à {nom}".format(n=gain, nom=name)
                 print("Gems >> PlayerID {author} viens de voler {n} gems à {nom}".format(n=gain, nom=ID_Vol, author=PlayerID))
             sql.updateComTime(PlayerID, "stealing", "gems")
             lvl.addxp(PlayerID, 1, "gems")
         except:
-            msg = "Ce joueur est introuvable!"
+            desc = "Ce joueur est introuvable!"
     else:
         ComTime = sql.valueAtNumber(PlayerID, "stealing", "gems_com_time")
         time = float(ComTime) - (t.time()-GF.couldown_14h)
@@ -244,9 +248,11 @@ def stealing(param):
         time = time - timeH * 3600
         timeM = int(time / 60)
         timeS = int(time - timeM * 60)
-        msg = "Il te faut attendre :clock2:`{}h {}m {}s` avant de pourvoir voler des :gem:`gems` à nouveau!".format(timeH, timeM, timeS)
+        desc = "Il te faut attendre :clock2:`{}h {}m {}s` avant de pourvoir voler des :gem:`gems` à nouveau!".format(timeH, timeM, timeS)
         if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems"):
-            msg = "Tu peux voler des :gem:`gems`"
+            desc = "Tu peux voler des :gem:`gems`"
+    msg.append("OK")
+    msg.append(desc)
     return msg
 
 
@@ -256,28 +262,29 @@ def crime(param):
     if ID == "Error 404":
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
     if sql.spam(PlayerID, GF.couldown_6s, "crime", "gems"):
         # si 10 sec c'est écoulé depuis alors on peut en  faire une nouvelle
         if r.randint(0, 9) == 0:
             sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
             if int(sql.addGems(PlayerID, -10)) >= 0:
-                msg = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de 10 :gem:`gems`"
+                desc = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de 10 :gem:`gems`"
             else:
-                msg = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer une amende"
+                desc = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer une amende"
         else:
             gain = r.randint(2, 8)
             jour = dt.date.today()
             if (jour.month == 10 and jour.day >= 23) or (jour.month == 11 and jour.day <= 10): # Special Halloween
-                msg = "**Halloween** | Des bonbons ou un sort ?\n"
-                msg += GF.message_crime[r.randint(0, 3)]+" "+str(gain)
+                desc = "**Halloween** | Des bonbons ou un sort ?\n"
+                desc += GF.message_crime[r.randint(0, 3)]+" "+str(gain)
                 if r.randint(0, 1) == 0:
-                    msg += " :candy:`candy`"
+                    desc += " :candy:`candy`"
                     sql.add(PlayerID, "candy", gain, "inventory")
                 else:
-                    msg += " :lollipop:`lollipop`"
+                    desc += " :lollipop:`lollipop`"
                     sql.add(PlayerID, "lollipop", gain, "inventory")
             else:
-                msg = "{1} {0} :gem:`gems`".format(gain, GF.message_crime[r.randint(0, 3)])
+                desc = "{1} {0} :gem:`gems`".format(gain, GF.message_crime[r.randint(0, 3)])
                 sql.addGems(PlayerID, gain)
                 try:
                     sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, param["name_pl"])), -gain) # Vole l'équivalent du crime au bot
@@ -287,14 +294,17 @@ def crime(param):
                     if r.randint(0, 10) == 0:
                         nbgift = r.randint(1, 3)
                         sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
-                        msg += "\n\nTu as trouvé {} :gift:`cadeau de Noël (gift)`".format(nbgift)
+                        desc += "\n\nTu as trouvé {} :gift:`cadeau de Noël (gift)`".format(nbgift)
                 elif (jour.month == 12 and jour.day >= 30) or (jour.month == 1 and jour.day <= 2):
                     if r.randint(0, 10) == 0:
                         nbgift = r.randint(1, 3)
                         sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
-                        msg += "\n\nTu as trouvé {} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:".format(nbgift)
+                        desc += "\n\nTu as trouvé {} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:".format(nbgift)
         sql.updateComTime(PlayerID, "crime", "gems")
         lvl.addxp(PlayerID, 1, "gems")
+        msg.append("OK")
     else:
-        msg = "Il faut attendre "+str(GF.couldown_6s)+" secondes entre chaque commande !"
+        desc = "Il faut attendre "+str(GF.couldown_6s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+    msg.append(desc)
     return msg

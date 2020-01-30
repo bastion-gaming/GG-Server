@@ -7,7 +7,7 @@ from gems import gemsItems as GI, gemsStats as GS
 idBaBot = 604776153458278415
 idGetGems = 620558080551157770
 
-WarningMsg = ["Error", "Aucun compte utilisateur n'a été trouvé"]
+WarningMsg = [["Langue", "Error"], ["FR", "Aucun compte utilisateur n'a été trouvé"]]
 
 
 def checkDB_Guilde():
