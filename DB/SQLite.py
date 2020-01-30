@@ -380,7 +380,7 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
             for x in nameDBexcept:
                 if x == nameDB:
                     if x == "inventory":
-                        script = "UPDATE {0} SET Stock = '{2}' WHERE Item = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID)
+                        script = "UPDATE {0} SET Stock = '{2}' WHERE Item = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
                     elif x == "trophy" or x == "statgems":
                         script = "UPDATE {0} SET Stock = '{2}' WHERE Nom = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
                     elif x == "durability":

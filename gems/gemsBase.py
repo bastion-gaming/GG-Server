@@ -26,6 +26,7 @@ def bal(param):
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
+        msg.append("OK")
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         desc = "{} :gem:`gems`\n".format(solde)
         soldeSpinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
@@ -43,7 +44,8 @@ def bal(param):
         # Message de réussite dans la console
         print("Gems >> Balance de {} affichée".format(PlayerID))
     else:
-        msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+        msg.append("Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !")
     return msg
 
 
@@ -110,151 +112,135 @@ def baltop(param):
     return msg
 
 
-# @commands.command(pass_context=True)
-# async def buy (self, ctx,item,nb = 1):
-#     """**[item] [nombre]** | Permet d'acheter les items vendus au marché"""
-#     ID = ctx.author.id
-#     jour = dt.date.today()
-#     if sql.spam(ID,GF.couldown_4s, "buy", "gems"):
-#         if int(nb) < 0:
-#             sql.addGems(ID, -100)
-#             lvl.addxp(ID, -10, "gems")
-#             msg = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
-#             slq.add(ID, "DiscordCop Amende", 1, "statgems")
-#             await ctx.channel.send(msg)
-#             return "anticheat"
-#         elif item == "capability" or item == "capabilities" or item == "capacité" or item == "capacités" or item == "aptitude" or item == "aptitudes":
-#             IDCap = nb
-#             CapList = sql.valueAt(ID, "all", "capability")
-#             check = False
-#             for c in GF.objetCapability:
-#                 if IDCap == c.ID:
-#                     check = True
-#                     prix = c.achat
-#                     mygems = sql.valueAtNumber(ID, "spinelles", "gems")
-#                     for one in CapList:
-#                         if str(one[0]) == "{}".format(c.ID):
-#                             await ctx.channel.send("Tu pocèdes déjà cette aptitude!")
-#                             return False
-#                     if mygems >= prix:
-#                         CapList.append("{}".format(c.ID))
-#                         sql.add(ID, IDCap, 1, "capability")
-#                         sql.addSpinelles(ID, -prix)
-#                         msg = "Tu viens d'acquérir l'aptitude **{0}** !".format(c.nom)
-#                     else:
-#                         msg = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de <:spinelle:{}>`spinelles` en banque".format(GF.get_idmoji("spinelle"))
-#             if not check:
-#                 msg = "Désolé, nous ne pouvons pas executer cet achat, cette aptitude n'est pas vendu au marché"
-#         elif GF.testInvTaille(ID) or item == "backpack" or item == "hyperpack" or item == "bank_upgrade":
-#             test = True
-#             nb = int(nb)
-#             solde = sql.valueAtNumber(ID, "gems", "gems")
-#             soldeSpinelles = sql.valueAtNumber(ID, "spinelles", "gems")
-#             for c in GF.objetItem :
-#                 if item == c.nom :
-#                     test = False
-#                     check = False
-#                     if c.achat != 0:
-#                         prix = (c.achat*nb)
-#                         if c.type != "spinelle":
-#                             if solde >= prix:
-#                                 sql.addGems(ID, -prix)
-#                                 check = True
-#                             argent = ":gem:`gems`"
-#                         else:
-#                             if soldeSpinelles >= prix:
-#                                 sql.addSpinelles(ID, -prix)
-#                                 check = True
-#                             argent = "<:spinelle:{}>`spinelles`".format(GF.get_idmoji("spinelle"))
-#                         if check:
-#                             sql.add(ID, c.nom, nb, "inventory")
-#                             if c.type != "emoji":
-#                                 msg = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, GF.get_idmoji(c.nom))
-#                             else:
-#                                 msg = "Tu viens d'acquérir {0} :{1}:`{1}` !".format(nb, c.nom)
-#                             # Message de réussite dans la console
-#                             print("Gems >> {} a acheté {} {}".format(ctx.author.name,nb,item))
-#                         else :
-#                             msg = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {} en banque".format(argent)
-#                     else:
-#                         msg = "Désolé, nous ne pouvons pas executer cet achat, cette item n'est pas vendu au marché"
-#                     break
-#             for c in GF.objetOutil :
-#                 if item == c.nom :
-#                     test = False
-#                     check = False
-#                     if c.type == "bank":
-#                         soldeMax = sql.valueAtNumber(ID, "SoldeMax", "bank")
-#                         if soldeMax == 0:
-#                             soldeMax = c.poids
-#                             sql.add(ID, "soldeMax", c.poids, "bank")
-#                         soldeMult = soldeMax/c.poids
-#                         prix = 0
-#                         i = 1
-#                         while i <= nb:
-#                             prix += c.achat*soldeMult
-#                             soldeMult+=1
-#                             i+=1
-#                         prix = int(prix)
-#                     else:
-#                         prix = c.achat*nb
-#                     if c.type != "spinelle":
-#                         if solde >= prix:
-#                             sql.addGems(ID, -prix)
-#                             check = True
-#                         argent = ":gem:`gems`"
-#                     else:
-#                         if soldeSpinelles >= prix:
-#                             sql.addSpinelles(ID, -prix)
-#                             check = True
-#                         argent = "<:spinelle:{}>`spinelles`".format(GF.get_idmoji("spinelle"))
-#                     if check:
-#                         if c.type == "bank":
-#                             sql.add(ID, "SoldeMax", nb*c.poids, "bank")
-#                             msg = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, GF.get_idmoji(c.nom))
-#                             # Message de réussite dans la console
-#                             print("Gems >> {} a acheté {} {}".format(ctx.author.name,nb,item))
-#                             await ctx.channel.send(msg)
-#                             return
-#                         else:
-#                             sql.add(ID, c.nom, nb, "inventory")
-#                             msg = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, GF.get_idmoji(c.nom))
-#                             if c.nom != "bank_upgrade":
-#                                 if sql.valueAtNumber(ID, c.nom, "durability") == 0:
-#                                     sql.add(ID, c.nom, c.durabilite, "durability")
-#                     else :
-#                         msg = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {} en banque".format(argent)
-#                     break
-#             for c in GF.objetBox :
-#                 if item == "lootbox_{}".format(c.nom) or item == c.nom:
-#                     if c.nom != "gift_heart":
-#                         test = False
-#                         prix = 0 - (c.achat*nb)
-#                         if c.type == "gems" and sql.addGems(ID, prix) >= "0":
-#                             sql.add(ID, "lootbox_{}".format(c.nom), nb, "inventory")
-#                             msg = "Tu viens d'acquérir {0} <:gem_lootbox:630698430313922580>`{1}` !".format(nb, c.titre)
-#                             # Message de réussite dans la console
-#                             print("Gems >> {} a acheté {} Loot Box {}".format(ctx.author.name,nb,c.nom))
-#                         elif c.type == "spinelle" and sql.addSpinelles(ID, prix) >= "0":
-#                             sql.add(ID, "lootbox_{}".format(c.nom), nb, "inventory")
-#                             msg = "Tu viens d'acquérir {nb} :{nom}:`{nom}` !".format(nb=nb, nom=c.titre)
-#                             # Message de réussite dans la console
-#                             print("Gems >> {} a acheté {} Loot Box {}".format(ctx.author.name,nb,c.nom))
-#                         else :
-#                             msg = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de :gem:`gems` en banque"
-#                         break
-#             if test :
-#                 msg = "Cet item n'est pas vendu au marché !"
-#
-#             sql.updateComTime(ID, "buy", "gems")
-#         else:
-#             msg = "Ton inventaire est plein"
-#     else:
-#         msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
-#     await ctx.channel.send(msg)
-#
-#
-#
+def buy(param):
+    """**[item] [nombre]** | Permet d'acheter les items vendus au marché"""
+    nb = param["nb"]
+    item = param["item"]
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+
+    if sql.spam(PlayerID, GF.couldown_4s, "buy", "gems"):
+        if int(nb) < 0:
+            sql.addGems(PlayerID, -100)
+            lvl.addxp(PlayerID, -10, "gems")
+            desc = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
+            sql.add(PlayerID, "DiscordCop Amende", 1, "statgems")
+            msg.append("anticheat")
+            msg.append(desc)
+            return msg
+
+        elif GF.testInvTaille(PlayerID) or item == "backpack" or item == "hyperpack" or item == "bank_upgrade":
+            test = True
+            nb = int(nb)
+            solde = sql.valueAtNumber(PlayerID, "gems", "gems")
+            soldeSpinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
+            for c in GF.objetItem :
+                if item == c.nom :
+                    test = False
+                    check = False
+                    if c.achat != 0:
+                        prix = (c.achat*nb)
+                        if c.type != "spinelle":
+                            if solde >= prix:
+                                sql.addGems(PlayerID, -prix)
+                                check = True
+                            argent = ":gem:`gems`"
+                        else:
+                            if soldeSpinelles >= prix:
+                                sql.addSpinelles(PlayerID, -prix)
+                                check = True
+                            argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
+                        if check:
+                            sql.add(ID, c.nom, nb, "inventory")
+                            if c.type != "emoji":
+                                desc = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                            else:
+                                desc = "Tu viens d'acquérir {0} :{1}:`{1}` !".format(nb, c.nom)
+                        else :
+                            desc = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {} en banque".format(argent)
+                    else:
+                        desc = "Désolé, nous ne pouvons pas executer cet achat, cette item n'est pas vendu au marché"
+                    break
+            for c in GF.objetOutil :
+                if item == c.nom :
+                    test = False
+                    check = False
+                    if c.type == "bank":
+                        soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
+                        if soldeMax == 0:
+                            soldeMax = c.poids
+                            sql.add(PlayerID, "soldeMax", c.poids, "bank")
+                        soldeMult = soldeMax/c.poids
+                        prix = 0
+                        i = 1
+                        while i <= nb:
+                            prix += c.achat*soldeMult
+                            soldeMult += 1
+                            i += 1
+                        prix = int(prix)
+                    else:
+                        prix = c.achat*nb
+                    if c.type != "spinelle":
+                        if solde >= prix:
+                            sql.addGems(PlayerID, -prix)
+                            check = True
+                        argent = ":gem:`gems`"
+                    else:
+                        if soldeSpinelles >= prix:
+                            sql.addSpinelles(PlayerID, -prix)
+                            check = True
+                        argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
+                    if check:
+                        if c.type == "bank":
+                            sql.add(PlayerID, "SoldeMax", nb*c.poids, "bank")
+                            desc = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                            msg.append("bank")
+                            msg.append(desc)
+                            return msg
+                        else:
+                            sql.add(PlayerID, c.nom, nb, "inventory")
+                            desc = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                            if c.nom != "bank_upgrade":
+                                if sql.valueAtNumber(PlayerID, c.nom, "durability") == 0:
+                                    sql.add(PlayerID, c.nom, c.durabilite, "durability")
+                    else :
+                        desc = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {} en banque".format(argent)
+                    break
+            for c in GF.objetBox :
+                if item == "lootbox_{}".format(c.nom) or item == c.nom:
+                    if c.nom != "gift_heart":
+                        test = False
+                        prix = 0 - (c.achat*nb)
+                        if c.type == "gems" and sql.addGems(PlayerID, prix) >= "0":
+                            sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
+                            desc = "Tu viens d'acquérir {0} <:gem_lootbox:630698430313922580>`{1}` !".format(nb, c.titre)
+                        elif c.type == "spinelle" and sql.addSpinelles(PlayerID, prix) >= "0":
+                            sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
+                            desc = "Tu viens d'acquérir {nb} :{nom}:`{nom}` !".format(nb=nb, nom=c.titre)
+                        else :
+                            desc = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de :gem:`gems` en banque"
+                        break
+            if test :
+                desc = "Cet item n'est pas vendu au marché !"
+                msg.append("NOK")
+            else:
+                msg.append("OK")
+            msg.append(desc)
+
+            sql.updateComTime(PlayerID, "buy", "gems")
+        else:
+            desc = "Ton inventaire est plein"
+            msg.append("NOK")
+            msg.append(desc)
+    else:
+        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+        msg.append(desc)
+    return msg
+
 # @commands.command(pass_context=True)
 # async def sell (self, ctx,item,nb = 1):
 #     """**[item] [nombre]** | Permet de vendre vos items !"""
