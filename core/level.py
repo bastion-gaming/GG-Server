@@ -21,6 +21,7 @@ def checklevel(ID):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     # print(PlayerID)
+    msg = []
     try:
         lvl = sql.valueAtNumber(PlayerID, "lvl", "gems")
         xp = sql.valueAtNumber(PlayerID, "xp", "gems")
@@ -28,7 +29,7 @@ def checklevel(ID):
         desc = ""
         if xp >= palier:
             sql.updateField(PlayerID, "lvl", lvl+1, "gems")
-            desc = ":tada: {1} a atteint le niveau **{0}**".format(lvl+1, "{PlayerName}")
+            desc = "a atteint le niveau **{0}**".format(lvl+1)
 
             nbS = lvl // 5
             nbG = lvl % 5
@@ -39,10 +40,15 @@ def checklevel(ID):
                 nbG = nbG * 50000
                 sql.addGems(PlayerID, nbG)
                 desc += "\nTu gagne {} :gem:`gems`".format(nbG)
-        return desc
+            msg.append("Level UP")
+        else:
+            msg.append("Level OK")
+        msg.append(desc)
     except:
-        print("Le joueur n'existe pas.")
-        return ""
+        print("Level >> Le joueur n'existe pas.")
+        msg.append("Level NOK")
+        msg.append("Le joueur n'existe pas")
+    return msg
 
 
 def lvlPalier(lvl):
