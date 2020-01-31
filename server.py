@@ -62,4 +62,4 @@ while check:
             socket.send_string(gg.std_answer_command(retDict["name_c"], retDict["name_p"], retDict["name_pl"], retDict["reponse"]))
 
         else:
-            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "Commande non reconnu"))
+            socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], ["404", "Commande non reconnu"]))

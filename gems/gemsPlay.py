@@ -3,7 +3,7 @@ import time as t
 import datetime as dt
 from DB import SQLite as sql
 import sqlite3
-from gems import gemsFonctions as GF
+from gems import gemsFonctions as GF, gemsEvent as GE
 from core import level as lvl
 
 
@@ -180,21 +180,11 @@ def bank(param):
                 desc += "Plafond de {} :gem:`gems` du compte épargne atteint\nTon épargne a été tranférée sur ton compte principal\n\n".format(soldeMax)
             desc += "Nouveau solde: {} :gem:`gems`".format(sql.valueAtNumber(PlayerID, "Solde", "bank"))
 
-            D = r.randint(0, 20)
-            if D == 20 or D == 0:
-                sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
-                desc += "\nTu as trouvé une **Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir"
-            elif D >= 9 and D <= 11:
-                sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
-                desc += "\nTu as trouvé une **Loot Box Gems Common**! Utilise la commande `boxes open commongems` pour l'ouvrir"
-            elif (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):
-                nbgift = 1
-                sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
-                desc += "\n\nTu as trouvé {} :gift:`cadeau de Noël (gift)`".format(nbgift)
-            elif (jour.month == 12 and jour.day >= 30) or (jour.month == 1 and jour.day <= 2):
-                nbgift = 1
-                sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
-                desc += "\n\nTu as trouvé {} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:".format(nbgift)
+            # =====================================
+            # Bonus
+            # =====================================
+            desc += GE.lootbox(PlayerID)
+            desc += GE.gift(PlayerID)
 
             try:
                 sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")), int(soldeTaxe[0]))
@@ -300,16 +290,7 @@ def crime(param):
                     sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, param["name_pl"])), -gain) # Vole l'équivalent du crime au bot
                 except sqlite3.OperationalError:
                     pass
-                if (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):
-                    if r.randint(0, 10) == 0:
-                        nbgift = r.randint(1, 3)
-                        sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
-                        desc += "\n\nTu as trouvé {} :gift:`cadeau de Noël (gift)`".format(nbgift)
-                elif (jour.month == 12 and jour.day >= 30) or (jour.month == 1 and jour.day <= 2):
-                    if r.randint(0, 10) == 0:
-                        nbgift = r.randint(1, 3)
-                        sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
-                        desc += "\n\nTu as trouvé {} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:".format(nbgift)
+                desc += GE.gift(PlayerID)
         sql.updateComTime(PlayerID, "crime", "gems")
         lvl.addxp(PlayerID, 1, "gems")
         msg.append("OK")
@@ -366,16 +347,10 @@ def gamble(param):
                     sql.add(PlayerID, "Hyper Gamble Jackpot", 1, "trophy")
                     desc += "\nFélicitation! Tu as l'ame d'un parieur, nous t'offrons le prix :trophy::trophy::trophy:`Hyper Gamble Jackpot`."
                 sql.addGems(PlayerID, gain)
-                D = r.randint(0, 20)
-                if D == 0:
-                    sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
-                    desc += "\nTu as trouvé une **Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir"
-                elif D >= 19:
-                    sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
-                    desc += "\nTu as trouvé une **Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir"
-                elif D >= 8 and D <= 12:
-                    sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
-                    desc += "\nTu as trouvé une **Loot Box Gems Common**! Utilise la commande `boxes open commongems` pour l'ouvrir"
+                # =====================================
+                # Bonus
+                # =====================================
+                desc += GE.lootbox(PlayerID)
             else:
                 val = 0-valeur
                 sql.addGems(PlayerID, val)
@@ -394,5 +369,310 @@ def gamble(param):
     else:
         desc = "La valeur rentré est incorrect"
         msg.append("NOK")
+    msg.append(desc)
+    return msg
+
+
+def mine(param):
+    """Minez compagnons !!"""
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+    nbMax = 0
+    desc = ""
+
+    if sql.spam(PlayerID, GF.couldown_6s, "mine", "gems"):
+        if GF.testInvTaille(PlayerID):
+            # =====================================
+            # Détection du meilleur outil
+            # =====================================
+            if sql.valueAtNumber(PlayerID, "diamond_pickaxe", "inventory") >= 1:
+                nbMax = 800
+                outil = "diamond_pickaxe"
+                mult = 5
+
+            elif sql.valueAtNumber(PlayerID, "iron_pickaxe", "inventory") >= 1:
+                nbMax = 300
+                outil = "iron_pickaxe"
+                mult = 2
+
+            elif sql.valueAtNumber(PlayerID, "pickaxe", "inventory") >= 1:
+                nbMax = 100
+                outil = "pickaxe"
+                mult = 1
+
+            nbrand = r.randint(1, nbMax)
+            add_item = ""
+            if nbMax != 0:
+                # =====================================
+                # Gestion de la durabilité de l'outil
+                # =====================================
+                Durability = sql.valueAtNumber(PlayerID, outil, "durability")
+                if Durability == 0:
+                    sql.add(PlayerID, outil, -1, "inventory")
+                    if sql.valueAtNumber(PlayerID, outil, "inventory") > 1:
+                        for c in GF.objetOutil:
+                            if c.nom == outil:
+                                sql.add(PlayerID, c.nom, c.durabilite, "durability")
+                    desc = "Pas de chance tu as cassé ta <:gem_{nom}:{idmoji}>`{nom}` !".format(nom = outil, idmoji = "{idmoji[gem_" + outil + "]}")
+                    msg.append("OK")
+                    msg.append(desc)
+                    return msg
+                else :
+                    sql.add(PlayerID, outil, -1, "durability")
+
+                # =====================================
+                # Gestion des résultats
+                # =====================================
+                print(nbrand)
+                if mult > 1:
+                    if nbrand <= int(nbMax*(0.01)):
+                        add_item = "ruby"
+                        nbrand = r.randint(0, 1)
+                    elif nbrand <= int(nbMax*(0.05)):
+                        add_item = "emerald"
+                        nbrand = r.randint(0, 2)
+                    elif nbrand <= int(nbMax*(0.10)):
+                        add_item = "diamond"
+                        nbrand = r.randint(0, 3)
+                    elif nbrand <= int(nbMax*(0.25)):
+                        add_item = "gold"
+                        nbrand = r.randint(0, 5)
+                    elif nbrand <= int(nbMax*(0.50)):
+                        add_item = "iron"
+                        nbrand = r.randint(1, 8)
+                    else:
+                        add_item = "cobblestone"
+                        nbrand = r.randint(1, 40)
+                else:
+                    if nbrand <= int(nbMax*(0.50)):
+                        add_item = "iron"
+                        nbrand = r.randint(1, 6)
+                    else:
+                        add_item = "cobblestone"
+                        nbrand = r.randint(1, 40)
+
+                if nbrand != 0:
+                    sql.add(PlayerID, add_item, nbrand*mult, "inventory")
+                    desc = "Tu as obtenu {nb} <:gem_{item}:{idmoji}>`{item}`".format(nb = nbrand*mult, item = add_item, idmoji = "{idmoji[gem_" + add_item + "]}")
+                if add_item != "cobblestone":
+                    nbcobble = r.randint(1, 32)
+                    sql.add(PlayerID, "cobblestone", nbcobble*mult, "inventory")
+                    desc += "\nTu as obtenu {} bloc de <:gem_cobblestone:{}>`cobblestone`".format(nbcobble*mult, "{idmoji[gem_cobblestone]}")
+
+                # =====================================
+                # Bonus
+                # =====================================
+                desc += GE.lootbox(PlayerID)
+                desc += GE.gift(PlayerID)
+
+            else:
+                desc = "Il faut acheter ou forger une pioche pour miner!"
+
+            sql.updateComTime(PlayerID, "mine", "gems")
+            lvl.addxp(PlayerID, 1, "gems")
+            msg.append("OK")
+        else:
+            desc = "Ton inventaire est plein"
+            msg.append("NOK")
+    else:
+        desc = "Il faut attendre " + str(GF.couldown_6s) + " secondes entre chaque commande !"
+        msg.append("couldown")
+    msg.append(desc)
+    return msg
+
+
+def dig(param):
+    """Creusons compagnons !!"""
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+    nbMax = 0
+    desc = ""
+
+    if sql.spam(PlayerID, GF.couldown_6s, "dig", "gems"):
+        if GF.testInvTaille(PlayerID):
+            # =====================================
+            # Détection du meilleur outil
+            # =====================================
+            if sql.valueAtNumber(PlayerID, "diamond_shovel", "inventory") >= 1:
+                nbMax = 400
+                outil = "diamond_shovel"
+                mult = 5
+
+            elif sql.valueAtNumber(PlayerID, "iron_shovel", "inventory") >= 1:
+                nbMax = 200
+                outil = "iron_shovel"
+                mult = 2
+
+            elif sql.valueAtNumber(PlayerID, "shovel", "inventory") >= 1:
+                nbMax = 100
+                outil = "shovel"
+                mult = 1
+
+            nbrand = r.randint(1, nbMax)
+            add_item = ""
+            if nbMax != 0:
+                # =====================================
+                # Gestion de la durabilité de l'outil
+                # =====================================
+                Durability = sql.valueAtNumber(PlayerID, outil, "durability")
+                if Durability == 0:
+                    sql.add(PlayerID, outil, -1, "inventory")
+                    if sql.valueAtNumber(PlayerID, outil, "inventory") > 1:
+                        for c in GF.objetOutil:
+                            if c.nom == outil:
+                                sql.add(PlayerID, c.nom, c.durabilite, "durability")
+                    desc = "Pas de chance tu as cassé ta <:gem_{nom}:{idmoji}>`{nom}` !".format(nom = outil, idmoji = "{idmoji[gem_" + outil + "]}")
+                    msg.append("OK")
+                    msg.append(desc)
+                    return msg
+                else :
+                    sql.add(PlayerID, outil, -1, "durability")
+
+                # =====================================
+                # Gestion des résultats
+                # =====================================
+                print(nbrand)
+                if nbrand <= int(nbMax*(0.25)):
+                    add_item = "cacao"
+                    nbrand = r.randint(0, 3)
+                elif nbrand <= int(nbMax*(0.65)):
+                    add_item = "seed"
+                    nbrand = r.randint(0, 6)
+                elif nbrand <= int(nbMax*(0.80)):
+                    add_item = "potato"
+                    nbrand = r.randint(2, 5)
+                else:
+                    nbrand = 0
+
+                if nbrand != 0:
+                    sql.add(PlayerID, add_item, nbrand*mult, "inventory")
+                    desc = "Tu as obtenu {nb} <:gem_{item}:{idmoji}>`{item}`".format(nb = nbrand*mult, item = add_item, idmoji = "{idmoji[gem_" + add_item + "]}")
+                else:
+                    desc = "Tu as creusé toute la journée pour ne trouver que de la terre."
+
+                # =====================================
+                # Bonus
+                # =====================================
+                desc += GE.lootbox(PlayerID)
+                desc += GE.gift(PlayerID)
+
+            else:
+                desc = "Il faut acheter ou forger une pelle pour creuser!"
+
+            sql.updateComTime(PlayerID, "dig", "gems")
+            lvl.addxp(PlayerID, 1, "gems")
+            msg.append("OK")
+        else:
+            desc = "Ton inventaire est plein"
+            msg.append("NOK")
+    else:
+        desc = "Il faut attendre " + str(GF.couldown_6s) + " secondes entre chaque commande !"
+        msg.append("couldown")
+    msg.append(desc)
+    return msg
+
+
+def fish(param):
+    """Péchons compagnons !!"""
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+    nbMax = 0
+    desc = ""
+
+    if sql.spam(PlayerID, GF.couldown_6s, "fish", "gems"):
+        if GF.testInvTaille(PlayerID):
+            # =====================================
+            # Détection du meilleur outil
+            # =====================================
+            if sql.valueAtNumber(PlayerID, "fishingrod", "inventory") >= 1:
+                nbMax = 100
+                outil = "fishingrod"
+                nbfishhook = sql.valueAtNumber(PlayerID, "fishhook", "inventory")
+                if nbfishhook >= 1:
+                    mult = r.randint(-1, 5)
+                    if mult < 2:
+                        mult = 2
+                    sql.add(PlayerID, "fishhook", -1, "inventory")
+                else:
+                    mult = 1
+
+            nbrand = r.randint(1, nbMax)
+            add_item = ""
+            if nbMax != 0:
+                # =====================================
+                # Gestion de la durabilité de l'outil
+                # =====================================
+                Durability = sql.valueAtNumber(PlayerID, outil, "durability")
+                if Durability == 0:
+                    sql.add(PlayerID, outil, -1, "inventory")
+                    if sql.valueAtNumber(PlayerID, outil, "inventory") > 1:
+                        for c in GF.objetOutil:
+                            if c.nom == outil:
+                                sql.add(PlayerID, c.nom, c.durabilite, "durability")
+                    desc = "Pas de chance tu as cassé ta <:gem_{nom}:{idmoji}>`{nom}` !".format(nom = outil, idmoji = "{idmoji[gem_" + outil + "]}")
+                    msg.append("OK")
+                    msg.append(desc)
+                    return msg
+                else :
+                    sql.add(PlayerID, outil, -1, "durability")
+
+                # =====================================
+                # Gestion des résultats
+                # =====================================
+                print(nbrand)
+                if nbrand <= int(nbMax*(0.10)):
+                    add_item = "octopus"
+                    nbrand = r.randint(0, 1)
+                elif nbrand <= int(nbMax*(0.25)):
+                    add_item = "blowfish"
+                    nbrand = r.randint(1, 4)
+                elif nbrand <= int(nbMax*(0.40)):
+                    add_item = "tropicalfish"
+                    nbrand = r.randint(1, 4)
+                elif nbrand <= int(nbMax*(0.90)):
+                    add_item = "fish"
+                    nbrand = r.randint(1, 16)
+                else:
+                    nbrand = 0
+
+                if nbrand != 0:
+                    sql.add(PlayerID, add_item, nbrand*mult, "inventory")
+                    desc = "Tu as obtenu {nb} <:gem_{item}:{idmoji}>`{item}`".format(nb = nbrand*mult, item = add_item, idmoji = "{idmoji[gem_" + add_item + "]}")
+                    if add_item != "fish":
+                        nb = r.randint(1, 16)
+                        sql.add(PlayerID, "fish", nb*mult, "inventory")
+                        desc += "\nTu as obtenu {} <:gem_fish:{}>`fish`".format(nb*mult, "{idmoji[gem_fish]}")
+                else:
+                    desc = "Pas de poisson pour toi aujourd'hui :cry:"
+                    if mult >= 2:
+                        sql.add(PlayerID, "fishhook", 1, "inventory")
+
+                # =====================================
+                # Bonus
+                # =====================================
+                desc += GE.lootbox(PlayerID)
+                desc += GE.gift(PlayerID)
+
+            else:
+                desc = "Il te faut une <:gem_fishingrod:{}>`fishingrod` pour pécher, tu en trouvera une au marché !".format("{idmoji[fishingrod]}")
+
+            sql.updateComTime(PlayerID, "fish", "gems")
+            lvl.addxp(PlayerID, 1, "gems")
+            msg.append("OK")
+        else:
+            desc = "Ton inventaire est plein"
+            msg.append("NOK")
+    else:
+        desc = "Il faut attendre " + str(GF.couldown_6s) + " secondes entre chaque commande !"
+        msg.append("couldown")
     msg.append(desc)
     return msg

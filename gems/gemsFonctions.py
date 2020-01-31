@@ -226,7 +226,6 @@ def loadItem(F = None):
     , Outil("iron_shovel", itemBourse("iron_shovel", "vente"), itemBourse("iron_shovel", "achat"), 60, 100, "forge")
     , Outil("diamond_shovel", itemBourse("diamond_shovel", "vente"), itemBourse("diamond_shovel", "achat"), 120, 240, "forge")
     , Outil("fishingrod", itemBourse("fishingrod", "vente"), itemBourse("fishingrod", "achat"), 25, 100, "")
-    , Outil("sword", itemBourse("sword", "vente"), itemBourse("sword", "achat"), 55, 50, "forge")
     , Outil("planting_plan", itemBourse("planting_plan", "vente"), itemBourse("planting_plan", "achat"), 4, 4, "consommable")
     , Outil("barrel", itemBourse("barrel", "vente"), itemBourse("barrel", "achat"), 3, 3, "consommable")
     , Outil("furnace", itemBourse("furnace", "vente"), itemBourse("furnace", "achat"), 2, 2, "consommable")
@@ -320,11 +319,10 @@ class Recette:
         self.nb4 = nb4
         self.item4 = item4
 
-objetRecette = [Recette("iron_pickaxe", "forge", 10, "iron", 1, "pickaxe", 0, "", 0, "")
-, Recette("diamond_pickaxe", "forge", 25, "diamond", 1, "iron_pickaxe", 0, "", 0, "")
-, Recette("iron_shovel", "forge", 4, "iron", 1, "shovel", 0, "", 0, "")
-, Recette("diamond_shovel", "forge", 10, "diamond", 1, "iron_shovel", 0, "", 0, "")
-, Recette("sword", "forge", 6, "iron", 1, "oak", 0, "", 0, "")]
+objetRecette = [Recette("iron_pickaxe", "forge", 20, "iron", 1, "pickaxe", 0, "", 0, "")
+, Recette("diamond_pickaxe", "forge", 45, "diamond", 1, "iron_pickaxe", 0, "", 0, "")
+, Recette("iron_shovel", "forge", 16, "iron", 1, "shovel", 0, "", 0, "")
+, Recette("diamond_shovel", "forge", 30, "diamond", 1, "iron_shovel", 0, "", 0, "")]
 
 
 # ========== Couldown pour la fonction antispam ==========
@@ -368,27 +366,26 @@ couldown_6s = 6
 couldown_4s = 4
 
 
-# def recette(ctx):
-#     """Liste de toutes les recettes disponibles !"""
-#     d_recette = "Permet de voir la liste de toutes les recettes disponible !\n\n"
-#     d_recette += "▬▬▬▬▬▬▬▬▬▬▬▬▬\n**Forge**\n"
-#     for c in objetOutil:
-#         for r in objetRecette :
-#             if c.type == "forge":
-#                 if c.nom == r.nom:
-#                     d_recette += "<:gem_{0}:{1}>`{0}`: ".format(c.nom,get_idmoji(c.nom))
-#                     if r.nb1 > 0:
-#                         d_recette += "{0} <:gem_{1}:{2}>`{1}` ".format(r.nb1, r.item1, get_idmoji(r.item1))
-#                     if r.nb2 > 0:
-#                         d_recette += "et {0} <:gem_{1}:{2}>`{1}` ".format(r.nb2, r.item2, get_idmoji(r.item2))
-#                     if r.nb3 > 0:
-#                         d_recette += "et {0} <:gem_{1}:{2}>`{1}` ".format(r.nb3, r.item3, get_idmoji(r.item3))
-#                     if r.nb4 > 0:
-#                         d_recette += "et {0} <:gem_{1}:{2}>`{1}` ".format(r.nb4, r.item4, get_idmoji(r.item4))
-#                     d_recette += "\n"
-#
-#     msg = discord.Embed(title = "Recettes",color= 15778560, description = d_recette)
-#     return msg
+def recette():
+    """Liste de toutes les recettes disponibles !"""
+    d_recette = "Permet de voir la liste de toutes les recettes disponible !\n\n"
+    d_recette += "▬▬▬▬▬▬▬▬▬▬▬▬▬\n**Forge**\n"
+    for c in objetOutil:
+        for R in objetRecette:
+            if c.type == "forge":
+                if c.nom == R.nom:
+                    d_recette += "<:gem_{0}:{1}>`{0}`: ".format(c.nom, "{idmoji[gem_" + c.nom + "]}")
+                    if R.nb1 > 0:
+                        d_recette += "{0} <:gem_{1}:{2}>`{1}` ".format(R.nb1, R.item1, "{idmoji[gem_" + R.item1 + "]}")
+                    if R.nb2 > 0:
+                        d_recette += "et {0} <:gem_{1}:{2}>`{1}` ".format(R.nb2, R.item2, "{idmoji[gem_" + R.item2 + "]}")
+                    if R.nb3 > 0:
+                        d_recette += "et {0} <:gem_{1}:{2}>`{1}` ".format(R.nb3, R.item3, "{idmoji[gem_" + R.item3 + "]}")
+                    if R.nb4 > 0:
+                        d_recette += "et {0} <:gem_{1}:{2}>`{1}` ".format(R.nb4, R.item4, "{idmoji[gem_" + R.item4 + "]}")
+                    d_recette += "\n"
+
+    return d_recette
 
 
 def get_price(nameElem, type = None):

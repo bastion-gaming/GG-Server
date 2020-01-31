@@ -45,7 +45,7 @@ def bal(param):
         print("Gems >> Balance de {} affichée".format(PlayerID))
     else:
         msg.append("couldown")
-        msg.append("Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !")
+        msg.append("Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !")
     return msg
 
 
@@ -108,7 +108,7 @@ def baltop(param):
             msg.append("Erreur! Commande incorrect")
     else:
         msg.append("couldown")
-        msg.append("Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !")
+        msg.append("Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !")
     return msg
 
 
@@ -216,7 +216,7 @@ def buy(param):
                         prix = 0 - (c.achat*nb)
                         if c.type == "gems" and sql.addGems(PlayerID, prix) >= "0":
                             sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
-                            desc = "Tu viens d'acquérir {0} <:gem_lootbox:630698430313922580>`{1}` !".format(nb, c.titre)
+                            desc = "Tu viens d'acquérir {0} <:gem_lootbox:{2}>`{1}` !".format(nb, c.titre, "{idmoji[gem_lootbox]}")
                         elif c.type == "spinelle" and sql.addSpinelles(PlayerID, prix) >= "0":
                             sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
                             desc = "Tu viens d'acquérir {nb} :{nom}:`{nom}` !".format(nb=nb, nom=c.titre)
@@ -236,7 +236,7 @@ def buy(param):
             msg.append("NOK")
             msg.append(desc)
     else:
-        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
         msg.append("couldown")
         msg.append(desc)
     return msg
@@ -312,7 +312,7 @@ def sell(param):
         msg.append("OK")
         msg.append(desc)
     else:
-        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
         msg.append("couldown")
         msg.append(desc)
     return msg
@@ -431,7 +431,7 @@ def inv(param):
             msg.append("NOK")
             msg.append(desc)
     else:
-        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
         msg.append("couldown")
         msg.append(desc)
     return msg
@@ -901,7 +901,7 @@ def market(param):
             msg.append("NOK")
             msg.append(desc)
     else:
-        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
         msg.append("couldown")
         msg.append(desc)
     return msg
@@ -944,7 +944,7 @@ def pay(param):
             msg.append("NOK")
             pass
     else:
-        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
         msg.append("couldown")
     msg.append(desc)
     return msg
@@ -1049,137 +1049,142 @@ def give(param):
             msg.append("NOK")
             pass
     else:
-        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
         msg.append("couldown")
     msg.append(desc)
     return msg
 
 
-# @commands.command(pass_context=True)
-# async def forge(self, ctx, item = None, nb = 1):
-#     """**[item] [nombre]** | Permet de concevoir des items spécifiques"""
-#     ID = ctx.author.id
-#     if sql.spam(ID,GF.couldown_4s, "forge", "gems"):
-#         if GF.testInvTaille(ID):
-#             #-------------------------------------
-#             # Affichage des recettes disponible
-#             if item == None:
-#                 msg = GF.recette(ctx)
-#                 await ctx.channel.send(embed = msg)
-#                 # Message de réussite dans la console
-#                 print("Gems >> {} a afficher les recettes".format(ctx.author.name))
-#                 return
-#             #-------------------------------------
-#             else:
-#                 for c in GF.objetRecette:
-#                     if item == c.nom:
-#                         nb = int(nb)
-#                         nb1 = nb*c.nb1
-#                         nb2 = nb*c.nb2
-#                         nb3 = nb*c.nb3
-#                         nb4 = nb*c.nb4
-#                         if c.item1 != "" and c.item2 != "" and c.item3 != "" and c.item4 != "":
-#                             if sql.valueAtNumber(ID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(ID, c.item2, "inventory") >= nb2 and sql.valueAtNumber(ID, c.item3, "inventory") >= nb3 and sql.valueAtNumber(ID, c.item4, "inventory") >= nb4:
-#                                 sql.add(ID, c.nom, nb, "inventory")
-#                                 sql.add(ID, c.item1, -1*nb1, "inventory")
-#                                 sql.add(ID, c.item2, -1*nb2, "inventory")
-#                                 sql.add(ID, c.item3, -1*nb3, "inventory")
-#                                 sql.add(ID, c.item4, -1*nb4, "inventory")
-#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
-#                                 print("Gems >> {0} a forgé {1} {2}".format(ctx.author.name, nb, c.nom))
-#                                 Durability = sql.valueAtNumber(ID, c.nom, "durability")
-#                                 if Durability == 0:
-#                                     for x in GF.objetOutil:
-#                                         if x.nom == c.nom:
-#                                             sql.add(ID, x.nom, x.durabilite, "durability")
-#                             else:
-#                                 msg = ""
-#                                 if sql.valueAtNumber(ID, c.item1, "inventory") < nb1:
-#                                     nbmissing = (sql.valueAtNumber(ID, c.item1, "inventory") - nb1)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
-#                                 if sql.valueAtNumber(ID, c.item2, "inventory") < nb2:
-#                                     nbmissing = (sql.valueAtNumber(ID, c.item2, "inventory") - nb2)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, "{idmoji[gem_" + c.item2 + "]}")
-#                                 if sql.valueAtNumber(ID, c.item3, "inventory") < nb3:
-#                                     nbmissing = (sql.valueAtNumber(ID, c.item3, "inventory") - nb3)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item3, "{idmoji[gem_" + c.item3 + "]}")
-#                                 if sql.valueAtNumber(ID, c.item4, "inventory") < nb4:
-#                                     nbmissing = (sql.valueAtNumber(ID, c.item4, "inventory") - nb4)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item4, "{idmoji[gem_" + c.item4 + "]}")
-#
-#                         elif c.item1 != "" and c.item2 != "" and c.item3 != "":
-#                             if sql.valueAtNumber(ID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(ID, c.item2, "inventory") >= nb2 and sql.valueAtNumber(ID, c.item3, "inventory") >= nb3:
-#                                 sql.add(ID, c.nom, nb, "inventory")
-#                                 sql.add(ID, c.item1, -1*nb1, "inventory")
-#                                 sql.add(ID, c.item2, -1*nb2, "inventory")
-#                                 sql.add(ID, c.item3, -1*nb3, "inventory")
-#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
-#                                 print("Gems >> {0} a forgé {1} {2}".format(ctx.author.name, nb, c.nom))
-#                                 Durability = sql.valueAtNumber(ID, c.nom, "durability")
-#                                 if Durability == 0:
-#                                     for x in GF.objetOutil:
-#                                         if x.nom == c.nom:
-#                                             sql.add(ID, x.nom, x.durabilite, "durability")
-#                             else:
-#                                 msg = ""
-#                                 if sql.valueAtNumber(ID, c.item1, "inventory") < nb1:
-#                                     nbmissing = (sql.valueAtNumber(ID, c.item1, "inventory") - nb1)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
-#                                 if sql.valueAtNumber(ID, c.item2, "inventory") < nb2:
-#                                     nbmissing = (sql.valueAtNumber(ID, c.item2, "inventory") - nb2)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, "{idmoji[gem_" + c.item2 + "]}")
-#                                 if sql.valueAtNumber(ID, c.item3, "inventory") < nb3:
-#                                     nbmissing = (sql.valueAtNumber(ID, c.item3, "inventory") - nb3)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item3, "{idmoji[gem_" + c.item3 + "]}")
-#
-#                         elif c.item1 != "" and c.item2 != "":
-#                             if sql.valueAtNumber(ID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(ID, c.item2, "inventory") >= nb2:
-#                                 sql.add(ID, c.nom, nb, "inventory")
-#                                 sql.add(ID, c.item1, -1*nb1, "inventory")
-#                                 sql.add(ID, c.item2, -1*nb2, "inventory")
-#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
-#                                 print("Gems >> {0} a forgé {1} {2}".format(ctx.author.name, nb, c.nom))
-#                                 Durability = sql.valueAtNumber(ID, c.nom, "durability")
-#                                 if Durability == 0:
-#                                     for x in GF.objetOutil:
-#                                         if x.nom == c.nom:
-#                                             sql.add(ID, x.nom, x.durabilite, "durability")
-#                             else:
-#                                 msg = ""
-#                                 if sql.valueAtNumber(ID, c.item1, "inventory") < nb1:
-#                                     nbmissing = (sql.valueAtNumber(ID, c.item1, "inventory") - nb1)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
-#                                 if sql.valueAtNumber(ID, c.item2, "inventory") < nb2:
-#                                     nbmissing = (sql.valueAtNumber(ID, c.item2, "inventory") - nb2)*-1
-#                                     msg += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, "{idmoji[gem_" + c.item2 + "]}")
-#
-#                         elif c.item1 != "":
-#                             if sql.valueAtNumber(ID, c.item1, "inventory") >= nb1:
-#                                 sql.add(ID, c.nom, nb, "inventory")
-#                                 sql.add(ID, c.item1, -1*nb1, "inventory")
-#                                 msg = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
-#                                 print("Gems >> {0} a forgé {1} {2}".format(ctx.author.name, nb, c.nom))
-#                                 Durability = sql.valueAtNumber(ID, c.nom, "durability")
-#                                 if Durability == 0:
-#                                     for x in GF.objetOutil:
-#                                         if x.nom == c.nom:
-#                                             sql.add(ID, x.nom, x.durabilite, "durability")
-#                             else:
-#                                 nbmissing = (sql.valueAtNumber(ID, c.item1, "inventory") - nb1)*-1
-#                                 msg = "Il te manque {0} <:gem_{1}:{2}>`{1}`".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
-#                         await ctx.channel.send(msg)
-#                         return True
-#                     else:
-#                         msg = "Aucun recette disponible pour forger cette item !"
-#             sql.updateComTime(ID, "forge", "gems")
-#         else:
-#             msg = "Ton inventaire est plein"
-#     else:
-#         msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
-#     await ctx.channel.send(msg)
-#
-#
-#
+def forge(param):
+    """**[item] [nombre]** | Permet de concevoir des items spécifiques"""
+    item = param["item"]
+    nb = param["nb"]
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+
+    if sql.spam(PlayerID, GF.couldown_4s, "forge", "gems"):
+        if GF.testInvTaille(PlayerID):
+            # -------------------------------------
+            # Affichage des recettes disponible
+            if item == "None":
+                desc = GF.recette()
+                msg.append("OK")
+                msg.append(desc)
+                return msg
+            # -------------------------------------
+            else:
+                for c in GF.objetRecette:
+                    if item == c.nom:
+                        nb = int(nb)
+                        nb1 = nb*c.nb1
+                        nb2 = nb*c.nb2
+                        nb3 = nb*c.nb3
+                        nb4 = nb*c.nb4
+                        if c.item1 != "" and c.item2 != "" and c.item3 != "" and c.item4 != "":
+                            if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(PlayerID, c.item2, "inventory") >= nb2 and sql.valueAtNumber(PlayerID, c.item3, "inventory") >= nb3 and sql.valueAtNumber(PlayerID, c.item4, "inventory") >= nb4:
+                                sql.add(PlayerID, c.nom, nb, "inventory")
+                                sql.add(PlayerID, c.item1, -1*nb1, "inventory")
+                                sql.add(PlayerID, c.item2, -1*nb2, "inventory")
+                                sql.add(PlayerID, c.item3, -1*nb3, "inventory")
+                                sql.add(PlayerID, c.item4, -1*nb4, "inventory")
+                                desc = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                                Durability = sql.valueAtNumber(PlayerID, c.nom, "durability")
+                                if Durability == 0:
+                                    for x in GF.objetOutil:
+                                        if x.nom == c.nom:
+                                            sql.add(PlayerID, x.nom, x.durabilite, "durability")
+                            else:
+                                desc = ""
+                                if sql.valueAtNumber(PlayerID, c.item1, "inventory") < nb1:
+                                    nbmissing = (sql.valueAtNumber(PlayerID, c.item1, "inventory") - nb1)*-1
+                                    desc += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
+                                if sql.valueAtNumber(PlayerID, c.item2, "inventory") < nb2:
+                                    nbmissing = (sql.valueAtNumber(PlayerID, c.item2, "inventory") - nb2)*-1
+                                    desc += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, "{idmoji[gem_" + c.item2 + "]}")
+                                if sql.valueAtNumber(PlayerID, c.item3, "inventory") < nb3:
+                                    nbmissing = (sql.valueAtNumber(PlayerID, c.item3, "inventory") - nb3)*-1
+                                    desc += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item3, "{idmoji[gem_" + c.item3 + "]}")
+                                if sql.valueAtNumber(PlayerID, c.item4, "inventory") < nb4:
+                                    nbmissing = (sql.valueAtNumber(PlayerID, c.item4, "inventory") - nb4)*-1
+                                    desc += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item4, "{idmoji[gem_" + c.item4 + "]}")
+
+                        elif c.item1 != "" and c.item2 != "" and c.item3 != "":
+                            if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(PlayerID, c.item2, "inventory") >= nb2 and sql.valueAtNumber(PlayerID, c.item3, "inventory") >= nb3:
+                                sql.add(PlayerID, c.nom, nb, "inventory")
+                                sql.add(PlayerID, c.item1, -1*nb1, "inventory")
+                                sql.add(PlayerID, c.item2, -1*nb2, "inventory")
+                                sql.add(PlayerID, c.item3, -1*nb3, "inventory")
+                                desc = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                                Durability = sql.valueAtNumber(PlayerID, c.nom, "durability")
+                                if Durability == 0:
+                                    for x in GF.objetOutil:
+                                        if x.nom == c.nom:
+                                            sql.add(PlayerID, x.nom, x.durabilite, "durability")
+                            else:
+                                desc = ""
+                                if sql.valueAtNumber(PlayerID, c.item1, "inventory") < nb1:
+                                    nbmissing = (sql.valueAtNumber(PlayerID, c.item1, "inventory") - nb1)*-1
+                                    desc += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
+                                if sql.valueAtNumber(PlayerID, c.item2, "inventory") < nb2:
+                                    nbmissing = (sql.valueAtNumber(PlayerID, c.item2, "inventory") - nb2)*-1
+                                    desc += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, "{idmoji[gem_" + c.item2 + "]}")
+                                if sql.valueAtNumber(PlayerID, c.item3, "inventory") < nb3:
+                                    nbmissing = (sql.valueAtNumber(PlayerID, c.item3, "inventory") - nb3)*-1
+                                    desc += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item3, "{idmoji[gem_" + c.item3 + "]}")
+
+                        elif c.item1 != "" and c.item2 != "":
+                            if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(PlayerID, c.item2, "inventory") >= nb2:
+                                sql.add(PlayerID, c.nom, nb, "inventory")
+                                sql.add(PlayerID, c.item1, -1*nb1, "inventory")
+                                sql.add(PlayerID, c.item2, -1*nb2, "inventory")
+                                desc = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                                Durability = sql.valueAtNumber(PlayerID, c.nom, "durability")
+                                if Durability == 0:
+                                    for x in GF.objetOutil:
+                                        if x.nom == c.nom:
+                                            sql.add(PlayerID, x.nom, x.durabilite, "durability")
+                            else:
+                                desc = ""
+                                if sql.valueAtNumber(PlayerID, c.item1, "inventory") < nb1:
+                                    nbmissing = (sql.valueAtNumber(PlayerID, c.item1, "inventory") - nb1)*-1
+                                    desc += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
+                                if sql.valueAtNumber(PlayerID, c.item2, "inventory") < nb2:
+                                    nbmissing = (sql.valueAtNumber(PlayerID, c.item2, "inventory") - nb2)*-1
+                                    desc += "Il te manque {0} <:gem_{1}:{2}>`{1}`\n".format(nbmissing, c.item2, "{idmoji[gem_" + c.item2 + "]}")
+
+                        elif c.item1 != "":
+                            if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1:
+                                sql.add(PlayerID, c.nom, nb, "inventory")
+                                sql.add(PlayerID, c.item1, -1*nb1, "inventory")
+                                desc = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                                Durability = sql.valueAtNumber(PlayerID, c.nom, "durability")
+                                if Durability == 0:
+                                    for x in GF.objetOutil:
+                                        if x.nom == c.nom:
+                                            sql.add(PlayerID, x.nom, x.durabilite, "durability")
+                            else:
+                                nbmissing = (sql.valueAtNumber(PlayerID, c.item1, "inventory") - nb1)*-1
+                                desc = "Il te manque {0} <:gem_{1}:{2}>`{1}`".format(nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}")
+                        msg.append("OK")
+                        msg.append(desc)
+                        return msg
+                    else:
+                        desc = "Aucun recette disponible pour forger cette item !"
+                msg.append("NOK")
+            sql.updateComTime(PlayerID, "forge", "gems")
+        else:
+            desc = "Ton inventaire est plein"
+            msg.append("NOK")
+    else:
+        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
+        msg.append("couldown")
+    msg.append(desc)
+    return msg
+
+
 # @commands.command(pass_context=True)
 # async def trophy(self, ctx, nom = None):
 #     """**[nom]** | Liste de vos trophées !"""
@@ -1213,7 +1218,7 @@ def give(param):
 #         print("Gems >> {} a affiché les trophées de {}".format(ctx.author.name,nom))
 #         await ctx.channel.send(embed = msg)
 #     else:
-#         msg = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+#         msg = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
 #         await ctx.channel.send(msg)
 #
 #
@@ -1248,7 +1253,7 @@ def give(param):
 #         print("Gems >> {} a affiché la liste des trophées".format(ctx.author.name))
 #         await ctx.channel.send(embed = msg)
 #     else:
-#         msg = "Il faut attendre "+str(GF.couldown_6s)+" secondes entre chaque commande !"
+#         msg = "Il faut attendre " + str(GF.couldown_6s) + " secondes entre chaque commande !"
 #         await ctx.channel.send(msg)
 #
 #
