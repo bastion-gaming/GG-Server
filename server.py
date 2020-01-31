@@ -30,7 +30,7 @@ sql.newPlayer(GF.idGetGems, "gems", "discord")
 sql.newPlayer(GF.idBaBot, "gems", "discord")
 
 try:
-    GF.loadItem()
+    GF.loadItem(True)
 except FileNotFoundError:
     # Cas où la bourse n'existait pas
     GI.initBourse()

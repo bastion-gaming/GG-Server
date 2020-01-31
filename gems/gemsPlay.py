@@ -679,3 +679,254 @@ def fish(param):
         msg.append("couldown")
     msg.append(desc)
     return msg
+
+
+def slots(param):
+    """**[mise]** | La machine à sous, la mise minimum est de 10 :gem:`gems`"""
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    imise = param["imise"]
+    msg = []
+
+    gems = sql.valueAtNumber(PlayerID, "gems", "gems")
+    misemax = 200
+    if imise != "None":
+        if int(imise) < 0:
+            desc = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
+            lvl.addxp(PlayerID, -10, "gems")
+            sql.add(PlayerID, "DiscordCop Amende", 1, "statgems")
+            if gems > 100 :
+                sql.addGems(PlayerID, -100)
+            else :
+                sql.addGems(PlayerID, -gems)
+            msg.append("anticheat")
+            msg.append(desc)
+            return msg
+        elif int(imise) < 10:
+            mise = 10
+        elif int(imise) > misemax:
+            mise = misemax
+        else:
+            mise = int(imise)
+    else:
+        mise = 10
+
+    if sql.spam(PlayerID, GF.couldown_8s, "slots", "gems"):
+        tab = []
+        result = []
+        desc = "Votre mise: {} :gem:`gems`\n\n".format(mise)
+        val = 0-mise
+        for i in range(0, 9): # Creation de la machine à sous
+            if i == 3:
+                desc += "\n"
+            elif i == 6:
+                desc += " :arrow_backward:\n"
+            tab.append(r.randint(0, 344))
+            if tab[i] < 15 :
+                result.append("zero")
+            elif tab[i] >= 15 and tab[i] < 30:
+                result.append("one")
+            elif tab[i] >= 30 and tab[i] < 45:
+                result.append("two")
+            elif tab[i] >= 45 and tab[i] < 60:
+                result.append("three")
+            elif tab[i] >= 60 and tab[i] < 75:
+                result.append("four")
+            elif tab[i] >= 75 and tab[i] < 90:
+                result.append("five")
+            elif tab[i] >= 90 and tab[i] < 105:
+                result.append("six")
+            elif tab[i] >= 105 and tab[i] < 120:
+                result.append("seven")
+            elif tab[i] >= 120 and tab[i] < 135:
+                result.append("eight")
+            elif tab[i] >= 135 and tab[i] < 150:
+                result.append("nine")
+            elif tab[i] >= 150 and tab[i] < 170:
+                result.append("gem")
+            elif tab[i] >= 170 and tab[i] < 190:
+                result.append("ticket")
+            elif tab[i] >= 190 and tab[i] < 210:
+                result.append("boom")
+            elif tab[i] >= 210 and tab[i] < 220:
+                result.append("apple")
+            elif tab[i] >= 220 and tab[i] < 230:
+                result.append("green_apple")
+            elif tab[i] >= 230 and tab[i] < 240:
+                result.append("cherries")
+            elif tab[i] >= 240 and tab[i] < 250:
+                result.append("tangerine")
+            elif tab[i] >= 250 and tab[i] < 260:
+                result.append("banana")
+            elif tab[i] >= 260 and tab[i] < 280:
+                result.append("grapes")
+            elif tab[i] >= 280 and tab[i] < 310:
+                result.append("cookie")
+            elif tab[i] >= 310 and tab[i] < 340:
+                result.append("beer")
+            elif tab[i] >= 340 and tab[i] < 343:
+                result.append("backpack")
+            elif tab[i] >= 343:
+                result.append("ruby")
+            if tab[i] < 340:
+                desc += ":{}:".format(result[i])
+            else:
+                desc += "<:gem_{}:{}>".format(result[i], "{idmoji[gem_" + result[i] + "]}")
+        desc += "\n"
+
+        # ===================================================================
+        # Attribution des prix
+        # ===================================================================
+        # Ruby (hyper rare)
+        if result[3] == "ruby" or result[4] == "ruby" or result[5] == "ruby":
+            sql.add(PlayerID, "ruby", 1, "inventory")
+            sql.add(PlayerID, "Mineur de Merveilles", 1, "statgems")
+            sql.add(PlayerID, "Mineur de Merveilles", 1, "trophy")
+            gain = 42
+            desc += "\nEn trouvant ce <:gem_ruby:{}>`ruby` tu deviens un Mineur de Merveilles".format("{idmoji[gem_ruby]}")
+            D = r.randint(0, 20)
+            if D == 0:
+                sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
+                desc += "\nTu as trouvé une **Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir"
+            elif D >= 19:
+                sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
+                desc += "\nTu as trouvé une **Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir"
+            elif D >= 8 and D <= 12:
+                sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
+                desc += "\nTu as trouvé une **Loot Box Gems Common**! Utilise la commande `boxes open commongems` pour l'ouvrir"
+        # ===================================================================
+        # Super gain, 3 chiffres identique
+        elif result[3] == "seven" and result[4] == "seven" and result[5] == "seven":
+            gain = 1000
+            sql.add(PlayerID, "Super Jackpot :seven::seven::seven:", 1, "statgems")
+            sql.add(PlayerID, "Super Jackpot :seven::seven::seven:", 1, "trophy")
+            desc += "\nBravo <@{}>! Le Super Jackpot :seven::seven::seven: est tombé :tada: ".format(param["ID"])
+        elif result[3] == "one" and result[4] == "one" and result[5] == "one":
+            gain = 100
+        elif result[3] == "two" and result[4] == "two" and result[5] == "two":
+            gain = 150
+        elif result[3] == "three" and result[4] == "three" and result[5] == "three":
+            gain = 200
+        elif result[3] == "four" and result[4] == "four" and result[5] == "four":
+            gain = 250
+        elif result[3] == "five" and result[4] == "five" and result[5] == "five":
+            gain = 300
+        elif result[3] == "six" and result[4] == "six" and result[5] == "six":
+            gain = 350
+        elif result[3] == "eight" and result[4] == "eight" and result[5] == "eight":
+            gain = 400
+        elif result[3] == "nine" and result[4] == "nine" and result[5] == "nine":
+            gain = 450
+        elif result[3] == "zero" and result[4] == "zero" and result[5] == "zero":
+            gain = 500
+        # ===================================================================
+        # Beer
+        elif (result[3] == "beer" and result[4] == "beer") or (result[4] == "beer" and result[5] == "beer") or (result[3] == "beer" and result[5] == "beer"):
+            sql.add(PlayerID, "La Squelatitude", 1, "statgems")
+            sql.add(PlayerID, "La Squelatitude", 1, "trophy")
+            gain = 4
+            desc += "\n<@{}> paye sa tournée :beer:".format(param["ID"])
+        # ===================================================================
+        # Explosion de la machine
+        elif result[3] == "boom" and result[4] == "boom" and result[5] == "boom":
+            gain = -50
+        elif (result[3] == "boom" and result[4] == "boom") or (result[4] == "boom" and result[5] == "boom") or (result[3] == "boom" and result[5] == "boom"):
+            gain = -10
+        elif result[3] == "boom" or result[4] == "boom" or result[5] == "boom":
+            gain = -2
+        # ===================================================================
+        # Gain de gem
+        elif result[3] == "gem" and result[4] == "gem" and result[5] == "gem":
+            gain = 50
+        elif (result[3] == "gem" and result[4] == "gem") or (result[4] == "gem" and result[5] == "gem") or (result[3] == "gem" and result[5] == "gem"):
+            gain = 15
+        elif result[3] == "gem" or result[4] == "gem" or result[5] == "gem":
+            gain = 5
+        # ===================================================================
+        # Tichet gratuit
+        elif result[3] == "ticket" and result[4] == "ticket" and result[5] == "ticket":
+            gain = 10
+        elif (result[3] == "ticket" and result[4] == "ticket") or (result[4] == "ticket" and result[5] == "ticket") or (result[3] == "ticket" and result[5] == "ticket"):
+            gain = 5
+        elif result[3] == "ticket" or result[4] == "ticket" or result[5] == "ticket":
+            gain = 2
+        else:
+            gain = 0
+        # ===================================================================
+        # Cookie
+        nbCookie = 0
+        if result[3] == "cookie" and result[4] == "cookie" and result[5] == "cookie":
+            nbCookie = 3
+        elif (result[3] == "cookie" and result[4] == "cookie") or (result[4] == "cookie" and result[5] == "cookie") or (result[3] == "cookie" and result[5] == "cookie"):
+            nbCookie = 2
+        elif result[3] == "cookie" or result[4] == "cookie" or result[5] == "cookie":
+            nbCookie = 1
+        if nbCookie != 0:
+            if GF.testInvTaille(PlayerID):
+                desc += "\nTu a trouvé {} :cookie:`cookie`".format(nbCookie)
+                sql.add(PlayerID, "cookie", nbCookie, "inventory")
+            else:
+                desc += "\nTon inventaire est plein"
+            D = r.randint(0, 20)
+            if D == 0:
+                sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
+                desc += "\nTu as trouvé une **Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir"
+            elif D >= 19:
+                sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
+                desc += "\nTu as trouvé une **Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir"
+            elif D >= 8 and D <= 12:
+                sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
+                desc += "\nTu as trouvé une **Loot Box Gems Common**! Utilise la commande `boxes open commongems` pour l'ouvrir"
+        # ===================================================================
+        # grappe
+        nbGrapes = 0
+        if result[3] == "grapes" and result[4] == "grapes" and result[5] == "grapes":
+            nbGrapes = 3
+        elif (result[3] == "grapes" and result[4] == "grapes") or (result[4] == "grapes" and result[5] == "grapes") or (result[3] == "grapes" and result[5] == "grapes"):
+            nbGrapes = 2
+        elif result[3] == "grapes" or result[4] == "grapes" or result[5] == "grapes":
+            nbGrapes = 1
+        if nbGrapes != 0:
+            if GF.testInvTaille(PlayerID):
+                desc += "\nTu a trouvé {} :grapes:`grapes`".format(nbGrapes)
+                sql.add(PlayerID, "grapes", nbGrapes, "inventory")
+            else:
+                desc += "\nTon inventaire est plein"
+        # ===================================================================
+        # Backpack (hyper rare)
+        if result[3] == "backpack" or result[4] == "backpack" or result[5] == "backpack":
+            sql.add(PlayerID, "backpack", 1, "inventory")
+            p = 0
+            for c in GF.objetItem:
+                if c.nom == "backpack":
+                    p = c.poids * (-1)
+            desc += "\nEn trouvant ce <:gem_backpack:{0}>`backpack` tu gagnes {1} points d'inventaire".format("{idmoji[gem_backpack]}", p)
+
+        # Calcul du prix
+        prix = gain * mise
+        if gain != 0 and gain != 1:
+            if prix > 400:
+                desc += "\n:slot_machine: Jackpot! Tu viens de gagner {} :gem:`gems`".format(prix)
+            elif prix > 0:
+                desc += "\nBravo, tu viens de gagner {} :gem:`gems`".format(prix)
+            else:
+                desc += "\nLa machine viens d'exploser :boom:\nTu as perdu {} :gem:`gems`".format(-1*prix)
+            sql.addGems(PlayerID, prix)
+            sql.addGems(GF.PlayerID_GetGems, -prix)
+        elif gain == 1:
+            desc += "\nBravo, voici un ticket gratuit pour relancer la machine à sous"
+            sql.addGems(PlayerID, prix)
+        else:
+            desc += "\nLa machine à sous ne paya rien ..."
+            sql.addGems(PlayerID, val)
+        sql.updateComTime(PlayerID, "slots", "gems")
+        if gain >= 0:
+            lvl.addxp(PlayerID, gain + 1, "gems")
+        msg.append("OK")
+    else:
+        desc = "Il faut attendre "+str(GF.couldown_8s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+    msg.append(desc)
+    return msg
