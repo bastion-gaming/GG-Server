@@ -70,6 +70,8 @@ def baltop(param):
                 gems = sql.valueAtNumber(i, "gems", "gems")
                 spinelles = sql.valueAtNumber(i, "spinelles", "gems")
                 guilde = sql.valueAtNumber(i, "guilde", "gems")
+                if guilde == None:
+                    guilde = ""
                 UserList.append((user, gems, spinelles, guilde))
                 i = i + 1
             UserList = sorted(UserList, key=itemgetter(1), reverse=True)
@@ -445,13 +447,12 @@ def market(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    PlayerID_Babot = sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord"))
 
     if sql.spam(PlayerID, GF.couldown_4s, "market", "gems"):
         d_market = "Permet de voir tout les objets que l'on peux acheter ou vendre !\n\n"
-        if sql.spam(PlayerID_Babot, GF.couldown_10s, "bourse", "gems"):
+        if sql.spam(GF.PlayerID_GetGems, GF.couldown_10s, "bourse", "gems"):
             GF.loadItem()
-        ComTime = sql.valueAtNumber(PlayerID_Babot, "bourse", "gems_com_time")
+        ComTime = sql.valueAtNumber(GF.PlayerID_GetGems, "bourse", "gems_com_time")
         time = float(ComTime)
         time = time - (t.time()-GF.couldown_12h)
         timeH = int(time / 60 / 60)

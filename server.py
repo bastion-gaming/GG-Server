@@ -26,6 +26,9 @@ elif "sup" in flag:
 elif "type" in flag:
     print("SQL >> Un ou plusieurs type ont été modifié sur la DB.")
 
+sql.newPlayer(GF.idGetGems, "gems", "discord")
+sql.newPlayer(GF.idBaBot, "gems", "discord")
+
 try:
     GF.loadItem()
 except FileNotFoundError:

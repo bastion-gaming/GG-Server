@@ -187,7 +187,7 @@ def bank(param):
             desc += GE.gift(PlayerID)
 
             try:
-                sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")), int(soldeTaxe[0]))
+                sql.addGems(GF.PlayerID_GetGems, int(soldeTaxe[0]))
             except:
                 print("Babot ne fait pas parti de la DB")
             sql.updateComTime(PlayerID, "bank_saving", "gems")
@@ -213,44 +213,47 @@ def stealing(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems") and name is not None:
-        ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name), param["name_pl"]))
-        # Calcul du pourcentage
-        if ID_Vol == sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")) or ID_Vol == sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")):
-            R = r.randint(1, 6)
-        else:
-            R = "05"
-        P = float("0.0{}".format(R))
-        try:
-            Solde = sql.valueAtNumber(ID_Vol, "gems", "gems")
-            gain = int(Solde*P)
-            if r.randint(0, 9) == 0:
-                sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
-                if int(sql.addGems(PlayerID, int(gain/4))) >= 100:
-                    desc = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de **{}** :gem:`gems`".format(int(gain/4))
-                else:
-                    sql.updateField(PlayerID, "gems", 100, "gems")
-                    desc = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer l'intégralité de l'amende! Votre compte est maintenant de 100 :gem:`gems`"
-            else:
-                sql.addGems(PlayerID, gain)
-                sql.addGems(ID_Vol, -gain)
-                # Message
-                desc = "Tu viens de voler {n} :gem:`gems` à {nom}".format(n=gain, nom=name)
-                print("Gems >> PlayerID {author} viens de voler {n} gems à {nom}".format(n=gain, nom=ID_Vol, author=PlayerID))
-            sql.updateComTime(PlayerID, "stealing", "gems")
-            lvl.addxp(PlayerID, 1, "gems")
-        except:
-            desc = "Ce joueur est introuvable!"
+    if sql.valueAtNumber(GF.PlayerID_GetGems, "DailyMult", "daily") == 1:
+        desc = ""
     else:
-        ComTime = sql.valueAtNumber(PlayerID, "stealing", "gems_com_time")
-        time = float(ComTime) - (t.time()-GF.couldown_14h)
-        timeH = int(time / 60 / 60)
-        time = time - timeH * 3600
-        timeM = int(time / 60)
-        timeS = int(time - timeM * 60)
-        desc = "Il te faut attendre :clock2:`{}h {}m {}s` avant de pourvoir voler des :gem:`gems` à nouveau!".format(timeH, timeM, timeS)
-        if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems"):
-            desc = "Tu peux voler des :gem:`gems`"
+        if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems") and name is not None:
+            ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name), param["name_pl"]))
+            # Calcul du pourcentage
+            if ID_Vol == GF.PlayerID_GetGems or ID_Vol == GF.PlayerID_Babot:
+                R = r.randint(1, 6)
+            else:
+                R = "05"
+            P = float("0.0{}".format(R))
+            try:
+                Solde = sql.valueAtNumber(ID_Vol, "gems", "gems")
+                gain = int(Solde*P)
+                if r.randint(0, 9) == 0:
+                    sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
+                    if int(sql.addGems(PlayerID, int(gain/4))) >= 100:
+                        desc = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de **{}** :gem:`gems`".format(int(gain/4))
+                    else:
+                        sql.updateField(PlayerID, "gems", 100, "gems")
+                        desc = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer l'intégralité de l'amende! Votre compte est maintenant de 100 :gem:`gems`"
+                else:
+                    sql.addGems(PlayerID, gain)
+                    sql.addGems(ID_Vol, -gain)
+                    # Message
+                    desc = "Tu viens de voler {n} :gem:`gems` à {nom}".format(n=gain, nom=name)
+                    print("Gems >> PlayerID {author} viens de voler {n} gems à {nom}".format(n=gain, nom=ID_Vol, author=PlayerID))
+                sql.updateComTime(PlayerID, "stealing", "gems")
+                lvl.addxp(PlayerID, 1, "gems")
+            except:
+                desc = "Ce joueur est introuvable!"
+        else:
+            ComTime = sql.valueAtNumber(PlayerID, "stealing", "gems_com_time")
+            time = float(ComTime) - (t.time()-GF.couldown_14h)
+            timeH = int(time / 60 / 60)
+            time = time - timeH * 3600
+            timeM = int(time / 60)
+            timeS = int(time - timeM * 60)
+            desc = "Il te faut attendre :clock2:`{}h {}m {}s` avant de pourvoir voler des :gem:`gems` à nouveau!".format(timeH, timeM, timeS)
+            if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems"):
+                desc = "Tu peux voler des :gem:`gems`"
     msg.append("OK")
     msg.append(desc)
     return msg
@@ -354,7 +357,7 @@ def gamble(param):
             else:
                 val = 0-valeur
                 sql.addGems(PlayerID, val)
-                sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, "discord")), int(valeur))
+                sql.addGems(GF.PlayerID_GetGems, int(valeur))
                 desc = "Dommage tu as perdu {} :gem:`gems`".format(valeur)
 
             sql.updateComTime(PlayerID, "gamble", "gems")

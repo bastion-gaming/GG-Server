@@ -5,9 +5,13 @@ import json
 from gems import gemsItems as GI, gemsStats as GS
 
 idBaBot = 604776153458278415
-PlayerID_Babot = sql.get_PlayerID(sql.get_SuperID(idBaBot, "discord"))
 idGetGems = 620558080551157770
-PlayerID_GetGems = sql.get_PlayerID(sql.get_SuperID(idGetGems, "discord"))
+try:
+    PlayerID_GetGems = sql.get_PlayerID(sql.get_SuperID(idGetGems, "discord"))
+    PlayerID_Babot = sql.get_PlayerID(sql.get_SuperID(idBaBot, "discord"))
+except:
+    PlayerID_GetGems = 1
+    PlayerID_Babot = 2
 
 WarningMsg = [["Langue", "Error"], ["FR", "Aucun compte utilisateur n'a été trouvé"]]
 
@@ -62,7 +66,7 @@ def itemBourse(item, type):
         pnow = temp["achat"]
 
     # Verification pour l'actualisation de la bourse
-    if sql.spam(PlayerID_Babot, couldown_12h, "bourse", "gems"):
+    if sql.spam(PlayerID_GetGems, couldown_12h, "bourse", "gems"):
         # Gestion des exceptions
         if item in GI.exception:
             return pnow
@@ -293,8 +297,8 @@ def loadItem(F = None):
     , Box("gift", "Items en folie", 2, 1000, 1000000, "spinelle")
     , Box("gift_heart", "Cadeau de la Saint Valentin", 0, 100000, 500000, "")]
 
-    if sql.spam(PlayerID_Babot, couldown_12h, "bourse", "gems"):
-        sql.updateComTime(PlayerID_Babot, "bourse", "gems")
+    if sql.spam(PlayerID_GetGems, couldown_12h, "bourse", "gems"):
+        sql.updateComTime(PlayerID_GetGems, "bourse", "gems")
         for x in objetItem:
             GS.csv_add(x.nom)
         for x in objetOutil:
