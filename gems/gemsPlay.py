@@ -189,7 +189,7 @@ def bank(param):
             try:
                 sql.addGems(GF.PlayerID_GetGems, int(soldeTaxe[0]))
             except:
-                print("Babot ne fait pas parti de la DB")
+                print("Le bot ne fait pas parti de la DB")
             sql.updateComTime(PlayerID, "bank_saving", "gems")
             lvl.addxp(PlayerID, 4, "gems")
         else:
@@ -290,7 +290,7 @@ def crime(param):
                 desc = "{1} {0} :gem:`gems`".format(gain, GF.message_crime[r.randint(0, 3)])
                 sql.addGems(PlayerID, gain)
                 try:
-                    sql.addGems(sql.get_PlayerID(sql.get_SuperID(GF.idBaBot, param["name_pl"])), -gain) # Vole l'équivalent du crime au bot
+                    sql.addGems(GF.PlayerID_GetGems, -gain) # Vole l'équivalent du crime au bot
                 except sqlite3.OperationalError:
                     pass
                 desc += GE.gift(PlayerID)
