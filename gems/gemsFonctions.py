@@ -156,7 +156,7 @@ def itemBourse(item, type):
 # Fonction d'actualisation/initialisation des items
 def loadItem(F = None):
     jour = dt.date.today()
-    if F == True:
+    if F:
         GI.initBourse()
     global ObjetEventEnd
     ObjetEventEnd = []
@@ -235,7 +235,6 @@ def loadItem(F = None):
     , Outil("furnace", itemBourse("furnace", "vente"), itemBourse("furnace", "achat"), 2, 2, "consommable")
     , Outil("bank_upgrade", itemBourse("bank_upgrade", "vente"), itemBourse("bank_upgrade", "achat"), 10000, None, "bank")]
 
-
     # ========== Trophées ==========
     class Trophy:
 
@@ -282,20 +281,21 @@ def loadItem(F = None):
     # ========== Loot Box ==========
     class Box:
 
-        def __init__(self, nom, titre, achat , min, max, type):
+        def __init__(self, nom, titre, achat , min, max, type, xp):
             self.nom = nom
             self.titre = titre
             self.achat = achat
             self.min = min
             self.max = max
             self.type = type
+            self.xp = xp
 
     global objetBox
-    objetBox = [Box("commongems", "Gems Common", 300, 100, 500, "gems")
-    , Box("raregems", "Gems Rare", 3000, 1000, 5000, "gems")
-    , Box("legendarygems", "Gems Legendary", 30000, 10000, 50000, "gems")
-    , Box("gift", "Items en folie", 2, 1000, 1000000, "spinelle")
-    , Box("gift_heart", "Cadeau de la Saint Valentin", 0, 100000, 500000, "")]
+    objetBox = [Box("commongems", "Gems Common", 300, 100, 500, "gems", 1)
+    , Box("raregems", "Gems Rare", 3000, 1000, 5000, "gems", 10)
+    , Box("legendarygems", "Gems Legendary", 30000, 10000, 50000, "gems", 50)
+    , Box("gift", "Items en folie", 2, 1000, 1000000, "spinelle", 30)
+    , Box("gift_heart", "Cadeau de la Saint Valentin", 0, 100000, 500000, "", 20)]
 
     if sql.spam(PlayerID_GetGems, couldown_12h, "bourse", "gems"):
         sql.updateComTime(PlayerID_GetGems, "bourse", "gems")

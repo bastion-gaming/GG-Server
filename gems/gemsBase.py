@@ -1186,6 +1186,61 @@ def forge(param):
     return msg
 
 
+def convert(param):
+    """**[Nombre de spinelle]** | Convertisseur :gem:`gems` :left_right_arrow: `spinelles` (250 000 pour 1)"""
+    nb = param["nb"]
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    msg = []
+
+    n = 250000
+    balGems = sql.valueAtNumber(PlayerID, "gems", "gems")
+    balspinelle = sql.valueAtNumber(PlayerID, "spinelles", "gems")
+    max = balGems // n
+    if nb != "None":
+        try:
+            nb = int(nb)
+        except:
+            desc = "Erreur! Nombre de <:spinelle:{idmoji}>`spinelles` incorrect".format(idmoji = "{idmoji[spinelle]}")
+            msg.append("NOK")
+            msg.append(desc)
+            return msg
+        if nb < 0:
+            if balspinelle >= -nb:
+                max = nb
+            else:
+                desc = "Tu n'as pas assez de <:spinelle:{idmoji}>`spinelles`".format(idmoji="{idmoji[spinelle]}")
+                msg.append("NOK")
+                msg.append(desc)
+                return msg
+        elif nb <= max:
+            max = nb
+        else:
+            desc = "Tu n'as pas assez de :gem:`gems`"
+            msg.append("NOK")
+            msg.append(desc)
+            return msg
+    else:
+        if max == 0:
+            desc = "Tu n'as pas assez de :gem:`gems`"
+            msg.append("NOK")
+            msg.append(desc)
+            return msg
+    sql.addGems(PlayerID, -(max*n))
+    sql.addSpinelles(PlayerID, max)
+    if max > 0:
+        desc = "Convertion terminée! Ton compte a été crédité de {nb} <:spinelle:{idmoji}>`spinelles`".format(nb=max, idmoji="{idmoji[spinelle]}")
+    elif max < 0:
+        desc = "Convertion terminée! Ton compte a été débité de {nb} <:spinelle:{idmoji}>`spinelles`".format(nb=-max, idmoji="{idmoji[spinelle]}")
+    else:
+        desc = "Aucune convertion effectuée"
+    msg.append("OK")
+    msg.append(desc)
+    return msg
+
+
 # @commands.command(pass_context=True)
 # async def trophy(self, ctx, nom = None):
 #     """**[nom]** | Liste de vos trophées !"""
