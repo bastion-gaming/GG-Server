@@ -78,8 +78,6 @@ def init():
 
 
 # -------------------------------------------------------------------------------
-
-
 def checkField():
     # Init de la variable flag
     flag = 0
@@ -172,7 +170,6 @@ def checkField():
 # ===============================================================================
 # Gestion des utilisateurs
 # ===============================================================================
-
 def get_SuperID(ID, name_pl):
     """
     Permet de convertir un ID discord en PlayerID interne à la base de données
@@ -191,9 +188,8 @@ def get_SuperID(ID, name_pl):
         for x in rows:
             return "{}".format(x[0])
 
+
 # -------------------------------------------------------------------------------
-
-
 def get_PlayerID(ID, nameDB = None):
     """
     Permet de convertir un ID discord en PlayerID interne à la base de données
@@ -216,9 +212,8 @@ def get_PlayerID(ID, nameDB = None):
         for x in rows:
             return "{}".format(x[0])
 
+
 # -------------------------------------------------------------------------------
-
-
 def userID(i, nameDB = None):
     if nameDB == None:
         nameDB = "bastion"
@@ -228,9 +223,8 @@ def userID(i, nameDB = None):
     ID = cursor.fetchall()
     return ID[0][0]
 
+
 # -------------------------------------------------------------------------------
-
-
 def newPlayer(ID, nameDB, platform):
     """
     Permet d'ajouter un nouveau joueur à la base de donnée en fonction de son ID.
@@ -311,9 +305,8 @@ def countTotalMsg():
     for a in cursor.fetchall():
         return a[0]
 
+
 # -------------------------------------------------------------------------------
-
-
 def countTotalGems():
     # Donne le nombre total de gems (somme des gems de tout les utilisateurs de Get Gems)
     script = "SELECT SUM(gems) FROM gems"
@@ -322,9 +315,8 @@ def countTotalGems():
     for a in cursor.fetchall():
         return a[0]
 
+
 # -------------------------------------------------------------------------------
-
-
 def countTotalSpinelles():
     # Donne le nombre total de spinelles (somme des spinelles de tout les utilisateurs de Get Gems)
     script = "SELECT SUM(spinelles) FROM gems"
@@ -333,9 +325,8 @@ def countTotalSpinelles():
     for a in cursor.fetchall():
         return a[0]
 
+
 # -------------------------------------------------------------------------------
-
-
 def taille(nameDB):
     """Retourne la taille de la table selectionner"""
     cursor = conn.cursor()
@@ -353,9 +344,8 @@ def taille(nameDB):
 # Liste des tables dont l'enregistrement des données est spécifique
 nameDBexcept = ["inventory", "durability", "hothouse", "cooking", "ferment", "trophy", "statgems", "gems_com_time"]
 
+
 # -------------------------------------------------------------------------------
-
-
 def updateField(PlayerID, fieldName, fieldValue, nameDB):
     """
     Permet de mettre à jour la valeur fieldName par la fieldValue.
@@ -403,9 +393,8 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
     else:
         return "404"
 
+
 # -------------------------------------------------------------------------------
-
-
 def valueAt(PlayerID, fieldName, nameDB):
     """
     Permet de récupérer la valeur contenue dans le champ fieldName de PlayerID
@@ -477,9 +466,8 @@ def valueAt(PlayerID, fieldName, nameDB):
             else:
                 return value[0]
 
+
 # -------------------------------------------------------------------------------
-
-
 def valueAtNumber(PlayerID, fieldName, nameDB):
     if fieldName != "all":
         VAN = valueAt(PlayerID, fieldName, nameDB)
@@ -489,9 +477,8 @@ def valueAtNumber(PlayerID, fieldName, nameDB):
     else:
         return 0
 
+
 # -------------------------------------------------------------------------------
-
-
 def addGems(PlayerID, nb):
     """
     Permet d'ajouter un nombre de gems à quelqu'un. Il nous faut son PlayerID et le nombre de gems.
@@ -508,9 +495,8 @@ def addGems(PlayerID, nb):
         print("DB >> Il n'y a pas assez sur ce compte !")
     return str(new_value)
 
+
 # -------------------------------------------------------------------------------
-
-
 def addSpinelles(PlayerID, nb):
     """
     Permet d'ajouter un nombre de gems à quelqu'un. Il nous faut son PlayerID et le nombre de gems.
@@ -527,9 +513,8 @@ def addSpinelles(PlayerID, nb):
         print("DB >> Il n'y a pas assez sur ce compte !")
     return str(new_value)
 
+
 # -------------------------------------------------------------------------------
-
-
 def spam(PlayerID, couldown, nameElem, nameDB):
     """Antispam """
     if nameDB == "gems":
@@ -546,9 +531,8 @@ def spam(PlayerID, couldown, nameElem, nameDB):
     # on récupère la date de la dernière commande
     return(float(time) < t.time()-couldown)
 
+
 # -------------------------------------------------------------------------------
-
-
 def updateComTime(PlayerID, nameElem, nameDB):
     """
     Met à jour la date du dernier appel à une fonction
@@ -570,9 +554,8 @@ def updateComTime(PlayerID, nameElem, nameDB):
     except:
         return 404
 
+
 # -------------------------------------------------------------------------------
-
-
 def add(PlayerID, nameElem, nbElem, nameDB):
     """
     Permet de modifier le nombre de nameElem pour PlayerID dans la table nameDB
