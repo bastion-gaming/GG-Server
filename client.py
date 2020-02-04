@@ -8,11 +8,12 @@ import zmq
 import gg_lib as gg
 import time
 
-name_pl = "bot" # Nom de la plateforme
+name_pl = "Admin Bot" # Nom de la plateforme
 
 check = True
 error = 0
 ListCommands = ["mine", "crime"]
+AdminCommands = ["update", "add", "value", "gems", "spinelles", "balance total", "playerid"]
 
 REQUEST_TIMEOUT = 2500
 REQUEST_RETRIES = 3
@@ -54,8 +55,68 @@ while check:
     else:
         if x == "stop server":
             socket.send_string(gg.std_send_command("stop", "admin", name_pl))
+        elif x == "commands":
+            print("=====================================")
+            print("======== Liste des commandes ========")
+            print("\n=== Commandes générales ===")
+            print("• commands")
+            for c in ListCommands:
+                print("• {}".format(c))
+            print("\n=== Commandes administrateur ===")
+            print("• stop")
+            print("• stop server")
+            for c in AdminCommands:
+                print("• {}".format(c))
+            print("=====================================")
         elif x in ListCommands:
             socket.send_string(gg.std_send_command(x, 129362501187010561, name_pl))
+        elif x in AdminCommands:
+            param = dict()
+            param["fct"] = x.lower()
+            param["ID"] = 1
+            param["arg2"] = "None"
+            param["arg3"] = "None"
+            param["arg4"] = "None"
+            print("==========================\n===== Admin Commands =====\n==========================\n")
+            if x != "balance total" and x != "playerid":
+                print("• PlayerID:")
+                param["ID"] = input()
+            if x == "update":
+                # arg2 = nameDB | arg3 = fieldName | arg4 = fieldValue
+                print("\n• nameDB:")
+                param["arg2"] = input()
+                print("\n• fieldName:")
+                param["arg3"] = input()
+                print("\n• fieldValue:")
+                param["arg4"] = input()
+            elif x == "add":
+                # arg2 = nameDB | arg3 = nameElem | arg4 = nbElem
+                print("nameDB:")
+                param["arg2"] = input()
+                print("\n• nameElem:")
+                param["arg3"] = input()
+                print("\n• nbElem:")
+                param["arg4"] = input()
+            elif x == "value":
+                # arg2 = nameDB | arg3 = nameElem
+                print("\n• nameDB:")
+                param["arg2"] = input()
+                print("\n• nameElem:")
+                param["arg3"] = input()
+            elif x == "gems":
+                # arg2 = nb gems
+                print("\n• Nombre de gems à ajouter:")
+                param["arg2"] = input()
+            elif x == "spinelles":
+                # arg2 = nb spinelles
+                print("Nombre de spinelles à ajouter:")
+                param["arg2"] = input()
+            elif x == "playerid":
+                print("• Platforme:")
+                param["arg2"] = input()
+                print("\n• ID du joueur sur la platforme:")
+                param["ID"] = input()
+            socket.send_string(gg.std_send_command("admin", 129362501187010561, name_pl, param))
 
         #  Get the reply.
         socks = dict(poll.poll(REQUEST_TIMEOUT))

@@ -3,15 +3,25 @@ from gems import gemsFonctions as GF
 
 
 def admin(param):
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
-    if ID == "Error 404":
-        return GF.WarningMsg[1]
-    PlayerID = sql.get_PlayerID(ID, "gems")
     fct = param["fct"]
     arg2 = param["arg2"]
     arg3 = param["arg3"]
     arg4 = param["arg4"]
     msg = []
+    if fct == "playerid":
+        if arg2 == "None":
+            platform = param["name_pl"]
+        else:
+            platform = arg2
+    else:
+        platform = param["name_pl"]
+    if param["name_pl"] == "Admin Bot" and fct != "playerid":
+        PlayerID = int(param["ID"])
+    else:
+        ID = sql.get_SuperID(int(param["ID"]), platform)
+        if ID == "Error 404":
+            return GF.WarningMsg[1]
+        PlayerID = sql.get_PlayerID(ID, "gems")
 
     if fct == "init":
         sql.init()
@@ -35,6 +45,8 @@ def admin(param):
         desc += "\n{}:gem:".format(sql.countTotalGems())
         spinelleidmoji = "{idmoji[spinelle]}"
         desc += "\n{0}<:spinelle:{1}>".format(sql.countTotalSpinelles(), spinelleidmoji)
+    elif fct == "playerid":
+        desc = "PlayerID: {}".format(PlayerID)
     else:
         desc = ":regional_indicator_s::regional_indicator_q::regional_indicator_l:"
 
