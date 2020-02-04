@@ -12,7 +12,6 @@ name_pl = "Admin Bot" # Nom de la plateforme
 
 check = True
 error = 0
-ListCommands = ["mine", "crime"]
 AdminCommands = ["update", "add", "value", "gems", "spinelles", "balance total", "playerid"]
 
 REQUEST_TIMEOUT = 2500
@@ -60,16 +59,12 @@ while check:
             print("======== Liste des commandes ========")
             print("\n=== Commandes générales ===")
             print("• commands")
-            for c in ListCommands:
-                print("• {}".format(c))
-            print("\n=== Commandes administrateur ===")
             print("• stop")
             print("• stop server")
+            print("\n=== Commandes administrateur ===")
             for c in AdminCommands:
                 print("• {}".format(c))
             print("=====================================")
-        elif x in ListCommands:
-            socket.send_string(gg.std_send_command(x, 129362501187010561, name_pl))
         elif x in AdminCommands:
             param = dict()
             param["fct"] = x.lower()
