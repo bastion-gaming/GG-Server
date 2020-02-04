@@ -294,6 +294,50 @@ def newPlayer(ID, nameDB, platform):
         return ("Le joueur existe déjà")
 
 
+# -------------------------------------------------------------------------------
+def newGuild(IDGuild):
+    """
+    Permet d'ajouter un nouveau joueur à la base de donnée en fonction de son ID.
+
+    ID: int de l'ID du serveur
+    """
+    nameDB = "Guild"
+    with open("DB/Templates/{}Template.json".format(nameDB), "r") as f:
+        t = json.load(f)
+
+    one = valueAt(IDGuild, "idGuild", nameDB)
+    if one == 0:
+        data = "id{}".format(nameDB)
+        values = str(IDGuild)
+        for x in t:
+            if x != "id{}".format(nameDB) and x != "ID":
+                data += ", {}".format(x)
+                if x == "Lang":
+                    values += ', "EN"'
+                elif "INTEGER" in t[x]:
+                    values += ", 0"
+                else:
+                    values += ", NULL"
+        script = "INSERT INTO {0} ({1}) VALUES ({2})".format(nameDB, data, values)
+        print("==== new Guild ====")
+        print(script)
+        cursor = conn.cursor()
+        cursor.execute(script)
+        conn.commit()
+        return ("Le serveur a été ajouté !")
+    else:
+        return ("Le serveur existe déjà")
+
+
+# -------------------------------------------------------------------------------
+def get_lang(IDGuild):
+    Lang = valueAtNumber(IDGuild, "Lang", "Guild")
+    if Lang == 0:
+        newGuild(IDGuild)
+        Lang = valueAtNumber(IDGuild, "Lang", "Guild")
+    return Lang
+
+
 # ===============================================================================
 # Compteur
 # ===============================================================================
@@ -365,7 +409,10 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
             # print("DB >> Le champ n'existe pas")
             return "201"
         else:
-            IDname = "idgems"
+            if nameDB == "Guild":
+                IDname = "idGuild"
+            else:
+                IDname = "idgems"
             script = "UPDATE {0} SET {1} = '{2}' WHERE {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
             for x in nameDBexcept:
                 if x == nameDB:
@@ -408,7 +455,7 @@ def valueAt(PlayerID, fieldName, nameDB):
         if not nameDB in nameDBexcept:
             try:
                 # Récupération de la valeur de fieldName dans la table nameDB
-                if nameDB == "gems":
+                if nameDB == "gems" or nameDB == "Guild":
                     script = "SELECT {1} FROM {0} WHERE id{0} = '{2}'".format(nameDB, fieldName, PlayerID)
                 else:
                     script = "SELECT {1} FROM {0} JOIN gems USING(idgems) WHERE idgems = '{2}'".format(nameDB, fieldName, PlayerID)

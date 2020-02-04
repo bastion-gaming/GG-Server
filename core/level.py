@@ -30,16 +30,12 @@ def checklevel(ID):
         if xp >= palier:
             sql.updateField(PlayerID, "lvl", lvl+1, "gems")
             desc = "a atteint le niveau **{0}**".format(lvl+1)
-
-            nbS = lvl // 5
-            nbG = lvl % 5
-            if nbS != 0:
-                sql.addSpinelles(PlayerID, nbS)
-                desc += "\nTu gagne {} <:spinelle:{}>`spinelles`".format(nbS, "{idmoji[spinelle]}")
-            if nbG != 0:
-                nbG = nbG * 50000
-                sql.addGems(PlayerID, nbG)
-                desc += "\nTu gagne {} :gem:`gems`".format(nbG)
+            if lvl <= 5:
+                nbG = 100*lvl
+            else:
+                nbG = 3**lvl
+            sql.addGems(PlayerID, nbG)
+            desc += "\nTu gagne {} :gem:`gems`".format(nbG)
             msg.append("Level UP")
         else:
             msg.append("Level OK")

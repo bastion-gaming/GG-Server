@@ -172,7 +172,7 @@ def loadItem(F = None):
 
     global objetItem
     objetItem = [Item("backpack", itemBourse("backpack", "vente"), itemBourse("backpack", "achat"), -200, "special")
-    , Item("hyperpack", itemBourse("hyperpack", "vente"), itemBourse("hyperpack", "achat"), -20000, "spinelle")
+    , Item("hyperpack", itemBourse("hyperpack", "vente"), itemBourse("hyperpack", "achat"), -20000, "special")
     , Item("fishhook", itemBourse("fishhook", "vente"), itemBourse("fishhook", "achat"), 1, "special")
     , Item("cobblestone", itemBourse("cobblestone", "vente"), itemBourse("cobblestone", "achat"), 4, "minerai")
     , Item("iron", itemBourse("iron", "vente"), itemBourse("iron", "achat"), 10, "minerai")
@@ -292,10 +292,10 @@ def loadItem(F = None):
 
     global objetBox
     objetBox = [Box("commongems", "Gems Common", 300, 100, 500, "gems", 1)
-    , Box("raregems", "Gems Rare", 3000, 1000, 5000, "gems", 10)
-    , Box("legendarygems", "Gems Legendary", 30000, 10000, 50000, "gems", 50)
-    , Box("gift", "Items en folie", 2, 1000, 1000000, "spinelle", 30)
-    , Box("gift_heart", "Cadeau de la Saint Valentin", 0, 100000, 500000, "", 20)]
+    , Box("raregems", "Gems Rare", 3000, 1000, 5000, "gems", 2)
+    , Box("legendarygems", "Gems Legendary", 30000, 10000, 50000, "gems", 4)
+    , Box("gift", "Items en folie", 500000, 1000, 1000000, "gems", 3)
+    , Box("gift_heart", "Cadeau de la Saint Valentin", 0, 100000, 500000, "", 2)]
 
     if sql.spam(PlayerID_GetGems, couldown_12h, "bourse", "gems"):
         sql.updateComTime(PlayerID_GetGems, "bourse", "gems")

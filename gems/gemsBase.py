@@ -11,6 +11,7 @@ import json
 
 def begin(param):
     """Pour créer son compte joueur et obtenir son starter Kit!"""
+    Lang = sql.get_lang(param["IDGuild"])
     msg = sql.newPlayer(param["ID"], "gems", param["name_pl"])
     SuperID = sql.get_SuperID(param["ID"], param["name_pl"])
     GF.startKit(SuperID)
@@ -24,6 +25,7 @@ def bal(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
         msg.append("OK")
@@ -58,10 +60,11 @@ def baltop(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
     baltop = ""
     if sql.spam(PlayerID, GF.couldown_4s, "baltop", "gems"):
         sql.updateComTime(PlayerID, "baltop", "gems")
-        if filtre == "gems" or filtre == "gem" or filtre == "spinelles" or filtre == "spinelle":
+        if filtre == "gems" or filtre == "gem":# or filtre == "spinelles" or filtre == "spinelle":
             UserList = []
             i = 1
             taille = sql.taille("gems")
@@ -81,30 +84,31 @@ def baltop(param):
             for one in UserList: # affichage des données trié
                 if j <= n:
                     baltop += "{2} | _{3} _<@{0}> {1}:gem:".format(one[0], one[1], j, one[3])
-                    if one[2] != 0:
-                        baltop += " | {0}<:spinelle:{1}>\n".format(one[2], "{idmoji[spinelle]}")
-                    else:
-                        baltop += "\n"
+                    # if one[2] != 0:
+                    #     baltop += " | {0}<:spinelle:{1}>\n".format(one[2], "{idmoji[spinelle]}")
+                    # else:
+                    #     baltop += "\n"
+                    baltop += "\n"
                 j += 1
             msg.append("OK")
             msg.append(baltop)
-        elif filtre == "guild" or filtre == "guilde":
-            GuildList = []
-            i = 1
-            while i <= DB.get_endDocID("DB/guildesDB"):
-                try:
-                    GuildList.append((DB.valueAt(i, "Nom", "DB/guildesDB"), DB.valueAt(i, "Spinelles", "DB/guildesDB")))
-                    i += 1
-                except:
-                    i += 1
-            GuildList = sorted(GuildList, key=itemgetter(1), reverse=True)
-            j = 1
-            for one in GuildList:
-                if j <= n:
-                    baltop += "{2} | {0} {1} <:spinelle:{3}>\n".format(one[0], one[1], j, "{idmoji[spinelle]}")
-                j += 1
-            msg.append("OK")
-            msg.append(baltop)
+        # elif filtre == "guild" or filtre == "guilde":
+        #     GuildList = []
+        #     i = 1
+        #     while i <= DB.get_endDocID("DB/guildesDB"):
+        #         try:
+        #             GuildList.append((DB.valueAt(i, "Nom", "DB/guildesDB"), DB.valueAt(i, "Spinelles", "DB/guildesDB")))
+        #             i += 1
+        #         except:
+        #             i += 1
+        #     GuildList = sorted(GuildList, key=itemgetter(1), reverse=True)
+        #     j = 1
+        #     for one in GuildList:
+        #         if j <= n:
+        #             baltop += "{2} | {0} {1} <:spinelle:{3}>\n".format(one[0], one[1], j, "{idmoji[spinelle]}")
+        #         j += 1
+        #     msg.append("OK")
+        #     msg.append(baltop)
         else:
             msg.append("NOK")
             msg.append("Erreur! Commande incorrect")
@@ -123,6 +127,7 @@ def buy(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "buy", "gems"):
         if int(nb) < 0:
@@ -253,6 +258,7 @@ def sell(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "sell", "gems"):
         nbItem = sql.valueAtNumber(PlayerID, item, "inventory")
@@ -328,6 +334,7 @@ def inv(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "inv", "gems"):
         if fct == "None" or fct == "principale" or fct == "main":
@@ -447,6 +454,7 @@ def market(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "market", "gems"):
         d_market = "Permet de voir tout les objets que l'on peux acheter ou vendre !\n\n"
@@ -607,10 +615,10 @@ def market(param):
                         d_marketItems += "| Poids **{}**\n".format(c.poids)
 
             for c in GF.objetBox :
-                if c.type == "gems":
+                if c.nom == "gift":
+                    d_marketBox += ":{nom}:`{nom}`: Achat **{prix}:gem:** | Gain: Items en folie!\n".format(nom=c.nom, prix=c.achat)
+                elif c.type == "gems":
                     d_marketBox += "<:gem_lootbox:{4}>`{0}`: Achat **{1}** | Gain: `{2} ▶ {3}`:gem:`gems` \n".format(c.nom, c.achat, c.min, c.max, "{idmoji[gem_lootbox]}")
-                elif c.type == "spinelle":
-                    d_marketBox += ":{nom}:`{nom}`: Achat **{prix}<:gem_spinelle:{idmoji}>** | Gain: Items en folie!\n".format(nom=c.nom, prix=c.achat, idmoji="{idmoji[spinelle]}")
 
             msg.append(d_marketOutils)
             msg.append(d_marketOutilsS)
@@ -814,14 +822,14 @@ def market(param):
             if fct == "None" or fct == "lootbox":
                 for c in GF.objetBox :
                     if c.achat != 0:
-                        if c.type == "gems":
+                        if c.nom == "gift":
+                            dmBox += "\n:{nom}:`{nom}`".format(nom=c.nom)
+                            dmBoxPrix += "\n`{prix}`:gem:".format(prix=c.achat)
+                            dmBoxInfo += "\nItems en folie!"
+                        elif c.type == "gems":
                             dmBox += "\n<:gem_lootbox:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_lootbox]}")
                             dmBoxPrix += "\n`{}`:gem:".format(c.achat)
                             dmBoxInfo += "\n`{} ▶ {}`:gem:`gems`".format(c.min, c.max)
-                        elif c.type == "spinelle":
-                            dmBox += "\n:{nom}:`{nom}`".format(nom=c.nom)
-                            dmBoxPrix += "\n`{prix}`<:gem_spinelle:{idmoji}>".format(prix=c.achat, idmoji="{idmoji[spinelle]}")
-                            dmBoxInfo += "\nItems en folie!"
 
             if fct == "None" or fct == "outil" or fct == "outils":
                 msg.append(dmOutils)
@@ -919,6 +927,7 @@ def pay(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "pay", "gems"):
         try:
@@ -963,6 +972,7 @@ def give(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
     checkLB = False
     if item == "bank_upgrade":
@@ -1065,6 +1075,7 @@ def forge(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "forge", "gems"):
         if GF.testInvTaille(PlayerID):
@@ -1186,59 +1197,63 @@ def forge(param):
     return msg
 
 
-def convert(param):
-    """**[Nombre de spinelle]** | Convertisseur :gem:`gems` :left_right_arrow: `spinelles` (250 000 pour 1)"""
-    nb = param["nb"]
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
-    if ID == "Error 404":
-        return GF.WarningMsg[1]
-    PlayerID = sql.get_PlayerID(ID, "gems")
-    msg = []
-
-    n = 250000
-    balGems = sql.valueAtNumber(PlayerID, "gems", "gems")
-    balspinelle = sql.valueAtNumber(PlayerID, "spinelles", "gems")
-    max = balGems // n
-    if nb != "None":
-        try:
-            nb = int(nb)
-        except:
-            desc = "Erreur! Nombre de <:spinelle:{idmoji}>`spinelles` incorrect".format(idmoji = "{idmoji[spinelle]}")
-            msg.append("NOK")
-            msg.append(desc)
-            return msg
-        if nb < 0:
-            if balspinelle >= -nb:
-                max = nb
-            else:
-                desc = "Tu n'as pas assez de <:spinelle:{idmoji}>`spinelles`".format(idmoji="{idmoji[spinelle]}")
-                msg.append("NOK")
-                msg.append(desc)
-                return msg
-        elif nb <= max:
-            max = nb
-        else:
-            desc = "Tu n'as pas assez de :gem:`gems`"
-            msg.append("NOK")
-            msg.append(desc)
-            return msg
-    else:
-        if max == 0:
-            desc = "Tu n'as pas assez de :gem:`gems`"
-            msg.append("NOK")
-            msg.append(desc)
-            return msg
-    sql.addGems(PlayerID, -(max*n))
-    sql.addSpinelles(PlayerID, max)
-    if max > 0:
-        desc = "Convertion terminée! Ton compte a été crédité de {nb} <:spinelle:{idmoji}>`spinelles`".format(nb=max, idmoji="{idmoji[spinelle]}")
-    elif max < 0:
-        desc = "Convertion terminée! Ton compte a été débité de {nb} <:spinelle:{idmoji}>`spinelles`".format(nb=-max, idmoji="{idmoji[spinelle]}")
-    else:
-        desc = "Aucune convertion effectuée"
-    msg.append("OK")
-    msg.append(desc)
-    return msg
+# ==============================
+# ===== Commande désactivé =====
+# ==============================
+# def convert(param):
+#     """**[Nombre de spinelle]** | Convertisseur :gem:`gems` :left_right_arrow: `spinelles` (250 000 pour 1)"""
+#     nb = param["nb"]
+#     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+#     if ID == "Error 404":
+#         return GF.WarningMsg[1]
+#     PlayerID = sql.get_PlayerID(ID, "gems")
+#     msg = []
+#     Lang = sql.get_lang(param["IDGuild"])
+#
+#     n = 250000
+#     balGems = sql.valueAtNumber(PlayerID, "gems", "gems")
+#     balspinelle = sql.valueAtNumber(PlayerID, "spinelles", "gems")
+#     max = balGems // n
+#     if nb != "None":
+#         try:
+#             nb = int(nb)
+#         except:
+#             desc = "Erreur! Nombre de <:spinelle:{idmoji}>`spinelles` incorrect".format(idmoji = "{idmoji[spinelle]}")
+#             msg.append("NOK")
+#             msg.append(desc)
+#             return msg
+#         if nb < 0:
+#             if balspinelle >= -nb:
+#                 max = nb
+#             else:
+#                 desc = "Tu n'as pas assez de <:spinelle:{idmoji}>`spinelles`".format(idmoji="{idmoji[spinelle]}")
+#                 msg.append("NOK")
+#                 msg.append(desc)
+#                 return msg
+#         elif nb <= max:
+#             max = nb
+#         else:
+#             desc = "Tu n'as pas assez de :gem:`gems`"
+#             msg.append("NOK")
+#             msg.append(desc)
+#             return msg
+#     else:
+#         if max == 0:
+#             desc = "Tu n'as pas assez de :gem:`gems`"
+#             msg.append("NOK")
+#             msg.append(desc)
+#             return msg
+#     sql.addGems(PlayerID, -(max*n))
+#     sql.addSpinelles(PlayerID, max)
+#     if max > 0:
+#         desc = "Convertion terminée! Ton compte a été crédité de {nb} <:spinelle:{idmoji}>`spinelles`".format(nb=max, idmoji="{idmoji[spinelle]}")
+#     elif max < 0:
+#         desc = "Convertion terminée! Ton compte a été débité de {nb} <:spinelle:{idmoji}>`spinelles`".format(nb=-max, idmoji="{idmoji[spinelle]}")
+#     else:
+#         desc = "Aucune convertion effectuée"
+#     msg.append("OK")
+#     msg.append(desc)
+#     return msg
 
 
 # @commands.command(pass_context=True)

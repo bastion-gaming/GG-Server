@@ -20,6 +20,7 @@ def daily(param):
     DailyMult = sql.valueAtNumber(PlayerID, "DailyMult", "daily")
     jour = dt.date.today()
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
     # =======================================================================
     # Détermination du daily
     # =======================================================================
@@ -40,8 +41,10 @@ def daily(param):
         lvl.addxp(PlayerID, 10*(DailyMult/2), "gems")
         if DailyMult % 30 == 0:
             m = (DailyMult//30)*5
-            sql.addSpinelles(PlayerID, m)
-            desc += "\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}<:spinelle:{2}>`spinelles`".format(DailyMult, m, "{idmoji[spinelle]}")
+            # sql.addSpinelles(PlayerID, m)
+            sql.addGems(PlayerID, m*250000)
+            # desc += "\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}<:spinelle:{2}>`spinelles`".format(DailyMult, m, "{idmoji[spinelle]}")
+            desc += "\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}:gem:`gems`".format(DailyMult, m*250000)
 
     elif DailyTime == str(jour):
         desc = "Tu as déja reçu ta récompense journalière aujourd'hui. Reviens demain pour gagner plus de :gem:`gems`"
@@ -67,8 +70,8 @@ def bank(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
-    jour = dt.date.today()
     if ARG != "None":
         mARG = ARG.lower()
     else:
@@ -213,6 +216,8 @@ def stealing(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
+
     if sql.valueAtNumber(GF.PlayerID_GetGems, "DailyMult", "daily") == 1:
         desc = ""
     else:
@@ -268,6 +273,8 @@ def crime(param):
     if ID == "Error 404":
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
+    Lang = sql.get_lang(param["IDGuild"])
+
     msg = []
     if sql.spam(PlayerID, GF.couldown_6s, "crime", "gems"):
         # si 10 sec c'est écoulé depuis alors on peut en  faire une nouvelle
@@ -316,6 +323,7 @@ def gamble(param):
     valeur = param["valeur"]
     msg = []
     valeur = int(valeur)
+    Lang = sql.get_lang(param["IDGuild"])
 
     gems = sql.valueAtNumber(PlayerID, "gems", "gems")
     if valeur < 0:
@@ -388,6 +396,7 @@ def mine(param):
     msg = []
     nbMax = 0
     desc = ""
+    Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_6s, "mine", "gems"):
         if GF.testInvTaille(PlayerID):
@@ -499,6 +508,7 @@ def dig(param):
     msg = []
     nbMax = 0
     desc = ""
+    Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_6s, "dig", "gems"):
         if GF.testInvTaille(PlayerID):
@@ -593,6 +603,7 @@ def fish(param):
     msg = []
     nbMax = 0
     desc = ""
+    Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_6s, "fish", "gems"):
         if GF.testInvTaille(PlayerID):
@@ -692,6 +703,7 @@ def slots(param):
     PlayerID = sql.get_PlayerID(ID, "gems")
     imise = param["imise"]
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
     gems = sql.valueAtNumber(PlayerID, "gems", "gems")
     misemax = 200
@@ -944,6 +956,7 @@ def boxes(param):
     fct = param["fct"]
     name = param["name"]
     msg = []
+    Lang = sql.get_lang(param["IDGuild"])
 
     if fct == "open":
         if name != "None":
@@ -964,8 +977,8 @@ def boxes(param):
                                 nb = r.randint(-2, 3)
                                 if nb < 1:
                                     nb = 1
-                                sql.addSpinelles(PlayerID, nb)
-                                desc += "{nombre} <:spinelle:{idmoji}>`spinelle`\n".format(idmoji="{idmoji[spinelle]}", nombre=nb)
+                                # sql.addSpinelles(PlayerID, nb)
+                                # desc += "{nombre} <:spinelle:{idmoji}>`spinelle`\n".format(idmoji="{idmoji[spinelle]}", nombre=nb)
                             for x in GF.objetItem:
                                 if r.randint(0,10) <= 1:
                                     if x.nom == "hyperpack":
@@ -1011,3 +1024,242 @@ def boxes(param):
         msg.append("NOK")
     msg.append(desc)
     return msg
+
+
+def hothouse(param):
+    """**[harvest / plant]** {_n° plantation / item à planter_} | Plantons compagnons !!"""
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    fct = param["fct"]
+    arg = param["arg"]
+    arg2 = param["arg2"]
+    msg = []
+    desc = ""
+    Lang = sql.get_lang(param["IDGuild"])
+
+    maxplanting = 50
+    if sql.spam(PlayerID, GF.couldown_4s, "hothouse", "gems"):
+        nbplanting = int(sql.valueAtNumber(PlayerID, "planting_plan", "inventory")) + 1
+        if nbplanting >= maxplanting:
+            nbplanting = maxplanting
+        i = 1
+        sql.updateComTime(PlayerID, "hothouse", "gems")
+        if fct == "None" or fct == "harvest":
+            if arg != "None":
+                if int(arg) <= nbplanting:
+                    nbplanting = int(arg)
+                else:
+                    desc = "Tu n'as pas assez de plantations ou cette plantation n'est pas disponible!"
+                    msg.append("NOK")
+                    msg.append(desc)
+                    return msg
+            msg.append("OK")
+            msg.append("{}".format(nbplanting))
+            while i <= nbplanting:
+                data = []
+                valuePlanting = sql.valueAt(PlayerID, i, "hothouse")
+                if valuePlanting != 0:
+                    valueTime = float(valuePlanting[0])
+                    valueItem = valuePlanting[1]
+                else:
+                    valueTime = 0
+                    valueItem = ""
+                if valueItem == "cacao":
+                    couldown = GF.couldown_4h
+                else:
+                    couldown = GF.couldown_6h
+                if valueTime == 0:
+                    desc = "Cette plantation est vide!"
+                else:
+                    PlantingTime = float(valueTime)
+                    InstantTime = t.time()
+                    time = PlantingTime - (InstantTime-couldown)
+                    if time <= 0:
+                        De = r.randint(1, 15)
+                        jour = dt.date.today()
+                        if valueItem == "seed" or valueItem == "":
+                            if (jour.month == 10 and jour.day >= 23) or (jour.month == 11 and jour.day <= 10): # Special Halloween
+                                if De <= 2:
+                                    nbHarvest = r.randint(1, 2)
+                                    item = "oak"
+                                elif De > 2 and De <= 7:
+                                    nbHarvest = r.randint(2, 4)
+                                    item = "pumpkin"
+                                elif De > 7 and De <= 10:
+                                    nbHarvest = r.randint(1, 2)
+                                    item = "spruce"
+                                elif De > 10 and De <= 12:
+                                    nbHarvest = r.randint(1, 2)
+                                    item = "palm"
+                                elif De > 12 and De <= 14:
+                                    nbHarvest = r.randint(4, 10)
+                                    item = "wheat"
+                                elif De > 14:
+                                    nbHarvest = r.randint(6, 12)
+                                    item = "grapes"
+                            else:
+                                if De <= 5:
+                                    nbHarvest = r.randint(1, 2)
+                                    item = "oak"
+                                elif De > 5 and De <= 9:
+                                    nbHarvest = r.randint(1, 2)
+                                    item = "spruce"
+                                elif De > 9 and De <= 12:
+                                    nbHarvest = r.randint(1, 2)
+                                    item = "palm"
+                                elif De > 12 and De <= 14:
+                                    nbHarvest = r.randint(4, 10)
+                                    item = "wheat"
+                                elif De > 14:
+                                    nbHarvest = r.randint(6, 12)
+                                    item = "grapes"
+                        elif valueItem == "cacao":
+                            nbHarvest = r.randint(1, 4)
+                            item = "chocolate"
+                        data = []
+                        data.append(0)
+                        data.append("")
+                        sql.add(PlayerID, item, nbHarvest, "inventory")
+                        sql.updateField(PlayerID, i, data, "hothouse")
+                        if item == "grapes":
+                            desc = "Ta plantation à fini de pousser, en la coupant tu gagnes {2} :{1}:`{1}`".format("{idmoji[gem_" + item + "]}", item, nbHarvest)
+                        else:
+                            desc = "Ta plantation à fini de pousser, en la coupant tu gagnes {2} <:gem_{1}:{0}>`{1}`".format("{idmoji[gem_" + item + "]}", item, nbHarvest)
+                        lvl.addxp(PlayerID, 1, "gems")
+                        if i > 1:
+                            if sql.valueAtNumber(PlayerID, "planting_plan", "inventory") > 0:
+                                if sql.valueAt(PlayerID, "planting_plan", "durability") == 0:
+                                    for c in GF.objetOutil:
+                                        if c.nom == "planting_plan":
+                                            sql.add(PlayerID, "planting_plan", c.durabilite, "durability")
+                                sql.add(PlayerID, "planting_plan", -1, "durability")
+                                if sql.valueAt(PlayerID, "planting_plan", "durability")[0] <= 0:
+                                    for c in GF.objetOutil:
+                                        if c.nom == "planting_plan":
+                                            sql.add(PlayerID, "planting_plan", c.durabilite, "durability")
+                                    sql.add(PlayerID, "planting_plan", -1, "inventory")
+
+                    else:
+                        timeH = int(time / 60 / 60)
+                        time = time - timeH * 3600
+                        timeM = int(time / 60)
+                        timeS = int(time - timeM * 60)
+                        desc = "<:gem_{3}:{4}>`{3}` | Ta plantation aura fini de pousser dans :clock2:`{0}h {1}m {2}s`".format(timeH, timeM, timeS, valueItem, "{idmoji[gem_" + valueItem + "]}")
+                msg.append("{}".format(i))
+                msg.append(desc)
+                i += 1
+            # << while i <= nbplanting:
+            return msg
+        elif fct == "plant":
+            if sql.valueAtNumber(GF.PlayerID_GetGems, "DailyMult", "daily") == 1:
+                desc = "Plantations endommagées! Un violent orage :cloud_lightning: à détruit tes plantations\nTes plantations seront réparrées au plus vite"
+                msg.append("NOK")
+                msg.append(desc)
+                return msg
+            if arg != "seed" and arg != "cacao":
+                arg = "seed"
+            if arg2 != "None":
+                try:
+                    arg2 = int(arg2)
+                except:
+                    msg.append("NOK")
+                    msg.append("Veuillez indiquer un numéro de plantation valide")
+                    return msg
+                if arg2 > nbplanting:
+                    desc = "Tu n'as pas assez de plantations ou cette plantation n'est pas disponible!"
+                    msg.append("NOK")
+                    msg.append(desc)
+                    return msg
+                elif int(arg2) < 0:
+                    sql.addGems(PlayerID, -100)
+                    lvl.addxp(PlayerID, -10, "gems")
+                    desc = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
+                    sql.add(PlayerID, "DiscordCop Amende", 1, "statgems")
+                    msg.append("anticheat")
+                    msg.append(desc)
+                    return msg
+                data = []
+                valuePlanting = sql.valueAt(PlayerID, i, "hothouse")
+                if valuePlanting != 0:
+                    valueTime = float(valuePlanting[0])
+                    valueItem = valuePlanting[1]
+                else:
+                    valueTime = 0
+                    valueItem = ""
+                if valueItem == "cacao":
+                    couldown = "4h"
+                else:
+                    couldown = "6h"
+                if valueTime == 0:
+                    PlantingItemValue = sql.valueAtNumber(PlayerID, arg, "inventory")
+                    if PlantingItemValue >= 1:
+                        data = []
+                        data.append(str(t.time()))
+                        data.append(arg)
+                        sql.add(PlayerID, arg2, data, "hothouse")
+                        sql.add(PlayerID, arg, -1, "inventory")
+                        desc = "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans :clock2:`{2}`".format(arg, "{idmoji[gem_" + arg + "]}", couldown)
+                    else:
+                        desc = "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire".format(arg, "{idmoji[gem_" + arg + "]}")
+                else:
+                    desc = "Tu as déjà planté une <:gem_{0}:{1}>`{0}` dans cette plantation".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
+                msg.append("OK")
+                msg.append("{}".format(nbplanting))
+                msg.append("{}".format(arg2))
+                msg.append(desc)
+                return msg
+            else:
+                j = 0
+                msg.append("OK")
+                msg.append("{}".format(nbplanting))
+                while i <= nbplanting:
+                    data = []
+                    valuePlanting = sql.valueAt(PlayerID, i, "hothouse")
+                    if valuePlanting != 0:
+                        valueTime = float(valuePlanting[0])
+                        valueItem = valuePlanting[1]
+                    else:
+                        valueTime = 0
+                        valueItem = ""
+                    PlantingItemValue = sql.valueAtNumber(PlayerID, arg, "inventory")
+                    if valueItem == "cacao" or (valueItem == "" and arg == "cacao"):
+                        couldown = "4h"
+                    else:
+                        couldown = "6h"
+                    if valueTime == 0:
+                        if PlantingItemValue >= 1:
+                            data = []
+                            data.append(str(t.time()))
+                            data.append(arg)
+                            sql.add(PlayerID, i, data, "hothouse")
+                            sql.add(PlayerID, arg, -1, "inventory")
+                            desc = "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans :clock2:`{2}`".format(arg, "{idmoji[gem_" + arg + "]}", couldown)
+                        else:
+                            desc = "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire".format(arg, "{idmoji[gem_" + arg + "]}")
+                            if j == 0:
+                                j = -1
+                                if arg == "seed":
+                                    arg = "cacao"
+                                else:
+                                    arg = "seed"
+                    else:
+                        desc = "Tu as déjà planté une <:gem_{0}:{1}>`{0}` dans cette plantation".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
+                    msg.append("{}".format(i))
+                    msg.append(desc)
+                    if j == -1:
+                        j = 1
+                    else:
+                        i += 1
+            return msg
+        else:
+            desc = "Fonction inconnu"
+            msg.append("NOK")
+            msg.append(desc)
+            return msg
+    else:
+        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        msg.append("couldown")
+        msg.append(desc)
+        return msg

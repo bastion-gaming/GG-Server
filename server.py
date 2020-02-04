@@ -56,6 +56,14 @@ while check:
     elif message["name_c"] == "level":
         ID = sql.get_SuperID(message["name_p"], platform)
         socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], lvl.checklevel(ID)))
+    elif message["name_c"] == "NewServer":
+        NewServer = sql.newGuild(message["name_p"])
+        msg = []
+        if NewServer == "Le serveur a été ajouté !":
+            msg.append("OK")
+        else:
+            msg.append("NOK")
+        socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], msg))
 
     # Send reply back to client
     else:

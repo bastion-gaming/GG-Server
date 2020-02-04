@@ -16,7 +16,7 @@ class Item:
 
 
 PrixItem = [Item("backpack", 3000, 3000)
-,Item("hyperpack", 1, 1)
+,Item("hyperpack", 250000, 250000)
 ,Item("fishhook", 46, 64)
 ,Item("cobblestone", 30, 50)
 ,Item("iron", 70, 100)

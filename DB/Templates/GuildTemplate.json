@@ -1,0 +1,6 @@
+{
+  "idGuild":
+    "PRIMARYKEY_INTEGER",
+  "Lang":
+    "TEXT"
+}
