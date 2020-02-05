@@ -274,7 +274,7 @@ def loadItem(F = None):
     global objetStat
     objetStat = [StatGems("DiscordCop Arrestation", "`Nombre d'arrestation par la DiscordCop`")
     , StatGems("DiscordCop Amende", "`Nombre d'ammende recue par la DiscordCop`")
-    , StatGems("Gamble Win", "`Nombre de gamble gagné`")
+    , StatGems("gamble | win", "`Nombre de gamble gagné`")
     , StatGems("Super Jackpot :seven::seven::seven:", "`Nombre de super jackpot gagné sur la machine à sous`")
     , StatGems("Mineur de Merveilles", "`Nombre de ruby trouvé`")
     , StatGems("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`")]
@@ -543,11 +543,13 @@ def gift(PlayerID):
     if (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):
         if nbgift > 0:
             sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
+            sql.add(PlayerID, "lootbox gift | gain", nbgift, "statgems")
             desc = "\n\nTu as trouvé {} :gift:`cadeau de Noël (gift)`".format(nbgift)
 
     elif (jour.month == 12 and jour.day >= 30) or (jour.month == 1 and jour.day <= 2):
         if nbgift > 0:
             sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
+            sql.add(PlayerID, "lootbox gift | gain", nbgift, "statgems")
             desc = "\n\nTu as trouvé {} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:".format(nbgift)
 
     return desc
@@ -559,12 +561,15 @@ def lootbox(PlayerID):
     D = r.randint(0, 40)
     if D <= 1:
         sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
+        sql.add(PlayerID, "lootbox legendary | gain", 1, "statgems")
         desc += "\nTu as trouvé une <:gem_lootbox:{}>**Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir".format("{idmoji[gem_lootbox]}")
     elif D >= 38:
         sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
+        sql.add(PlayerID, "lootbox rare | gain", 1, "statgems")
         desc += "\nTu as trouvé une <:gem_lootbox:{}>**Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir".format("{idmoji[gem_lootbox]}")
     elif D >= 17 and D <= 23:
         sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
+        sql.add(PlayerID, "lootbox common | gain", 1, "statgems")
         desc += "\nTu as trouvé une <:gem_lootbox:{}>**Loot Box Gems Common**! Utilise la commande `boxes open commongems` pour l'ouvrir".format("{idmoji[gem_lootbox]}")
 
     return desc

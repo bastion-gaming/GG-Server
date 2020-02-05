@@ -182,6 +182,8 @@ def bank(param):
                 sql.add(PlayerID, "solde", int(nbgm), "bank")
                 desc += "Plafond de {} :gem:`gems` du compte épargne atteint\nTon épargne a été tranférée sur ton compte principal\n\n".format(soldeMax)
             desc += "Nouveau solde: {} :gem:`gems`".format(sql.valueAtNumber(PlayerID, "Solde", "bank"))
+            sql.add(PlayerID, "bank saving", 1, "statgems")
+            sql.add(PlayerID, "bank saving | gain", int(soldeAdd), "statgems")
 
             # =====================================
             # Bonus
@@ -248,6 +250,8 @@ def stealing(param):
                         print("Gems >> PlayerID {author} viens de voler {n} gems à {nom}".format(n=gain, nom=ID_Vol, author=PlayerID))
                     sql.updateComTime(PlayerID, "stealing", "gems")
                     lvl.addxp(PlayerID, 1, "gems")
+                    sql.add(PlayerID, "stealing", 1, "statgems")
+                    sql.add(PlayerID, "stealing | gain", gain, "statgems")
                 else:
                     desc = "Tu es un piètre voleur de :gem:`gems`"
             except:
@@ -293,12 +297,15 @@ def crime(param):
                 if r.randint(0, 1) == 0:
                     desc += " :candy:`candy`"
                     sql.add(PlayerID, "candy", gain, "inventory")
+                    sql.add(PlayerID, "Halloween | crime | candy", gain, "statgems")
                 else:
                     desc += " :lollipop:`lollipop`"
                     sql.add(PlayerID, "lollipop", gain, "inventory")
+                    sql.add(PlayerID, "Halloween | crime | lollipop", gain, "statgems")
             else:
                 desc = "{1} {0} :gem:`gems`".format(gain, GF.message_crime[r.randint(0, 3)])
                 sql.addGems(PlayerID, gain)
+                sql.add(PlayerID, "crime | gain", gain, "statgems")
                 try:
                     sql.addGems(GF.PlayerID_GetGems, -gain) # Vole l'équivalent du crime au bot
                 except sqlite3.OperationalError:
@@ -306,6 +313,7 @@ def crime(param):
                 desc += GF.gift(PlayerID)
         sql.updateComTime(PlayerID, "crime", "gems")
         lvl.addxp(PlayerID, 1, "gems")
+        sql.add(PlayerID, "crime", 1, "statgems")
         msg.append("OK")
     else:
         desc = "Il faut attendre "+str(GF.couldown_6s)+" secondes entre chaque commande !"
@@ -343,7 +351,7 @@ def gamble(param):
                 gain = valeur*3
                 # l'espérence est de 0 sur la gamble
                 desc = "{1} {0} :gem:`gems`".format(gain, GF.message_gamble[r.randint(0, 4)])
-                sql.add(PlayerID, "Gamble Win", 1, "statgems")
+                sql.add(PlayerID, "gamble | win", 1, "statgems")
                 for x in GF.objetTrophy:
                     if x.nom == "Gamble Jackpot":
                         jackpot = x.mingem
@@ -361,6 +369,7 @@ def gamble(param):
                     sql.add(PlayerID, "Hyper Gamble Jackpot", 1, "trophy")
                     desc += "\nFélicitation! Tu as l'ame d'un parieur, nous t'offrons le prix :trophy::trophy::trophy:`Hyper Gamble Jackpot`."
                 sql.addGems(PlayerID, gain)
+                sql.add(PlayerID, "gamble | gain", gain, "statgems")
                 # =====================================
                 # Bonus
                 # =====================================
@@ -369,10 +378,12 @@ def gamble(param):
                 val = 0-valeur
                 sql.addGems(PlayerID, val)
                 sql.addGems(GF.PlayerID_GetGems, int(valeur))
+                sql.add(PlayerID, "gamble | perte", valeur, "statgems")
                 desc = "Dommage tu as perdu {} :gem:`gems`".format(valeur)
 
             sql.updateComTime(PlayerID, "gamble", "gems")
             lvl.addxp(PlayerID, 1, "gems")
+            sql.add(PlayerID, "gamble", 1, "statgems")
             msg.append("OK")
         else:
             desc = "Il faut attendre "+str(GF.couldown_8s)+" secondes entre chaque commande !"
@@ -432,6 +443,7 @@ def mine(param):
                             if c.nom == outil:
                                 sql.add(PlayerID, c.nom, c.durabilite, "durability")
                     desc = "Pas de chance tu as cassé ta <:gem_{nom}:{idmoji}>`{nom}` !".format(nom = outil, idmoji = "{idmoji[gem_" + outil + "]}")
+                    sql.add(PlayerID, "mine | {} cassé".format(outil), 1, "statgems")
                     msg.append("OK")
                     msg.append(desc)
                     return msg
@@ -471,12 +483,15 @@ def mine(param):
 
                 if nbrand != 0:
                     sql.add(PlayerID, add_item, nbrand*mult, "inventory")
+                    sql.add(PlayerID, "mine | item {}".format(add_item), nbrand*mult, "statgems")
                     desc = "Tu as obtenu {nb} <:gem_{item}:{idmoji}>`{item}`".format(nb = nbrand*mult, item = add_item, idmoji = "{idmoji[gem_" + add_item + "]}")
                 if add_item != "cobblestone":
                     nbcobble = r.randint(1, 32)
                     sql.add(PlayerID, "cobblestone", nbcobble*mult, "inventory")
+                    sql.add(PlayerID, "mine | item cobblestone", nbcobble*mult, "statgems")
                     desc += "\nTu as obtenu {} bloc de <:gem_cobblestone:{}>`cobblestone`".format(nbcobble*mult, "{idmoji[gem_cobblestone]}")
 
+                sql.add(PlayerID, "mine", 1, "statgems")
                 # =====================================
                 # Bonus
                 # =====================================
@@ -544,6 +559,7 @@ def dig(param):
                             if c.nom == outil:
                                 sql.add(PlayerID, c.nom, c.durabilite, "durability")
                     desc = "Pas de chance tu as cassé ta <:gem_{nom}:{idmoji}>`{nom}` !".format(nom = outil, idmoji = "{idmoji[gem_" + outil + "]}")
+                    sql.add(PlayerID, "dig | {} cassé".format(outil), 1, "statgems")
                     msg.append("OK")
                     msg.append(desc)
                     return msg
@@ -568,10 +584,12 @@ def dig(param):
 
                 if nbrand != 0:
                     sql.add(PlayerID, add_item, nbrand*mult, "inventory")
+                    sql.add(PlayerID, "dig | item {}".format(add_item), nbrand*mult, "statgems")
                     desc = "Tu as obtenu {nb} <:gem_{item}:{idmoji}>`{item}`".format(nb = nbrand*mult, item = add_item, idmoji = "{idmoji[gem_" + add_item + "]}")
                 else:
                     desc = "Tu as creusé toute la journée pour ne trouver que de la terre."
 
+                sql.add(PlayerID, "dig", 1, "statgems")
                 # =====================================
                 # Bonus
                 # =====================================
@@ -619,6 +637,7 @@ def fish(param):
                     if mult < 2:
                         mult = 2
                     sql.add(PlayerID, "fishhook", -1, "inventory")
+                    sql.add(PlayerID, "fish | fishhook utilisé", 1, "statgems")
                 else:
                     mult = 1
 
@@ -636,6 +655,7 @@ def fish(param):
                             if c.nom == outil:
                                 sql.add(PlayerID, c.nom, c.durabilite, "durability")
                     desc = "Pas de chance tu as cassé ta <:gem_{nom}:{idmoji}>`{nom}` !".format(nom = outil, idmoji = "{idmoji[gem_" + outil + "]}")
+                    sql.add(PlayerID, "fish | {} cassé".format(outil), 1, "statgems")
                     msg.append("OK")
                     msg.append(desc)
                     return msg
@@ -663,16 +683,20 @@ def fish(param):
 
                 if nbrand != 0:
                     sql.add(PlayerID, add_item, nbrand*mult, "inventory")
+                    sql.add(PlayerID, "fish | item {}".format(add_item), nbrand*mult, "statgems")
                     desc = "Tu as obtenu {nb} <:gem_{item}:{idmoji}>`{item}`".format(nb = nbrand*mult, item = add_item, idmoji = "{idmoji[gem_" + add_item + "]}")
                     if add_item != "fish":
                         nb = r.randint(1, 16)
                         sql.add(PlayerID, "fish", nb*mult, "inventory")
+                        sql.add(PlayerID, "fish | item fish", nb*mult, "statgems")
                         desc += "\nTu as obtenu {} <:gem_fish:{}>`fish`".format(nb*mult, "{idmoji[gem_fish]}")
                 else:
                     desc = "Pas de poisson pour toi aujourd'hui :cry:"
                     if mult >= 2:
                         sql.add(PlayerID, "fishhook", 1, "inventory")
+                        sql.add(PlayerID, "fish | fishhook utilisé", -1, "statgems")
 
+                sql.add(PlayerID, "fish", 1, "statgems")
                 # =====================================
                 # Bonus
                 # =====================================
@@ -801,16 +825,7 @@ def slots(param):
             sql.add(PlayerID, "Mineur de Merveilles", 1, "trophy")
             gain = 42
             desc += "\nEn trouvant ce <:gem_ruby:{}>`ruby` tu deviens un Mineur de Merveilles".format("{idmoji[gem_ruby]}")
-            D = r.randint(0, 20)
-            if D == 0:
-                sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
-                desc += "\nTu as trouvé une **Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir"
-            elif D >= 19:
-                sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
-                desc += "\nTu as trouvé une **Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir"
-            elif D >= 8 and D <= 12:
-                sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
-                desc += "\nTu as trouvé une **Loot Box Gems Common**! Utilise la commande `boxes open commongems` pour l'ouvrir"
+            GF.lootbox(PlayerID)
         # ===================================================================
         # Super gain, 3 chiffres identique
         elif result[3] == "seven" and result[4] == "seven" and result[5] == "seven":
@@ -882,18 +897,10 @@ def slots(param):
             if GF.testInvTaille(PlayerID):
                 desc += "\nTu a trouvé {} :cookie:`cookie`".format(nbCookie)
                 sql.add(PlayerID, "cookie", nbCookie, "inventory")
+                sql.add(PlayerID, "slots | cookie", nbCookie, "statgems")
             else:
                 desc += "\nTon inventaire est plein"
-            D = r.randint(0, 20)
-            if D == 0:
-                sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
-                desc += "\nTu as trouvé une **Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir"
-            elif D >= 19:
-                sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
-                desc += "\nTu as trouvé une **Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir"
-            elif D >= 8 and D <= 12:
-                sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
-                desc += "\nTu as trouvé une **Loot Box Gems Common**! Utilise la commande `boxes open commongems` pour l'ouvrir"
+            GF.lootbox(PlayerID)
         # ===================================================================
         # grappe
         nbGrapes = 0
@@ -907,12 +914,14 @@ def slots(param):
             if GF.testInvTaille(PlayerID):
                 desc += "\nTu a trouvé {} :grapes:`grapes`".format(nbGrapes)
                 sql.add(PlayerID, "grapes", nbGrapes, "inventory")
+                sql.add(PlayerID, "slots | grapes", nbGrapes, "statgems")
             else:
                 desc += "\nTon inventaire est plein"
         # ===================================================================
         # Backpack (hyper rare)
         if result[3] == "backpack" or result[4] == "backpack" or result[5] == "backpack":
             sql.add(PlayerID, "backpack", 1, "inventory")
+            sql.add(PlayerID, "slots | backpack", 1, "statgems")
             p = 0
             for c in GF.objetItem:
                 if c.nom == "backpack":
@@ -926,8 +935,10 @@ def slots(param):
                 desc += "\n:slot_machine: Jackpot! Tu viens de gagner {} :gem:`gems`".format(prix)
             elif prix > 0:
                 desc += "\nBravo, tu viens de gagner {} :gem:`gems`".format(prix)
+                sql.add(PlayerID, "slots | gain", prix, "statgems")
             else:
                 desc += "\nLa machine viens d'exploser :boom:\nTu as perdu {} :gem:`gems`".format(-1*prix)
+                sql.add(PlayerID, "slots | perte", -prix, "statgems")
             sql.addGems(PlayerID, prix)
             sql.addGems(GF.PlayerID_GetGems, -prix)
         elif gain == 1:
@@ -936,7 +947,9 @@ def slots(param):
         else:
             desc += "\nLa machine à sous ne paya rien ..."
             sql.addGems(PlayerID, val)
+            sql.add(PlayerID, "slots | perte", mise, "statgems")
         sql.updateComTime(PlayerID, "slots", "gems")
+        sql.add(PlayerID, "slots", 1, "statgems")
         if gain >= 0:
             lvl.addxp(PlayerID, gain + 1, "gems")
         msg.append("OK")
@@ -1003,6 +1016,8 @@ def boxes(param):
                                     else:
                                         desc += "\n:{0}:`{0}` x{1}".format(x.nom, nbgain)
                         lvl.addxp(PlayerID, lootbox.xp, "gems")
+                        sql.add(PlayerID, "boxes | open {}".format(lootbox.titre), 1, "statgems")
+                        sql.add(PlayerID, "boxes", 1, "statgems")
                         msg.append("OK")
                         msg.append(desc)
                         msg.append(titre)
@@ -1122,6 +1137,7 @@ def hothouse(param):
                         data.append(0)
                         data.append("")
                         sql.add(PlayerID, item, nbHarvest, "inventory")
+                        sql.add(PlayerID, "hothouse | harvest | item {}".format(item), nbHarvest, "statgems")
                         sql.updateField(PlayerID, i, data, "hothouse")
                         if item == "grapes":
                             desc = "Ta plantation à fini de pousser, en la coupant tu gagnes {2} :{1}:`{1}`".format("{idmoji[gem_" + item + "]}", item, nbHarvest)
@@ -1200,6 +1216,7 @@ def hothouse(param):
                         data.append(arg)
                         sql.add(PlayerID, arg2, data, "hothouse")
                         sql.add(PlayerID, arg, -1, "inventory")
+                        sql.add(PlayerID, "hothouse | plant | item {}".format(arg), 1, "statgems")
                         desc = "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans {2}".format(arg, "{idmoji[gem_" + arg + "]}", couldown)
                     else:
                         desc = "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire".format(arg, "{idmoji[gem_" + arg + "]}")
@@ -1235,6 +1252,7 @@ def hothouse(param):
                             data.append(arg)
                             sql.add(PlayerID, i, data, "hothouse")
                             sql.add(PlayerID, arg, -1, "inventory")
+                            sql.add(PlayerID, "hothouse | plant | item {}".format(arg), 1, "statgems")
                             desc = "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans :clock2:`{2}`".format(arg, "{idmoji[gem_" + arg + "]}", couldown)
                         else:
                             desc = "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire".format(arg, "{idmoji[gem_" + arg + "]}")
@@ -1316,6 +1334,7 @@ def ferment(param):
                         data.append(item)
                         sql.add(PlayerID, i, data, "ferment")
                         sql.add(PlayerID, item, -nbitem, "inventory")
+                        sql.add(PlayerID, "ferment | plant | item {}".format(item), nbitem, "statgems")
                         if item == "grapes":
                             desc = "Ton barril a été rempli de :{0}:`{0}`. L'alcool aura fini de fermenter dans :clock2:`{1}`".format(item, couldownMsg)
                         else:
@@ -1350,6 +1369,7 @@ def ferment(param):
                     data.append(0)
                     data.append("")
                     sql.add(PlayerID, gain, nbgain, "inventory")
+                    sql.add(PlayerID, "ferment | harvest | item {}".format(gain), nbgain, "statgems")
                     sql.updateField(PlayerID, i, data, "ferment")
                     desc = "Ton alcool à fini de fermenter, en ouvrant le barril tu gagnes {2} :{0}:`{0}`".format(gain, "{idmoji[gem_" + gain + "]}", nbgain)
                     lvl.addxp(PlayerID, 1, "gems")
@@ -1477,6 +1497,7 @@ def cooking(param):
                     data.append(0)
                     data.append("")
                     sql.add(PlayerID, gain, nbgain, "inventory")
+                    sql.add(PlayerID, "cooking | harvest | item {}".format(gain), nbgain, "statgems")
                     sql.updateField(PlayerID, i, data, "cooking")
                     desc = "Ton plat à fini de cuire, en le sortant du four tu gagnes {2} <:gem_{0}:{1}>`{0}`".format(gain, "{idmoji[gem_" + gain + "]}", nbgain)
                     lvl.addxp(PlayerID, 1, "gems")
@@ -1508,6 +1529,7 @@ def cooking(param):
                         data.append(item)
                         sql.add(PlayerID, i, data, "cooking")
                         sql.add(PlayerID, item, -nbitem, "inventory")
+                        sql.add(PlayerID, "cooking | plant | item {}".format(item), nbitem, "statgems")
                         desc = "Ton plat a été mis au four. Il aura fini de cuire dans {0}".format(couldownMsg)
                     else:
                         if item == "pumpkin":

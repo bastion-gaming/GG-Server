@@ -1,11 +1,8 @@
-import os
 from operator import itemgetter
-import random as r
 import time as t
-import datetime as dt
-from DB import SQLite as sql, TinyDB as DB
+from DB import SQLite as sql
 from core import level as lvl
-from gems import gemsFonctions as GF, gemsItems as GI, gemsStats as GS
+from gems import gemsFonctions as GF, gemsItems as GI
 import json
 
 
@@ -28,6 +25,7 @@ def bal(param):
     Lang = sql.get_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
+        sql.add(PlayerID, "bal", 1, "statgems")
         msg.append("OK")
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         desc = "{} :gem:`gems`\n".format(solde)
@@ -92,6 +90,7 @@ def baltop(param):
                 j += 1
             msg.append("OK")
             msg.append(baltop)
+            sql.add(PlayerID, "baltop", 1, "statgems")
         # elif filtre == "guild" or filtre == "guilde":
         #     GuildList = []
         #     i = 1
@@ -109,6 +108,7 @@ def baltop(param):
         #         j += 1
         #     msg.append("OK")
         #     msg.append(baltop)
+        #     sql.add(PlayerID, "baltop guilde", 1, "statgems")
         else:
             msg.append("NOK")
             msg.append("Erreur! Commande incorrect")
@@ -162,6 +162,7 @@ def buy(param):
                             argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
                         if check:
                             sql.add(ID, c.nom, nb, "inventory")
+                            sql.add(PlayerID, "buy | item {}".format(c.nom), nb, "statgems")
                             if c.type != "emoji":
                                 desc = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
                             else:
@@ -204,12 +205,14 @@ def buy(param):
                         if c.type == "bank":
                             sql.add(PlayerID, "SoldeMax", nb*c.poids, "bank")
                             desc = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                            sql.add(PlayerID, "buy | item {}".format(c.nom), nb, "statgems")
                             msg.append("bank")
                             msg.append(desc)
                             return msg
                         else:
                             sql.add(PlayerID, c.nom, nb, "inventory")
                             desc = "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
+                            sql.add(PlayerID, "buy | item {}".format(c.nom), nb, "statgems")
                             if c.nom != "bank_upgrade":
                                 if sql.valueAtNumber(PlayerID, c.nom, "durability") == 0:
                                     sql.add(PlayerID, c.nom, c.durabilite, "durability")
@@ -224,9 +227,11 @@ def buy(param):
                         if c.type == "gems" and sql.addGems(PlayerID, prix) >= "0":
                             sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
                             desc = "Tu viens d'acquérir {0} <:gem_lootbox:{2}>`{1}` !".format(nb, c.titre, "{idmoji[gem_lootbox]}")
+                            sql.add(PlayerID, "buy | item {}".format(c.titre), nb, "statgems")
                         elif c.type == "spinelle" and sql.addSpinelles(PlayerID, prix) >= "0":
                             sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
                             desc = "Tu viens d'acquérir {nb} :{nom}:`{nom}` !".format(nb=nb, nom=c.titre)
+                            sql.add(PlayerID, "buy | item {}".format(c.titre), nb, "statgems")
                         else :
                             desc = "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de :gem:`gems` en banque"
                         break
@@ -235,6 +240,7 @@ def buy(param):
                 msg.append("NOK")
             else:
                 msg.append("OK")
+                sql.add(PlayerID, "buy", 1, "statgems")
             msg.append(desc)
 
             sql.updateComTime(PlayerID, "buy", "gems")
@@ -270,6 +276,7 @@ def sell(param):
             for c in GF.objetItem:
                 if item == c.nom:
                     test = False
+                    sql.add(PlayerID, "sell | item {}".format(c.nom), nb, "statgems")
                     gain = c.vente*nb
                     if c.type != "spinelle":
                         sql.addGems(PlayerID, gain)
@@ -293,6 +300,7 @@ def sell(param):
                         sql.addSpinelles(PlayerID, gain)
                         argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
                     desc = "Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4} !".format(nb, item, gain, "{idmoji[gem_" + c.nom + "]}", argent)
+                    sql.add(PlayerID, "sell | item {}".format(c.nom), nb, "statgems")
                     if nbItem == 1:
                         if sql.valueAt(PlayerID, item, "durability") != 0:
                             sql.add(PlayerID, item, -1, "durability")
@@ -317,6 +325,7 @@ def sell(param):
                         desc = "Tu n'as pas assez de <:gem_{i}:{idmoji}>`{i}`. Il t'en reste : {nb}".format(i=item, nb=str(sql.valueAtNumber(PlayerID, item, "inventory")), idmoji="{idmoji[gem_" + c.nom + "]}")
 
         sql.updateComTime(PlayerID, "sell", "gems")
+        sql.add(PlayerID, "sell", 1, "statgems")
         msg.append("OK")
         msg.append(desc)
     else:
@@ -338,6 +347,7 @@ def inv(param):
 
     if sql.spam(PlayerID, GF.couldown_4s, "inv", "gems"):
         if fct == "None" or fct == "principale" or fct == "main":
+            sql.add(PlayerID, "inv", 1, "statgems")
             msg_inv = ""
             msg_invOutils = ""
             msg_invSpeciaux = ""
@@ -472,6 +482,7 @@ def market(param):
         msg.append(d_market)
 
         if fct == "mobile":
+            sql.add(PlayerID, "market", 1, "statgems")
             d_marketOutils = ""
             d_marketOutilsS = ""
             d_marketItems = ""
@@ -643,6 +654,7 @@ def market(param):
             return msg
 
         elif fct == "None" or fct == "outil" or fct == "outils" or fct == "item" or fct == "items" or fct == "minerai" or fct == "minerais" or fct == "poissons" or fct == "fish" or fct == "plantes" or fct == "plants" or fct == "event" or fct == "événements" or fct == "lootbox":
+            sql.add(PlayerID, "market", 1, "statgems")
             dmMinerai = ""
             dmMineraiPrix = ""
             dmMineraiInfo = ""
@@ -941,6 +953,8 @@ def pay(param):
                     desc = "{0} donne {1} :gem:`gems` à {2} !".format(nom, gain, Nom_recu)
                     # Message de réussite dans la console
                     print("Gems >> {} a donné {} Gems à {}".format(nom, gain, Nom_recu))
+                    sql.add(PlayerID, "pay", 1, "statgems")
+                    sql.add(PlayerID, "pay | nb gems", gain, "statgems")
                 else:
                     desc = "{0} n'a pas assez pour donner {1} :gem:`gems` à {2} !".format(nom, gain, Nom_recu)
 
@@ -1021,6 +1035,9 @@ def give(param):
                                         desc = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(nom, nb, item, "{idmoji[gem_" + item + "]}", Nom_recu)
                         # Message de réussite dans la console
                         print("Gems >> {0} a donné {1} {2} à {3}".format(nom, nb, item, Nom_recu))
+                        sql.add(PlayerID, "give", 1, "statgems")
+                        sql.add(PlayerID, "give | nb items", nb, "statgems")
+                        sql.add(PlayerID, "give | item {}".format(item), nb, "statgems")
                     else:
                         desc = "L'inventaire de {} est plein".format(Nom_recu)
                 else:
@@ -1046,6 +1063,8 @@ def give(param):
                                     desc = "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4} !".format(nom, nb, item, "{idmoji[gem_" + item + "]}", Nom_recu)
                         # Message de réussite dans la console
                         print("Gems >> {0} a donné {1} {2} à {3}".format(nom, nb, item, Nom_recu))
+                        sql.add(PlayerID, "give", 1, "statgems")
+                        sql.add(PlayerID, "give | nb items", nb, "statgems")
                     else:
                         desc = "L'inventaire de {} est plein".format(Nom_recu)
                 else:
@@ -1097,6 +1116,9 @@ def forge(param):
                         nb4 = nb*c.nb4
                         if c.item1 != "" and c.item2 != "" and c.item3 != "" and c.item4 != "":
                             if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(PlayerID, c.item2, "inventory") >= nb2 and sql.valueAtNumber(PlayerID, c.item3, "inventory") >= nb3 and sql.valueAtNumber(PlayerID, c.item4, "inventory") >= nb4:
+                                sql.add(PlayerID, "forge", 1, "statgems")
+                                sql.add(PlayerID, "forge | nb items", nb, "statgems")
+                                sql.add(PlayerID, "forge | item {}".format(c.nom), nb, "statgems")
                                 sql.add(PlayerID, c.nom, nb, "inventory")
                                 sql.add(PlayerID, c.item1, -1*nb1, "inventory")
                                 sql.add(PlayerID, c.item2, -1*nb2, "inventory")
@@ -1125,6 +1147,9 @@ def forge(param):
 
                         elif c.item1 != "" and c.item2 != "" and c.item3 != "":
                             if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(PlayerID, c.item2, "inventory") >= nb2 and sql.valueAtNumber(PlayerID, c.item3, "inventory") >= nb3:
+                                sql.add(PlayerID, "forge", 1, "statgems")
+                                sql.add(PlayerID, "forge | nb items", nb, "statgems")
+                                sql.add(PlayerID, "forge | item {}".format(c.nom), nb, "statgems")
                                 sql.add(PlayerID, c.nom, nb, "inventory")
                                 sql.add(PlayerID, c.item1, -1*nb1, "inventory")
                                 sql.add(PlayerID, c.item2, -1*nb2, "inventory")
@@ -1149,6 +1174,9 @@ def forge(param):
 
                         elif c.item1 != "" and c.item2 != "":
                             if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(PlayerID, c.item2, "inventory") >= nb2:
+                                sql.add(PlayerID, "forge", 1, "statgems")
+                                sql.add(PlayerID, "forge | nb items", nb, "statgems")
+                                sql.add(PlayerID, "forge | item {}".format(c.nom), nb, "statgems")
                                 sql.add(PlayerID, c.nom, nb, "inventory")
                                 sql.add(PlayerID, c.item1, -1*nb1, "inventory")
                                 sql.add(PlayerID, c.item2, -1*nb2, "inventory")
@@ -1169,6 +1197,9 @@ def forge(param):
 
                         elif c.item1 != "":
                             if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1:
+                                sql.add(PlayerID, "forge", 1, "statgems")
+                                sql.add(PlayerID, "forge | nb items", nb, "statgems")
+                                sql.add(PlayerID, "forge | item {}".format(c.nom), nb, "statgems")
                                 sql.add(PlayerID, c.nom, nb, "inventory")
                                 sql.add(PlayerID, c.item1, -1*nb1, "inventory")
                                 desc = "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}` !".format(nb, c.nom, "{idmoji[gem_" + c.nom + "]}")
@@ -1327,61 +1358,3 @@ def forge(param):
 #         msg = "Il faut attendre " + str(GF.couldown_6s) + " secondes entre chaque commande !"
 #         await ctx.channel.send(msg)
 #
-#
-#
-# @commands.command(pass_context=True)
-# async def graphbourse(self, ctx, item, mois = None, annee = None, type = None):
-#     """**[item] [mois] [année]** | Historique de la bourse par item"""
-#     ID = ctx.author.id
-#     now = dt.datetime.now()
-#
-#     if item.lower() == "all":
-#         if type == None:
-#             type = str(now.month)
-#         if annee == None:
-#             annee = str(now.year)
-#         temp = type
-#         type = mois.lower()
-#         mois = temp
-#         if type == "item" or type == "items":
-#             for c in GF.objetItem:
-#                 check = False
-#                 for x in GI.exception:
-#                     if x == c.nom:
-#                         check = True
-#                 for x in GF.ObjetEventEnd:
-#                     if x == c.nom:
-#                         check = True
-#                 if not check:
-#                     graph = GS.create_graph(c.nom, annee, mois)
-#                     if graph == "404":
-#                         await ctx.send("Aucune données n'a été trouvée!")
-#                     else:
-#                         await ctx.send(file=discord.File("cache/{}".format(graph)))
-#                         os.remove("cache/{}".format(graph))
-#         elif type == "outil" or type == "outils":
-#             for c in GF.objetOutil:
-#                 check = False
-#                 for x in GI.exception:
-#                     if x == c.nom:
-#                         check = True
-#                 if c.type != "bank" and check == False:
-#                     graph = GS.create_graph(c.nom, annee, mois)
-#                     if graph == "404":
-#                         await ctx.send("Aucune données n'a été trouvée!")
-#                     else:
-#                         await ctx.send(file=discord.File("cache/{}".format(graph)))
-#                         os.remove("cache/{}".format(graph))
-#         else:
-#             await ctx.send("Commande mal formulée")
-#     else:
-#         if mois == None:
-#             mois = str(now.month)
-#         if annee == None:
-#             annee = str(now.year)
-#         graph = GS.create_graph(item, annee, mois)
-#         if graph == "404":
-#             await ctx.send("Aucune données n'a été trouvée!")
-#         else:
-#             await ctx.send(file=discord.File("cache/{}".format(graph)))
-#             os.remove("cache/{}".format(graph))
