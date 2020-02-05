@@ -1,6 +1,8 @@
 {
   "ID":
     "PRIMARYKEY_INTEGER",
+  "LANG":
+    "TEXT",
   "ID_discord":
     "INTEGER",
   "ID_messenger":

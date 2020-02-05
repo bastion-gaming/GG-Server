@@ -243,7 +243,7 @@ def newPlayer(ID, nameDB, platform):
     cursor = conn.cursor()
     if SuperID == "Error 404":
         # Init du joueur avec les champs de base
-        script = "INSERT INTO IDs (ID_{1}) VALUES ({0})".format(ID, platform)
+        script = "INSERT INTO IDs (ID_{1}, LANG) VALUES ({0}, 'EN')".format(ID, platform)
         cursor.execute(script)
         conn.commit()
         SuperID = get_SuperID(ID, platform)
@@ -297,7 +297,7 @@ def newPlayer(ID, nameDB, platform):
 # -------------------------------------------------------------------------------
 def newGuild(IDGuild):
     """
-    Permet d'ajouter un nouveau joueur à la base de donnée en fonction de son ID.
+    Permet d'ajouter un nouveau serveur discord à la base de donnée en fonction de son ID.
 
     ID: int de l'ID du serveur
     """
@@ -330,7 +330,7 @@ def newGuild(IDGuild):
 
 
 # -------------------------------------------------------------------------------
-def get_lang(IDGuild):
+def get_discord_guild_lang(IDGuild):
     Lang = valueAtNumber(IDGuild, "Lang", "Guild")
     if Lang == 0:
         newGuild(IDGuild)
@@ -414,6 +414,9 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
             else:
                 IDname = "idgems"
             script = "UPDATE {0} SET {1} = '{2}' WHERE {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
+            if nameDB == "IDs":
+                IDname = "ID"
+                script = "UPDATE {0} SET {1} = '{2}' WHERE {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
             for x in nameDBexcept:
                 if x == nameDB:
                     if x == "inventory":
@@ -432,8 +435,8 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
                         script = "UPDATE {0} SET Time = '{2}', Alcool = '{5}'  WHERE idBarrel = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue[0], PlayerID, IDname, fieldValue[1])
                     else:
                         return "202"
-            # print("==== updateField ====")
-            # print(script)
+            print("==== updateField ====")
+            print(script)
             cursor.execute(script)
             conn.commit()
             return "200"
@@ -457,6 +460,8 @@ def valueAt(PlayerID, fieldName, nameDB):
                 # Récupération de la valeur de fieldName dans la table nameDB
                 if nameDB == "gems" or nameDB == "Guild":
                     script = "SELECT {1} FROM {0} WHERE id{0} = '{2}'".format(nameDB, fieldName, PlayerID)
+                elif nameDB == "IDs":
+                    script = "SELECT {1} FROM {0} JOIN gems USING(ID) WHERE idgems = '{2}'".format(nameDB, fieldName, PlayerID)
                 else:
                     script = "SELECT {1} FROM {0} JOIN gems USING(idgems) WHERE idgems = '{2}'".format(nameDB, fieldName, PlayerID)
                 # print(script)

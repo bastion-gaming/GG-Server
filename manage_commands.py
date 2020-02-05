@@ -1,5 +1,6 @@
 from gems import *
 import gems
+from DB import SQLite as sql
 
 
 def exec_commands(c):
@@ -48,6 +49,11 @@ def exec_commands(c):
         commande_forgee = "getattr(eval(file_c), commande)"
         try:
             c["param_c"]["name_pl"] = c["name_pl"]
+            ID = sql.get_SuperID(c["name_p"], c["name_pl"])
+            if ID != "Error 404":
+                c["param_c"]["lang"] = sql.valueAtNumber(ID, "LANG", "IDs")
+            else:
+                c["param_c"]["lang"] = "EN"
             commande_forgee = commande_forgee + '(' + str(c["param_c"]) + ')'
         except KeyError:
             pass

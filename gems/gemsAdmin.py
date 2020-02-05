@@ -8,7 +8,7 @@ def admin(param):
     arg3 = param["arg3"]
     arg4 = param["arg4"]
     msg = []
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
     if fct == "playerid":
         if arg2 == "None":
             platform = param["name_pl"]

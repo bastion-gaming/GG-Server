@@ -8,7 +8,7 @@ import json
 
 def begin(param):
     """Pour créer son compte joueur et obtenir son starter Kit!"""
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
     msg = sql.newPlayer(param["ID"], "gems", param["name_pl"])
     SuperID = sql.get_SuperID(param["ID"], param["name_pl"])
     GF.startKit(SuperID)
@@ -22,7 +22,7 @@ def bal(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
         sql.add(PlayerID, "bal", 1, "statgems")
@@ -58,7 +58,7 @@ def baltop(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
     baltop = ""
     if sql.spam(PlayerID, GF.couldown_4s, "baltop", "gems"):
         sql.updateComTime(PlayerID, "baltop", "gems")
@@ -127,7 +127,7 @@ def buy(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "buy", "gems"):
         if int(nb) < 0:
@@ -264,7 +264,7 @@ def sell(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "sell", "gems"):
         nbItem = sql.valueAtNumber(PlayerID, item, "inventory")
@@ -343,7 +343,7 @@ def inv(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "inv", "gems"):
         if fct == "None" or fct == "principale" or fct == "main":
@@ -464,7 +464,7 @@ def market(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "market", "gems"):
         d_market = "Permet de voir tout les objets que l'on peux acheter ou vendre !\n\n"
@@ -939,7 +939,7 @@ def pay(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "pay", "gems"):
         try:
@@ -986,7 +986,7 @@ def give(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     checkLB = False
     if item == "bank_upgrade":
@@ -1094,7 +1094,7 @@ def forge(param):
         return GF.WarningMsg[1]
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_lang(param["IDGuild"])
+    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "forge", "gems"):
         if GF.testInvTaille(PlayerID):
@@ -1228,6 +1228,32 @@ def forge(param):
     return msg
 
 
+def lang(param):
+    """
+    Permet de changer la langue pour un joueur.
+    """
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    print(PlayerID)
+    lang = param["langue"].upper()
+    msg = []
+    langlist = ["FR", "EN"]
+
+    if lang in langlist:
+        if sql.updateField(ID, "LANG", lang, "IDs") == "200":
+            msg.append("OK")
+            msg.append("Langue modifiée")
+        else:
+            msg.append("NOK")
+            msg.append(GF.WarningMsg[1])
+    else:
+        msg.append("NOK")
+        msg.append("Langue non prise en charge")
+    return msg
+
+
 # ==============================
 # ===== Commande désactivé =====
 # ==============================
@@ -1239,7 +1265,7 @@ def forge(param):
 #         return GF.WarningMsg[1]
 #     PlayerID = sql.get_PlayerID(ID, "gems")
 #     msg = []
-#     Lang = sql.get_lang(param["IDGuild"])
+#     Lang = sql.get_discord_guild_lang(param["IDGuild"])
 #
 #     n = 250000
 #     balGems = sql.valueAtNumber(PlayerID, "gems", "gems")
