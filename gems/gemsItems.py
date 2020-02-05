@@ -39,6 +39,7 @@ PrixItem = [Item("backpack", 3000, 3000)
 ,Item("beer", 1664, 2500)
 ,Item("chocolate", 242, 353)
 ,Item("potato", 75, 90)
+,Item("fries", 75, 90)
 ,Item("cacao", 50, 60)
 ,Item("candy", 1, 2)
 ,Item("lollipop", 5, 12)]

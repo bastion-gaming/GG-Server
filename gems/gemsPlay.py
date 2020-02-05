@@ -3,7 +3,7 @@ import time as t
 import datetime as dt
 from DB import SQLite as sql
 import sqlite3
-from gems import gemsFonctions as GF, gemsEvent as GE
+from gems import gemsFonctions as GF
 from core import level as lvl
 
 
@@ -186,8 +186,8 @@ def bank(param):
             # =====================================
             # Bonus
             # =====================================
-            desc += GE.lootbox(PlayerID)
-            desc += GE.gift(PlayerID)
+            desc += GF.lootbox(PlayerID)
+            desc += GF.gift(PlayerID)
 
             try:
                 sql.addGems(GF.PlayerID_GetGems, int(soldeTaxe[0]))
@@ -303,7 +303,7 @@ def crime(param):
                     sql.addGems(GF.PlayerID_GetGems, -gain) # Vole l'équivalent du crime au bot
                 except sqlite3.OperationalError:
                     pass
-                desc += GE.gift(PlayerID)
+                desc += GF.gift(PlayerID)
         sql.updateComTime(PlayerID, "crime", "gems")
         lvl.addxp(PlayerID, 1, "gems")
         msg.append("OK")
@@ -364,7 +364,7 @@ def gamble(param):
                 # =====================================
                 # Bonus
                 # =====================================
-                desc += GE.lootbox(PlayerID)
+                desc += GF.lootbox(PlayerID)
             else:
                 val = 0-valeur
                 sql.addGems(PlayerID, val)
@@ -480,8 +480,8 @@ def mine(param):
                 # =====================================
                 # Bonus
                 # =====================================
-                desc += GE.lootbox(PlayerID)
-                desc += GE.gift(PlayerID)
+                desc += GF.lootbox(PlayerID)
+                desc += GF.gift(PlayerID)
 
             else:
                 desc = "Il faut acheter ou forger une pioche pour miner!"
@@ -575,8 +575,8 @@ def dig(param):
                 # =====================================
                 # Bonus
                 # =====================================
-                desc += GE.lootbox(PlayerID)
-                desc += GE.gift(PlayerID)
+                desc += GF.lootbox(PlayerID)
+                desc += GF.gift(PlayerID)
 
             else:
                 desc = "Il faut acheter ou forger une pelle pour creuser!"
@@ -676,8 +676,8 @@ def fish(param):
                 # =====================================
                 # Bonus
                 # =====================================
-                desc += GE.lootbox(PlayerID)
-                desc += GE.gift(PlayerID)
+                desc += GF.lootbox(PlayerID)
+                desc += GF.gift(PlayerID)
 
             else:
                 desc = "Il te faut une <:gem_fishingrod:{}>`fishingrod` pour pécher, tu en trouvera une au marché !".format("{idmoji[fishingrod]}")
@@ -1189,9 +1189,9 @@ def hothouse(param):
                     valueTime = 0
                     valueItem = ""
                 if valueItem == "cacao":
-                    couldown = "4h"
+                    couldown = ":clock4:`4h`"
                 else:
-                    couldown = "6h"
+                    couldown = ":clock6:`6h`"
                 if valueTime == 0:
                     PlantingItemValue = sql.valueAtNumber(PlayerID, arg, "inventory")
                     if PlantingItemValue >= 1:
@@ -1200,7 +1200,7 @@ def hothouse(param):
                         data.append(arg)
                         sql.add(PlayerID, arg2, data, "hothouse")
                         sql.add(PlayerID, arg, -1, "inventory")
-                        desc = "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans :clock2:`{2}`".format(arg, "{idmoji[gem_" + arg + "]}", couldown)
+                        desc = "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans {2}".format(arg, "{idmoji[gem_" + arg + "]}", couldown)
                     else:
                         desc = "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire".format(arg, "{idmoji[gem_" + arg + "]}")
                 else:
@@ -1284,12 +1284,12 @@ def ferment(param):
             nbitem = 10
             gain = "wine_glass"
             couldown = GF.couldown_3h
-            couldownMsg = "3h"
+            couldownMsg = ":clock3:`3h`"
         elif item == "wheat":
             nbitem = 8
             gain = "beer"
             couldown = GF.couldown_8h
-            couldownMsg = "8h"
+            couldownMsg = ":clock8:`8h`"
         sql.updateComTime(PlayerID, "ferment", "gems")
         nbferment = sql.valueAtNumber(PlayerID, "barrel", "inventory") + 1
         if nbferment >= max:
@@ -1375,7 +1375,150 @@ def ferment(param):
                         desc = "Fermentation de :{0}:`{0}` en cours.".format(valueItem)
                     else:
                         desc = "Fermentation de <:gem_{0}:{1}>`{0}` en cours.".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
-                    desc += "\nTon alcool aura fini de fermenter dans :clock2:`{}h {}m {}s`".format(timeH, timeM, timeS)
+                    desc += "Ton alcool aura fini de fermenter dans :clock2:`{}h {}m {}s`".format(timeH, timeM, timeS)
+            msg.append("{}".format(i))
+            msg.append(desc)
+            i += 1
+    else:
+        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        msg.append("NOK")
+        msg.append(desc)
+    return msg
+
+
+def cooking(param):
+    """**{potato/pumpkin/chocolate}** | Cuisinons compagnons !!"""
+    ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if ID == "Error 404":
+        return GF.WarningMsg[1]
+    PlayerID = sql.get_PlayerID(ID, "gems")
+    item = param["item"]
+    msg = []
+    desc = ""
+    Lang = sql.get_lang(param["IDGuild"])
+    gain = ""
+    i = 1
+    jour = dt.date.today()
+    max = 20
+
+    if sql.spam(PlayerID, GF.couldown_4s, "cooking", "gems"):
+        if item == "pumpkin":
+            if (jour.month == 10 and jour.day >= 26) or (jour.month == 11 and jour.day <= 10):
+                item = "pumpkin"
+                gain = "pumpkinpie"
+                nbitem = 12
+                couldown = GF.couldown_2h
+                couldownMsg = ":clock2:`2h`"
+            else:
+                msg.append("NOK")
+                msg.append("Cette cuisson est disponible uniquement pendant l'événement **Halloween**")
+                return msg
+        elif item == "chocolate":
+            if (jour.month == 12 and jour.day >= 14) or (jour.month == 1 and jour.day <= 5):
+                item = "chocolate"
+                gain = "cupcake"
+                nbitem = 8
+                couldown = GF.couldown_2h
+                couldownMsg = ":clock2:`2h`"
+            else:
+                msg.append("NOK")
+                msg.append("Cette cuisson est disponible uniquement pendant l'événement de **Noël**")
+                return msg
+        elif item == "potato":
+            item = "potato"
+            gain = "fries"
+            nbitem = 6
+            couldown = GF.couldown_3h
+            couldownMsg = ":clock3:`3h`"
+        elif item != "None":
+            msg.append("NOK")
+            msg.append("Tu ne peux pas faire cuire cet item.")
+            return msg
+
+        sql.updateComTime(PlayerID, "cooking", "gems")
+        nbcooking = sql.valueAtNumber(PlayerID, "furnace", "inventory") + 1
+        if nbcooking >= max:
+            nbcooking = max
+        msg.append("OK")
+        msg.append("{}".format(nbcooking))
+        while i <= nbcooking:
+            data = []
+            valueCooking = sql.valueAt(PlayerID, i, "cooking")
+            if valueCooking != 0:
+                valueTime = float(valueCooking[0])
+                valueItem = valueCooking[1]
+            else:
+                valueTime = 0
+                valueItem = ""
+            cookingItem = sql.valueAtNumber(PlayerID, item, "inventory")
+            if valueItem == "" and item == "None":
+                desc = "Ce four est vide."
+            elif item == "None":
+                couldown = GF.couldown_3h
+                nbgain = 0
+                if valueItem == "pumpkin":
+                    gain = "pumpkinpie"
+                    nbgain = r.randint(1, 4)
+                    couldown = GF.couldown_2h
+                elif valueItem == "chocolate":
+                    gain = "cupcake"
+                    nbgain = r.randint(1, 4)
+                    couldown = GF.couldown_2h
+                elif valueItem == "potato":
+                    gain = "fries"
+                    nbgain = r.randint(1, 5)
+                    couldown = GF.couldown_3h
+
+                CookedTime = float(valueTime)
+                InstantTime = t.time()
+                time = CookedTime - (InstantTime-couldown)
+                if time <= 0:
+                    data = []
+                    data.append(0)
+                    data.append("")
+                    sql.add(PlayerID, gain, nbgain, "inventory")
+                    sql.updateField(PlayerID, i, data, "cooking")
+                    desc = "Ton plat à fini de cuire, en le sortant du four tu gagnes {2} <:gem_{0}:{1}>`{0}`".format(gain, "{idmoji[gem_" + gain + "]}", nbgain)
+                    lvl.addxp(PlayerID, 1, "gems")
+                    if i > 1:
+                        nbfurnace = int(sql.valueAtNumber(PlayerID, "furnace", "inventory"))
+                        if nbfurnace > 0:
+                            if sql.valueAtNumber(PlayerID, "furnace", "durability") == 0:
+                                for c in GF.objetOutil:
+                                    if c.nom == "furnace":
+                                        sql.add(PlayerID, "furnace", c.durabilite, "durability")
+                            sql.add(PlayerID, "furnace", -1, "durability")
+                            if sql.valueAtNumber(PlayerID, "furnace", "durability") <= 0:
+                                for c in GF.objetOutil:
+                                    if c.nom == "furnace":
+                                        sql.add(PlayerID, "furnace", c.durabilite, "durability")
+                                sql.add(PlayerID, "furnace", -1, "inventory")
+                else:
+                    timeH = int(time / 60 / 60)
+                    time = time - timeH * 3600
+                    timeM = int(time / 60)
+                    timeS = int(time - timeM * 60)
+                    desc = "Cuisson de <:gem_{0}:{1}>`{0}` en cours.".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
+                    desc += "Ton plat aura fini de cuir dans :clock2:`{0}h {1}m {2}s`".format(timeH, timeM, timeS)
+            else:
+                if valueTime == 0:
+                    if cookingItem >= nbitem:
+                        data = []
+                        data.append(str(t.time()))
+                        data.append(item)
+                        sql.add(PlayerID, i, data, "cooking")
+                        sql.add(PlayerID, item, -nbitem, "inventory")
+                        desc = "Ton plat a été mis au four. Il aura fini de cuire dans {0}".format(couldownMsg)
+                    else:
+                        if item == "pumpkin":
+                            gain = "pumpkinpie"
+                        elif item == "chocolate":
+                            gain = "cupcake"
+                        elif item == "potato":
+                            gain = "fries"
+                        desc = "Tu n'as pas assez de <:gem_{0}:{1}>`{0}` dans ton inventaire! \nIl te faut {4} <:gem_{0}:{1}>`{0}` pour faire des <:gem_{2}:{3}>`{2}`".format(item, "{idmoji[gem_" + item + "]}", gain, "{idmoji[gem_" + gain + "]}", nbitem)
+                else:
+                    desc = "Cuisson de <:gem_{0}:{1}>`{0}` en cours.".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
             msg.append("{}".format(i))
             msg.append(desc)
             i += 1
