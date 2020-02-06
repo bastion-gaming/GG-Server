@@ -4,6 +4,7 @@ from DB import SQLite as sql
 from gems import gemsFonctions as GF, gemsItems as GI
 from core import level as lvl
 import manage_commands as mc
+from languages import lang
 
 # Ouverture du port
 context = zmq.Context()
@@ -12,6 +13,7 @@ socket.bind("tcp://*:5555")
 check = True
 msg = ""
 VERSION = open("core/version.txt").read().replace("\n", "")
+
 
 # Initialisation
 print('\nGet Gems - Server '+VERSION)
@@ -28,6 +30,8 @@ elif "type" in flag:
 
 sql.newPlayer(GF.idGetGems, "gems", "discord")
 sql.newPlayer(GF.idBaBot, "gems", "discord")
+
+lang.init()
 
 try:
     GF.loadItem(True)

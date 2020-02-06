@@ -4,6 +4,7 @@ from DB import SQLite as sql
 from core import level as lvl
 from gems import gemsFonctions as GF, gemsItems as GI
 import json
+from languages import lang as lang_P
 
 
 def begin(param):
@@ -1244,7 +1245,7 @@ def lang(param):
     if lang in langlist:
         if sql.updateField(ID, "LANG", lang, "IDs") == "200":
             msg.append("OK")
-            msg.append("Langue modifiée")
+            msg.append(lang_P.forge_msg(lang, "lang"))
         else:
             msg.append("NOK")
             msg.append(GF.WarningMsg[1])
