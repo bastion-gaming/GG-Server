@@ -51,7 +51,7 @@ def bal(param):
         print("Gems >> Balance de {} affichée".format(PlayerID))
     else:
         msg.append("couldown")
-        msg.append("Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !")
+        msg.append(lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)]))
     return msg
 
 
@@ -121,7 +121,7 @@ def baltop(param):
             msg.append("Erreur! Commande incorrect")
     else:
         msg.append("couldown")
-        msg.append("Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !")
+        msg.append(lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)]))
     return msg
 
 
@@ -257,7 +257,7 @@ def buy(param):
             msg.append("NOK")
             msg.append(desc)
     else:
-        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
         msg.append(desc)
     return msg
@@ -338,7 +338,7 @@ def sell(param):
         msg.append("OK")
         msg.append(desc)
     else:
-        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
         msg.append(desc)
     return msg
@@ -460,7 +460,7 @@ def inv(param):
             msg.append("NOK")
             msg.append(desc)
     else:
-        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
         msg.append(desc)
     return msg
@@ -933,7 +933,7 @@ def market(param):
             msg.append("NOK")
             msg.append(desc)
     else:
-        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
         msg.append(desc)
     return msg
@@ -980,7 +980,7 @@ def pay(param):
             msg.append("NOK")
             pass
     else:
-        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
     msg.append(desc)
     return msg
@@ -1092,7 +1092,7 @@ def give(param):
             msg.append("NOK")
             pass
     else:
-        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
     msg.append(desc)
     return msg
@@ -1236,7 +1236,7 @@ def forge(param):
             desc = "Ton inventaire est plein"
             msg.append("NOK")
     else:
-        desc = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
     msg.append(desc)
     return msg

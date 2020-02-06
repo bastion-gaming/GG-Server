@@ -1,6 +1,8 @@
 {
   "test":
     "coucou",
+  "couldown":
+    "Il faut attendre {0} secondes entre chaque commande!",
   "lang":
     [
       "Langue modifiée avec succès.",
@@ -28,5 +30,18 @@
     [
       "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de 10 :gem:`gems`.",
       "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer une amende."
-    ]
+    ],
+  "cooking":
+  [
+    "Ce four est vide.",
+    "Ton plat à fini de cuire, en le sortant du four tu gagnes",
+    "Cuisson de <:gem_{0}:{1}>`{0}` en cours.",
+    "Ton plat aura fini de cuir dans :clock2:`{0}h {1}m {2}s`",
+    "Ton plat a été mis au four. Il aura fini de cuire dans {0}",
+    "Tu n'as pas assez de <:gem_{0}:{1}>`{0}` dans ton inventaire! \nIl te faut {4} <:gem_{0}:{1}>`{0}` pour faire des <:gem_{2}:{3}>`{2}`",
+    "Cuisson de <:gem_{0}:{1}>`{0}` en cours.",
+    "Tu ne peux pas faire cuire cet item.",
+    "Cette cuisson est disponible uniquement pendant l'événement **Halloween**",
+    "Cette cuisson est disponible uniquement pendant l'événement de **Noël**"
+  ]
 }

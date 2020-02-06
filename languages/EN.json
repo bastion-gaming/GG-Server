@@ -1,6 +1,8 @@
 {
   "test":
     "Hi",
+  "couldown":
+    "You have to wait {0} seconds between each command!",
   "lang":
     [
       "Language changed successfuly !",

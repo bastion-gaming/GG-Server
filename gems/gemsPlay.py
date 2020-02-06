@@ -111,7 +111,7 @@ def bank(param):
             msg.append(desc)
             sql.updateComTime(PlayerID, "bank_bal", "gems")
         else:
-            desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+            desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
             msg.append("couldown")
             msg.append(desc)
         return msg
@@ -154,7 +154,7 @@ def bank(param):
                 desc = "Il manque le nombre de :gem:`gems` à ajouter sur votre compte épargne"
                 msg.append("NOK")
         else:
-            desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+            desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
             msg.append("couldown")
         msg.append(desc)
         return msg
@@ -321,7 +321,7 @@ def crime(param):
         sql.add(PlayerID, "crime", 1, "statgems")
         msg.append("OK")
     else:
-        desc = "Il faut attendre "+str(GF.couldown_6s)+" secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
         msg.append("couldown")
     msg.append(desc)
     return msg
@@ -392,7 +392,7 @@ def gamble(param):
             sql.add(PlayerID, "gamble", 1, "statgems")
             msg.append("OK")
         else:
-            desc = "Il faut attendre "+str(GF.couldown_8s)+" secondes entre chaque commande !"
+            desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
             msg.append("couldown")
     elif gems < valeur:
         desc = "Tu n'as pas assez de :gem:`gems` en banque"
@@ -515,7 +515,7 @@ def mine(param):
             desc = "Ton inventaire est plein"
             msg.append("NOK")
     else:
-        desc = "Il faut attendre " + str(GF.couldown_6s) + " secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
         msg.append("couldown")
     msg.append(desc)
     return msg
@@ -614,7 +614,7 @@ def dig(param):
             desc = "Ton inventaire est plein"
             msg.append("NOK")
     else:
-        desc = "Il faut attendre " + str(GF.couldown_6s) + " secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
         msg.append("couldown")
     msg.append(desc)
     return msg
@@ -722,7 +722,7 @@ def fish(param):
             desc = "Ton inventaire est plein"
             msg.append("NOK")
     else:
-        desc = "Il faut attendre " + str(GF.couldown_6s) + " secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
         msg.append("couldown")
     msg.append(desc)
     return msg
@@ -964,7 +964,7 @@ def slots(param):
             lvl.addxp(PlayerID, gain + 1, "gems")
         msg.append("OK")
     else:
-        desc = "Il faut attendre "+str(GF.couldown_8s)+" secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
         msg.append("couldown")
     msg.append(desc)
     return msg
@@ -1289,7 +1289,7 @@ def hothouse(param):
             msg.append(desc)
             return msg
     else:
-        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
         msg.append(desc)
         return msg
@@ -1413,7 +1413,7 @@ def ferment(param):
             msg.append(desc)
             i += 1
     else:
-        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("NOK")
         msg.append(desc)
     return msg
@@ -1445,7 +1445,7 @@ def cooking(param):
                 couldownMsg = ":clock2:`2h`"
             else:
                 msg.append("NOK")
-                msg.append("Cette cuisson est disponible uniquement pendant l'événement **Halloween**")
+                msg.append(lang_P.forge_msg(lang, "cooking", None, False, 8))
                 return msg
         elif item == "chocolate":
             if (jour.month == 12 and jour.day >= 14) or (jour.month == 1 and jour.day <= 5):
@@ -1456,7 +1456,7 @@ def cooking(param):
                 couldownMsg = ":clock2:`2h`"
             else:
                 msg.append("NOK")
-                msg.append("Cette cuisson est disponible uniquement pendant l'événement de **Noël**")
+                msg.append(lang_P.forge_msg(lang, "cooking", None, False, 9))
                 return msg
         elif item == "potato":
             item = "potato"
@@ -1466,7 +1466,7 @@ def cooking(param):
             couldownMsg = ":clock3:`3h`"
         elif item != "None":
             msg.append("NOK")
-            msg.append("Tu ne peux pas faire cuire cet item.")
+            msg.append(lang_P.forge_msg(lang, "cooking", None, False, 7))
             return msg
 
         sql.updateComTime(PlayerID, "cooking", "gems")
@@ -1486,7 +1486,7 @@ def cooking(param):
                 valueItem = ""
             cookingItem = sql.valueAtNumber(PlayerID, item, "inventory")
             if valueItem == "" and item == "None":
-                desc = "Ce four est vide."
+                desc = lang_P.forge_msg(lang, "cooking", None, False, 0)
             elif item == "None":
                 couldown = GF.couldown_3h
                 nbgain = 0
@@ -1513,7 +1513,7 @@ def cooking(param):
                     sql.add(PlayerID, gain, nbgain, "inventory")
                     sql.add(PlayerID, "cooking | harvest | item {}".format(gain), nbgain, "statgems")
                     sql.updateField(PlayerID, i, data, "cooking")
-                    desc = "Ton plat à fini de cuire, en le sortant du four tu gagnes {2} <:gem_{0}:{1}>`{0}`".format(gain, "{idmoji[gem_" + gain + "]}", nbgain)
+                    desc = "{3} {2} <:gem_{0}:{1}>`{0}`".format(gain, "{idmoji[gem_" + gain + "]}", nbgain, lang_P.forge_msg(lang, "cooking", None, False, 1))
                     lvl.addxp(PlayerID, 1, "gems")
                     if i > 1:
                         nbfurnace = int(sql.valueAtNumber(PlayerID, "furnace", "inventory"))
@@ -1533,8 +1533,8 @@ def cooking(param):
                     time = time - timeH * 3600
                     timeM = int(time / 60)
                     timeS = int(time - timeM * 60)
-                    desc = "Cuisson de <:gem_{0}:{1}>`{0}` en cours.".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
-                    desc += "Ton plat aura fini de cuir dans :clock2:`{0}h {1}m {2}s`".format(timeH, timeM, timeS)
+                    desc = lang_P.forge_msg(lang, "cooking", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 2)
+                    desc += lang_P.forge_msg(lang, "cooking", [timeH, timeM, timeS], False, 3)
             else:
                 if valueTime == 0:
                     if cookingItem >= nbitem:
@@ -1544,7 +1544,7 @@ def cooking(param):
                         sql.add(PlayerID, i, data, "cooking")
                         sql.add(PlayerID, item, -nbitem, "inventory")
                         sql.add(PlayerID, "cooking | plant | item {}".format(item), nbitem, "statgems")
-                        desc = "Ton plat a été mis au four. Il aura fini de cuire dans {0}".format(couldownMsg)
+                        desc = lang_P.forge_msg(lang, "cooking", [couldownMsg], False, 4)
                     else:
                         if item == "pumpkin":
                             gain = "pumpkinpie"
@@ -1552,14 +1552,14 @@ def cooking(param):
                             gain = "cupcake"
                         elif item == "potato":
                             gain = "fries"
-                        desc = "Tu n'as pas assez de <:gem_{0}:{1}>`{0}` dans ton inventaire! \nIl te faut {4} <:gem_{0}:{1}>`{0}` pour faire des <:gem_{2}:{3}>`{2}`".format(item, "{idmoji[gem_" + item + "]}", gain, "{idmoji[gem_" + gain + "]}", nbitem)
+                        desc = lang_P.forge_msg(lang, "cooking", [item, "{idmoji[gem_" + item + "]}", gain, "{idmoji[gem_" + gain + "]}", nbitem], False, 5)
                 else:
-                    desc = "Cuisson de <:gem_{0}:{1}>`{0}` en cours.".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
+                    desc = lang_P.forge_msg(lang, "cooking", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 6)
             msg.append("{}".format(i))
             msg.append(desc)
             i += 1
     else:
-        desc = "Il faut attendre "+str(GF.couldown_4s)+" secondes entre chaque commande !"
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("NOK")
         msg.append(desc)
     return msg
