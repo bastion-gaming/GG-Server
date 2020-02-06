@@ -2,15 +2,17 @@
   "test":
     "coucou",
   "lang":
-    "Langue modifiée avec succès.",
-  "lang NOK":
-    "Langue non prise en charge.",
+    [
+      "Langue modifiée avec succès.",
+      "Langue non prise en charge."
+    ],
   "WarningMsg":
     "Aucun compte utilisateur n'a été trouvé.",
   "newPlayer":
-    "Le joueur a été ajouté !",
-  "newPlayer NOK":
-    "Le joueur existe déjà.",
+    [
+      "Le joueur a été ajouté !",
+      "Le joueur existe déjà."
+    ],
   "PlayerID":
     "Votre PlayerID: {0}",
   "crime":

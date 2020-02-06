@@ -28,7 +28,7 @@ def forge_msg(langue, nom_commande, liste_variables_texte = None, shuffle = Fals
     if shuffle is False:
         if number >= 0:
             list_tmp = GDL[langue][nom_commande]
-            msg_tmp = list_tmp[number]
+            msg_tmp = list_tmp[int(number)]
         else:
             msg_tmp = GDL[langue][nom_commande]
     else :

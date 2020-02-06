@@ -2,15 +2,17 @@
   "test":
     "Hi",
   "lang":
-    "Language changed successfuly !",
-  "lang NOK":
-    "Language not supported.",
+    [
+      "Language changed successfuly !",
+      "Language not supported."
+    ],
   "WarningMsg":
     "No user account has been found.",
   "newPlayer":
-    "The player has been added!",
-  "newPlayer NOK":
-    "The player already exists.",
+    [
+      "The player has been added!",
+      "The player already exists."
+    ],
   "PlayerID":
     "Your PlayerID: {0}",
   "crime":

@@ -290,9 +290,9 @@ def newPlayer(ID, nameDB, platform, langue = "EN"):
             # print(script)
             cursor.execute(script)
             conn.commit()
-        return lang_P.forge_msg(langue, "newPlayer")
+        return lang_P.forge_msg(langue, "newPlayer", None, False, 0)
     else:
-        return lang_P.forge_msg(langue, "newPlayer NOK")
+        return lang_P.forge_msg(langue, "newPlayer", None, False, 1)
 
 
 # -------------------------------------------------------------------------------
