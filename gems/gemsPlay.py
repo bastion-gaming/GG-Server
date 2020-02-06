@@ -5,13 +5,16 @@ from DB import SQLite as sql
 import sqlite3
 from gems import gemsFonctions as GF
 from core import level as lvl
+from languages import lang as lang_P
 
 
 def daily(param):
     """Récupère ta récompense journalière!"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     # =======================================================================
     # Initialisation des variables générales de la fonction
@@ -20,7 +23,6 @@ def daily(param):
     DailyMult = sql.valueAtNumber(PlayerID, "DailyMult", "daily")
     jour = dt.date.today()
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
     # =======================================================================
     # Détermination du daily
     # =======================================================================
@@ -64,13 +66,14 @@ def bank(param):
     # Initialistation des variables générales de la fonction
     # =======================================================================
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     ARG = param["ARG"]
     ARG2 = param["ARG2"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if ARG != "None":
         mARG = ARG.lower()
@@ -213,12 +216,13 @@ def bank(param):
 def stealing(param):
     """**[nom]** | Vole des :gem:`gems` aux autres joueurs!"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     name = param["name"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.valueAtNumber(GF.PlayerID_GetGems, "DailyMult", "daily") == 1:
         desc = ""
@@ -274,10 +278,11 @@ def stealing(param):
 def crime(param):
     """Commets un crime et gagne des :gem:`gems` Attention au DiscordCop!"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     msg = []
     if sql.spam(PlayerID, GF.couldown_6s, "crime", "gems"):
@@ -285,9 +290,9 @@ def crime(param):
         if r.randint(0, 9) == 0:
             sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
             if int(sql.addGems(PlayerID, -10)) >= 0:
-                desc = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de 10 :gem:`gems`"
+                desc = lang_P.forge_msg(lang, "DiscordCop Arrestation", None, False, 0)
             else:
-                desc = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer une amende"
+                desc = lang_P.forge_msg(lang, "DiscordCop Arrestation", None, False, 1)
         else:
             gain = r.randint(2, 8)
             jour = dt.date.today()
@@ -303,7 +308,7 @@ def crime(param):
                     sql.add(PlayerID, "lollipop", gain, "inventory")
                     sql.add(PlayerID, "Halloween | crime | lollipop", gain, "statgems")
             else:
-                desc = "{1} {0} :gem:`gems`".format(gain, GF.message_crime[r.randint(0, 3)])
+                desc = "{1} {0} :gem:`gems`".format(gain, lang_P.forge_msg(lang, "crime", None, True))
                 sql.addGems(PlayerID, gain)
                 sql.add(PlayerID, "crime | gain", gain, "statgems")
                 try:
@@ -325,13 +330,14 @@ def crime(param):
 def gamble(param):
     """**[valeur]** | Avez vous l'ame d'un parieur ?"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     valeur = param["valeur"]
     msg = []
     valeur = int(valeur)
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     gems = sql.valueAtNumber(PlayerID, "gems", "gems")
     if valeur < 0:
@@ -401,13 +407,14 @@ def gamble(param):
 def mine(param):
     """Minez compagnons !!"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
     nbMax = 0
     desc = ""
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_6s, "mine", "gems"):
         if GF.testInvTaille(PlayerID):
@@ -517,13 +524,14 @@ def mine(param):
 def dig(param):
     """Creusons compagnons !!"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
     nbMax = 0
     desc = ""
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_6s, "dig", "gems"):
         if GF.testInvTaille(PlayerID):
@@ -615,13 +623,14 @@ def dig(param):
 def fish(param):
     """Péchons compagnons !!"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
     nbMax = 0
     desc = ""
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_6s, "fish", "gems"):
         if GF.testInvTaille(PlayerID):
@@ -722,12 +731,13 @@ def fish(param):
 def slots(param):
     """**[mise]** | La machine à sous, la mise minimum est de 10 :gem:`gems`"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     imise = param["imise"]
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     gems = sql.valueAtNumber(PlayerID, "gems", "gems")
     misemax = 200
@@ -963,13 +973,14 @@ def slots(param):
 def boxes(param):
     """**open [nom]** | Ouverture de Loot Box"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     fct = param["fct"]
     name = param["name"]
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if fct == "open":
         if name != "None":
@@ -1044,15 +1055,16 @@ def boxes(param):
 def hothouse(param):
     """**[harvest / plant]** {_n° plantation / item à planter_} | Plantons compagnons !!"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     fct = param["fct"]
     arg = param["arg"]
     arg2 = param["arg2"]
     msg = []
     desc = ""
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     maxplanting = 50
     if sql.spam(PlayerID, GF.couldown_4s, "hothouse", "gems"):
@@ -1286,13 +1298,14 @@ def hothouse(param):
 def ferment(param):
     """**{grapes/wheat}** | Cave de fermentation. Alcool illimité !!"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     item = param["item"]
     msg = []
     desc = ""
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
     gain = ""
     i = 1
     max = 20
@@ -1409,13 +1422,14 @@ def ferment(param):
 def cooking(param):
     """**{potato/pumpkin/chocolate}** | Cuisinons compagnons !!"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     item = param["item"]
     msg = []
     desc = ""
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
     gain = ""
     i = 1
     jour = dt.date.today()

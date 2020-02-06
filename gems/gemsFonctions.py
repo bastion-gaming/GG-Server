@@ -13,8 +13,6 @@ except:
     PlayerID_GetGems = 1
     PlayerID_Babot = 2
 
-WarningMsg = [["Langue", "Error"], ["FR", "Aucun compte utilisateur n'a été trouvé"]]
-
 
 def checkDB_Guilde():
     if DB.dbExist("DB/guildesDB"):

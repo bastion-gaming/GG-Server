@@ -2,5 +2,29 @@
   "test":
     "Hi",
   "lang":
-    "Language changed successfuly !"
+    "Language changed successfuly !",
+  "lang NOK":
+    "Language not supported.",
+  "WarningMsg":
+    "No user account has been found.",
+  "newPlayer":
+    "The player has been added!",
+  "newPlayer NOK":
+    "The player already exists.",
+  "PlayerID":
+    "Your PlayerID: {0}",
+  "crime":
+    [
+      "You robbed the Society of Eltamar and ended up in a lake,but still managed to steal",
+      "You stole an apple worth",
+      "You stole a carrot! Get your",
+      "You're stealing candy! Get your",
+      "You won the lottery! Get your",
+      "I'm out of ideas. Take this:"
+    ],
+  "DiscordCop Arrestation":
+    [
+      "You were caught by a DiscordCop so you paid a fine of 10 :gem:`gems`.",
+      "You've been caught by a DiscordCop but you don't have enough :gem:`gems` to pay a fine."
+    ]
 }

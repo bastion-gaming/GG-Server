@@ -9,8 +9,7 @@ from languages import lang as lang_P
 
 def begin(param):
     """Pour créer son compte joueur et obtenir son starter Kit!"""
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
-    msg = sql.newPlayer(param["ID"], "gems", param["name_pl"])
+    msg = sql.newPlayer(param["ID"], "gems", param["name_pl"], param["lang"])
     SuperID = sql.get_SuperID(param["ID"], param["name_pl"])
     GF.startKit(SuperID)
     return msg
@@ -19,15 +18,21 @@ def begin(param):
 def bal(param):
     """**[nom]** | Êtes vous riche ou pauvre ?"""
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
+    fct = param["fct"]
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
         sql.add(PlayerID, "bal", 1, "statgems")
         msg.append("OK")
+        if fct == "info":
+            msg.append(lang_P.forge_msg(lang, "PlayerID", [PlayerID]))
+        else:
+            msg.append(" ")
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         desc = "{} :gem:`gems`\n".format(solde)
         soldeSpinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
@@ -55,11 +60,12 @@ def baltop(param):
     n = param["nb"]
     filtre = param["filtre"]
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
     baltop = ""
     if sql.spam(PlayerID, GF.couldown_4s, "baltop", "gems"):
         sql.updateComTime(PlayerID, "baltop", "gems")
@@ -124,11 +130,12 @@ def buy(param):
     nb = param["nb"]
     item = param["item"]
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "buy", "gems"):
         if int(nb) < 0:
@@ -261,11 +268,12 @@ def sell(param):
     nb = param["nb"]
     item = param["item"]
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "sell", "gems"):
         nbItem = sql.valueAtNumber(PlayerID, item, "inventory")
@@ -340,11 +348,12 @@ def inv(param):
     """**[nom de la poche]** | Permet de voir ce que vous avez dans le ventre !"""
     fct = param["fct"]
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "inv", "gems"):
         if fct == "None" or fct == "principale" or fct == "main":
@@ -461,11 +470,12 @@ def market(param):
     """**[stand]** | Permet de voir tout les objets que l'on peux acheter ou vendre !"""
     fct = param["fct"]
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "market", "gems"):
         d_market = "Permet de voir tout les objets que l'on peux acheter ou vendre !\n\n"
@@ -936,11 +946,12 @@ def pay(param):
     ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["platform"]))
     Nom_recu = param["Nom_recu"]
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "pay", "gems"):
         try:
@@ -983,11 +994,12 @@ def give(param):
     ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["platform"]))
     Nom_recu = param["Nom_recu"]
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     checkLB = False
     if item == "bank_upgrade":
@@ -1091,11 +1103,12 @@ def forge(param):
     item = param["item"]
     nb = param["nb"]
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
 
     if sql.spam(PlayerID, GF.couldown_4s, "forge", "gems"):
         if GF.testInvTaille(PlayerID):
@@ -1234,24 +1247,26 @@ def lang(param):
     Permet de changer la langue pour un joueur.
     """
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+    lang = param["lang"]
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     print(PlayerID)
-    lang = param["langue"].upper()
     msg = []
     langlist = ["FR", "EN"]
+    langue = param["langue"].upper()
 
-    if lang in langlist:
-        if sql.updateField(ID, "LANG", lang, "IDs") == "200":
+    if langue in langlist:
+        if sql.updateField(ID, "LANG", langue, "IDs") == "200":
             msg.append("OK")
-            msg.append(lang_P.forge_msg(lang, "lang"))
+            msg.append(lang_P.forge_msg(langue, "lang"))
         else:
             msg.append("NOK")
-            msg.append(GF.WarningMsg[1])
+            msg.append(lang_P.forge_msg(lang, "WarningMsg"))
     else:
         msg.append("NOK")
-        msg.append("Langue non prise en charge")
+        msg.append(lang_P.forge_msg(lang, "lang NOK"))
     return msg
 
 
@@ -1262,11 +1277,12 @@ def lang(param):
 #     """**[Nombre de spinelle]** | Convertisseur :gem:`gems` :left_right_arrow: `spinelles` (250 000 pour 1)"""
 #     nb = param["nb"]
 #     ID = sql.get_SuperID(param["ID"], param["name_pl"])
+#     lang = param["langue"].upper()
 #     if ID == "Error 404":
-#         return GF.WarningMsg[1]
+#         msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+#         return msg
 #     PlayerID = sql.get_PlayerID(ID, "gems")
 #     msg = []
-#     Lang = sql.get_discord_guild_lang(param["IDGuild"])
 #
 #     n = 250000
 #     balGems = sql.valueAtNumber(PlayerID, "gems", "gems")

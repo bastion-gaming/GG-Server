@@ -1,5 +1,5 @@
 from DB import SQLite as sql
-from gems import gemsFonctions as GF
+from languages import lang as lang_P
 
 
 def admin(param):
@@ -8,7 +8,6 @@ def admin(param):
     arg3 = param["arg3"]
     arg4 = param["arg4"]
     msg = []
-    Lang = sql.get_discord_guild_lang(param["IDGuild"])
     if fct == "playerid":
         if arg2 == "None":
             platform = param["name_pl"]
@@ -20,8 +19,10 @@ def admin(param):
         PlayerID = int(param["ID"])
     else:
         ID = sql.get_SuperID(int(param["ID"]), platform)
+        lang = param["lang"]
         if ID == "Error 404":
-            return GF.WarningMsg[1]
+            msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+            return msg
         PlayerID = sql.get_PlayerID(ID, "gems")
 
     if fct == "init":

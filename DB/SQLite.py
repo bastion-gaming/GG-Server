@@ -1,6 +1,7 @@
 import sqlite3 as sql
 import time as t
 import json
+from languages import lang as lang_P
 
 
 DB_NOM = 'bastionDB'
@@ -225,7 +226,7 @@ def userID(i, nameDB = None):
 
 
 # -------------------------------------------------------------------------------
-def newPlayer(ID, nameDB, platform):
+def newPlayer(ID, nameDB, platform, langue = "EN"):
     """
     Permet d'ajouter un nouveau joueur à la base de donnée en fonction de son ID.
 
@@ -289,9 +290,9 @@ def newPlayer(ID, nameDB, platform):
             # print(script)
             cursor.execute(script)
             conn.commit()
-        return ("Le joueur a été ajouté !")
+        return lang_P.forge_msg(langue, "newPlayer")
     else:
-        return ("Le joueur existe déjà")
+        return lang_P.forge_msg(langue, "newPlayer NOK")
 
 
 # -------------------------------------------------------------------------------
@@ -319,8 +320,8 @@ def newGuild(IDGuild):
                 else:
                     values += ", NULL"
         script = "INSERT INTO {0} ({1}) VALUES ({2})".format(nameDB, data, values)
-        print("==== new Guild ====")
-        print(script)
+        # print("==== new Guild ====")
+        # print(script)
         cursor = conn.cursor()
         cursor.execute(script)
         conn.commit()
@@ -435,8 +436,8 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
                         script = "UPDATE {0} SET Time = '{2}', Alcool = '{5}'  WHERE idBarrel = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue[0], PlayerID, IDname, fieldValue[1])
                     else:
                         return "202"
-            print("==== updateField ====")
-            print(script)
+            # print("==== updateField ====")
+            # print(script)
             cursor.execute(script)
             conn.commit()
             return "200"

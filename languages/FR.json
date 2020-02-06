@@ -2,5 +2,29 @@
   "test":
     "coucou",
   "lang":
-    "Langue modifiée avec succès."
+    "Langue modifiée avec succès.",
+  "lang NOK":
+    "Langue non prise en charge.",
+  "WarningMsg":
+    "Aucun compte utilisateur n'a été trouvé.",
+  "newPlayer":
+    "Le joueur a été ajouté !",
+  "newPlayer NOK":
+    "Le joueur existe déjà.",
+  "PlayerID":
+    "Votre PlayerID: {0}",
+  "crime":
+    [
+      "Vous avez volé la Société Eltamar et vous êtes retrouvé dans un lac, mais vous avez quand même réussi à voler",
+      "Tu as volé une pomme d'une valeur de",
+      "Tu as volé une carotte ! Prend tes",
+      "Tu voles un bonbon ! Prend tes",
+      "Tu as gangé au loto ! Prends tes",
+      "J'ai plus d'idée prends ça:"
+    ],
+  "DiscordCop Arrestation":
+    [
+      "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de 10 :gem:`gems`.",
+      "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer une amende."
+    ]
 }

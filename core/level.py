@@ -1,5 +1,5 @@
 from DB import SQLite as sql
-from gems import gemsFonctions as GF
+from languages import lang as lang_P
 
 # Un = 100 × (1.4)^n
 
@@ -17,8 +17,12 @@ def addxp(ID, nb, nameDB):
 
 
 def checklevel(ID):
+    lang = sql.valueAtNumber(ID, "LANG", "IDs")
+    if lang == None:
+        lang = "EN"
     if ID == "Error 404":
-        return GF.WarningMsg[1]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     # print(PlayerID)
     msg = []

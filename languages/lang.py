@@ -1,6 +1,7 @@
 from languages import general_dict_lang
 import random as ran
 
+
 def init():
     listL = list()
     for l in general_dict_lang:
@@ -8,7 +9,8 @@ def init():
 
     print("Lang >> La liste des langues chargées "+str(listL))
 
-def forge_msg(langue, nom_commande, liste_variables_texte = None, shuffle=False):
+
+def forge_msg(langue, nom_commande, liste_variables_texte = None, shuffle = False, number = -1):
     """
     Fonction permettant de créer les messages en fonction de ceux présent dans les fichiers de langues.
 
@@ -24,7 +26,11 @@ def forge_msg(langue, nom_commande, liste_variables_texte = None, shuffle=False)
     GDL = general_dict_lang
 
     if shuffle is False:
-        msg_tmp = GDL[langue][nom_commande]
+        if number >= 0:
+            list_tmp = GDL[langue][nom_commande]
+            msg_tmp = list_tmp[number]
+        else:
+            msg_tmp = GDL[langue][nom_commande]
     else :
         list_tmp = GDL[langue][nom_commande]
         msg_tmp = ran.choice(list_tmp)
@@ -32,4 +38,9 @@ def forge_msg(langue, nom_commande, liste_variables_texte = None, shuffle=False)
     if liste_variables_texte is None:
         return msg_tmp
     else:
+        i = 0
+        for x in liste_variables_texte:
+            msg_tmp = GDL[langue][nom_commande].replace("{" + str(i) + "}", x)
+            i += 1
+        return msg_tmp
         print("coming Soon")
