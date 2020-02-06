@@ -39,8 +39,12 @@ def forge_msg(langue, nom_commande, liste_variables_texte = None, shuffle = Fals
         return msg_tmp
     else:
         i = 0
+        if number >= 0:
+            list_tmp = GDL[langue][nom_commande]
+            msg_tmp = list_tmp[int(number)]
+        else:
+            msg_tmp = GDL[langue][nom_commande]
         for x in liste_variables_texte:
-            msg_tmp = GDL[langue][nom_commande].replace("{" + str(i) + "}", x)
+            msg_tmp = msg_tmp.replace("{" + str(i) + "}", str(x))
             i += 1
         return msg_tmp
-        print("coming Soon")

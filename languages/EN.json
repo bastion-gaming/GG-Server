@@ -17,7 +17,29 @@
     ],
   "PlayerID":
     "Your PlayerID: {0}",
-  "crime":
+  "level":
+    [
+      "reached the level **{0}**",
+      "\nYou win {0} :gem:`gems`"
+    ],
+  "recette":
+    "Allows you to see the list of all available recipes!\n\n",
+  "DiscordCop Arrestation":
+    [
+      "You were caught by a DiscordCop so you paid a fine of {0} :gem:`gems`.",
+      "You've been caught by a DiscordCop but you don't have enough :gem:`gems` to pay a fine! Your account is now 0 :gem:`gems`"
+    ],
+  "DiscordCop Amende":
+    ":no_entry: Anti-cheat! I'm fining you 100 :gem:`gems` for trying to cheat!",
+  "lootbox":
+    [
+      "\nYou found a <:gem_lootbox:{0}>**Common Loot Box Gems**! Use the command `boxes open commongems` to open it.",
+      "\nYou found a <:gem_lootbox:{0}>**Rare Loot Box Gems**! Use the command `boxes open raregems` to open it.",
+      "\nYou found a <:gem_lootbox:{0}>**Legendary Loot Box Gems**! Use the command `boxes open legendarygems` to open it.",
+      "\n\nYou found {0} :gift:`Christmas present (gift)`",
+      "\n\nYou found {0} :gift:`New Year's present (gift)`:confetti_ball:"
+    ],
+  "crime array":
     [
       "You robbed the Society of Eltamar and ended up in a lake,but still managed to steal",
       "You stole an apple worth",
@@ -26,9 +48,14 @@
       "You won the lottery! Get your",
       "I'm out of ideas. Take this:"
     ],
-  "DiscordCop Arrestation":
+  "crime event":
+    "**Halloween** | Trick or treat?\n",
+  "gamble array":
     [
-      "You were caught by a DiscordCop so you paid a fine of 10 :gem:`gems`.",
-      "You've been caught by a DiscordCop but you don't have enough :gem:`gems` to pay a fine."
+      "You won the bet! You get",
+      "A great victory! You win.",
+      "Congratulations take",
+      "Uh....",
+      "Why play Fortnite when you can gamble! Get your"
     ]
 }

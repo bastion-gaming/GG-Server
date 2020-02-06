@@ -29,6 +29,7 @@ def bal(param):
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
         sql.add(PlayerID, "bal", 1, "statgems")
         msg.append("OK")
+        msg.append(lang)
         if fct == "info":
             msg.append(lang_P.forge_msg(lang, "PlayerID", [PlayerID]))
         else:
@@ -43,7 +44,7 @@ def bal(param):
         xp = sql.valueAtNumber(PlayerID, "xp", "gems")
         # Niveaux part
         desc = "XP: `{0}/{1}`".format(xp, lvl.lvlPalier(lvlValue))
-        titre = "**_Niveau_: {0}**".format(lvlValue)
+        titre = lang_P.forge_msg(lang, "bal", [lvlValue], False, 0)
         msg.append(titre)
         msg.append(desc)
         sql.updateComTime(ID, "bal", "gems")
@@ -96,6 +97,7 @@ def baltop(param):
                     baltop += "\n"
                 j += 1
             msg.append("OK")
+            msg.append(lang)
             msg.append(baltop)
             sql.add(PlayerID, "baltop", 1, "statgems")
         # elif filtre == "guild" or filtre == "guilde":
@@ -118,7 +120,7 @@ def baltop(param):
         #     sql.add(PlayerID, "baltop guilde", 1, "statgems")
         else:
             msg.append("NOK")
-            msg.append("Erreur! Commande incorrect")
+            msg.append(lang_P.forge_msg(lang, "baltop"))
     else:
         msg.append("couldown")
         msg.append(lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)]))
@@ -141,7 +143,7 @@ def buy(param):
         if int(nb) < 0:
             sql.addGems(PlayerID, -100)
             lvl.addxp(PlayerID, -10, "gems")
-            desc = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
+            desc = lang_P.forge_msg(lang, "DiscordCop Amende")
             sql.add(PlayerID, "DiscordCop Amende", 1, "statgems")
             msg.append("anticheat")
             msg.append(desc)
@@ -1015,7 +1017,7 @@ def give(param):
                 nb = int(nb)
             if nb < 0 and nb != -1:
                 sql.addGems(PlayerID, -100)
-                desc = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
+                desc = lang_P.forge_msg(lang, "DiscordCop Amende")
                 sql.add(PlayerID, "DiscordCop Amende", 1, "statgems")
                 msg.append("anticheat")
                 msg.append(desc)
@@ -1115,7 +1117,7 @@ def forge(param):
             # -------------------------------------
             # Affichage des recettes disponible
             if item == "None":
-                desc = GF.recette()
+                desc = GF.recette(lang)
                 msg.append("OK")
                 msg.append(desc)
                 return msg

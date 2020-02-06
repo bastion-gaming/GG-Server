@@ -3,6 +3,7 @@ import datetime as dt
 from DB import TinyDB as DB, SQLite as sql
 import json
 from gems import gemsItems as GI, gemsStats as GS
+from languages import lang as lang_P
 
 idBaBot = 604776153458278415
 idGetGems = 620558080551157770
@@ -30,14 +31,6 @@ def checkDB_Guilde():
         print("DB >> Un ou plusieurs champs ont été supprimés de la DB.")
 
 # Array
-
-
-message_crime = ["Vous avez volé la Société Eltamar et vous êtes retrouvé dans un lac, mais vous avez quand même réussi à voler" # You robbed the Society of Schmoogaloo and ended up in a lake,but still managed to steal
-, "Tu as volé une pomme qui vaut"
-, "Tu as volé une carotte ! Prend tes"
-, "Tu voles un bonbon ! Prend tes"
-, "Tu as gangé au loto ! Prends tes"
-, "J'ai plus d'idée prends ça:"]
 
 message_gamble = ["Tu as remporté le pari ! Tu obtiens"
 , "Une grande victoire pour toi ! Tu gagnes"
@@ -369,9 +362,9 @@ couldown_6s = 6
 couldown_4s = 4
 
 
-def recette():
+def recette(lang):
     """Liste de toutes les recettes disponibles !"""
-    d_recette = "Permet de voir la liste de toutes les recettes disponible !\n\n"
+    d_recette = lang_P.forge_msg(lang, "recette")
     d_recette += "▬▬▬▬▬▬▬▬▬▬▬▬▬\n**Forge**\n"
     for c in objetOutil:
         for R in objetRecette:
@@ -533,7 +526,7 @@ def startKit(ID):
         sql.add(ID, "shovel", 20, "durability")
 
 
-def gift(PlayerID):
+def gift(PlayerID, lang):
     desc = ""
     jour = dt.date.today()
     nbgift = r.randint(-3, 3)
@@ -542,32 +535,32 @@ def gift(PlayerID):
         if nbgift > 0:
             sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
             sql.add(PlayerID, "lootbox gift | gain", nbgift, "statgems")
-            desc = "\n\nTu as trouvé {} :gift:`cadeau de Noël (gift)`".format(nbgift)
+            desc = lang_P.forge_msg(lang, "lootbox", [nbgift], False, 3)
 
     elif (jour.month == 12 and jour.day >= 30) or (jour.month == 1 and jour.day <= 2):
         if nbgift > 0:
             sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
             sql.add(PlayerID, "lootbox gift | gain", nbgift, "statgems")
-            desc = "\n\nTu as trouvé {} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:".format(nbgift)
+            desc = lang_P.forge_msg(lang, "lootbox", [nbgift], False, 4)
 
     return desc
 
 
-def lootbox(PlayerID):
+def lootbox(PlayerID, lang):
     desc = ""
 
     D = r.randint(0, 40)
-    if D <= 1:
+    if D < 1:
         sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
         sql.add(PlayerID, "lootbox legendary | gain", 1, "statgems")
-        desc += "\nTu as trouvé une <:gem_lootbox:{}>**Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir".format("{idmoji[gem_lootbox]}")
-    elif D >= 38:
+        desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 2)
+    elif D > 38:
         sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
         sql.add(PlayerID, "lootbox rare | gain", 1, "statgems")
-        desc += "\nTu as trouvé une <:gem_lootbox:{}>**Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir".format("{idmoji[gem_lootbox]}")
-    elif D >= 17 and D <= 23:
+        desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 1)
+    elif D > 17 and D < 22:
         sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
         sql.add(PlayerID, "lootbox common | gain", 1, "statgems")
-        desc += "\nTu as trouvé une <:gem_lootbox:{}>**Loot Box Gems Common**! Utilise la commande `boxes open commongems` pour l'ouvrir".format("{idmoji[gem_lootbox]}")
+        desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 0)
 
     return desc

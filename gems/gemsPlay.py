@@ -38,22 +38,21 @@ def daily(param):
             bonus = 125
         gain = 100 + bonus*DailyMult
         sql.addGems(PlayerID, gain)
-        desc = "Récompense journalière! Tu as gagné 100:gem:`gems`"
-        desc += "\nNouvelle série: `{}`, Bonus: {} :gem:`gems`".format(DailyMult, bonus*DailyMult)
+        desc = lang_P.forge_msg(lang, "daily", None, False, 0)
+        desc += lang_P.forge_msg(lang, "daily", [DailyMult, bonus*DailyMult], False, 1)
         lvl.addxp(PlayerID, 10*(DailyMult/2), "gems")
         if DailyMult % 30 == 0:
             m = (DailyMult//30)*5
             # sql.addSpinelles(PlayerID, m)
             sql.addGems(PlayerID, m*250000)
-            # desc += "\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}<:spinelle:{2}>`spinelles`".format(DailyMult, m, "{idmoji[spinelle]}")
-            desc += "\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}:gem:`gems`".format(DailyMult, m*250000)
+            desc += lang_P.forge_msg(lang, "daily", [DailyMult, m*250000], False, 2)
 
     elif DailyTime == str(jour):
-        desc = "Tu as déja reçu ta récompense journalière aujourd'hui. Reviens demain pour gagner plus de :gem:`gems`"
+        desc = lang_P.forge_msg(lang, "daily", None, False, 3)
     else:
         sql.add(PlayerID, "DailyMult", 1, "daily")
         sql.add(PlayerID, "DailyTime", str(jour), "daily")
-        desc = "Récompense journalière! Tu as gagné 100 :gem:`gems`"
+        desc = lang_P.forge_msg(lang, "daily", None, False, 0)
         lvl.addxp(PlayerID, 10, "gems")
     msg.append("OK")
     msg.append(desc)
@@ -103,10 +102,10 @@ def bank(param):
             desc = "{} / {} :gem:`gems`\n".format(solde, soldeMax)
             msg.append(desc)
 
-            desc = "bank **bal** *[name]* | Permet de connaitre la balance d'un utilisateur"
-            desc += "\nbank **add** *[+/- nombre]* | Permet d'ajouter ou d'enlever des :gem:`gems` de son compte épargne"
-            desc += "\nbank **saving** | Permet de calculer son épargne (utilisable toute les 4h)"
-            desc += "\n\nLe prix de la <:gem_{0}:{1}>`{0}` dépend du plafond du compte".format("bank_upgrade", "{idmoji[gem_bank_upgrade]}")
+            desc = lang_P.forge_msg(lang, "bank", None, False, 0)
+            desc += lang_P.forge_msg(lang, "bank", None, False, 1)
+            desc += lang_P.forge_msg(lang, "bank", None, False, 2)
+            desc += lang_P.forge_msg(lang, "bank", ["bank_upgrade", "{idmoji[gem_bank_upgrade]}"], False, 3)
 
             msg.append(desc)
             sql.updateComTime(PlayerID, "bank_bal", "gems")
@@ -134,24 +133,24 @@ def bank(param):
                     soldeNew = solde + ARG2
                     if soldeNew > soldeMax:
                         ARG2 = ARG2 - (soldeNew - soldeMax)
-                        desc = "Plafond de {} :gem:`gems` du compte épargne atteint\n".format(soldeMax)
+                        desc = lang_P.forge_msg(lang, "bank", [soldeMax], False, 4)
                     elif soldeNew < 0:
-                        desc = "Le solde de ton compte épargne ne peux être négatif.\nSolde du compte: {} :gem:`gems`".format(solde)
+                        desc = lang_P.forge_msg(lang, "bank", [solde], False, 5)
                         msg.append("NOK")
                         msg.append(desc)
                         return msg
                     nbgm = -1*ARG2
                     sql.addGems(PlayerID, nbgm)
                     sql.add(PlayerID, "solde", ARG2, "bank")
-                    desc += "Ton compte épargne a été crédité de {} :gem:`gems`".format(ARG2)
-                    desc += "\nNouveau solde: {} :gem:`gems`".format(sql.valueAtNumber(PlayerID, "Solde", "bank"))
+                    desc += lang_P.forge_msg(lang, "bank", [ARG2], False, 6)
+                    desc += lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 7)
                     msg.append("add")
                     sql.updateComTime(PlayerID, "bank_add", "gems")
                 else:
-                    desc = "Tu n'as pas assez de :gem:`gems` pour épargner cette somme"
+                    desc = lang_P.forge_msg(lang, "bank", None, False, 8)
                     msg.append("NOK")
             else:
-                desc = "Il manque le nombre de :gem:`gems` à ajouter sur votre compte épargne"
+                desc = lang_P.forge_msg(lang, "bank", None, False, 9)
                 msg.append("NOK")
         else:
             desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
@@ -176,23 +175,23 @@ def bank(param):
             soldeTaxe = GF.taxe(soldeAdd, 0.1)
             soldeAdd = soldeTaxe[1]
             sql.add(PlayerID, "solde", int(soldeAdd), "bank")
-            desc = "Tu as épargné {} :gem:`gems`\n".format(int(soldeAdd))
+            desc = lang_P.forge_msg(lang, "bank", [int(soldeAdd)], False, 10)
             soldeNew = solde + soldeAdd
             if soldeNew > soldeMax:
                 soldeMove = soldeNew - soldeMax
                 nbgm = -1 * soldeMove
                 sql.addGems(PlayerID, int(soldeMove))
                 sql.add(PlayerID, "solde", int(nbgm), "bank")
-                desc += "Plafond de {} :gem:`gems` du compte épargne atteint\nTon épargne a été tranférée sur ton compte principal\n\n".format(soldeMax)
-            desc += "Nouveau solde: {} :gem:`gems`".format(sql.valueAtNumber(PlayerID, "Solde", "bank"))
+                desc += lang_P.forge_msg(lang, "bank", [soldeMax], False, 11)
+            desc += lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 7)
             sql.add(PlayerID, "bank saving", 1, "statgems")
             sql.add(PlayerID, "bank saving | gain", int(soldeAdd), "statgems")
 
             # =====================================
             # Bonus
             # =====================================
-            desc += GF.lootbox(PlayerID)
-            desc += GF.gift(PlayerID)
+            desc += GF.lootbox(PlayerID, lang)
+            desc += GF.gift(PlayerID, lang)
 
             try:
                 sql.addGems(GF.PlayerID_GetGems, int(soldeTaxe[0]))
@@ -207,7 +206,7 @@ def bank(param):
             time = time - timeH * 3600
             timeM = int(time / 60)
             timeS = int(time - timeM * 60)
-            desc = "Il te faut attendre :clock2:`{}h {}m {}s` avant d'épargner à nouveau !".format(timeH, timeM, timeS)
+            desc = lang_P.forge_msg(lang, "bank", [timeH, timeM, timeS], False, 12)
         msg.append("saving")
         msg.append(desc)
         return msg
@@ -242,24 +241,24 @@ def stealing(param):
                     if r.randint(0, 9) == 0:
                         sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
                         if int(sql.addGems(PlayerID, int(gain/4))) >= 100:
-                            desc = "Vous avez été attrapés par un DiscordCop vous avez donc payé une amende de **{}** :gem:`gems`".format(int(gain/4))
+                            desc = lang_P.forge_msg(lang, "DiscordCop Arrestation", [int(gain/4)], False, 0)
                         else:
                             sql.updateField(PlayerID, "gems", 0, "gems")
-                            desc = "Vous avez été attrapés par un DiscordCop mais vous avez trop peu de :gem:`gems` pour payer l'intégralité de l'amende! Votre compte est maintenant de 0 :gem:`gems`"
+                            desc = lang_P.forge_msg(lang, "DiscordCop Arrestation", None, False, 1)
                     else:
                         sql.addGems(PlayerID, gain)
                         sql.addGems(ID_Vol, -gain)
                         # Message
-                        desc = "Tu viens de voler {n} :gem:`gems` à {nom}".format(n=gain, nom=name)
-                        print("Gems >> PlayerID {author} viens de voler {n} gems à {nom}".format(n=gain, nom=ID_Vol, author=PlayerID))
+                        desc = lang_P.forge_msg(lang, "stealing", [gain, name], False, 1)
+                        print("Gems >> PlayerID {2} viens de voler {0} gems à {1}".format(gain, ID_Vol, PlayerID))
                     sql.updateComTime(PlayerID, "stealing", "gems")
                     lvl.addxp(PlayerID, 1, "gems")
                     sql.add(PlayerID, "stealing", 1, "statgems")
                     sql.add(PlayerID, "stealing | gain", gain, "statgems")
                 else:
-                    desc = "Tu es un piètre voleur de :gem:`gems`"
+                    desc = lang_P.forge_msg(lang, "stealing", None, False, 2)
             except:
-                desc = "Ce joueur est introuvable!"
+                desc = lang_P.forge_msg(lang, "stealing", None, False, 3)
         else:
             ComTime = sql.valueAtNumber(PlayerID, "stealing", "gems_com_time")
             time = float(ComTime) - (t.time()-GF.couldown_14h)
@@ -267,9 +266,9 @@ def stealing(param):
             time = time - timeH * 3600
             timeM = int(time / 60)
             timeS = int(time - timeM * 60)
-            desc = "Il te faut attendre :clock2:`{}h {}m {}s` avant de pourvoir voler des :gem:`gems` à nouveau!".format(timeH, timeM, timeS)
+            desc = lang_P.forge_msg(lang, "stealing", [timeH, timeM, timeS], False, 0)
             if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems"):
-                desc = "Tu peux voler des :gem:`gems`"
+                desc = lang_P.forge_msg(lang, "stealing", None, False, 4)
     msg.append("OK")
     msg.append(desc)
     return msg
@@ -290,15 +289,15 @@ def crime(param):
         if r.randint(0, 9) == 0:
             sql.add(PlayerID, "DiscordCop Arrestation", 1, "statgems")
             if int(sql.addGems(PlayerID, -10)) >= 0:
-                desc = lang_P.forge_msg(lang, "DiscordCop Arrestation", None, False, 0)
+                desc = lang_P.forge_msg(lang, "DiscordCop Arrestation", [10], False, 0)
             else:
                 desc = lang_P.forge_msg(lang, "DiscordCop Arrestation", None, False, 1)
         else:
             gain = r.randint(2, 8)
             jour = dt.date.today()
             if (jour.month == 10 and jour.day >= 23) or (jour.month == 11 and jour.day <= 10): # Special Halloween
-                desc = "**Halloween** | Des bonbons ou un sort ?\n"
-                desc += GF.message_crime[r.randint(0, 3)]+" "+str(gain)
+                desc = lang_P.forge_msg(lang, "crime event")
+                desc += "{1} {0}".format(gain, lang_P.forge_msg(lang, "crime array", None, True))
                 if r.randint(0, 1) == 0:
                     desc += " :candy:`candy`"
                     sql.add(PlayerID, "candy", gain, "inventory")
@@ -308,14 +307,14 @@ def crime(param):
                     sql.add(PlayerID, "lollipop", gain, "inventory")
                     sql.add(PlayerID, "Halloween | crime | lollipop", gain, "statgems")
             else:
-                desc = "{1} {0} :gem:`gems`".format(gain, lang_P.forge_msg(lang, "crime", None, True))
+                desc = "{1} {0} :gem:`gems`".format(gain, lang_P.forge_msg(lang, "crime array", None, True))
                 sql.addGems(PlayerID, gain)
                 sql.add(PlayerID, "crime | gain", gain, "statgems")
                 try:
                     sql.addGems(GF.PlayerID_GetGems, -gain) # Vole l'équivalent du crime au bot
                 except sqlite3.OperationalError:
                     pass
-                desc += GF.gift(PlayerID)
+                desc += GF.gift(PlayerID, lang)
         sql.updateComTime(PlayerID, "crime", "gems")
         lvl.addxp(PlayerID, 1, "gems")
         sql.add(PlayerID, "crime", 1, "statgems")
@@ -341,7 +340,7 @@ def gamble(param):
 
     gems = sql.valueAtNumber(PlayerID, "gems", "gems")
     if valeur < 0:
-        desc = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
+        desc = lang_P.forge_msg(lang, "DiscordCop Amende")
         sql.add(PlayerID, "DiscordCop Amende", 1, "statgems")
         if gems > 100 :
             sql.addGems(PlayerID, -100)
@@ -356,7 +355,7 @@ def gamble(param):
             if r.randint(0, 3) == 0:
                 gain = valeur*3
                 # l'espérence est de 0 sur la gamble
-                desc = "{1} {0} :gem:`gems`".format(gain, GF.message_gamble[r.randint(0, 4)])
+                desc = "{1} {0} :gem:`gems`".format(gain, lang_P.forge_msg(lang, "gamble array", None, True))
                 sql.add(PlayerID, "gamble | win", 1, "statgems")
                 for x in GF.objetTrophy:
                     if x.nom == "Gamble Jackpot":
@@ -367,25 +366,25 @@ def gamble(param):
                         hyperjackpot = x.mingem
                 if gain >= jackpot and gain < superjackpot:
                     sql.add(PlayerID, "Gamble Jackpot", 1, "trophy")
-                    desc += "\nFélicitation! Tu as l'ame d'un parieur, nous t'offrons le prix :trophy:`Gamble Jackpot`."
+                    desc += lang_P.forge_msg(lang, "gamble", None, False, 1)
                 elif gain >= superjackpot and gain < hyperjackpot:
                     sql.add(PlayerID, "Super Gamble Jackpot", 1, "trophy")
-                    desc += "\nFélicitation! Tu as l'ame d'un parieur, nous t'offrons le prix :trophy::trophy:`Super Gamble Jackpot`."
+                    desc += lang_P.forge_msg(lang, "gamble", None, False, 2)
                 elif gain >= hyperjackpot:
                     sql.add(PlayerID, "Hyper Gamble Jackpot", 1, "trophy")
-                    desc += "\nFélicitation! Tu as l'ame d'un parieur, nous t'offrons le prix :trophy::trophy::trophy:`Hyper Gamble Jackpot`."
+                    desc += lang_P.forge_msg(lang, "gamble", None, False, 3)
                 sql.addGems(PlayerID, gain)
                 sql.add(PlayerID, "gamble | gain", gain, "statgems")
                 # =====================================
                 # Bonus
                 # =====================================
-                desc += GF.lootbox(PlayerID)
+                desc += GF.lootbox(PlayerID, lang)
             else:
                 val = 0-valeur
                 sql.addGems(PlayerID, val)
                 sql.addGems(GF.PlayerID_GetGems, int(valeur))
                 sql.add(PlayerID, "gamble | perte", valeur, "statgems")
-                desc = "Dommage tu as perdu {} :gem:`gems`".format(valeur)
+                desc = lang_P.forge_msg(lang, "gamble", [valeur], False, 0)
 
             sql.updateComTime(PlayerID, "gamble", "gems")
             lvl.addxp(PlayerID, 1, "gems")
@@ -395,10 +394,10 @@ def gamble(param):
             desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
             msg.append("couldown")
     elif gems < valeur:
-        desc = "Tu n'as pas assez de :gem:`gems` en banque"
+        desc = lang_P.forge_msg(lang, "gamble", None, False, 4)
         msg.append("NOK")
     else:
-        desc = "La valeur rentré est incorrect"
+        desc = lang_P.forge_msg(lang, "gamble", None, False, 5)
         msg.append("NOK")
     msg.append(desc)
     return msg
@@ -449,7 +448,7 @@ def mine(param):
                         for c in GF.objetOutil:
                             if c.nom == outil:
                                 sql.add(PlayerID, c.nom, c.durabilite, "durability")
-                    desc = "Pas de chance tu as cassé ta <:gem_{nom}:{idmoji}>`{nom}` !".format(nom = outil, idmoji = "{idmoji[gem_" + outil + "]}")
+                    desc = lang_P.forge_msg(lang, "mine", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
                     sql.add(PlayerID, "mine | {} cassé".format(outil), 1, "statgems")
                     msg.append("OK")
                     msg.append(desc)
@@ -491,28 +490,28 @@ def mine(param):
                 if nbrand != 0:
                     sql.add(PlayerID, add_item, nbrand*mult, "inventory")
                     sql.add(PlayerID, "mine | item {}".format(add_item), nbrand*mult, "statgems")
-                    desc = "Tu as obtenu {nb} <:gem_{item}:{idmoji}>`{item}`".format(nb = nbrand*mult, item = add_item, idmoji = "{idmoji[gem_" + add_item + "]}")
+                    desc = lang_P.forge_msg(lang, "mine", [nbrand*mult, add_item, "{idmoji[gem_" + add_item + "]}"], False, 1)
                 if add_item != "cobblestone":
                     nbcobble = r.randint(1, 32)
                     sql.add(PlayerID, "cobblestone", nbcobble*mult, "inventory")
                     sql.add(PlayerID, "mine | item cobblestone", nbcobble*mult, "statgems")
-                    desc += "\nTu as obtenu {} bloc de <:gem_cobblestone:{}>`cobblestone`".format(nbcobble*mult, "{idmoji[gem_cobblestone]}")
+                    desc += lang_P.forge_msg(lang, "mine", [nbcobble*mult, "{idmoji[gem_cobblestone]}"], False, 2)
 
                 sql.add(PlayerID, "mine", 1, "statgems")
                 # =====================================
                 # Bonus
                 # =====================================
-                desc += GF.lootbox(PlayerID)
-                desc += GF.gift(PlayerID)
+                desc += GF.lootbox(PlayerID, lang)
+                desc += GF.gift(PlayerID, lang)
 
             else:
-                desc = "Il faut acheter ou forger une pioche pour miner!"
+                desc = lang_P.forge_msg(lang, "mine", None, False, 3)
 
             sql.updateComTime(PlayerID, "mine", "gems")
             lvl.addxp(PlayerID, 1, "gems")
             msg.append("OK")
         else:
-            desc = "Ton inventaire est plein"
+            desc = lang_P.forge_msg(lang, "mine", None, False, 4)
             msg.append("NOK")
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
@@ -566,7 +565,7 @@ def dig(param):
                         for c in GF.objetOutil:
                             if c.nom == outil:
                                 sql.add(PlayerID, c.nom, c.durabilite, "durability")
-                    desc = "Pas de chance tu as cassé ta <:gem_{nom}:{idmoji}>`{nom}` !".format(nom = outil, idmoji = "{idmoji[gem_" + outil + "]}")
+                    desc = lang_P.forge_msg(lang, "dig", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
                     sql.add(PlayerID, "dig | {} cassé".format(outil), 1, "statgems")
                     msg.append("OK")
                     msg.append(desc)
@@ -593,25 +592,25 @@ def dig(param):
                 if nbrand != 0:
                     sql.add(PlayerID, add_item, nbrand*mult, "inventory")
                     sql.add(PlayerID, "dig | item {}".format(add_item), nbrand*mult, "statgems")
-                    desc = "Tu as obtenu {nb} <:gem_{item}:{idmoji}>`{item}`".format(nb = nbrand*mult, item = add_item, idmoji = "{idmoji[gem_" + add_item + "]}")
+                    desc = lang_P.forge_msg(lang, "dig", [nbrand*mult, add_item, "{idmoji[gem_" + add_item + "]}"], False, 1)
                 else:
-                    desc = "Tu as creusé toute la journée pour ne trouver que de la terre."
+                    desc = lang_P.forge_msg(lang, "dig", None, False, 2)
 
                 sql.add(PlayerID, "dig", 1, "statgems")
                 # =====================================
                 # Bonus
                 # =====================================
-                desc += GF.lootbox(PlayerID)
-                desc += GF.gift(PlayerID)
+                desc += GF.lootbox(PlayerID, lang)
+                desc += GF.gift(PlayerID, lang)
 
             else:
-                desc = "Il faut acheter ou forger une pelle pour creuser!"
+                desc = lang_P.forge_msg(lang, "dig", None, False, 3)
 
             sql.updateComTime(PlayerID, "dig", "gems")
             lvl.addxp(PlayerID, 1, "gems")
             msg.append("OK")
         else:
-            desc = "Ton inventaire est plein"
+            desc = lang_P.forge_msg(lang, "dig", None, False, 4)
             msg.append("NOK")
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
@@ -663,7 +662,7 @@ def fish(param):
                         for c in GF.objetOutil:
                             if c.nom == outil:
                                 sql.add(PlayerID, c.nom, c.durabilite, "durability")
-                    desc = "Pas de chance tu as cassé ta <:gem_{nom}:{idmoji}>`{nom}` !".format(nom = outil, idmoji = "{idmoji[gem_" + outil + "]}")
+                    desc = lang_P.forge_msg(lang, "fish", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
                     sql.add(PlayerID, "fish | {} cassé".format(outil), 1, "statgems")
                     msg.append("OK")
                     msg.append(desc)
@@ -693,14 +692,14 @@ def fish(param):
                 if nbrand != 0:
                     sql.add(PlayerID, add_item, nbrand*mult, "inventory")
                     sql.add(PlayerID, "fish | item {}".format(add_item), nbrand*mult, "statgems")
-                    desc = "Tu as obtenu {nb} <:gem_{item}:{idmoji}>`{item}`".format(nb = nbrand*mult, item = add_item, idmoji = "{idmoji[gem_" + add_item + "]}")
+                    desc = lang_P.forge_msg(lang, "fish", [nbrand*mult, add_item, "{idmoji[gem_" + add_item + "]}"], False, 1)
                     if add_item != "fish":
                         nb = r.randint(1, 16)
                         sql.add(PlayerID, "fish", nb*mult, "inventory")
                         sql.add(PlayerID, "fish | item fish", nb*mult, "statgems")
-                        desc += "\nTu as obtenu {} <:gem_fish:{}>`fish`".format(nb*mult, "{idmoji[gem_fish]}")
+                        desc += lang_P.forge_msg(lang, "fish", [nb*mult, "{idmoji[gem_fish]}"], False, 2)
                 else:
-                    desc = "Pas de poisson pour toi aujourd'hui :cry:"
+                    desc = lang_P.forge_msg(lang, "fish", None, False, 3)
                     if mult >= 2:
                         sql.add(PlayerID, "fishhook", 1, "inventory")
                         sql.add(PlayerID, "fish | fishhook utilisé", -1, "statgems")
@@ -709,17 +708,17 @@ def fish(param):
                 # =====================================
                 # Bonus
                 # =====================================
-                desc += GF.lootbox(PlayerID)
-                desc += GF.gift(PlayerID)
+                desc += GF.lootbox(PlayerID, lang)
+                desc += GF.gift(PlayerID, lang)
 
             else:
-                desc = "Il te faut une <:gem_fishingrod:{}>`fishingrod` pour pécher, tu en trouvera une au marché !".format("{idmoji[fishingrod]}")
+                desc = lang_P.forge_msg(lang, "fish", ["{idmoji[fishingrod]}"], False, 4)
 
             sql.updateComTime(PlayerID, "fish", "gems")
             lvl.addxp(PlayerID, 1, "gems")
             msg.append("OK")
         else:
-            desc = "Ton inventaire est plein"
+            desc = lang_P.forge_msg(lang, "fish", None, False, 5)
             msg.append("NOK")
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
@@ -743,7 +742,7 @@ def slots(param):
     misemax = 200
     if imise != "None":
         if int(imise) < 0:
-            desc = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
+            desc = lang_P.forge_msg(lang, "DiscordCop Amende")
             lvl.addxp(PlayerID, -10, "gems")
             sql.add(PlayerID, "DiscordCop Amende", 1, "statgems")
             if gems > 100 :
@@ -765,7 +764,7 @@ def slots(param):
     if sql.spam(PlayerID, GF.couldown_8s, "slots", "gems"):
         tab = []
         result = []
-        desc = "Votre mise: {} :gem:`gems`\n\n".format(mise)
+        desc = lang_P.forge_msg(lang, "slots", [mise], False, 0)
         val = 0-mise
         for i in range(0, 9): # Creation de la machine à sous
             if i == 3:
@@ -834,15 +833,15 @@ def slots(param):
             sql.add(PlayerID, "Mineur de Merveilles", 1, "statgems")
             sql.add(PlayerID, "Mineur de Merveilles", 1, "trophy")
             gain = 42
-            desc += "\nEn trouvant ce <:gem_ruby:{}>`ruby` tu deviens un Mineur de Merveilles".format("{idmoji[gem_ruby]}")
-            GF.lootbox(PlayerID)
+            desc += lang_P.forge_msg(lang, "slots", ["{idmoji[gem_ruby]}"], False, 1)
+            GF.lootbox(PlayerID, lang)
         # ===================================================================
         # Super gain, 3 chiffres identique
         elif result[3] == "seven" and result[4] == "seven" and result[5] == "seven":
             gain = 1000
             sql.add(PlayerID, "Super Jackpot :seven::seven::seven:", 1, "statgems")
             sql.add(PlayerID, "Super Jackpot :seven::seven::seven:", 1, "trophy")
-            desc += "\nBravo <@{}>! Le Super Jackpot :seven::seven::seven: est tombé :tada: ".format(param["ID"])
+            desc += lang_P.forge_msg(lang, "slots", [param["ID"]], False, 2)
         elif result[3] == "one" and result[4] == "one" and result[5] == "one":
             gain = 100
         elif result[3] == "two" and result[4] == "two" and result[5] == "two":
@@ -867,7 +866,7 @@ def slots(param):
             sql.add(PlayerID, "La Squelatitude", 1, "statgems")
             sql.add(PlayerID, "La Squelatitude", 1, "trophy")
             gain = 4
-            desc += "\n<@{}> paye sa tournée :beer:".format(param["ID"])
+            desc += lang_P.forge_msg(lang, "slots", [param["ID"]], False, 3)
         # ===================================================================
         # Explosion de la machine
         elif result[3] == "boom" and result[4] == "boom" and result[5] == "boom":
@@ -905,12 +904,12 @@ def slots(param):
             nbCookie = 1
         if nbCookie != 0:
             if GF.testInvTaille(PlayerID):
-                desc += "\nTu a trouvé {} :cookie:`cookie`".format(nbCookie)
+                desc += lang_P.forge_msg(lang, "slots", [nbCookie], False, 4)
                 sql.add(PlayerID, "cookie", nbCookie, "inventory")
                 sql.add(PlayerID, "slots | cookie", nbCookie, "statgems")
             else:
-                desc += "\nTon inventaire est plein"
-            GF.lootbox(PlayerID)
+                desc += lang_P.forge_msg(lang, "slots", None, False, 5)
+            GF.lootbox(PlayerID, lang)
         # ===================================================================
         # grappe
         nbGrapes = 0
@@ -922,11 +921,11 @@ def slots(param):
             nbGrapes = 1
         if nbGrapes != 0:
             if GF.testInvTaille(PlayerID):
-                desc += "\nTu a trouvé {} :grapes:`grapes`".format(nbGrapes)
+                desc += lang_P.forge_msg(lang, "slots", [nbGrapes], False, 6)
                 sql.add(PlayerID, "grapes", nbGrapes, "inventory")
                 sql.add(PlayerID, "slots | grapes", nbGrapes, "statgems")
             else:
-                desc += "\nTon inventaire est plein"
+                desc += lang_P.forge_msg(lang, "slots", None, False, 5)
         # ===================================================================
         # Backpack (hyper rare)
         if result[3] == "backpack" or result[4] == "backpack" or result[5] == "backpack":
@@ -936,26 +935,26 @@ def slots(param):
             for c in GF.objetItem:
                 if c.nom == "backpack":
                     p = c.poids * (-1)
-            desc += "\nEn trouvant ce <:gem_backpack:{0}>`backpack` tu gagnes {1} points d'inventaire".format("{idmoji[gem_backpack]}", p)
+            desc += lang_P.forge_msg(lang, "slots", ["{idmoji[gem_backpack]}", p], False, 7)
 
         # Calcul du prix
         prix = gain * mise
         if gain != 0 and gain != 1:
             if prix > 400:
-                desc += "\n:slot_machine: Jackpot! Tu viens de gagner {} :gem:`gems`".format(prix)
+                desc += lang_P.forge_msg(lang, "slots", [prix], False, 8)
             elif prix > 0:
-                desc += "\nBravo, tu viens de gagner {} :gem:`gems`".format(prix)
+                desc += lang_P.forge_msg(lang, "slots", [prix], False, 9)
                 sql.add(PlayerID, "slots | gain", prix, "statgems")
             else:
-                desc += "\nLa machine viens d'exploser :boom:\nTu as perdu {} :gem:`gems`".format(-1*prix)
+                desc += lang_P.forge_msg(lang, "slots", [-1*prix], False, 10)
                 sql.add(PlayerID, "slots | perte", -prix, "statgems")
             sql.addGems(PlayerID, prix)
             sql.addGems(GF.PlayerID_GetGems, -prix)
         elif gain == 1:
-            desc += "\nBravo, voici un ticket gratuit pour relancer la machine à sous"
+            desc += lang_P.forge_msg(lang, "slots", None, False, 11)
             sql.addGems(PlayerID, prix)
         else:
-            desc += "\nLa machine à sous ne paya rien ..."
+            desc += lang_P.forge_msg(lang, "slots", None, False, 12)
             sql.addGems(PlayerID, val)
             sql.add(PlayerID, "slots | perte", mise, "statgems")
         sql.updateComTime(PlayerID, "slots", "gems")
@@ -997,14 +996,14 @@ def boxes(param):
                         sql.addGems(PlayerID, gain)
                         desc = "{} :gem:`gems`\n".format(gain)
                         if name == "gift":
-                            if r.randint(0,6) == 0:
+                            if r.randint(0, 6) == 0:
                                 nb = r.randint(-2, 3)
                                 if nb < 1:
                                     nb = 1
                                 # sql.addSpinelles(PlayerID, nb)
                                 # desc += "{nombre} <:spinelle:{idmoji}>`spinelle`\n".format(idmoji="{idmoji[spinelle]}", nombre=nb)
                             for x in GF.objetItem:
-                                if r.randint(0,10) <= 1:
+                                if r.randint(0, 10) <= 1:
                                     if x.nom == "hyperpack":
                                         nbgain = 1
                                     else:
@@ -1016,9 +1015,9 @@ def boxes(param):
                                         desc += "\n:{0}:`{0}` x{1}".format(x.nom, nbgain)
                         elif name == "gift_heart":
                             for x in GF.objetItem:
-                                if r.randint(0,15) >= 14:
+                                if r.randint(0, 15) >= 14:
                                     if x.nom == "hyperpack":
-                                        nbgain = r.randint(1,2)
+                                        nbgain = r.randint(1, 2)
                                     else:
                                         nbgain = r.randint(4, 10)
                                     sql.add(PlayerID, x.nom, nbgain, "inventory")
@@ -1034,19 +1033,19 @@ def boxes(param):
                         msg.append(titre)
                         return msg
 
-                desc = "Cette box n'existe pas"
+                desc = lang_P.forge_msg(lang, "boxes", None, False, 0)
                 msg.append("NOK")
             else:
-                desc = "Tu ne possèdes pas cette Loot Box"
+                desc = lang_P.forge_msg(lang, "boxes", None, False, 1)
                 msg.append("NOK")
         else:
-            desc = "Commande `boxes open` incomplète"
+            desc = lang_P.forge_msg(lang, "boxes", None, False, 2)
             msg.append("NOK")
     elif fct == "None":
-        desc = "Commande `boxes` incomplète"
+        desc = lang_P.forge_msg(lang, "boxes", None, False, 3)
         msg.append("NOK")
     else:
-        desc = "Commande `boxes` invalide"
+        desc = lang_P.forge_msg(lang, "boxes", None, False, 4)
         msg.append("NOK")
     msg.append(desc)
     return msg
@@ -1078,7 +1077,7 @@ def hothouse(param):
                 if int(arg) <= nbplanting:
                     nbplanting = int(arg)
                 else:
-                    desc = "Tu n'as pas assez de plantations ou cette plantation n'est pas disponible!"
+                    desc = lang_P.forge_msg(lang, "hothouse", None, False, 0)
                     msg.append("NOK")
                     msg.append(desc)
                     return msg
@@ -1098,7 +1097,7 @@ def hothouse(param):
                 else:
                     couldown = GF.couldown_6h
                 if valueTime == 0:
-                    desc = "Cette plantation est vide!"
+                    desc = lang_P.forge_msg(lang, "hothouse", None, False, 1)
                 else:
                     PlantingTime = float(valueTime)
                     InstantTime = t.time()
@@ -1152,9 +1151,9 @@ def hothouse(param):
                         sql.add(PlayerID, "hothouse | harvest | item {}".format(item), nbHarvest, "statgems")
                         sql.updateField(PlayerID, i, data, "hothouse")
                         if item == "grapes":
-                            desc = "Ta plantation à fini de pousser, en la coupant tu gagnes {2} :{1}:`{1}`".format("{idmoji[gem_" + item + "]}", item, nbHarvest)
+                            desc = lang_P.forge_msg(lang, "hothouse", ["{idmoji[gem_" + item + "]}", item, nbHarvest], False, 2)
                         else:
-                            desc = "Ta plantation à fini de pousser, en la coupant tu gagnes {2} <:gem_{1}:{0}>`{1}`".format("{idmoji[gem_" + item + "]}", item, nbHarvest)
+                            desc = lang_P.forge_msg(lang, "hothouse", ["{idmoji[gem_" + item + "]}", item, nbHarvest], False, 3)
                         lvl.addxp(PlayerID, 1, "gems")
                         if i > 1:
                             if sql.valueAtNumber(PlayerID, "planting_plan", "inventory") > 0:
@@ -1174,7 +1173,7 @@ def hothouse(param):
                         time = time - timeH * 3600
                         timeM = int(time / 60)
                         timeS = int(time - timeM * 60)
-                        desc = "<:gem_{3}:{4}>`{3}` | Ta plantation aura fini de pousser dans :clock2:`{0}h {1}m {2}s`".format(timeH, timeM, timeS, valueItem, "{idmoji[gem_" + valueItem + "]}")
+                        desc = lang_P.forge_msg(lang, "hothouse", [timeH, timeM, timeS, valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 4)
                 msg.append("{}".format(i))
                 msg.append(desc)
                 i += 1
@@ -1182,7 +1181,7 @@ def hothouse(param):
             return msg
         elif fct == "plant":
             if sql.valueAtNumber(GF.PlayerID_GetGems, "DailyMult", "daily") == 1:
-                desc = "Plantations endommagées! Un violent orage :cloud_lightning: à détruit tes plantations\nTes plantations seront réparrées au plus vite"
+                desc = lang_P.forge_msg(lang, "hothouse", None, False, 5)
                 msg.append("NOK")
                 msg.append(desc)
                 return msg
@@ -1193,17 +1192,18 @@ def hothouse(param):
                     arg2 = int(arg2)
                 except:
                     msg.append("NOK")
-                    msg.append("Veuillez indiquer un numéro de plantation valide")
+                    desc = lang_P.forge_msg(lang, "hothouse", None, False, 6)
+                    msg.append(desc)
                     return msg
                 if arg2 > nbplanting:
-                    desc = "Tu n'as pas assez de plantations ou cette plantation n'est pas disponible!"
+                    desc = lang_P.forge_msg(lang, "hothouse", None, False, 7)
                     msg.append("NOK")
                     msg.append(desc)
                     return msg
                 elif int(arg2) < 0:
                     sql.addGems(PlayerID, -100)
                     lvl.addxp(PlayerID, -10, "gems")
-                    desc = ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !"
+                    desc = lang_P.forge_msg(lang, "DiscordCop Amende")
                     sql.add(PlayerID, "DiscordCop Amende", 1, "statgems")
                     msg.append("anticheat")
                     msg.append(desc)
@@ -1229,11 +1229,11 @@ def hothouse(param):
                         sql.add(PlayerID, arg2, data, "hothouse")
                         sql.add(PlayerID, arg, -1, "inventory")
                         sql.add(PlayerID, "hothouse | plant | item {}".format(arg), 1, "statgems")
-                        desc = "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans {2}".format(arg, "{idmoji[gem_" + arg + "]}", couldown)
+                        desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}", couldown], False, 8)
                     else:
-                        desc = "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire".format(arg, "{idmoji[gem_" + arg + "]}")
+                        desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}"], False, 9)
                 else:
-                    desc = "Tu as déjà planté une <:gem_{0}:{1}>`{0}` dans cette plantation".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
+                    desc = lang_P.forge_msg(lang, "hothouse", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 10)
                 msg.append("OK")
                 msg.append("{}".format(nbplanting))
                 msg.append("{}".format(arg2))
@@ -1265,9 +1265,9 @@ def hothouse(param):
                             sql.add(PlayerID, i, data, "hothouse")
                             sql.add(PlayerID, arg, -1, "inventory")
                             sql.add(PlayerID, "hothouse | plant | item {}".format(arg), 1, "statgems")
-                            desc = "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans :clock2:`{2}`".format(arg, "{idmoji[gem_" + arg + "]}", couldown)
+                            desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}", couldown], False, 11)
                         else:
-                            desc = "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire".format(arg, "{idmoji[gem_" + arg + "]}")
+                            desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}"], False, 12)
                             if j == 0:
                                 j = -1
                                 if arg == "seed":
@@ -1275,7 +1275,7 @@ def hothouse(param):
                                 else:
                                     arg = "seed"
                     else:
-                        desc = "Tu as déjà planté une <:gem_{0}:{1}>`{0}` dans cette plantation".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
+                        desc = lang_P.forge_msg(lang, "hothouse", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 13)
                     msg.append("{}".format(i))
                     msg.append(desc)
                     if j == -1:
@@ -1284,7 +1284,7 @@ def hothouse(param):
                         i += 1
             return msg
         else:
-            desc = "Fonction inconnu"
+            desc = lang_P.forge_msg(lang, "hothouse", None, False, 14)
             msg.append("NOK")
             msg.append(desc)
             return msg
@@ -1338,7 +1338,7 @@ def ferment(param):
                 valueItem = ""
             fermentItem = sql.valueAtNumber(PlayerID, item, "inventory")
             if valueItem == "" and item == "None":
-                desc = "Ce barril est vide."
+                desc = lang_P.forge_msg(lang, "ferment", None, False, 0)
             elif item == "grapes" or item == "wheat":
                 if valueTime == 0:
                     if fermentItem >= nbitem:
@@ -1349,20 +1349,20 @@ def ferment(param):
                         sql.add(PlayerID, item, -nbitem, "inventory")
                         sql.add(PlayerID, "ferment | plant | item {}".format(item), nbitem, "statgems")
                         if item == "grapes":
-                            desc = "Ton barril a été rempli de :{0}:`{0}`. L'alcool aura fini de fermenter dans :clock2:`{1}`".format(item, couldownMsg)
+                            desc = lang_P.forge_msg(lang, "ferment", [item, couldownMsg], False, 1)
                         else:
-                            desc = "Ton barril a été rempli de <:gem_{0}:{1}>`{0}`. L'alcool aura fini de fermenter dans :clock2:`{2}`".format(item, "{idmoji[gem_" + item + "]}", couldownMsg)
+                            desc = lang_P.forge_msg(lang, "ferment", [item, "{idmoji[gem_" + item + "]}", couldownMsg], False, 2)
                     else:
                         if item == "grapes":
-                            desc = "Tu n'as pas assez de :{0}:`{0}` dans ton inventaire! \nIl te faut {2} :{0}:`{0}` pour faire des :{1}:`{1}`".format(item, gain, nbitem)
+                            desc = lang_P.forge_msg(lang, "ferment", [item, gain, nbitem], False, 3)
                         else:
-                            desc = "Tu n'as pas assez de <:gem_{0}:{1}>`{0}` dans ton inventaire! \nIl te faut {3} <:gem_{0}:{1}>`{0}` pour faire des :{2}:`{2}`".format(item, "{idmoji[gem_" + item + "]}", gain, nbitem)
+                            desc = lang_P.forge_msg(lang, "ferment", [item, "{idmoji[gem_" + item + "]}", gain, nbitem], False, 4)
 
                 else:
                     if valueItem == "grapes":
-                        desc = "Fermentation de :{0}:`{0}` en cours.".format(valueItem)
+                        desc = lang_P.forge_msg(lang, "ferment", [valueItem], False, 5)
                     else:
-                        desc = "Fermentation de <:gem_{0}:{1}>`{0}` en cours.".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
+                        desc = lang_P.forge_msg(lang, "ferment", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 6)
             elif item == "None":
                 couldown = GF.couldown_3h
                 nbgain = 0
@@ -1384,7 +1384,7 @@ def ferment(param):
                     sql.add(PlayerID, gain, nbgain, "inventory")
                     sql.add(PlayerID, "ferment | harvest | item {}".format(gain), nbgain, "statgems")
                     sql.updateField(PlayerID, i, data, "ferment")
-                    desc = "Ton alcool à fini de fermenter, en ouvrant le barril tu gagnes {2} :{0}:`{0}`".format(gain, "{idmoji[gem_" + gain + "]}", nbgain)
+                    desc = lang_P.forge_msg(lang, "ferment", [gain, "{idmoji[gem_" + gain + "]}", nbgain], False, 7)
                     lvl.addxp(PlayerID, 1, "gems")
                     if i > 1:
                         nbbarrel = int(sql.valueAtNumber(PlayerID, "barrel", "inventory"))
@@ -1405,10 +1405,10 @@ def ferment(param):
                     timeM = int(time / 60)
                     timeS = int(time - timeM * 60)
                     if valueItem == "grapes":
-                        desc = "Fermentation de :{0}:`{0}` en cours.".format(valueItem)
+                        desc = lang_P.forge_msg(lang, "ferment", [valueItem], False, 5)
                     else:
-                        desc = "Fermentation de <:gem_{0}:{1}>`{0}` en cours.".format(valueItem, "{idmoji[gem_" + valueItem + "]}")
-                    desc += "Ton alcool aura fini de fermenter dans :clock2:`{}h {}m {}s`".format(timeH, timeM, timeS)
+                        desc = lang_P.forge_msg(lang, "ferment", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 6)
+                    desc += lang_P.forge_msg(lang, "ferment", [timeH, timeM, timeS], False, 8)
             msg.append("{}".format(i))
             msg.append(desc)
             i += 1
