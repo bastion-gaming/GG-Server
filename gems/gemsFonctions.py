@@ -15,37 +15,28 @@ except:
     PlayerID_Babot = 2
 
 
-def checkDB_Guilde():
-    if DB.dbExist("DB/guildesDB"):
-        print("Guildes >> La DB existe, poursuite sans soucis.")
-    else:
-        print("Guildes >> La DB n'existait pas. Elle a été (re)créée.")
-    flag = DB.checkField("DB/guildesDB", "DB/Templates/guildesTemplate")
-    if flag == 0:
-        print("DB >> Aucun champ n'a été ajouté, supprimé ou modifié.")
-    elif "add" in flag:
-        print("DB >> Un ou plusieurs champs ont été ajoutés à la DB.")
-    elif "type" in flag:
-        print("DB >> Un ou plusieurs type ont été modifié sur la DB.")
-    elif "sup" in flag:
-        print("DB >> Un ou plusieurs champs ont été supprimés de la DB.")
+# def checkDB_Guilde():
+#     if DB.dbExist("DB/guildesDB"):
+#         print("Guildes >> La DB existe, poursuite sans soucis.")
+#     else:
+#         print("Guildes >> La DB n'existait pas. Elle a été (re)créée.")
+#     flag = DB.checkField("DB/guildesDB", "DB/Templates/guildesTemplate")
+#     if flag == 0:
+#         print("DB >> Aucun champ n'a été ajouté, supprimé ou modifié.")
+#     elif "add" in flag:
+#         print("DB >> Un ou plusieurs champs ont été ajoutés à la DB.")
+#     elif "type" in flag:
+#         print("DB >> Un ou plusieurs type ont été modifié sur la DB.")
+#     elif "sup" in flag:
+#         print("DB >> Un ou plusieurs champs ont été supprimés de la DB.")
 
-# Array
-
-message_gamble = ["Tu as remporté le pari ! Tu obtiens"
-, "Une grande victoire pour toi ! Tu gagnes"
-, "Bravo prends"
-, "Heu...."
-, "Pourquoi jouer à Fortnite quand tu peux gamble! Prends tes"]
-
-# se sont les phrases prononcé par le bot pour plus de diversité
 
 # Taille max de l'Inventaire
 invMax = 15000
 
 
 def itemBourse(item, type):
-    """Version 2.3 | Attribue les prix de la bourse """
+    """Version 2.4 | Attribue les prix de la bourse """
     # récupération du fichier de sauvegarde de la bourse
     with open('gems/bourse.json', 'r') as fp:
         dict = json.load(fp)
@@ -61,6 +52,9 @@ def itemBourse(item, type):
         # Gestion des exceptions
         if item in GI.exception:
             return pnow
+        for z in ObjetEventEnd:
+            if z == item:
+                return pnow
 
         # Calcul du prix mini
         for c in GI.PrixItem:
@@ -110,30 +104,18 @@ def itemBourse(item, type):
                     Prix = pmini
                 elif Prix <= 10:
                     Prix = 10
-        # objet evenementiels
-        zE = False
-        for z in ObjetEventEnd:
-            if z == item:
-                zE = True
-                if type == "vente":
-                    temp["vente"] = get_default_price(item, type)
-                    temp["precVente"] = get_default_price(item, type)
-                elif type == "achat":
-                    temp["achat"] = get_default_price(item, type)
-                    temp["precAchat"] = get_default_price(item, type)
         # La valeur de vente ne peux etre supérieur à la valeur d'achat
-        if not zE:
-            if type == "vente":
-                if Prix > temp["achat"]:
-                    Prix = temp["achat"]
-                temp["vente"] = Prix
-                temp["precVente"] = pnow
-            # La valeur d'achat ne peux être inférieur à la valeur de vente
-            elif type == "achat":
-                if Prix < temp["vente"]:
-                    Prix = temp["vente"]
-                temp["achat"] = Prix
-                temp["precAchat"] = pnow
+        if type == "vente":
+            if Prix > temp["achat"]:
+                Prix = temp["achat"]
+            temp["vente"] = Prix
+            temp["precVente"] = pnow
+        # La valeur d'achat ne peux être inférieur à la valeur de vente
+        elif type == "achat":
+            if Prix < temp["vente"]:
+                Prix = temp["vente"]
+            temp["achat"] = Prix
+            temp["precAchat"] = pnow
         # actualisation du fichier de sauvegarde de la bourse
         dict[item] = temp
         with open('gems/bourse.json', 'w') as fp:
