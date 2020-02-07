@@ -58,6 +58,7 @@ while check:
         check = False
         socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], "GG serveur c'est arrêté"))
     elif message["name_c"] == "level":
+        GF.loadItem()
         ID = sql.get_SuperID(message["name_p"], platform)
         socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], lvl.checklevel(ID)))
     elif message["name_c"] == "NewServer":

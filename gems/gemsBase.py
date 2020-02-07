@@ -485,7 +485,7 @@ def market(param):
 
     if sql.spam(PlayerID, GF.couldown_4s, "market", "gems"):
         d_market = "Permet de voir tout les objets que l'on peux acheter ou vendre !\n\n"
-        if sql.spam(GF.PlayerID_GetGems, GF.couldown_10s, "bourse", "gems"):
+        if sql.spam(GF.PlayerID_GetGems, GF.couldown_8h, "bourse", "gems"):
             GF.loadItem()
         ComTime = sql.valueAtNumber(GF.PlayerID_GetGems, "bourse", "gems_com_time")
         time = float(ComTime)

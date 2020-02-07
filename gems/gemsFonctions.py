@@ -48,7 +48,7 @@ def itemBourse(item, type):
         pnow = temp["achat"]
 
     # Verification pour l'actualisation de la bourse
-    if sql.spam(PlayerID_GetGems, couldown_12h, "bourse", "gems"):
+    if sql.spam(PlayerID_GetGems, couldown_8h, "bourse", "gems"):
         # Gestion des exceptions
         if item in GI.exception:
             return pnow
@@ -271,7 +271,7 @@ def loadItem(F = None):
     , Box("gift", "Items en folie", 500000, 1000, 1000000, "gems", 3)
     , Box("gift_heart", "Cadeau de la Saint Valentin", 0, 100000, 500000, "", 2)]
 
-    if sql.spam(PlayerID_GetGems, couldown_12h, "bourse", "gems"):
+    if sql.spam(PlayerID_GetGems, couldown_8h, "bourse", "gems"):
         sql.updateComTime(PlayerID_GetGems, "bourse", "gems")
         for x in objetItem:
             GS.csv_add(x.nom)
