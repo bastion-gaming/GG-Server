@@ -1271,16 +1271,25 @@ def lang(param):
     langlist = ["FR", "EN"]
     langue = param["langue"].upper()
 
-    if langue in langlist:
-        if sql.updateField(ID, "LANG", langue, "IDs") == "200":
-            msg.append("OK")
-            msg.append(lang_P.forge_msg(langue, "lang", None, False, 0))
-        else:
+    if langue == "NONE":
+        mylang = sql.valueAtNumber(ID, "LANG", "IDs")
+        if mylang == 0:
             msg.append("NOK")
             msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 0))
+        else:
+            msg.append("OK")
+            msg.append(mylang)
     else:
-        msg.append("NOK")
-        msg.append(lang_P.forge_msg(lang, "lang", None, False, 1))
+        if langue in langlist:
+            if sql.updateField(ID, "LANG", langue, "IDs") == "200":
+                msg.append("OK")
+                msg.append(lang_P.forge_msg(langue, "lang", None, False, 0))
+            else:
+                msg.append("NOK")
+                msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 0))
+        else:
+            msg.append("NOK")
+            msg.append(lang_P.forge_msg(lang, "lang", None, False, 1))
     return msg
 
 
