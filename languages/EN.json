@@ -1,6 +1,4 @@
 {
-  "test":
-    "Hi",
   "couldown":
     "You have to wait {0} seconds between each command!",
   "lang":
@@ -9,7 +7,12 @@
       "Language not supported."
     ],
   "WarningMsg":
-    "No user account has been found.",
+    [
+      "No user account has been found.",
+      "Incorrectly formulated order",
+      "Your inventory is full.",
+      "The order is badly formulated."
+    ],
   "newPlayer":
     [
       "The player has been added!",
@@ -37,7 +40,8 @@
       "\nYou found a <:gem_lootbox:{0}>**Rare Loot Box Gems**! Use the command `boxes open raregems` to open it.",
       "\nYou found a <:gem_lootbox:{0}>**Legendary Loot Box Gems**! Use the command `boxes open legendarygems` to open it.",
       "\n\nYou found {0} :gift:`Christmas present (gift)`",
-      "\n\nYou found {0} :gift:`New Year's present (gift)`:confetti_ball:"
+      "\n\nYou found {0} :gift:`New Year's present (gift)`:confetti_ball:",
+      "Items in madness"
     ],
   "crime array":
     [

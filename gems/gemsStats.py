@@ -1,6 +1,7 @@
 import csv
 import datetime as dt
 from gems import gemsFonctions as GF, gemsItems as GI
+from languages import lang as lang_P
 
 
 def csv_add(name):
@@ -36,6 +37,7 @@ def csv_add(name):
 
 
 def csv_read(param):
+    lang = param["lang"]
     item = param["item"]
     year = param["year"]
     month = param["month"]
@@ -49,14 +51,17 @@ def csv_read(param):
     except:
         msg.append("NOK")
         msg.append([])
+        msg.append(lang)
         return msg
     msg.append("OK")
     msg.append(temp)
+    msg.append(lang)
     return msg
 
 
 def listobjet(param):
     type = param["type"]
+    lang = param["lang"]
     msg = []
     list = []
     if type == "item" or type == "items":
@@ -80,7 +85,7 @@ def listobjet(param):
                 list.append(c.nom)
     else:
         msg.append("NOK")
-        msg.append("Commande mal formulée")
+        msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 1))
         return msg
     msg.append("OK")
     msg.append(list)

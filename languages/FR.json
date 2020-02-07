@@ -1,6 +1,4 @@
 {
-  "test":
-    "coucou",
   "couldown":
     "Il faut attendre {0} secondes entre chaque commande!",
   "lang":
@@ -9,7 +7,12 @@
       "Langue non prise en charge."
     ],
   "WarningMsg":
-    "Aucun compte utilisateur n'a été trouvé.",
+    [
+      "Aucun compte utilisateur n'a été trouvé.",
+      "Commande mal formulée",
+      "Ton inventaire est plein.",
+      "La commande est mal formulée."
+    ],
   "newPlayer":
     [
       "Le joueur a été ajouté !",
@@ -37,7 +40,8 @@
       "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir",
       "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir",
       "\n\nTu as trouvé {0} :gift:`cadeau de Noël (gift)`",
-      "\n\nTu as trouvé {0} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:"
+      "\n\nTu as trouvé {0} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:",
+      "Items en folie"
     ],
   "crime array":
     [
@@ -103,16 +107,14 @@
       "Pas de chance tu as cassé ta <:gem_{0}:{1}>`{0}`!",
       "Tu as obtenu {0} <:gem_{1}:{2}>`{1}`",
       "\nTu as obtenu {0} bloc de <:gem_cobblestone:{1}>`cobblestone`",
-      "Il faut acheter ou forger une pioche pour miner!",
-      "Ton inventaire est plein"
+      "Il faut acheter ou forger une pioche pour miner!"
     ],
   "dig":
     [
       "Pas de chance tu as cassé ta <:gem_{0}:{1}>`{0}`!",
       "Tu as obtenu {0} <:gem_{1}:{2}>`{1}`",
       "Tu as creusé toute la journée pour ne trouver que de la terre.",
-      "Il faut acheter ou forger une pelle pour creuser!",
-      "Ton inventaire est plein"
+      "Il faut acheter ou forger une pelle pour creuser!"
     ],
   "fish":
     [
@@ -120,8 +122,7 @@
       "Tu as obtenu {0} <:gem_{1}:{2}>`{1}`",
       "\nTu as obtenu {0} <:gem_fish:{1}>`fish`",
       "Pas de poisson pour toi aujourd'hui :cry:",
-      "Il te faut une <:gem_fishingrod:{0}>`fishingrod` pour pécher, tu en trouvera une au marché !",
-      "Ton inventaire est plein"
+      "Il te faut une <:gem_fishingrod:{0}>`fishingrod` pour pécher, tu en trouvera une au marché !"
     ],
   "slots":
     [
@@ -193,5 +194,65 @@
   "bal":
     "**_Niveau_: {0}**",
   "baltop":
-    "Erreur! Commande incorrect"
+    "Erreur! Commande incorrect",
+  "buy":
+    [
+      "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}`!",
+      "Tu viens d'acquérir {0} :{1}:`{1}`!",
+      "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {0} en banque",
+      "Désolé, nous ne pouvons pas executer cet achat, cette item n'est pas vendu au marché",
+      "Cet item n'est pas vendu au marché !",
+      "Tu viens d'acquérir {0} <:gem_lootbox:{2}>`{1}`!",
+      "Tu viens d'acquérir {0} :{1}:`{1}`!"
+    ],
+  "sell":
+    [
+      "Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4}!",
+      "Tu as vendu {0} :{1}:`{1}` pour {2} {3}!",
+      "Cette objet n'existe pas",
+      "Tu n'as pas assez de `{0}`. Il t'en reste : {1}",
+      "Tu n'as pas assez de :{0}:`{0}`. Il t'en reste : {1}",
+      "Tu n'as pas assez de <:gem_{0}:{2}>`{0}`. Il t'en reste : {1}",
+      "Tu ne peux pas vendre tes <:gem_{1}:{0}>`{1}`"
+    ],
+  "propriete":
+    [
+      "Achat",
+      "Vente",
+      "Durabilité",
+      "Poids",
+      "Taille",
+      "Gain"
+    ],
+  "inv":
+    [
+      "Cette poche n'existe pas"
+    ],
+  "market":
+    [
+      "Le plafond du compte épargne",
+      "Ce marché n'existe pas"
+    ],
+  "pay":
+    [
+      "{0} donne {1} :gem:`gems` à {2}!",
+      "{0} n'a pas assez pour donner {1} :gem:`gems` à {2}!",
+      "Tu ne peux pas donner une somme négative ! N'importe quoi enfin!"
+    ],
+  "give":
+    [
+      "Tu ne peux pas donner cette item!",
+      "{0} donne {1} <:gem_lootbox:{3}>`{2}` à {4}!",
+      "{0} donne {1} :{2}:`{2}` à {3}!",
+      "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4}!",
+      "L'inventaire de {} est plein",
+      "{0} n'a pas assez pour donner à {1}!",
+      "Tu ne peux pas donner une somme négative ! N'importe quoi enfin!"
+    ],
+  "forge":
+    [
+      "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}`!",
+      "Il te manque {0} <:gem_{1}:{2}>`{1}`\n",
+      "Aucun recette disponible pour forger cette item !"
+    ]
 }

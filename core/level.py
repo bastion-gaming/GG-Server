@@ -21,7 +21,7 @@ def checklevel(ID):
     if lang == None:
         lang = "EN"
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     # print(PlayerID)

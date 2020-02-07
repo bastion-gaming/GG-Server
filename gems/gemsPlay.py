@@ -13,7 +13,7 @@ def daily(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     # =======================================================================
@@ -69,7 +69,7 @@ def bank(param):
     ARG = param["ARG"]
     ARG2 = param["ARG2"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
@@ -92,6 +92,7 @@ def bank(param):
     if mARG == "bal":
         if sql.spam(PlayerID, GF.couldown_4s, "bank_bal", "gems"):
             msg.append("bal")
+            msg.append(lang)
             if ARG2 != "None":
                 ID = sql.get_SuperID(sql.nom_ID(param["ARG2"]), param["name_pl"])
                 PlayerID = sql.get_PlayerID(ID, "gems")
@@ -218,7 +219,7 @@ def stealing(param):
     lang = param["lang"]
     name = param["name"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
@@ -279,7 +280,7 @@ def crime(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
 
@@ -331,7 +332,7 @@ def gamble(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     valeur = param["valeur"]
@@ -408,7 +409,7 @@ def mine(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
@@ -511,7 +512,7 @@ def mine(param):
             lvl.addxp(PlayerID, 1, "gems")
             msg.append("OK")
         else:
-            desc = lang_P.forge_msg(lang, "mine", None, False, 4)
+            desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
             msg.append("NOK")
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
@@ -525,7 +526,7 @@ def dig(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
@@ -610,7 +611,7 @@ def dig(param):
             lvl.addxp(PlayerID, 1, "gems")
             msg.append("OK")
         else:
-            desc = lang_P.forge_msg(lang, "dig", None, False, 4)
+            desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
             msg.append("NOK")
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
@@ -624,7 +625,7 @@ def fish(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
@@ -718,7 +719,7 @@ def fish(param):
             lvl.addxp(PlayerID, 1, "gems")
             msg.append("OK")
         else:
-            desc = lang_P.forge_msg(lang, "fish", None, False, 5)
+            desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
             msg.append("NOK")
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
@@ -732,7 +733,7 @@ def slots(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     imise = param["imise"]
@@ -974,7 +975,7 @@ def boxes(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     fct = param["fct"]
@@ -1056,7 +1057,7 @@ def hothouse(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     fct = param["fct"]
@@ -1082,6 +1083,7 @@ def hothouse(param):
                     msg.append(desc)
                     return msg
             msg.append("OK")
+            msg.append(lang)
             msg.append("{}".format(nbplanting))
             while i <= nbplanting:
                 data = []
@@ -1235,6 +1237,7 @@ def hothouse(param):
                 else:
                     desc = lang_P.forge_msg(lang, "hothouse", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 10)
                 msg.append("OK")
+                msg.append(lang)
                 msg.append("{}".format(nbplanting))
                 msg.append("{}".format(arg2))
                 msg.append(desc)
@@ -1242,6 +1245,7 @@ def hothouse(param):
             else:
                 j = 0
                 msg.append("OK")
+                msg.append(lang)
                 msg.append("{}".format(nbplanting))
                 while i <= nbplanting:
                     data = []
@@ -1300,7 +1304,7 @@ def ferment(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     item = param["item"]
@@ -1326,6 +1330,7 @@ def ferment(param):
         if nbferment >= max:
             nbferment = max
         msg.append("OK")
+        msg.append(lang)
         msg.append("{}".format(nbferment))
         while i <= nbferment:
             data = []
@@ -1424,7 +1429,7 @@ def cooking(param):
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
     if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg")]
+        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
     item = param["item"]
@@ -1474,6 +1479,7 @@ def cooking(param):
         if nbcooking >= max:
             nbcooking = max
         msg.append("OK")
+        msg.append(lang)
         msg.append("{}".format(nbcooking))
         while i <= nbcooking:
             data = []
