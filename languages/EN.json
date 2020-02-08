@@ -61,5 +61,198 @@
       "Congratulations take",
       "Uh....",
       "Why play Fortnite when you can gamble! Get your"
-    ]
+    ],
+    "gamble":
+    [
+      "Crap ! You lose {0} :gem: `gems`",
+      "\nCongratulations! You have the soul of a bettor, we're offering you the prize  :trophy:`Gamble Jackpot` ! ",
+      "\nCongratulations! You have the soul of a bettor, we're offering you the prize  :trophy::trophy:`Super Gamble Jackpot` ! ",
+      "\nCongratulations! You have the soul of a bettor, we're offering you the prize  :trophy::trophy::trophy:`Hyper Gamble Jackpot`. ! ",
+      "You don't have enough :gem: `gems` en banque",
+      "Incorrect value"
+    ],
+    "stealing":
+      [
+        "You need to wait :clock2:`{0}h {1}m {2}s` before steal :gem:`gems` again !",
+        "You just stole {0} :gem:`gems` from {1}",
+        "You're a lousy :gem:`gems` thief",
+        "This player can't be found",
+        "You can steal :gem:`gems`"
+      ],
+    "daily":
+      [
+        "Daily reward! You've won 100:gem:`gems`",
+        "\nNew series: `{0}`, Bonus: {1} :gem:`gems`",
+        "\nCongratulations for {0} consecutive days :confetti_ball:! You deserve {1}:gem:`gems`",
+        "You've already received your daily reward today. Come back tomorrow to earn more :gem:`gems`"
+      ],
+    "bank":
+      [
+        "bank **bal** *[name]* | Allows you to know the balance of a user",
+        "\nbank **add** *[+/- nombre]* | Allows you to add or remove :gem:`gems` from your savings account.",
+        "\nbank **saving** | Allows you to calculate your savings (can be used every 4 hours)",
+        "\n\nThe price of <:gem_{0}:{1}>`{0}` depends on the ceiling of the account",
+        "Plafond de {0} :gem:`gems` du compte épargne atteint\n",
+        "Le solde de ton compte épargne ne peux être négatif.\nSolde du compte: {0} :gem:`gems`",
+        "Ton compte épargne a été crédité de {0} :gem:`gems`",
+        "\nNouveau solde: {0} :gem:`gems`",
+        "Tu n'as pas assez de :gem:`gems` pour épargner cette somme",
+        "Il manque le nombre de :gem:`gems` à ajouter sur votre compte épargne",
+        "Tu as épargné {0} :gem:`gems`\n",
+        "Plafond de {0} :gem:`gems` du compte épargne atteint\nTon épargne a été tranférée sur ton compte principal\n\n",
+        "Il te faut attendre :clock2:`{0}h {1}m {2}s` avant d'épargner à nouveau !"
+      ],
+    "mine":
+      [
+        "Pas de chance tu as cassé ta <:gem_{0}:{1}>`{0}`!",
+        "Tu as obtenu {0} <:gem_{1}:{2}>`{1}`",
+        "\nTu as obtenu {0} bloc de <:gem_cobblestone:{1}>`cobblestone`",
+        "Il faut acheter ou forger une pioche pour miner!"
+      ],
+    "dig":
+      [
+        "Pas de chance tu as cassé ta <:gem_{0}:{1}>`{0}`!",
+        "Tu as obtenu {0} <:gem_{1}:{2}>`{1}`",
+        "Tu as creusé toute la journée pour ne trouver que de la terre.",
+        "Il faut acheter ou forger une pelle pour creuser!"
+      ],
+    "fish":
+      [
+        "Pas de chance tu as cassé ta <:gem_{0}:{1}>`{0}`!",
+        "Tu as obtenu {0} <:gem_{1}:{2}>`{1}`",
+        "\nTu as obtenu {0} <:gem_fish:{1}>`fish`",
+        "Pas de poisson pour toi aujourd'hui :cry:",
+        "Il te faut une <:gem_fishingrod:{0}>`fishingrod` pour pécher, tu en trouvera une au marché !"
+      ],
+    "slots":
+      [
+        "Votre mise: {0} :gem:`gems`\n\n",
+        "\nEn trouvant ce <:gem_ruby:{0}>`ruby` tu deviens un Mineur de Merveilles",
+        "\nBravo <@{0}>! Le Super Jackpot :seven::seven::seven: est tombé :tada: ",
+        "\n<@{0}> paye sa tournée :beer:",
+        "\nTu a trouvé {0} :cookie:`cookie`",
+        "\nTon inventaire est plein",
+        "\nTu a trouvé {0} :grapes:`grapes`",
+        "\nEn trouvant ce <:gem_backpack:{0}>`backpack` tu gagnes {1} points d'inventaire",
+        "\n:slot_machine: Jackpot! Tu viens de gagner {0} :gem:`gems`",
+        "\nBravo, tu viens de gagner {0} :gem:`gems`",
+        "\nLa machine viens d'exploser :boom:\nTu as perdu {0} :gem:`gems`",
+        "\nBravo, voici un ticket gratuit pour relancer la machine à sous",
+        "\nLa machine à sous ne paya rien ..."
+      ],
+    "boxes":
+      [
+        "Cette box n'existe pas",
+        "Tu ne possèdes pas cette Loot Box",
+        "Commande `boxes open` incomplète",
+        "Commande `boxes` incomplète",
+        "Commande `boxes` invalide"
+      ],
+    "hothouse":
+      [
+        "Tu n'as pas assez de plantations ou cette plantation n'est pas disponible!",
+        "Cette plantation est vide!",
+        "Ta plantation à fini de pousser, en la coupant tu gagnes {2} :{1}:`{1}`",
+        "Ta plantation à fini de pousser, en la coupant tu gagnes {2} <:gem_{1}:{0}>`{1}`",
+        "<:gem_{3}:{4}>`{3}` | Ta plantation aura fini de pousser dans :clock2:`{0}h {1}m {2}s`",
+        "Plantations endommagées! Un violent orage :cloud_lightning: à détruit tes plantations\nTes plantations seront réparrées au plus vite",
+        "Veuillez indiquer un numéro de plantation valide",
+        "Tu n'as pas assez de plantations ou cette plantation n'est pas disponible!",
+        "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans {2}",
+        "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire",
+        "Tu as déjà planté une <:gem_{0}:{1}>`{0}` dans cette plantation",
+        "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans :clock2:`{2}`",
+        "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire",
+        "Tu as déjà planté une <:gem_{0}:{1}>`{0}` dans cette plantation",
+        "Fonction inconnu"
+      ],
+    "ferment":
+      [
+        "Ce barril est vide.",
+        "Ton barril a été rempli de :{0}:`{0}`. L'alcool aura fini de fermenter dans :clock2:`{1}`",
+        "Ton barril a été rempli de <:gem_{0}:{1}>`{0}`. L'alcool aura fini de fermenter dans :clock2:`{2}`",
+        "Tu n'as pas assez de :{0}:`{0}` dans ton inventaire! \nIl te faut {2} :{0}:`{0}` pour faire des :{1}:`{1}`",
+        "Tu n'as pas assez de <:gem_{0}:{1}>`{0}` dans ton inventaire! \nIl te faut {3} <:gem_{0}:{1}>`{0}` pour faire des :{2}:`{2}`",
+        "Fermentation de :{0}:`{0}` en cours.",
+        "Fermentation de <:gem_{0}:{1}>`{0}` en cours.",
+        "Ton alcool à fini de fermenter, en ouvrant le barril tu gagnes {2} :{0}:`{0}`",
+        "Ton alcool aura fini de fermenter dans :clock2:`{0}h {1}m {2}s`"
+      ],
+    "cooking":
+      [
+        "Ce four est vide.",
+        "Ton plat à fini de cuire, en le sortant du four tu gagnes",
+        "Cuisson de <:gem_{0}:{1}>`{0}` en cours.",
+        "Ton plat aura fini de cuir dans :clock2:`{0}h {1}m {2}s`",
+        "Ton plat a été mis au four. Il aura fini de cuire dans {0}",
+        "Tu n'as pas assez de <:gem_{0}:{1}>`{0}` dans ton inventaire! \nIl te faut {4} <:gem_{0}:{1}>`{0}` pour faire des <:gem_{2}:{3}>`{2}`",
+        "Cuisson de <:gem_{0}:{1}>`{0}` en cours.",
+        "Tu ne peux pas faire cuire cet item.",
+        "Cette cuisson est disponible uniquement pendant l'événement **Halloween**",
+        "Cette cuisson est disponible uniquement pendant l'événement de **Noël**"
+      ],
+    "bal":
+      "**_Niveau_: {0}**",
+    "baltop":
+      "Erreur! Commande incorrect",
+    "buy":
+      [
+        "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}`!",
+        "Tu viens d'acquérir {0} :{1}:`{1}`!",
+        "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {0} en banque",
+        "Désolé, nous ne pouvons pas executer cet achat, cette item n'est pas vendu au marché",
+        "Cet item n'est pas vendu au marché !",
+        "Tu viens d'acquérir {0} <:gem_lootbox:{2}>`{1}`!",
+        "Tu viens d'acquérir {0} :{1}:`{1}`!"
+      ],
+    "sell":
+      [
+        "Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4}!",
+        "Tu as vendu {0} :{1}:`{1}` pour {2} {3}!",
+        "Cette objet n'existe pas",
+        "Tu n'as pas assez de `{0}`. Il t'en reste : {1}",
+        "Tu n'as pas assez de :{0}:`{0}`. Il t'en reste : {1}",
+        "Tu n'as pas assez de <:gem_{0}:{2}>`{0}`. Il t'en reste : {1}",
+        "Tu ne peux pas vendre tes <:gem_{1}:{0}>`{1}`"
+      ],
+    "propriete":
+      [
+        "Achat",
+        "Vente",
+        "Durabilité",
+        "Poids",
+        "Taille",
+        "Gain"
+      ],
+    "inv":
+      [
+        "Cette poche n'existe pas"
+      ],
+    "market":
+      [
+        "Le plafond du compte épargne",
+        "Ce marché n'existe pas"
+      ],
+    "pay":
+      [
+        "{0} donne {1} :gem:`gems` à {2}!",
+        "{0} n'a pas assez pour donner {1} :gem:`gems` à {2}!",
+        "Tu ne peux pas donner une somme négative ! N'importe quoi enfin!"
+      ],
+    "give":
+      [
+        "Tu ne peux pas donner cette item!",
+        "{0} donne {1} <:gem_lootbox:{3}>`{2}` à {4}!",
+        "{0} donne {1} :{2}:`{2}` à {3}!",
+        "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4}!",
+        "L'inventaire de {} est plein",
+        "{0} n'a pas assez pour donner à {1}!",
+        "Tu ne peux pas donner une somme négative ! N'importe quoi enfin!"
+      ],
+    "forge":
+      [
+        "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}`!",
+        "Il te manque {0} <:gem_{1}:{2}>`{1}`\n",
+        "Aucun recette disponible pour forger cette item !"
+      ]
 }

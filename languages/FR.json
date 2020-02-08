@@ -83,7 +83,7 @@
     [
       "Récompense journalière! Tu as gagné 100:gem:`gems`",
       "\nNouvelle série: `{0}`, Bonus: {1} :gem:`gems`",
-      "\nBravo pour c'est {0} jours consécutifs :confetti_ball:! Tu as mérité {1}:gem:`gems`",
+      "\nBravo pour ces {0} jours consécutifs :confetti_ball:! Tu as mérité {1}:gem:`gems`",
       "Tu as déja reçu ta récompense journalière aujourd'hui. Reviens demain pour gagner plus de :gem:`gems`"
     ],
   "bank":
