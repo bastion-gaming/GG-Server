@@ -32,7 +32,7 @@ except:
 
 
 # Taille max de l'Inventaire
-invMax = 15000
+invMax = 5000
 
 
 def itemBourse(item, type):
@@ -145,7 +145,7 @@ def loadItem(F = None):
 
     global objetItem
     objetItem = [Item("backpack", itemBourse("backpack", "vente"), itemBourse("backpack", "achat"), -200, "special")
-    , Item("hyperpack", itemBourse("hyperpack", "vente"), itemBourse("hyperpack", "achat"), -20000, "special")
+    , Item("hyperpack", itemBourse("hyperpack", "vente"), itemBourse("hyperpack", "achat"), -2000, "special")
     , Item("fishhook", itemBourse("fishhook", "vente"), itemBourse("fishhook", "achat"), 1, "special")
     , Item("cobblestone", itemBourse("cobblestone", "vente"), itemBourse("cobblestone", "achat"), 4, "minerai")
     , Item("iron", itemBourse("iron", "vente"), itemBourse("iron", "achat"), 10, "minerai")
@@ -166,10 +166,10 @@ def loadItem(F = None):
     , Item("grapes", itemBourse("grapes", "vente"), itemBourse("grapes", "achat"), 1, "emoji")
     , Item("wine_glass", itemBourse("wine_glass", "vente"), itemBourse("wine_glass", "achat"), 2, "emoji")
     , Item("beer", itemBourse("beer", "vente"), itemBourse("beer", "achat"), 2, "emoji")
-    , Item("chocolate", itemBourse("chocolate", "vente"), itemBourse("chocolate", "achat"), 2, "consommable")
+    , Item("chocolate", itemBourse("chocolate", "vente"), itemBourse("chocolate", "achat"), 3, "consommable")
     , Item("cacao", itemBourse("cacao", "vente"), itemBourse("cacao", "achat"), 1, "plante")
-    , Item("potato", itemBourse("potato", "vente"), itemBourse("potato", "achat"), 0.5, "consommable")
-    , Item("fries", itemBourse("fries", "vente"), itemBourse("fries", "achat"), 0.5, "consommable")
+    , Item("potato", itemBourse("potato", "vente"), itemBourse("potato", "achat"), 1, "consommable")
+    , Item("fries", itemBourse("fries", "vente"), itemBourse("fries", "achat"), 30, "consommable")
     , Item("candy", itemBourse("candy", "vente"), itemBourse("candy", "achat"), 1, "emoji")
     , Item("lollipop", itemBourse("lollipop", "vente"), itemBourse("lollipop", "achat"), 2, "emoji")]
 
@@ -181,9 +181,9 @@ def loadItem(F = None):
             ObjetEventEnd.append(one)
 
     objetItem += [Item("pumpkin", itemBourse("pumpkin", "vente"), itemBourse("pumpkin", "achat"), 5, "halloween")
-    , Item("pumpkinpie", itemBourse("pumpkinpie", "vente"), itemBourse("pumpkinpie", "achat"), 5, "halloween")]
+    , Item("pumpkinpie", itemBourse("pumpkinpie", "vente"), itemBourse("pumpkinpie", "achat"), 30, "halloween")]
 
-    objetItem += [Item("cupcake", itemBourse("cupcake", "vente"), itemBourse("cupcake", "achat"), 4, "christmas")]
+    objetItem += [Item("cupcake", itemBourse("cupcake", "vente"), itemBourse("cupcake", "achat"), 10, "christmas")]
 
     # ========== Outils ==========
     class Outil:

@@ -4,9 +4,8 @@ import datetime as dt
 jour = dt.date.today()
 exception = ["bank_upgrade", "backpack", "hyperpack", "candy", "lollipop", "fishhook", "pickaxe", "shovel", "fishingrod"]
 
+
 # ========== Items ==========
-
-
 class Item:
 
     def __init__(self, nom, vente, achat):
@@ -15,45 +14,56 @@ class Item:
         self.achat = achat
 
 
-PrixItem = [Item("backpack", 3000, 3000)
-,Item("hyperpack", 250000, 250000)
-,Item("fishhook", 46, 64)
-,Item("cobblestone", 30, 50)
-,Item("iron", 70, 100)
-,Item("gold", 110, 200)
-,Item("diamond", 190, 350)
-,Item("emerald", 320, 555)
-,Item("ruby", 4000, 5000)
-,Item("fish", 20, 50)
-,Item("tropicalfish", 55, 120)
-,Item("blowfish", 65, 140)
-,Item("octopus", 135, 222)
-,Item("seed", 20, 30)
-,Item("oak", 500, 600)
-,Item("spruce", 700, 900)
-,Item("palm", 1050, 1300)
-,Item("wheat", 1200, 2000)
-,Item("cookie", 30, 40)
-,Item("grapes", 15, 30)
-,Item("wine_glass", 120, 210)
-,Item("beer", 1664, 2500)
-,Item("chocolate", 242, 353)
-,Item("potato", 75, 90)
-,Item("fries", 75, 90)
-,Item("cacao", 50, 60)
-,Item("candy", 1, 2)
-,Item("lollipop", 5, 12)]
+PrixItem = [
+    Item("cobblestone", 15, 20),
+    Item("iron", 30, 100),
+    Item("gold", 50, 120),
+    Item("diamond", 150, 180),
+    Item("emerald", 190, 220),
+    Item("ruby", 770, 800),
+
+    Item("fish", 10, 40),
+    Item("tropicalfish", 30, 120),
+    Item("blowfish", 40, 130),
+    Item("octopus", 60, 200),
+
+    Item("seed", 20, 220),
+    Item("cacao", 22, 230),
+    Item("potato", 25, 240),
+
+    Item("oak", 60, 70),
+    Item("spruce", 70, 82),
+    Item("palm", 85, 90),
+    Item("wheat", 60, 80),
+    Item("grapes", 12, 20),
+
+    Item("wine_glass", 150, 170),
+    Item("beer", 404, 1664),
+
+    Item("chocolate", 201, 250),
+    Item("fries", 160, 185),
+    Item("cookie", 30, 40),
+    Item("candy", 1, 2),
+    Item("lollipop", 5, 12),
+
+    Item("backpack", 3000, 3000),
+    Item("hyperpack", 29000, 29000),
+    Item("fishhook", 46, 64)
+    ]
 
 ObjetHalloween = ["pumpkin", "pumpkinpie"]
-PrixItem += [Item("pumpkin", 120, 330)
-,Item("pumpkinpie", 1800, 2200)]
+PrixItem += [
+    Item("pumpkin", 65, 75),
+    Item("pumpkinpie", 790, 850)
+    ]
 
 ObjetChristmas = ["cupcake"]
-PrixItem += [Item("cupcake", 2500, 3000)]
+PrixItem += [
+    Item("cupcake", 1700, 2000)
+    ]
+
 
 # ========== Outils ==========
-
-
 class Outil:
 
     def __init__(self, nom, vente, achat):
@@ -62,18 +72,23 @@ class Outil:
         self.achat = achat
 
 
-PrixOutil = [Outil("pickaxe", 40, 80)
-,Outil("iron_pickaxe", 120, 400)
-,Outil("diamond_pickaxe", 600, 1800)
-,Outil("shovel", 30, 60)
-,Outil("iron_shovel", 100, 300)
-,Outil("diamond_shovel", 500, 1500)
-,Outil("fishingrod", 35, 70)
-,Outil("sword", 100, 400)
-,Outil("planting_plan", 1500, 1500)
-,Outil("barrel", 1100, 1100)
-,Outil("furnace", 800, 800)
-,Outil("bank_upgrade", 0, 10000)]
+PrixOutil = [
+    Outil("pickaxe", 40, 80),
+    Outil("shovel", 30, 60),
+    Outil("fishingrod", 35, 100),
+
+    Outil("iron_pickaxe", 120, 2200),
+    Outil("diamond_pickaxe", 300, 11000),
+
+    Outil("iron_shovel", 100, 1800),
+    Outil("diamond_shovel", 500, 8000),
+
+    Outil("planting_plan", 150, 150),
+    Outil("barrel", 600, 600),
+    Outil("furnace", 100, 100),
+
+    Outil("bank_upgrade", 0, 10000)
+    ]
 
 
 def initBourse():
