@@ -861,7 +861,7 @@ def market(param):
                         if c.nom == "gift":
                             dmBox += "\n:{nom}:`{nom}`".format(nom=c.nom)
                             dmBoxPrix += "\n`{prix}`:gem:".format(prix=c.achat)
-                            dmBoxInfo += "\n{1}!".format(lang_P.forge_msg(lang, "lootbox", None, False, 5))
+                            dmBoxInfo += "\n{0}!".format(lang_P.forge_msg(lang, "lootbox", None, False, 5))
                         elif c.type == "gems":
                             dmBox += "\n<:gem_lootbox:{idmoji}>`{nom}`".format(nom=c.nom, idmoji="{idmoji[gem_lootbox]}")
                             dmBoxPrix += "\n`{}`:gem:".format(c.achat)
