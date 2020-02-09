@@ -741,7 +741,7 @@ def market(param):
                                 dmSpeciauxPrix += " _{}%_ ".format(pourcentageA)
                             dmSpeciauxInfo += "\n`{1}: `{0}".format(c.durabilite, prop_durabilite)
                         else:
-                            dmSpeciauxPrix += "\n`{1}`".format(lang_P.forge_msg(lang, "market", None, False, 0))
+                            dmSpeciauxPrix += "\n`{0}`".format(lang_P.forge_msg(lang, "market", None, False, 0))
                             dmSpeciauxInfo += "\n`{1}:` {0}".format(c.poids, prop_taille)
                     # =======================================================================================
                     else:
