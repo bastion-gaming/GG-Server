@@ -92,167 +92,167 @@
         "\nbank **add** *[+/- nombre]* | Allows you to add or remove :gem:`gems` from your savings account.",
         "\nbank **saving** | Allows you to calculate your savings (can be used every 4 hours)",
         "\n\nThe price of <:gem_{0}:{1}>`{0}` depends on the ceiling of the account",
-        "Plafond de {0} :gem:`gems` du compte épargne atteint\n",
-        "Le solde de ton compte épargne ne peux être négatif.\nSolde du compte: {0} :gem:`gems`",
-        "Ton compte épargne a été crédité de {0} :gem:`gems`",
-        "\nNouveau solde: {0} :gem:`gems`",
-        "Tu n'as pas assez de :gem:`gems` pour épargner cette somme",
-        "Il manque le nombre de :gem:`gems` à ajouter sur votre compte épargne",
-        "Tu as épargné {0} :gem:`gems`\n",
-        "Plafond de {0} :gem:`gems` du compte épargne atteint\nTon épargne a été tranférée sur ton compte principal\n\n",
-        "Il te faut attendre :clock2:`{0}h {1}m {2}s` avant d'épargner à nouveau !"
+        "Ceilling of {0} :gem:`gems` in the savings account reaches\n",
+        "The balance of your savings account cannot be negative.\nAccount balance: {0} :gem:`gems`",
+        "You add {0} :gem:`gems` on your saving account",
+        "\nNew balance: {0} :gem:`gems`",
+        "You don't have enough :gem:`gems` for save this amount.",
+        "It miss :gem:`gems` to add on you saving account.",
+        "You saved {0} :gem:`gems`\n",
+        "savings account ceiling of {0} :gem:`gems` reached\nYour savings have been transferred.\n\n",
+        "You need to wait :clock2:`{0}h {1}m {2}s` before saving again !"
       ],
     "mine":
       [
-        "Pas de chance tu as cassé ta <:gem_{0}:{1}>`{0}`!",
-        "Tu as obtenu {0} <:gem_{1}:{2}>`{1}`",
-        "\nTu as obtenu {0} bloc de <:gem_cobblestone:{1}>`cobblestone`",
-        "Il faut acheter ou forger une pioche pour miner!"
+        "Too bad you broke your <:gem_{0}:{1}>`{0}`!",
+        "You earn {0} <:gem_{1}:{2}>`{1}`",
+        "\nYou earn {0} bloc of <:gem_cobblestone:{1}>`cobblestone`",
+        "You need to buy a pickaxe to mine !"
       ],
     "dig":
       [
-        "Pas de chance tu as cassé ta <:gem_{0}:{1}>`{0}`!",
-        "Tu as obtenu {0} <:gem_{1}:{2}>`{1}`",
-        "Tu as creusé toute la journée pour ne trouver que de la terre.",
-        "Il faut acheter ou forger une pelle pour creuser!"
+        "Too bad you broke your <:gem_{0}:{1}>`{0}`!",
+        "You earn {0} <:gem_{1}:{2}>`{1}`",
+        "You dig all day for nothing except dust.",
+        "You need to buy or forge a shovel to dig !"
       ],
     "fish":
       [
-        "Pas de chance tu as cassé ta <:gem_{0}:{1}>`{0}`!",
-        "Tu as obtenu {0} <:gem_{1}:{2}>`{1}`",
-        "\nTu as obtenu {0} <:gem_fish:{1}>`fish`",
-        "Pas de poisson pour toi aujourd'hui :cry:",
-        "Il te faut une <:gem_fishingrod:{0}>`fishingrod` pour pécher, tu en trouvera une au marché !"
+        "Too bad you broke your <:gem_{0}:{1}>`{0}`!",
+        "You got {0} <:gem_{1}:{2}>`{1}`",
+        "\nYou got {0} <:gem_fish:{1}>`fish`",
+        "No fish for you today :cry:",
+        "You need <:gem_fishingrod:{0}>`fishingrod` to fish, you can found it in the market !"
       ],
     "slots":
       [
-        "Votre mise: {0} :gem:`gems`\n\n",
-        "\nEn trouvant ce <:gem_ruby:{0}>`ruby` tu deviens un Mineur de Merveilles",
-        "\nBravo <@{0}>! Le Super Jackpot :seven::seven::seven: est tombé :tada: ",
-        "\n<@{0}> paye sa tournée :beer:",
-        "\nTu a trouvé {0} :cookie:`cookie`",
-        "\nTon inventaire est plein",
-        "\nTu a trouvé {0} :grapes:`grapes`",
-        "\nEn trouvant ce <:gem_backpack:{0}>`backpack` tu gagnes {1} points d'inventaire",
-        "\n:slot_machine: Jackpot! Tu viens de gagner {0} :gem:`gems`",
-        "\nBravo, tu viens de gagner {0} :gem:`gems`",
-        "\nLa machine viens d'exploser :boom:\nTu as perdu {0} :gem:`gems`",
-        "\nBravo, voici un ticket gratuit pour relancer la machine à sous",
-        "\nLa machine à sous ne paya rien ..."
+        "Your bet: {0} :gem:`gems`\n\n",
+        "\nFinding that <:gem_ruby:{0}>`ruby` you become wonder miner",
+        "\nCongratulations <@{0}>! Super jackpot :seven::seven::seven: for you :tada: ",
+        "\n<@{0}> buy her round of :beer:",
+        "\nYou found {0} :cookie:`cookie`",
+        "\nYour inventory's full.",
+        "\nYou found {0} :grapes:`grapes`",
+        "\nFinding this <:gem_backpack:{0}>`backpack` you gain {1} inventory points.",
+        "\n:slot_machine: Jackpot! You just won {0} :gem:`gems`",
+        "\nBravo, you just won {0} :gem:`gems`",
+        "\nMachine just blow up :boom:\nYou lost {0} :gem:`gems`",
+        "\nBravo, here's a free ticket to get the slot machine going again.",
+        "\nSlot machine paid nothing ..."
       ],
     "boxes":
       [
-        "Cette box n'existe pas",
-        "Tu ne possèdes pas cette Loot Box",
-        "Commande `boxes open` incomplète",
-        "Commande `boxes` incomplète",
-        "Commande `boxes` invalide"
+        "This box doesn't exist.",
+        "You don't own this Loot Box.",
+        "Command `boxes open` incomplete",
+        "Command `boxes` incomplete",
+        "Invalid `boxes` command"
       ],
     "hothouse":
       [
-        "Tu n'as pas assez de plantations ou cette plantation n'est pas disponible!",
-        "Cette plantation est vide!",
-        "Ta plantation à fini de pousser, en la coupant tu gagnes {2} :{1}:`{1}`",
-        "Ta plantation à fini de pousser, en la coupant tu gagnes {2} <:gem_{1}:{0}>`{1}`",
-        "<:gem_{3}:{4}>`{3}` | Ta plantation aura fini de pousser dans :clock2:`{0}h {1}m {2}s`",
-        "Plantations endommagées! Un violent orage :cloud_lightning: à détruit tes plantations\nTes plantations seront réparrées au plus vite",
-        "Veuillez indiquer un numéro de plantation valide",
-        "Tu n'as pas assez de plantations ou cette plantation n'est pas disponible!",
-        "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans {2}",
-        "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire",
-        "Tu as déjà planté une <:gem_{0}:{1}>`{0}` dans cette plantation",
-        "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans :clock2:`{2}`",
-        "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire",
-        "Tu as déjà planté une <:gem_{0}:{1}>`{0}` dans cette plantation",
-        "Fonction inconnu"
+        "You don't have enough plantations or this plantation isn't available!",
+        "This plantation is empty !",
+        "Your plantation has finished growing, if you cut it down you earn {2} :{1}:`{1}`",
+        "Your plantation has finished growing, if you cut it down you earn {2} <:gem_{1}:{0}>`{1}`",
+        "<:gem_{3}:{4}>`{3}` | Your plantation will be finished growing in :clock2:`{0}h {1}m {2}s`",
+        "Plantations damaged! A violent storm :cloud_lightning: destroyed your plantations.\n Your plantations will be repaired as soon as possible",
+        "Please indicate a valid plantation number",
+        "You don't have enough plantations or this plantation isn't available!",
+        "<:gem_{0}:{1}>`{0}` planted. It will be finished growing in {2}",
+        "You don't have <:gem_{0}:{1}>`{0}` to plant in your inventory",
+        "You've already planted one <:gem_{0}:{1}>`{0}` in this plantation",
+        "<:gem_{0}:{1}>`{0}` planted. It will be finished growing in :clock2:`{2}`",
+        "You don't have <:gem_{0}:{1}>`{0}` to plant in your inventory",
+        "You've already planted one <:gem_{0}:{1}>`{0}` in this plantation",
+        "Unknown function"
       ],
     "ferment":
       [
-        "Ce barril est vide.",
-        "Ton barril a été rempli de :{0}:`{0}`. L'alcool aura fini de fermenter dans :clock2:`{1}`",
-        "Ton barril a été rempli de <:gem_{0}:{1}>`{0}`. L'alcool aura fini de fermenter dans :clock2:`{2}`",
-        "Tu n'as pas assez de :{0}:`{0}` dans ton inventaire! \nIl te faut {2} :{0}:`{0}` pour faire des :{1}:`{1}`",
-        "Tu n'as pas assez de <:gem_{0}:{1}>`{0}` dans ton inventaire! \nIl te faut {3} <:gem_{0}:{1}>`{0}` pour faire des :{2}:`{2}`",
-        "Fermentation de :{0}:`{0}` en cours.",
-        "Fermentation de <:gem_{0}:{1}>`{0}` en cours.",
-        "Ton alcool à fini de fermenter, en ouvrant le barril tu gagnes {2} :{0}:`{0}`",
-        "Ton alcool aura fini de fermenter dans :clock2:`{0}h {1}m {2}s`"
+        "This barrel is empty.",
+        "Your barrel has been filled with :{0}:`{0}`. The alcohol will be finished fermenting in :clock2:`{1}`",
+        "Your barrel has been filled with <:gem_{0}:{1}>`{0}`. The alcohol will be finished fermenting in :clock2:`{2}`",
+        "You don't have enough :{0}:`{0}` in your inventory! \nYou need {2} :{0}:`{0}`for make :{1}:`{1}`",
+        "You don't have enough <:gem_{0}:{1}>`{0}` in your inventory! \nYou need {3} <:gem_{0}:{1}>`{0}` for make :{2}:`{2}`",
+        "Fermentation of :{0}:`{0}` in progress.",
+        "Fermentation of <:gem_{0}:{1}>`{0}` in progress.",
+        "Your alcohol has finished fermenting, opening the barrel you win {2}:{0}:`{0}",
+        "Your alcohol will be finished fermenting in:clock2:`{0}h {1}m {2}s`"
       ],
     "cooking":
       [
-        "Ce four est vide.",
-        "Ton plat à fini de cuire, en le sortant du four tu gagnes",
-        "Cuisson de <:gem_{0}:{1}>`{0}` en cours.",
-        "Ton plat aura fini de cuir dans :clock2:`{0}h {1}m {2}s`",
-        "Ton plat a été mis au four. Il aura fini de cuire dans {0}",
-        "Tu n'as pas assez de <:gem_{0}:{1}>`{0}` dans ton inventaire! \nIl te faut {4} <:gem_{0}:{1}>`{0}` pour faire des <:gem_{2}:{3}>`{2}`",
-        "Cuisson de <:gem_{0}:{1}>`{0}` en cours.",
-        "Tu ne peux pas faire cuire cet item.",
-        "Cette cuisson est disponible uniquement pendant l'événement **Halloween**",
-        "Cette cuisson est disponible uniquement pendant l'événement de **Noël**"
+        "This oven is empty.",
+        "Your dish has finished cooking, when you take it out of the oven you win",
+        "Cooking of <:gem_{0}:{1}>`{0}` en cours.",
+        "Your dish will be done in :clock2:`{0}h {1}m {2}s`",
+        "Your dish has been put in the oven. It'll be done baking in {0}",
+        "You don't have enough <:gem_{0}:{1}>`{0}` in your inventory ! \nYou need {4} <:gem_{0}:{1}>`{0}` to make <:gem_{2}:{3}>`{2}`",
+        "Cooking of <:gem_{0}:{1}>`{0}` in progress.",
+        "You can't cook this item.",
+        "This cooking is only available during the **Halloween** event.",
+        "This bake is only available during the Christmas event."
       ],
     "bal":
-      "**_Niveau_: {0}**",
+      "**_Level_: {0}**",
     "baltop":
-      "Erreur! Commande incorrect",
+      "Error! Incorrect command",
     "buy":
       [
-        "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}`!",
-        "Tu viens d'acquérir {0} :{1}:`{1}`!",
-        "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {0} en banque",
-        "Désolé, nous ne pouvons pas executer cet achat, cette item n'est pas vendu au marché",
-        "Cet item n'est pas vendu au marché !",
-        "Tu viens d'acquérir {0} <:gem_lootbox:{2}>`{1}`!",
-        "Tu viens d'acquérir {0} :{1}:`{1}`!"
+        "You just acquired {0} <:gem_{1}:{2}>`{1}`!",
+        "You have just acquired {0}:{1}:`{1}`!",
+        "Sorry, we can't execute this purchase, you don't have enough {0} in the bank",
+        "Sorry, we can't execute this purchase, this item is not sold in the market.",
+        "This item is not sold at the market!",
+        "You just acquired {0} <:gem_lootbox:{2}>`{1}`!",
+        "You have just acquired {0}:{1}:`{1}`!"
       ],
     "sell":
       [
-        "Tu as vendu {0} <:gem_{1}:{3}>`{1}` pour {2} {4}!",
-        "Tu as vendu {0} :{1}:`{1}` pour {2} {3}!",
-        "Cette objet n'existe pas",
-        "Tu n'as pas assez de `{0}`. Il t'en reste : {1}",
-        "Tu n'as pas assez de :{0}:`{0}`. Il t'en reste : {1}",
-        "Tu n'as pas assez de <:gem_{0}:{2}>`{0}`. Il t'en reste : {1}",
-        "Tu ne peux pas vendre tes <:gem_{1}:{0}>`{1}`"
+        "You sold {0} <:gem_{1}:{3}>`{1}` for {2} {4}!",
+        "You sold {0}:{1}:`{1}` for {2} {3}!",
+        "This object does not exist.",
+        "You don't have enough `{0}`. You have some left. {1}",
+        "You don't have enough :{0}:`{0} You have some left: {1}",
+        "You don't have enough <:gem_{0}:{2}>`{0}`. You have some left: {1}",
+        "You can't sell your <:gem_{1}:{0}>`{1}"
       ],
     "propriete":
       [
-        "Achat",
-        "Vente",
-        "Durabilité",
-        "Poids",
-        "Taille",
-        "Gain"
+        "Buying.",
+        "Sale.",
+        "Sustainability",
+        "Weight.",
+        "Size.",
+        "Gain."
       ],
     "inv":
       [
-        "Cette poche n'existe pas"
+        "This pocket doesn't exist"
       ],
     "market":
       [
-        "Le plafond du compte épargne",
-        "Ce marché n'existe pas"
+        "The savings account limit.",
+        "This market does not exist."
       ],
     "pay":
       [
-        "{0} donne {1} :gem:`gems` à {2}!",
-        "{0} n'a pas assez pour donner {1} :gem:`gems` à {2}!",
-        "Tu ne peux pas donner une somme négative ! N'importe quoi enfin!"
+        "{0} gives {1}:gem:`gems` to {2}!",
+        "{0} doesn't have enough to give {1} :gem:`gems` to {2}!",
+        "You can't give a negative amount! Anything at all!"
       ],
     "give":
       [
-        "Tu ne peux pas donner cette item!",
-        "{0} donne {1} <:gem_lootbox:{3}>`{2}` à {4}!",
-        "{0} donne {1} :{2}:`{2}` à {3}!",
-        "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4}!",
-        "L'inventaire de {} est plein",
-        "{0} n'a pas assez pour donner à {1}!",
-        "Tu ne peux pas donner une somme négative ! N'importe quoi enfin!"
+        "You can't give away that item!",
+        "{0} give {1} <:gem_lootbox:{3}>`{2}` to {4}!",
+        "{0} give {1} :{2}:`{2}` to {3}!",
+        "{0} give {1} <:gem_{2}:{3}>`{2}` to {4}!",
+        "The inventory of {} is full",
+        "{0} doesn't have enough to give to {1}!",
+        "You can't give a negative amount! Anything at all !"
       ],
     "forge":
       [
-        "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}`!",
-        "Il te manque {0} <:gem_{1}:{2}>`{1}`\n",
-        "Aucun recette disponible pour forger cette item !"
+        "Bravo, you've managed to forge {0} <:gem_{1}:{2}>`{1}`!",
+        "You're missing{0} <:gem_{1}:{2}>`{1}`\n",
+        "No recipes available to forge this item !"
       ]
 }
