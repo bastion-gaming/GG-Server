@@ -1,5 +1,6 @@
 import json
 
+
 def load_dates():
     """
     Charge les dates des saisons et leur nombre total
