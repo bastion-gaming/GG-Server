@@ -231,7 +231,9 @@
   "market":
     [
       "Le plafond du compte épargne",
-      "Ce marché n'existe pas"
+      "Ce marché n'existe pas",
+      "Permet de voir tout les objets que l'on peux acheter ou vendre!",
+      "Actualisation de la bourse dans :clock2:`{0}h {1}m {2}s`\n"
     ],
   "pay":
     [

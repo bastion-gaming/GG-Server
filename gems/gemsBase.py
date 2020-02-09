@@ -484,7 +484,7 @@ def market(param):
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "market", "gems"):
-        d_market = "Permet de voir tout les objets que l'on peux acheter ou vendre !\n\n"
+        d_market = "{0}\n\n".format(lang_P.forge_msg(lang, "market", None, False, 2))
         if sql.spam(GF.PlayerID_GetGems, GF.couldown_8h, "bourse", "gems"):
             GF.loadItem()
         ComTime = sql.valueAtNumber(GF.PlayerID_GetGems, "bourse", "gems_com_time")
@@ -494,7 +494,7 @@ def market(param):
         time = time - timeH * 3600
         timeM = int(time / 60)
         timeS = int(time - timeM * 60)
-        d_market += "Actualisation de la bourse dans :clock2:`{0}h {1}m {2}s`\n".format(timeH, timeM, timeS)
+        d_market += lang_P.forge_msg(lang, "market", [timeH, timeM, timeS], False, 3)
         msg.append("OK")
         msg.append(lang)
         msg.append(d_market)
