@@ -231,7 +231,9 @@
     "market":
       [
         "The savings account limit.",
-        "This market does not exist."
+        "This market does not exist.",
+        "Allow you to view items for sale !",
+        "Stock exchange update :clock2:`{0}h {1}m {2}s`\n"
       ],
     "pay":
       [
