@@ -15,6 +15,6 @@ def load_dates():
         for i in data:
             if i != "total":
                 res[int(i)] = data[i]
-            else :
+            else:
                 res[i] = data[i]
     return res
