@@ -4,7 +4,8 @@
   "lang":
     [
       "Langue modifiée avec succès.",
-      "Langue non prise en charge."
+      "Langue non prise en charge.",
+      "Langues disponible: \n• English (EN)\n• Français (FR)"
     ],
   "WarningMsg":
     [
@@ -247,7 +248,7 @@
       "{0} donne {1} <:gem_lootbox:{3}>`{2}` à {4}!",
       "{0} donne {1} :{2}:`{2}` à {3}!",
       "{0} donne {1} <:gem_{2}:{3}>`{2}` à {4}!",
-      "L'inventaire de {} est plein",
+      "L'inventaire de {0} est plein",
       "{0} n'a pas assez pour donner à {1}!",
       "Tu ne peux pas donner une somme négative ! N'importe quoi enfin!"
     ],
