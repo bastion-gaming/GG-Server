@@ -462,7 +462,7 @@ def inv(param):
             msg.append(desc)
 
         else:
-            desc = lang_P.forge_msg(lang, "sell", None, False, 0)
+            desc = lang_P.forge_msg(lang, "inv", None, False, 0)
             msg.append("NOK")
             msg.append(desc)
     else:
@@ -898,7 +898,7 @@ def market(param):
             if fct == "None" or fct == "fish" or fct == "poissons":
                 msg.append(dmPoisson)
                 msg.append(dmPoissonPrix)
-                msg.append(dmPoissonPrix)
+                msg.append(dmPoissonInfo)
             else:
                 msg.append("None")
                 msg.append("None")
@@ -1268,17 +1268,12 @@ def lang(param):
     PlayerID = sql.get_PlayerID(ID, "gems")
     print(PlayerID)
     msg = []
-    langlist = ["FR", "EN"]
+    langlist = ["EN", "FR"]
     langue = param["langue"].upper()
 
     if langue == "NONE":
-        mylang = sql.valueAtNumber(ID, "LANG", "IDs")
-        if mylang == 0:
-            msg.append("NOK")
-            msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 0))
-        else:
-            msg.append("OK")
-            msg.append(mylang)
+        msg.append("OK")
+        msg.append(lang_P.forge_msg(lang, "lang", None, False, 2))
     else:
         if langue in langlist:
             if sql.updateField(ID, "LANG", langue, "IDs") == "200":

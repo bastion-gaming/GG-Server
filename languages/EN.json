@@ -4,7 +4,8 @@
   "lang":
     [
       "Language changed successfuly !",
-      "Language not supported."
+      "Language not supported.",
+      "Available languages: \n• English (EN)\n• Français (FR)"
     ],
   "WarningMsg":
     [
@@ -217,12 +218,12 @@
       ],
     "propriete":
       [
-        "Buying.",
-        "Sale.",
+        "Buying",
+        "Sale",
         "Sustainability",
-        "Weight.",
-        "Size.",
-        "Gain."
+        "Weight",
+        "Size",
+        "Gain"
       ],
     "inv":
       [
@@ -237,7 +238,7 @@
       ],
     "pay":
       [
-        "{0} gives {1}:gem:`gems` to {2}!",
+        "{0} gives {1} :gem:`gems` to {2}!",
         "{0} doesn't have enough to give {1} :gem:`gems` to {2}!",
         "You can't give a negative amount! Anything at all!"
       ],
@@ -247,14 +248,14 @@
         "{0} give {1} <:gem_lootbox:{3}>`{2}` to {4}!",
         "{0} give {1} :{2}:`{2}` to {3}!",
         "{0} give {1} <:gem_{2}:{3}>`{2}` to {4}!",
-        "The inventory of {} is full",
+        "The inventory of {0} is full",
         "{0} doesn't have enough to give to {1}!",
         "You can't give a negative amount! Anything at all !"
       ],
     "forge":
       [
         "Bravo, you've managed to forge {0} <:gem_{1}:{2}>`{1}`!",
-        "You're missing{0} <:gem_{1}:{2}>`{1}`\n",
+        "You're missing {0} <:gem_{1}:{2}>`{1}`\n",
         "No recipes available to forge this item !"
       ]
 }

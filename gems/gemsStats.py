@@ -54,8 +54,8 @@ def csv_read(param):
         msg.append(lang)
         return msg
     msg.append("OK")
-    msg.append(temp)
     msg.append(lang)
+    msg.append(temp)
     return msg
 
 
