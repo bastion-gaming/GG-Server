@@ -5,8 +5,6 @@ from gems import gemsFonctions as GF, gemsItems as GI
 from core import level as lvl
 import manage_commands as mc
 from languages import lang
-from datetime import datetime, timedelta
-from apscheduler.schedulers.background import BackgroundScheduler
 
 # Ouverture du port
 context = zmq.Context()
@@ -15,19 +13,6 @@ socket.bind("tcp://*:5555")
 check = True
 msg = ""
 VERSION = open("core/version.txt").read().replace("\n", "")
-
-# Start the scheduler
-sched = BackgroundScheduler()
-
-
-def test():
-    print("hey je suis une fonction de test")
-
-dd = datetime.now() + timedelta(minutes=2)
-
-job = sched.add_job(test, 'date', run_date=dd)
-
-sched.start()
 
 
 # Initialisation

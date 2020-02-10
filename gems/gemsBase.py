@@ -489,7 +489,7 @@ def market(param):
             GF.loadItem()
         ComTime = sql.valueAtNumber(GF.PlayerID_GetGems, "bourse", "gems_com_time")
         time = float(ComTime)
-        time = time - (t.time()-GF.couldown_12h)
+        time = time - (t.time()-GF.couldown_8h)
         timeH = int(time / 60 / 60)
         time = time - timeH * 3600
         timeM = int(time / 60)

@@ -399,6 +399,7 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
     fieldName: string du nom du champ à changer
     fieldValue: string qui va remplacer l'ancienne valeur
     """
+    conn = sql.connect('DB/{}.db'.format(DB_NOM))
     if PlayerID != "Error 404":
         if nameDB == None:
             nameDB = "bastion"
@@ -453,6 +454,7 @@ def valueAt(PlayerID, fieldName, nameDB):
     PlayerID: int de l'PlayerID du joueur
     fieldName: string du nom du champ à chercher
     """
+    conn = sql.connect('DB/{}.db'.format(DB_NOM))
     if PlayerID != "Error 404":
         cursor = conn.cursor()
 
@@ -614,6 +616,7 @@ def add(PlayerID, nameElem, nbElem, nameDB):
     Permet de modifier le nombre de nameElem pour PlayerID dans la table nameDB
     Pour en retirer mettez nbElemn en négatif
     """
+    conn = sql.connect('DB/{}.db'.format(DB_NOM))
     # print("PlayerID: {}".format(PlayerID))
     old_value = valueAt(PlayerID, nameElem, nameDB)
     # print(old_value)

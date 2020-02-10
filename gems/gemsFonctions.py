@@ -1,5 +1,7 @@
 import random as r
 import datetime as dt
+from datetime import datetime, timedelta
+from apscheduler.schedulers.background import BackgroundScheduler
 from DB import TinyDB as DB, SQLite as sql
 import json
 from gems import gemsItems as GI, gemsStats as GS
@@ -36,7 +38,7 @@ invMax = 5000
 
 
 def itemBourse(item, type):
-    """Version 2.4 | Attribue les prix de la bourse """
+    """Version 3.0 | Attribue les prix de la bourse """
     # récupération du fichier de sauvegarde de la bourse
     with open('gems/bourse.json', 'r') as fp:
         dict = json.load(fp)
@@ -52,58 +54,69 @@ def itemBourse(item, type):
         # Gestion des exceptions
         if item in GI.exception:
             return pnow
-        for z in ObjetEventEnd:
-            if z == item:
-                return pnow
+        if item in ObjetEventEnd:
+            return pnow
 
-        # Calcul du prix mini
+        # Récuperation prix d'origine | prix mini | prix maxi
+        taux = 0.9
         for c in GI.PrixItem:
             if c.nom == item:
                 if type == "vente":
-                    pmini = c.vente - (c.vente*(85/100))
+                    pdef = c.vente
+                    pmini = c.vente - (c.vente*taux)
+                    pmaxi = c.vente + (c.vente*taux)
                 elif type == "achat":
-                    pmini = c.achat - (c.achat*(85/100))
+                    pdef = c.achat
+                    pmini = c.achat - (c.achat*taux)
+                    pmaxi = c.achat + (c.achat*taux)
         for c in GI.PrixOutil:
             if c.nom == item:
                 if type == "vente":
-                    pmini = c.vente - (c.vente*(85/100))
+                    pdef = c.vente
+                    pmini = c.vente - (c.vente*taux)
+                    pmaxi = c.vente + (c.vente*taux)
                 elif type == "achat":
-                    pmini = c.achat - (c.achat*(85/100))
+                    pdef = c.achat
+                    pmini = c.achat - (c.achat*taux)
+                    pmaxi = c.achat + (c.achat*taux)
+
+        pdef = int(pdef)
         pmini = int(pmini)
+        pmaxi = int(pmaxi)
         # print("{} {} >> {}".format(type, item, pmini))
 
         # Fonctionnement de la bourse
         DcrackB = r.randint(1, 1000)
         # crack boursier négatif
         if DcrackB <= 5:
-            Prix = pnow - (pnow*(50//100))
+            taux = 0.85
+            Prix = int(pnow - (pnow*taux))
         # crack boursier positif
-        elif DcrackB >= 995:
-            Prix = pnow + (pnow*(50//100))
+        elif DcrackB >= 970 or (pnow < 4 and DcrackB >= 800):
+            if pnow <= 100:
+                taux = 10
+            elif pnow <= 7:
+                taux = 50
+            else:
+                taux = 0.85
+            Prix = int(pnow + (pnow*taux))
         # évolution de la bourse normale (entre -10% et +10% de la valeur courante)
         else:
-            D21 = r.randint(0, 20)
-            # valeur minimal dynamique (permet au item dont le prix est au plus bas de remonter en valeur plus facilement)
-            if (pnow < 30 and type == "vente") or (pnow < 50 and type == "achat"):
-                if D21 >= 5:
-                    pourcentage = D21 + 5
-                    Prix = pnow + ((pnow*pourcentage)//100)
-                elif D21 < 5:
-                    pourcentage = -1*(D21 + 5)
-                    Prix = pnow + ((pnow*pourcentage)//100)
+            if pnow > pmaxi:
+                pourcentage = r.randint(-20, -1)
+            elif pnow < pmini:
+                pourcentage = r.randint(1, 20)
+            elif (pnow > (pmaxi - pdef*0.5)) or (pnow < (pmini + pdef*0.5)):
+                pourcentage = r.randint(-20, 20)
             else:
-                if D21 > 10:
-                    pourcentage = D21 - 10
-                    Prix = pnow + ((pnow*pourcentage)//100)
-                elif D21 < 10:
-                    pourcentage = -1*(D21 + 1)
-                    Prix = pnow + ((pnow*pourcentage)//100)
+                if pnow > 10:
+                    pourcentage = r.randint(-10, 10)
                 else:
-                    Prix = pnow
-                if Prix < pmini:
-                    Prix = pmini
-                elif Prix <= 10:
-                    Prix = 10
+                    pourcentage = r.randint(-5, 20)
+            Prix = int(pnow + ((pnow*pourcentage)//100))
+        if Prix < 2:
+            Prix = 2
+
         # La valeur de vente ne peux etre supérieur à la valeur d'achat
         if type == "vente":
             if Prix > temp["achat"]:
@@ -124,6 +137,14 @@ def itemBourse(item, type):
     else:
         return pnow
 # <<< def itemBourse(item, type):
+
+
+def ActuBourse():
+    # Start the scheduler
+    sched = BackgroundScheduler()
+    dd = datetime.now() + timedelta(seconds=30)# minutes=1)
+    job = sched.add_job(loadItem, 'date', run_date=dd)
+    sched.start()
 
 
 # Fonction d'actualisation/initialisation des items
@@ -277,6 +298,7 @@ def loadItem(F = None):
             GS.csv_add(x.nom)
         for x in objetOutil:
             GS.csv_add(x.nom)
+    ActuBourse()
 # <<< def loadItem(F = None):
 
 ##############################################
@@ -323,7 +345,7 @@ couldown_12h = 3600*12
 couldown_11h = 3600*11
 couldown_10h = 3600*10
 couldown_9h = 3600*9
-couldown_8h = 3600*8
+couldown_8h = 30 # 3600*8
 couldown_7h = 3600*7
 couldown_6h = 3600*6
 couldown_5h = 3600*5
@@ -387,55 +409,22 @@ def get_price(nameElem, type = None):
     return 0
 
 
-def get_default_price(nameElem, type = None):
-    """Permet de connaitre le prix par defaut de l'item"""
-    jour = dt.date.today()
-    if type == None or type == "vente":
-        for c in GI.PrixItem:
-            if c.nom == nameElem:
-                return c.vente
-
-        for c in GI.PrixOutil:
-            if c.nom == nameElem:
-                return c.vente
-    elif type == "achat":
-        for c in GI.PrixItem:
-            if c.nom == nameElem:
-                for one in GI.ObjetHalloween:
-                    if one == nameElem:
-                        if (jour.month == 10 and jour.day >= 21) or (jour.month == 11 and jour.day <= 10):
-                            return c.achat
-                        else:
-                            return 0
-                for one in GI.ObjetChristmas:
-                    if one == nameElem:
-                        if (jour.month == 12 and jour.day >= 12) or (jour.month == 1 and jour.day <= 5):
-                            return c.achat
-                        else:
-                            return 0
-                return c.achat
-
-        for c in GI.PrixOutil:
-            if c.nom == nameElem:
-                return c.achat
-    return 0
-
-
 def testInvTaille(ID):
     """Verifie si l'inventaire est plein """
     inv = sql.valueAt(ID, "all", "inventory")
     tailletot = 0
-    for c in objetOutil:
-        for x in inv:
-            if c.nom == str(x[1]):
-                if int(x[0]) > 0:
-                    tailletot += c.poids*int(int(x[0]))
+    if inv != 0:
+        for c in objetOutil:
+            for x in inv:
+                if c.nom == str(x[1]):
+                    if int(x[0]) > 0:
+                        tailletot += c.poids*int(int(x[0]))
 
-    for c in objetItem:
-        for x in inv:
-            if c.nom == str(x[1]):
-                if int(x[0]) > 0:
-                    tailletot += c.poids*int(int(x[0]))
+        for c in objetItem:
+            for x in inv:
+                if c.nom == str(x[1]):
+                    if int(x[0]) > 0:
+                        tailletot += c.poids*int(int(x[0]))
 
     if tailletot <= invMax:
         return True
