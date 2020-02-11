@@ -148,7 +148,7 @@ def itemBourse(item, type):
 def ActuBourse():
     # Start the scheduler
     sched = BackgroundScheduler()
-    dd = datetime.now() + timedelta(minutes=1)
+    dd = datetime.now() + timedelta(minutes=30)
     job = sched.add_job(loadItem, 'date', run_date=dd)
     sched.start()
 
@@ -351,7 +351,7 @@ couldown_12h = 3600*12
 couldown_11h = 3600*11
 couldown_10h = 3600*10
 couldown_9h = 3600*9
-couldown_8h = 60 # 3600*8
+couldown_8h = 3600*8
 couldown_7h = 3600*7
 couldown_6h = 3600*6
 couldown_5h = 3600*5
