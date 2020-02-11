@@ -997,12 +997,12 @@ def boxes(param):
                         sql.addGems(PlayerID, gain)
                         desc = "{} :gem:`gems`\n".format(gain)
                         if name == "gift":
-                            if r.randint(0, 6) == 0:
-                                nb = r.randint(-2, 3)
-                                if nb < 1:
-                                    nb = 1
-                                # sql.addSpinelles(PlayerID, nb)
-                                # desc += "{nombre} <:spinelle:{idmoji}>`spinelle`\n".format(idmoji="{idmoji[spinelle]}", nombre=nb)
+                            # if r.randint(0, 6) == 0:
+                            #     nb = r.randint(-2, 3)
+                            #     if nb < 1:
+                            #         nb = 1
+                            #     sql.addSpinelles(PlayerID, nb)
+                            #     desc += "{nombre} <:spinelle:{idmoji}>`spinelle`\n".format(idmoji="{idmoji[spinelle]}", nombre=nb)
                             for x in GF.objetItem:
                                 if r.randint(0, 10) <= 1:
                                     if x.nom == "hyperpack":

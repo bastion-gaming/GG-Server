@@ -318,12 +318,12 @@ def loadItem(F = None):
 
     global objetBox
     objetBox = [
-        Box("commongems", "Gems Common", 300, 100, 500, "gems", 1),
-        Box("raregems", "Gems Rare", 3000, 1000, 5000, "gems", 2),
-        Box("legendarygems", "Gems Legendary", 30000, 10000, 50000, "gems", 4),
+        Box("commongems", "Gems Common", 30, 10, 50, "gems", 1),
+        Box("raregems", "Gems Rare", 300, 100, 500, "gems", 2),
+        Box("legendarygems", "Gems Legendary", 3000, 1000, 5000, "gems", 4),
 
-        Box("gift", "Items en folie", 500000, 1000, 1000000, "gems", 3),
-        Box("gift_heart", "Cadeau de la Saint Valentin", 0, 100000, 500000, "", 2)
+        Box("gift", "Items en folie", 50000, 100, 100000, "gems", 3),
+        Box("gift_heart", "Cadeau de la Saint Valentin", 0, 10000, 50000, "", 2)
     ]
 
     if sql.spam(PlayerID_GetGems, couldown_8h, "bourse", "gems"):
