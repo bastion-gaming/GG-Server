@@ -44,7 +44,7 @@ def bal(param):
         xp = sql.valueAtNumber(PlayerID, "xp", "gems")
         # Niveaux part
         desc = "XP: `{0}/{1}`".format(xp, lvl.lvlPalier(lvlValue))
-        titre = lang_P.forge_msg(lang, "bal", [lvlValue], False, 0)
+        titre = lang_P.forge_msg(lang, "bal", [lvlValue], False)
         msg.append(titre)
         msg.append(desc)
         sql.updateComTime(ID, "bal", "gems")

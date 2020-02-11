@@ -193,7 +193,7 @@
         "This bake is only available during the Christmas event."
       ],
     "bal":
-      "**_Level_: {0}**",
+      "**_Level_  {0}**",
     "baltop":
       "Error! Incorrect command",
     "buy":
