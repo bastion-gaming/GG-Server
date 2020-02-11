@@ -171,34 +171,42 @@ def loadItem(F = None):
             self.type = type
 
     global objetItem
-    objetItem = [Item("backpack", itemBourse("backpack", "vente"), itemBourse("backpack", "achat"), -200, "special")
-    , Item("hyperpack", itemBourse("hyperpack", "vente"), itemBourse("hyperpack", "achat"), -2000, "special")
-    , Item("fishhook", itemBourse("fishhook", "vente"), itemBourse("fishhook", "achat"), 1, "special")
-    , Item("cobblestone", itemBourse("cobblestone", "vente"), itemBourse("cobblestone", "achat"), 4, "minerai")
-    , Item("iron", itemBourse("iron", "vente"), itemBourse("iron", "achat"), 10, "minerai")
-    , Item("gold", itemBourse("gold", "vente"), itemBourse("gold", "achat"), 20, "minerai")
-    , Item("diamond", itemBourse("diamond", "vente"), itemBourse("diamond", "achat"), 40, "minerai")
-    , Item("emerald", itemBourse("emerald", "vente"), itemBourse("emerald", "achat"), 50, "minerai")
-    , Item("ruby", itemBourse("ruby", "vente"), itemBourse("ruby", "achat"), 70, "minerai")
-    , Item("fish", itemBourse("fish", "vente"), itemBourse("fish", "achat"), 2, "poisson")
-    , Item("tropicalfish", itemBourse("tropicalfish", "vente"), itemBourse("tropicalfish", "achat"), 8, "poisson")
-    , Item("blowfish", itemBourse("blowfish", "vente"), itemBourse("blowfish", "achat"), 8, "poisson")
-    , Item("octopus", itemBourse("octopus", "vente"), itemBourse("octopus", "achat"), 16, "poisson")
-    , Item("seed", itemBourse("seed", "vente"), itemBourse("seed", "achat"), 0.5, "plante")
-    , Item("oak", itemBourse("oak", "vente"), itemBourse("oak", "achat"), 50, "plante")
-    , Item("spruce", itemBourse("spruce", "vente"), itemBourse("spruce", "achat"), 70, "plante")
-    , Item("palm", itemBourse("palm", "vente"), itemBourse("palm", "achat"), 60, "plante")
-    , Item("wheat", itemBourse("wheat", "vente"), itemBourse("wheat", "achat"), 3, "plante")
-    , Item("cookie", itemBourse("cookie", "vente"), itemBourse("cookie", "achat"), 1, "emoji")
-    , Item("grapes", itemBourse("grapes", "vente"), itemBourse("grapes", "achat"), 1, "emoji")
-    , Item("wine_glass", itemBourse("wine_glass", "vente"), itemBourse("wine_glass", "achat"), 2, "emoji")
-    , Item("beer", itemBourse("beer", "vente"), itemBourse("beer", "achat"), 2, "emoji")
-    , Item("chocolate", itemBourse("chocolate", "vente"), itemBourse("chocolate", "achat"), 3, "consommable")
-    , Item("cacao", itemBourse("cacao", "vente"), itemBourse("cacao", "achat"), 1, "plante")
-    , Item("potato", itemBourse("potato", "vente"), itemBourse("potato", "achat"), 1, "consommable")
-    , Item("fries", itemBourse("fries", "vente"), itemBourse("fries", "achat"), 30, "consommable")
-    , Item("candy", itemBourse("candy", "vente"), itemBourse("candy", "achat"), 1, "emoji")
-    , Item("lollipop", itemBourse("lollipop", "vente"), itemBourse("lollipop", "achat"), 2, "emoji")]
+    objetItem = [
+        Item("cobblestone", itemBourse("cobblestone", "vente"), itemBourse("cobblestone", "achat"), 4, "minerai"),
+        Item("iron", itemBourse("iron", "vente"), itemBourse("iron", "achat"), 10, "minerai"),
+        Item("gold", itemBourse("gold", "vente"), itemBourse("gold", "achat"), 20, "minerai"),
+        Item("diamond", itemBourse("diamond", "vente"), itemBourse("diamond", "achat"), 40, "minerai"),
+        Item("emerald", itemBourse("emerald", "vente"), itemBourse("emerald", "achat"), 50, "minerai"),
+        Item("ruby", itemBourse("ruby", "vente"), itemBourse("ruby", "achat"), 70, "minerai"),
+
+        Item("fish", itemBourse("fish", "vente"), itemBourse("fish", "achat"), 2, "poisson"),
+        Item("tropicalfish", itemBourse("tropicalfish", "vente"), itemBourse("tropicalfish", "achat"), 8, "poisson"),
+        Item("blowfish", itemBourse("blowfish", "vente"), itemBourse("blowfish", "achat"), 8, "poisson"),
+        Item("octopus", itemBourse("octopus", "vente"), itemBourse("octopus", "achat"), 16, "poisson"),
+
+        Item("seed", itemBourse("seed", "vente"), itemBourse("seed", "achat"), 0.5, "plante"),
+        Item("cacao", itemBourse("cacao", "vente"), itemBourse("cacao", "achat"), 1, "plante"),
+        Item("potato", itemBourse("potato", "vente"), itemBourse("potato", "achat"), 1, "consommable"),
+
+        Item("oak", itemBourse("oak", "vente"), itemBourse("oak", "achat"), 50, "plante"),
+        Item("spruce", itemBourse("spruce", "vente"), itemBourse("spruce", "achat"), 70, "plante"),
+        Item("palm", itemBourse("palm", "vente"), itemBourse("palm", "achat"), 60, "plante"),
+        Item("wheat", itemBourse("wheat", "vente"), itemBourse("wheat", "achat"), 3, "plante"),
+        Item("grapes", itemBourse("grapes", "vente"), itemBourse("grapes", "achat"), 1, "emoji"),
+
+        Item("wine_glass", itemBourse("wine_glass", "vente"), itemBourse("wine_glass", "achat"), 2, "emoji"),
+        Item("beer", itemBourse("beer", "vente"), itemBourse("beer", "achat"), 2, "emoji"),
+
+        Item("chocolate", itemBourse("chocolate", "vente"), itemBourse("chocolate", "achat"), 3, "consommable"),
+        Item("fries", itemBourse("fries", "vente"), itemBourse("fries", "achat"), 30, "consommable"),
+        Item("cookie", itemBourse("cookie", "vente"), itemBourse("cookie", "achat"), 1, "emoji"),
+        Item("candy", itemBourse("candy", "vente"), itemBourse("candy", "achat"), 1, "emoji"),
+        Item("lollipop", itemBourse("lollipop", "vente"), itemBourse("lollipop", "achat"), 2, "emoji"),
+
+        Item("backpack", itemBourse("backpack", "vente"), itemBourse("backpack", "achat"), -200, "special"),
+        Item("hyperpack", itemBourse("hyperpack", "vente"), itemBourse("hyperpack", "achat"), -2000, "special"),
+        Item("fishhook", itemBourse("fishhook", "vente"), itemBourse("fishhook", "achat"), 1, "special")
+    ]
 
     if not (jour.month == 10 and jour.day >= 22) or (jour.month == 11 and jour.day <= 10):
         for one in GI.ObjetHalloween:
@@ -207,10 +215,14 @@ def loadItem(F = None):
         for one in GI.ObjetChristmas:
             ObjetEventEnd.append(one)
 
-    objetItem += [Item("pumpkin", itemBourse("pumpkin", "vente"), itemBourse("pumpkin", "achat"), 5, "halloween")
-    , Item("pumpkinpie", itemBourse("pumpkinpie", "vente"), itemBourse("pumpkinpie", "achat"), 30, "halloween")]
+    objetItem += [
+        Item("pumpkin", itemBourse("pumpkin", "vente"), itemBourse("pumpkin", "achat"), 5, "halloween"),
+        Item("pumpkinpie", itemBourse("pumpkinpie", "vente"), itemBourse("pumpkinpie", "achat"), 30, "halloween")
+    ]
 
-    objetItem += [Item("cupcake", itemBourse("cupcake", "vente"), itemBourse("cupcake", "achat"), 10, "christmas")]
+    objetItem += [
+        Item("cupcake", itemBourse("cupcake", "vente"), itemBourse("cupcake", "achat"), 10, "christmas")
+    ]
 
     # ========== Outils ==========
     class Outil:
@@ -224,17 +236,23 @@ def loadItem(F = None):
             self.type = type
 
     global objetOutil
-    objetOutil = [Outil("pickaxe", itemBourse("pickaxe", "vente"), itemBourse("pickaxe", "achat"), 15, 75, "")
-    , Outil("iron_pickaxe", itemBourse("iron_pickaxe", "vente"), itemBourse("iron_pickaxe", "achat"), 70, 200, "forge")
-    , Outil("diamond_pickaxe", itemBourse("diamond_pickaxe", "vente"), itemBourse("diamond_pickaxe", "achat"), 150, 450, "forge")
-    , Outil("shovel", itemBourse("shovel", "vente"), itemBourse("shovel", "achat"), 10, 35, "")
-    , Outil("iron_shovel", itemBourse("iron_shovel", "vente"), itemBourse("iron_shovel", "achat"), 60, 100, "forge")
-    , Outil("diamond_shovel", itemBourse("diamond_shovel", "vente"), itemBourse("diamond_shovel", "achat"), 120, 240, "forge")
-    , Outil("fishingrod", itemBourse("fishingrod", "vente"), itemBourse("fishingrod", "achat"), 25, 100, "")
-    , Outil("planting_plan", itemBourse("planting_plan", "vente"), itemBourse("planting_plan", "achat"), 4, 4, "consommable")
-    , Outil("barrel", itemBourse("barrel", "vente"), itemBourse("barrel", "achat"), 3, 3, "consommable")
-    , Outil("furnace", itemBourse("furnace", "vente"), itemBourse("furnace", "achat"), 2, 2, "consommable")
-    , Outil("bank_upgrade", itemBourse("bank_upgrade", "vente"), itemBourse("bank_upgrade", "achat"), 10000, None, "bank")]
+    objetOutil = [
+        Outil("pickaxe", itemBourse("pickaxe", "vente"), itemBourse("pickaxe", "achat"), 15, 75, ""),
+        Outil("shovel", itemBourse("shovel", "vente"), itemBourse("shovel", "achat"), 10, 35, ""),
+        Outil("fishingrod", itemBourse("fishingrod", "vente"), itemBourse("fishingrod", "achat"), 25, 100, ""),
+
+        Outil("iron_pickaxe", itemBourse("iron_pickaxe", "vente"), itemBourse("iron_pickaxe", "achat"), 70, 200, "forge"),
+        Outil("diamond_pickaxe", itemBourse("diamond_pickaxe", "vente"), itemBourse("diamond_pickaxe", "achat"), 150, 450, "forge"),
+
+        Outil("iron_shovel", itemBourse("iron_shovel", "vente"), itemBourse("iron_shovel", "achat"), 60, 100, "forge"),
+        Outil("diamond_shovel", itemBourse("diamond_shovel", "vente"), itemBourse("diamond_shovel", "achat"), 120, 240, "forge"),
+
+        Outil("planting_plan", itemBourse("planting_plan", "vente"), itemBourse("planting_plan", "achat"), 4, 4, "consommable"),
+        Outil("barrel", itemBourse("barrel", "vente"), itemBourse("barrel", "achat"), 3, 3, "consommable"),
+        Outil("furnace", itemBourse("furnace", "vente"), itemBourse("furnace", "achat"), 2, 2, "consommable"),
+
+        Outil("bank_upgrade", itemBourse("bank_upgrade", "vente"), itemBourse("bank_upgrade", "achat"), 10000, None, "bank")
+    ]
 
     # ========== Trophées ==========
     class Trophy:
@@ -246,23 +264,27 @@ def loadItem(F = None):
             self.mingem = mingem # nombre de gems minimum necessaire
 
     global objetTrophy
-    objetTrophy = [Trophy("Gamble Jackpot", "`Gagner plus de 10000`:gem:`gems au gamble`", "special", 10000)
-    , Trophy("Super Gamble Jackpot", "`Gagner plus de 100000`:gem:`gems au gamble`", "special", 100000)
-    , Trophy("Hyper Gamble Jackpot", "`Gagner plus de 1000000`:gem:`gems au gamble`", "special", 1000000)
-    , Trophy("Super Jackpot :seven::seven::seven:", "`Gagner le super jackpot sur la machine à sous`", "special", 0)
-    , Trophy("Mineur de Merveilles", "`Trouvez un ruby`", "special", 0)
-    , Trophy("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`", "special", 0)
-    , Trophy("Gems 500", "`Avoir 500`:gem:`gems`", "unique", 500)
-    , Trophy("Gems 1k", "`Avoir 1k`:gem:`gems`", "unique", 1000)
-    , Trophy("Gems 5k", "`Avoir 5k`:gem:`gems`", "unique", 5000)
-    , Trophy("Gems 50k", "`Avoir 50k`:gem:`gems`", "unique", 50000)
-    , Trophy("Gems 200k", "`Avoir 200k`:gem:`gems`", "unique", 200000)
-    , Trophy("Gems 500k", "`Avoir 500k`:gem:`gems`", "unique", 500000)
-    , Trophy("Gems 1M", "`Avoir 1 Million`:gem:`gems`", "unique", 1000000)
-    , Trophy("Gems 10M", "`Avoir 10 Millions`:gem:`gems`", "unique", 10000000)
-    , Trophy("Gems 100M", "`Avoir 100 Millions`:gem:`gems`", "unique", 100000000)
-    , Trophy("Gems 500M", "`Avoir 500 Millions`:gem:`gems`", "unique", 500000000)
-    , Trophy("Le Milliard !!!", "`Avoir 1 Milliard`:gem:`gems`", "unique", 1000000000)]
+    objetTrophy = [
+        Trophy("Gamble Jackpot", "`Gagner plus de 10000`:gem:`gems au gamble`", "special", 10000),
+        Trophy("Super Gamble Jackpot", "`Gagner plus de 100000`:gem:`gems au gamble`", "special", 100000),
+        Trophy("Hyper Gamble Jackpot", "`Gagner plus de 1000000`:gem:`gems au gamble`", "special", 1000000),
+
+        Trophy("Super Jackpot :seven::seven::seven:", "`Gagner le super jackpot sur la machine à sous`", "special", 0),
+        Trophy("Mineur de Merveilles", "`Trouvez un ruby`", "special", 0),
+        Trophy("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`", "special", 0),
+
+        Trophy("Gems 500", "`Avoir 500`:gem:`gems`", "unique", 500),
+        Trophy("Gems 1k", "`Avoir 1k`:gem:`gems`", "unique", 1000),
+        Trophy("Gems 5k", "`Avoir 5k`:gem:`gems`", "unique", 5000),
+        Trophy("Gems 50k", "`Avoir 50k`:gem:`gems`", "unique", 50000),
+        Trophy("Gems 200k", "`Avoir 200k`:gem:`gems`", "unique", 200000),
+        Trophy("Gems 500k", "`Avoir 500k`:gem:`gems`", "unique", 500000),
+        Trophy("Gems 1M", "`Avoir 1 Million`:gem:`gems`", "unique", 1000000),
+        Trophy("Gems 10M", "`Avoir 10 Millions`:gem:`gems`", "unique", 10000000),
+        Trophy("Gems 100M", "`Avoir 100 Millions`:gem:`gems`", "unique", 100000000),
+        Trophy("Gems 500M", "`Avoir 500 Millions`:gem:`gems`", "unique", 500000000),
+        Trophy("Le Milliard !!!", "`Avoir 1 Milliard`:gem:`gems`", "unique", 1000000000)
+    ]
 
     # ========== Statistiques affiché dans info ==========
     class StatGems:
@@ -272,17 +294,20 @@ def loadItem(F = None):
             self.desc = desc
 
     global objetStat
-    objetStat = [StatGems("DiscordCop Arrestation", "`Nombre d'arrestation par la DiscordCop`")
-    , StatGems("DiscordCop Amende", "`Nombre d'ammende recue par la DiscordCop`")
-    , StatGems("gamble | win", "`Nombre de gamble gagné`")
-    , StatGems("Super Jackpot :seven::seven::seven:", "`Nombre de super jackpot gagné sur la machine à sous`")
-    , StatGems("Mineur de Merveilles", "`Nombre de ruby trouvé`")
-    , StatGems("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`")]
+    objetStat = [
+        StatGems("DiscordCop Arrestation", "`Nombre d'arrestation par la DiscordCop`"),
+        StatGems("DiscordCop Amende", "`Nombre d'ammende recue par la DiscordCop`"),
+
+        StatGems("gamble | win", "`Nombre de gamble gagné`"),
+        StatGems("Super Jackpot :seven::seven::seven:", "`Nombre de super jackpot gagné sur la machine à sous`"),
+        StatGems("Mineur de Merveilles", "`Nombre de ruby trouvé`"),
+        StatGems("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`")
+    ]
 
     # ========== Loot Box ==========
     class Box:
 
-        def __init__(self, nom, titre, achat , min, max, type, xp):
+        def __init__(self, nom, titre, achat, min, max, type, xp):
             self.nom = nom
             self.titre = titre
             self.achat = achat
@@ -292,11 +317,14 @@ def loadItem(F = None):
             self.xp = xp
 
     global objetBox
-    objetBox = [Box("commongems", "Gems Common", 300, 100, 500, "gems", 1)
-    , Box("raregems", "Gems Rare", 3000, 1000, 5000, "gems", 2)
-    , Box("legendarygems", "Gems Legendary", 30000, 10000, 50000, "gems", 4)
-    , Box("gift", "Items en folie", 500000, 1000, 1000000, "gems", 3)
-    , Box("gift_heart", "Cadeau de la Saint Valentin", 0, 100000, 500000, "", 2)]
+    objetBox = [
+        Box("commongems", "Gems Common", 300, 100, 500, "gems", 1),
+        Box("raregems", "Gems Rare", 3000, 1000, 5000, "gems", 2),
+        Box("legendarygems", "Gems Legendary", 30000, 10000, 50000, "gems", 4),
+
+        Box("gift", "Items en folie", 500000, 1000, 1000000, "gems", 3),
+        Box("gift_heart", "Cadeau de la Saint Valentin", 0, 100000, 500000, "", 2)
+    ]
 
     if sql.spam(PlayerID_GetGems, couldown_8h, "bourse", "gems"):
         sql.updateComTime(PlayerID_GetGems, "bourse", "gems")
@@ -307,10 +335,9 @@ def loadItem(F = None):
     ActuBourse()
 # <<< def loadItem(F = None):
 
+
 ##############################################
 # ========== Recettes ==========
-
-
 class Recette:
 
     def __init__(self, nom, type, nb1, item1, nb2, item2, nb3, item3, nb4, item4):
@@ -325,10 +352,14 @@ class Recette:
         self.nb4 = nb4
         self.item4 = item4
 
-objetRecette = [Recette("iron_pickaxe", "forge", 20, "iron", 1, "pickaxe", 0, "", 0, "")
-, Recette("diamond_pickaxe", "forge", 45, "diamond", 1, "iron_pickaxe", 0, "", 0, "")
-, Recette("iron_shovel", "forge", 16, "iron", 1, "shovel", 0, "", 0, "")
-, Recette("diamond_shovel", "forge", 30, "diamond", 1, "iron_shovel", 0, "", 0, "")]
+
+objetRecette = [
+    Recette("iron_pickaxe", "forge", 20, "iron", 1, "pickaxe", 0, "", 0, ""),
+    Recette("diamond_pickaxe", "forge", 45, "diamond", 1, "iron_pickaxe", 0, "", 0, ""),
+
+    Recette("iron_shovel", "forge", 16, "iron", 1, "shovel", 0, "", 0, ""),
+    Recette("diamond_shovel", "forge", 30, "diamond", 1, "iron_shovel", 0, "", 0, "")
+]
 
 
 # ========== Couldown pour la fonction antispam ==========
