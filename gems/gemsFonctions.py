@@ -48,6 +48,7 @@ def itemBourse(item, type):
         pnow = temp["vente"]
     elif type == "achat":
         pnow = temp["achat"]
+    PrixMini = 2
 
     # Verification pour l'actualisation de la bourse
     if sql.spam(PlayerID_GetGems, couldown_8h, "bourse", "gems"):
@@ -81,9 +82,13 @@ def itemBourse(item, type):
                     pmaxi = c.achat + (c.achat*taux)
 
         pdef = int(pdef)
-        pmini = int(pmini)
+        if pmini <= PrixMini:
+            pmini = PrixMini
+        else:
+            pmini = int(pmini)
         pmaxi = int(pmaxi)
-        # print("{} {} >> {}".format(type, item, pmini))
+        # print("============================================\n=== {0} >>> {1}".format(type, item))
+        # print("Prix défaut: {0}\nPrix mini: {1}\nPrix maxi: {2}".format(pdef, pmini, pmaxi))
 
         # Fonctionnement de la bourse
         DcrackB = r.randint(1, 1000)
@@ -92,21 +97,21 @@ def itemBourse(item, type):
             taux = 0.85
             Prix = int(pnow - (pnow*taux))
         # crack boursier positif
-        elif DcrackB >= 970 or (pnow < 4 and DcrackB >= 800):
-            if pnow <= 100:
+        elif DcrackB >= 985 or (pnow < 4 and DcrackB >= 900):
+            if pnow <= 50:
                 taux = 10
             elif pnow <= 7:
                 taux = 50
             else:
-                taux = 0.85
+                taux = 5
             Prix = int(pnow + (pnow*taux))
         # évolution de la bourse normale (entre -10% et +10% de la valeur courante)
         else:
             if pnow > pmaxi:
-                pourcentage = r.randint(-20, -1)
-            elif pnow < pmini:
-                pourcentage = r.randint(1, 20)
-            elif (pnow > (pmaxi - pdef*0.5)) or (pnow < (pmini + pdef*0.5)):
+                pourcentage = r.randint(-20, -5)
+            elif pnow <= pmini:
+                pourcentage = r.randint(15, 30)
+            elif (pnow > (pmaxi - pdef*0.3)) or (pnow < (pmini + pdef*0.3)):
                 pourcentage = r.randint(-20, 20)
             else:
                 if pnow > 10:
@@ -114,8 +119,9 @@ def itemBourse(item, type):
                 else:
                     pourcentage = r.randint(-5, 20)
             Prix = int(pnow + ((pnow*pourcentage)//100))
-        if Prix < 2:
-            Prix = 2
+        if Prix < PrixMini:
+            Prix = PrixMini
+        # print("\nAncien prix: {1}\nNouveau prix: {0}\n".format(Prix, pnow))
 
         # La valeur de vente ne peux etre supérieur à la valeur d'achat
         if type == "vente":
@@ -142,7 +148,7 @@ def itemBourse(item, type):
 def ActuBourse():
     # Start the scheduler
     sched = BackgroundScheduler()
-    dd = datetime.now() + timedelta(seconds=30)# minutes=1)
+    dd = datetime.now() + timedelta(minutes=1)
     job = sched.add_job(loadItem, 'date', run_date=dd)
     sched.start()
 
@@ -345,7 +351,7 @@ couldown_12h = 3600*12
 couldown_11h = 3600*11
 couldown_10h = 3600*10
 couldown_9h = 3600*9
-couldown_8h = 30 # 3600*8
+couldown_8h = 60 # 3600*8
 couldown_7h = 3600*7
 couldown_6h = 3600*6
 couldown_5h = 3600*5
