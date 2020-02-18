@@ -72,7 +72,7 @@ def bank(param):
         msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
     PlayerID = sql.get_PlayerID(ID, "gems")
-    msg = []
+    platform = param["name_pl"]
 
     if ARG != "None":
         mARG = ARG.lower()
@@ -81,136 +81,151 @@ def bank(param):
     for c in GF.objetOutil:
         if c.type == "bank":
             Taille = c.poids
-    desc = ""
     solde = sql.valueAt(PlayerID, "Solde", "bank")
     if solde == 0:
         sql.add(PlayerID, "SoldeMax", Taille, "bank")
+    if mARG == "bal":
+        bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform)
+    elif mARG == "add":
+        bank_add(PlayerID, lang, ARG, ARG2, Taille)
+    elif mARG == "saving":
+        bank_saving(PlayerID, lang, ARG, ARG2, Taille)
+
+
+def bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform):
+    """Compte épargne | Balance du compte"""
+    msg = []
+    desc = ""
     # =======================================================================
     # Affiche le menu principal de la banque
     # !bank bal <nom d'un joueur> permet de visualiser l'état de la banque de ce joueur
     # =======================================================================
-    if mARG == "bal":
-        if sql.spam(PlayerID, GF.couldown_4s, "bank_bal", "gems"):
-            msg.append("bal")
-            msg.append(lang)
-            if ARG2 != "None":
-                ID = sql.get_SuperID(sql.nom_ID(param["ARG2"]), param["name_pl"])
-                PlayerID = sql.get_PlayerID(ID, "gems")
-            solde = sql.valueAtNumber(PlayerID, "Solde", "bank")
-            soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
-            if soldeMax == 0:
-                soldeMax = Taille
-            desc = "{} / {} :gem:`gems`\n".format(solde, soldeMax)
-            msg.append(desc)
+    if sql.spam(PlayerID, GF.couldown_4s, "bank_bal", "gems"):
+        msg.append("bal")
+        msg.append(lang)
+        if ARG2 != "None":
+            ID = sql.get_SuperID(sql.nom_ID(ARG2), platform)
+            PlayerID = sql.get_PlayerID(ID, "gems")
+        solde = sql.valueAtNumber(PlayerID, "Solde", "bank")
+        soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
+        if soldeMax == 0:
+            soldeMax = Taille
+        desc = "{} / {} :gem:`gems`\n".format(solde, soldeMax)
+        msg.append(desc)
+        desc = lang_P.forge_msg(lang, "bank", None, False, 0)
+        desc += lang_P.forge_msg(lang, "bank", None, False, 1)
+        desc += lang_P.forge_msg(lang, "bank", None, False, 2)
+        desc += lang_P.forge_msg(lang, "bank", ["bank_upgrade", "{idmoji[gem_bank_upgrade]}"], False, 3)
+        msg.append(desc)
+        sql.updateComTime(PlayerID, "bank_bal", "gems")
+    else:
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        msg.append("couldown")
+        msg.append(desc)
+    return msg
 
-            desc = lang_P.forge_msg(lang, "bank", None, False, 0)
-            desc += lang_P.forge_msg(lang, "bank", None, False, 1)
-            desc += lang_P.forge_msg(lang, "bank", None, False, 2)
-            desc += lang_P.forge_msg(lang, "bank", ["bank_upgrade", "{idmoji[gem_bank_upgrade]}"], False, 3)
 
-            msg.append(desc)
-            sql.updateComTime(PlayerID, "bank_bal", "gems")
-        else:
-            desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
-            msg.append("couldown")
-            msg.append(desc)
-        return msg
+def bank_add(PlayerID, lang, ARG, ARG2, Taille):
+    """Compte épargne | Crédits"""
+    msg = []
+    desc = ""
     # =======================================================================
     # Ajoute ou enlève des Gems sur le compte épargne
     # un nombre positif ajoute des Gems
     # un nombre négatif enlève des Gems
     # =======================================================================
-    elif mARG == "add":
-        if sql.spam(PlayerID, GF.couldown_4s, "bank_add", "gems"):
-            if ARG2 != None:
-                ARG2 = int(ARG2)
-                gems = sql.valueAtNumber(PlayerID, "gems", "gems")
-                solde = sql.valueAtNumber(PlayerID, "Solde", "bank")
-                soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
-                if soldeMax == 0:
-                    soldeMax = Taille
-
-                if ARG2 <= gems:
-                    soldeNew = solde + ARG2
-                    if soldeNew > soldeMax:
-                        ARG2 = ARG2 - (soldeNew - soldeMax)
-                        desc = lang_P.forge_msg(lang, "bank", [soldeMax], False, 4)
-                    elif soldeNew < 0:
-                        desc = lang_P.forge_msg(lang, "bank", [solde], False, 5)
-                        msg.append("NOK")
-                        msg.append(desc)
-                        return msg
-                    nbgm = -1*ARG2
-                    sql.addGems(PlayerID, nbgm)
-                    sql.add(PlayerID, "solde", ARG2, "bank")
-                    desc += lang_P.forge_msg(lang, "bank", [ARG2], False, 6)
-                    desc += lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 7)
-                    msg.append("add")
-                    sql.updateComTime(PlayerID, "bank_add", "gems")
-                else:
-                    desc = lang_P.forge_msg(lang, "bank", None, False, 8)
-                    msg.append("NOK")
-            else:
-                desc = lang_P.forge_msg(lang, "bank", None, False, 9)
-                msg.append("NOK")
-        else:
-            desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
-            msg.append("couldown")
-        msg.append(desc)
-        return msg
-    # =======================================================================
-    # Fonction d'épargne
-    # L'intéret est de 20% avec un bonus de 1% pour chanque bank_upgrade possédée
-    # =======================================================================
-    elif mARG == "saving":
-        if sql.spam(PlayerID, GF.couldown_4h, "bank_saving", "gems"):
+    if sql.spam(PlayerID, GF.couldown_4s, "bank_add", "gems"):
+        if ARG2 != None:
+            ARG2 = int(ARG2)
+            gems = sql.valueAtNumber(PlayerID, "gems", "gems")
             solde = sql.valueAtNumber(PlayerID, "Solde", "bank")
             soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
             if soldeMax == 0:
                 soldeMax = Taille
-            soldeMult = soldeMax/Taille
-            pourcentage = 0.150 + soldeMult*0.002
-            if pourcentage > 0.6:
-                pourcentage = 0.6
-            soldeAdd = pourcentage*solde
-            soldeTaxe = GF.taxe(soldeAdd, 0.1)
-            soldeAdd = soldeTaxe[1]
-            sql.add(PlayerID, "solde", int(soldeAdd), "bank")
-            desc = lang_P.forge_msg(lang, "bank", [int(soldeAdd)], False, 10)
-            soldeNew = solde + soldeAdd
-            if soldeNew > soldeMax:
-                soldeMove = soldeNew - soldeMax
-                nbgm = -1 * soldeMove
-                sql.addGems(PlayerID, int(soldeMove))
-                sql.add(PlayerID, "solde", int(nbgm), "bank")
-                desc += lang_P.forge_msg(lang, "bank", [soldeMax], False, 11)
-            desc += lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 7)
-            sql.add(PlayerID, "bank saving", 1, "statgems")
-            sql.add(PlayerID, "bank saving | gain", int(soldeAdd), "statgems")
-
-            # =====================================
-            # Bonus
-            # =====================================
-            desc += GF.lootbox(PlayerID, lang)
-            desc += GF.gift(PlayerID, lang)
-
-            try:
-                sql.addGems(GF.PlayerID_GetGems, int(soldeTaxe[0]))
-            except:
-                print("Le bot ne fait pas parti de la DB")
-            sql.updateComTime(PlayerID, "bank_saving", "gems")
-            lvl.addxp(PlayerID, 4, "gems")
+            if ARG2 <= gems:
+                soldeNew = solde + ARG2
+                if soldeNew > soldeMax:
+                    ARG2 = ARG2 - (soldeNew - soldeMax)
+                    desc = lang_P.forge_msg(lang, "bank", [soldeMax], False, 4)
+                elif soldeNew < 0:
+                    desc = lang_P.forge_msg(lang, "bank", [solde], False, 5)
+                    msg.append("NOK")
+                    msg.append(desc)
+                    return msg
+                nbgm = -1*ARG2
+                sql.addGems(PlayerID, nbgm)
+                sql.add(PlayerID, "solde", ARG2, "bank")
+                desc += lang_P.forge_msg(lang, "bank", [ARG2], False, 6)
+                desc += lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 7)
+                msg.append("add")
+                sql.updateComTime(PlayerID, "bank_add", "gems")
+            else:
+                desc = lang_P.forge_msg(lang, "bank", None, False, 8)
+                msg.append("NOK")
         else:
-            ComTime = sql.valueAtNumber(PlayerID, "bank_saving", "gems_com_time")
-            time = float(ComTime) - (t.time()-GF.couldown_4h)
-            timeH = int(time / 60 / 60)
-            time = time - timeH * 3600
-            timeM = int(time / 60)
-            timeS = int(time - timeM * 60)
-            desc = lang_P.forge_msg(lang, "bank", [timeH, timeM, timeS], False, 12)
-        msg.append("saving")
-        msg.append(desc)
-        return msg
+            desc = lang_P.forge_msg(lang, "bank", None, False, 9)
+            msg.append("NOK")
+    else:
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        msg.append("couldown")
+    msg.append(desc)
+    return msg
+
+
+def bank_saving(PlayerID, lang, ARG, ARG2, Taille):
+    """Compte épargne | Épargne"""
+    msg = []
+    desc = ""
+    # =======================================================================
+    # Fonction d'épargne
+    # L'intéret est de 20% avec un bonus de 1% pour chanque bank_upgrade possédée
+    # =======================================================================
+    if sql.spam(PlayerID, GF.couldown_4h, "bank_saving", "gems"):
+        solde = sql.valueAtNumber(PlayerID, "Solde", "bank")
+        soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
+        if soldeMax == 0:
+            soldeMax = Taille
+        soldeMult = soldeMax/Taille
+        pourcentage = 0.150 + soldeMult*0.002
+        if pourcentage > 0.6:
+            pourcentage = 0.6
+        soldeAdd = pourcentage*solde
+        soldeTaxe = GF.taxe(soldeAdd, 0.1)
+        soldeAdd = soldeTaxe[1]
+        sql.add(PlayerID, "solde", int(soldeAdd), "bank")
+        desc = lang_P.forge_msg(lang, "bank", [int(soldeAdd)], False, 10)
+        soldeNew = solde + soldeAdd
+        if soldeNew > soldeMax:
+            soldeMove = soldeNew - soldeMax
+            nbgm = -1 * soldeMove
+            sql.addGems(PlayerID, int(soldeMove))
+            sql.add(PlayerID, "solde", int(nbgm), "bank")
+            desc += lang_P.forge_msg(lang, "bank", [soldeMax], False, 11)
+        desc += lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 7)
+        sql.add(PlayerID, "bank saving", 1, "statgems")
+        sql.add(PlayerID, "bank saving | gain", int(soldeAdd), "statgems")
+        # =====================================
+        # Bonus
+        # =====================================
+        desc += GF.lootbox(PlayerID, lang)
+        desc += GF.gift(PlayerID, lang)
+        try:
+            sql.addGems(GF.PlayerID_GetGems, int(soldeTaxe[0]))
+        except:
+            print("Le bot ne fait pas parti de la DB")
+        sql.updateComTime(PlayerID, "bank_saving", "gems")
+        lvl.addxp(PlayerID, 4, "gems")
+    else:
+        ComTime = sql.valueAtNumber(PlayerID, "bank_saving", "gems_com_time")
+        time = float(ComTime) - (t.time()-GF.couldown_4h)
+        timeH = int(time / 60 / 60)
+        time = time - timeH * 3600
+        timeM = int(time / 60)
+        timeS = int(time - timeM * 60)
+        desc = lang_P.forge_msg(lang, "bank", [timeH, timeM, timeS], False, 12)
+    msg.append("saving")
+    msg.append(desc)
+    return msg
 
 
 def stealing(param):
@@ -479,21 +494,21 @@ def mine(param):
                         nbrand = r.randint(1, 8)
                     else:
                         add_item = "cobblestone"
-                        nbrand = r.randint(1, 40)
+                        nbrand = r.randint(1, 30)
                 else:
                     if nbrand <= int(nbMax*(0.50)):
                         add_item = "iron"
-                        nbrand = r.randint(1, 6)
+                        nbrand = r.randint(1, 5)
                     else:
                         add_item = "cobblestone"
-                        nbrand = r.randint(1, 40)
+                        nbrand = r.randint(1, 30)
 
                 if nbrand != 0:
                     sql.add(PlayerID, add_item, nbrand*mult, "inventory")
                     sql.add(PlayerID, "mine | item {}".format(add_item), nbrand*mult, "statgems")
                     desc = lang_P.forge_msg(lang, "mine", [nbrand*mult, add_item, "{idmoji[gem_" + add_item + "]}"], False, 1)
                 if add_item != "cobblestone":
-                    nbcobble = r.randint(1, 32)
+                    nbcobble = r.randint(1, 30)
                     sql.add(PlayerID, "cobblestone", nbcobble*mult, "inventory")
                     sql.add(PlayerID, "mine | item cobblestone", nbcobble*mult, "statgems")
                     desc += lang_P.forge_msg(lang, "mine", [nbcobble*mult, "{idmoji[gem_cobblestone]}"], False, 2)
@@ -580,13 +595,13 @@ def dig(param):
                 print(nbrand)
                 if nbrand <= int(nbMax*(0.25)):
                     add_item = "cacao"
-                    nbrand = r.randint(0, 3)
+                    nbrand = r.randint(0, 2)
                 elif nbrand <= int(nbMax*(0.65)):
                     add_item = "seed"
-                    nbrand = r.randint(0, 6)
+                    nbrand = r.randint(0, 4)
                 elif nbrand <= int(nbMax*(0.80)):
                     add_item = "potato"
-                    nbrand = r.randint(2, 5)
+                    nbrand = r.randint(0, 3)
                 else:
                     nbrand = 0
 
@@ -680,10 +695,10 @@ def fish(param):
                     nbrand = r.randint(0, 1)
                 elif nbrand <= int(nbMax*(0.25)):
                     add_item = "blowfish"
-                    nbrand = r.randint(1, 4)
+                    nbrand = r.randint(0, 4)
                 elif nbrand <= int(nbMax*(0.40)):
                     add_item = "tropicalfish"
-                    nbrand = r.randint(1, 4)
+                    nbrand = r.randint(0, 4)
                 elif nbrand <= int(nbMax*(0.90)):
                     add_item = "fish"
                     nbrand = r.randint(1, 16)
