@@ -90,7 +90,7 @@
     "bank":
       [
         "bank **bal** *[name]* | Allows you to know the balance of a user",
-        "\nbank **add** *[+/- nombre]* | Allows you to add or remove :gem:`gems` from your savings account.",
+        "\nbank **add** *[+/- number]* | Allows you to add or remove :gem:`gems` from your savings account.",
         "\nbank **saving** | Allows you to calculate your savings (can be used every 4 hours)",
         "\n\nThe price of <:gem_{0}:{1}>`{0}` depends on the ceiling of the account",
         "Ceilling of {0} :gem:`gems` in the savings account reaches\n",
@@ -101,13 +101,14 @@
         "It miss :gem:`gems` to add on you saving account.",
         "You saved {0} :gem:`gems`\n",
         "savings account ceiling of {0} :gem:`gems` reached\nYour savings have been transferred.\n\n",
-        "You need to wait :clock2:`{0}h {1}m {2}s` before saving again !"
+        "You need to wait :clock2:`{0}h {1}m {2}s` before saving again !",
+        "Account balance: {0} :gem:`gems`"
       ],
     "mine":
       [
         "Too bad you broke your <:gem_{0}:{1}>`{0}`!",
         "You earn {0} <:gem_{1}:{2}>`{1}`",
-        "\nYou earn {0} bloc of <:gem_cobblestone:{1}>`cobblestone`",
+        "\nYou earn {0} block of <:gem_cobblestone:{1}>`cobblestone`",
         "You need to buy a pickaxe to mine !"
       ],
     "dig":

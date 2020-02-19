@@ -85,11 +85,12 @@ def bank(param):
     if solde == 0:
         sql.add(PlayerID, "SoldeMax", Taille, "bank")
     if mARG == "bal":
-        bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform)
+        msg = bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform)
     elif mARG == "add":
-        bank_add(PlayerID, lang, ARG, ARG2, Taille)
+        msg = bank_add(PlayerID, lang, ARG, ARG2, Taille)
     elif mARG == "saving":
-        bank_saving(PlayerID, lang, ARG, ARG2, Taille)
+        msg = bank_saving(PlayerID, lang, ARG, ARG2, Taille)
+    return msg
 
 
 def bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform):
@@ -182,39 +183,42 @@ def bank_saving(PlayerID, lang, ARG, ARG2, Taille):
     # =======================================================================
     if sql.spam(PlayerID, GF.couldown_4h, "bank_saving", "gems"):
         solde = sql.valueAtNumber(PlayerID, "Solde", "bank")
-        soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
-        if soldeMax == 0:
-            soldeMax = Taille
-        soldeMult = soldeMax/Taille
-        pourcentage = 0.150 + soldeMult*0.002
-        if pourcentage > 0.6:
-            pourcentage = 0.6
-        soldeAdd = pourcentage*solde
-        soldeTaxe = GF.taxe(soldeAdd, 0.1)
-        soldeAdd = soldeTaxe[1]
-        sql.add(PlayerID, "solde", int(soldeAdd), "bank")
-        desc = lang_P.forge_msg(lang, "bank", [int(soldeAdd)], False, 10)
-        soldeNew = solde + soldeAdd
-        if soldeNew > soldeMax:
-            soldeMove = soldeNew - soldeMax
-            nbgm = -1 * soldeMove
-            sql.addGems(PlayerID, int(soldeMove))
-            sql.add(PlayerID, "solde", int(nbgm), "bank")
-            desc += lang_P.forge_msg(lang, "bank", [soldeMax], False, 11)
-        desc += lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 7)
-        sql.add(PlayerID, "bank saving", 1, "statgems")
-        sql.add(PlayerID, "bank saving | gain", int(soldeAdd), "statgems")
-        # =====================================
-        # Bonus
-        # =====================================
-        desc += GF.lootbox(PlayerID, lang)
-        desc += GF.gift(PlayerID, lang)
-        try:
-            sql.addGems(GF.PlayerID_GetGems, int(soldeTaxe[0]))
-        except:
-            print("Le bot ne fait pas parti de la DB")
-        sql.updateComTime(PlayerID, "bank_saving", "gems")
-        lvl.addxp(PlayerID, 4, "gems")
+        if solde != 0:
+            soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
+            if soldeMax == 0:
+                soldeMax = Taille
+            soldeMult = soldeMax/Taille
+            pourcentage = 0.150 + soldeMult*0.002
+            if pourcentage > 0.6:
+                pourcentage = 0.6
+            soldeAdd = pourcentage*solde
+            soldeTaxe = GF.taxe(soldeAdd, 0.1)
+            soldeAdd = soldeTaxe[1]
+            sql.add(PlayerID, "solde", int(soldeAdd), "bank")
+            desc = lang_P.forge_msg(lang, "bank", [int(soldeAdd)], False, 10)
+            soldeNew = solde + soldeAdd
+            if soldeNew > soldeMax:
+                soldeMove = soldeNew - soldeMax
+                nbgm = -1 * soldeMove
+                sql.addGems(PlayerID, int(soldeMove))
+                sql.add(PlayerID, "solde", int(nbgm), "bank")
+                desc += lang_P.forge_msg(lang, "bank", [soldeMax], False, 11)
+            desc += lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 7)
+            sql.add(PlayerID, "bank | saving", 1, "statgems")
+            sql.add(PlayerID, "bank | saving | gain", int(soldeAdd), "statgems")
+            # =====================================
+            # Bonus
+            # =====================================
+            desc += GF.lootbox(PlayerID, lang)
+            desc += GF.gift(PlayerID, lang)
+            try:
+                sql.addGems(GF.PlayerID_GetGems, int(soldeTaxe[0]))
+            except:
+                print("Le bot ne fait pas parti de la DB")
+            sql.updateComTime(PlayerID, "bank_saving", "gems")
+            lvl.addxp(PlayerID, 4, "gems")
+        else:
+            desc = lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 13)
     else:
         ComTime = sql.valueAtNumber(PlayerID, "bank_saving", "gems_com_time")
         time = float(ComTime) - (t.time()-GF.couldown_4h)
@@ -242,7 +246,7 @@ def stealing(param):
     if sql.valueAtNumber(GF.PlayerID_GetGems, "DailyMult", "daily") == 1:
         desc = ""
     else:
-        if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems") and name is not None:
+        if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems") and name != "None":
             ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name), param["name_pl"]))
             # Calcul du pourcentage
             if ID_Vol == GF.PlayerID_GetGems or ID_Vol == GF.PlayerID_Babot:
@@ -368,27 +372,16 @@ def gamble(param):
 
     elif valeur > 0 and gems >= valeur:
         if sql.spam(PlayerID, GF.couldown_8s, "gamble", "gems"):
+            val = 0-valeur
+            sql.addGems(PlayerID, val)
+            sql.addGems(GF.PlayerID_GetGems, int(valeur))
+            sql.add(PlayerID, "gamble | perte", valeur, "statgems")
+
             if r.randint(0, 3) == 0:
                 gain = valeur*3
                 # l'espérence est de 0 sur la gamble
                 desc = "{1} {0} :gem:`gems`".format(gain, lang_P.forge_msg(lang, "gamble array", None, True))
                 sql.add(PlayerID, "gamble | win", 1, "statgems")
-                for x in GF.objetTrophy:
-                    if x.nom == "Gamble Jackpot":
-                        jackpot = x.mingem
-                    elif x.nom == "Super Gamble Jackpot":
-                        superjackpot = x.mingem
-                    elif x.nom == "Hyper Gamble Jackpot":
-                        hyperjackpot = x.mingem
-                if gain >= jackpot and gain < superjackpot:
-                    sql.add(PlayerID, "Gamble Jackpot", 1, "trophy")
-                    desc += lang_P.forge_msg(lang, "gamble", None, False, 1)
-                elif gain >= superjackpot and gain < hyperjackpot:
-                    sql.add(PlayerID, "Super Gamble Jackpot", 1, "trophy")
-                    desc += lang_P.forge_msg(lang, "gamble", None, False, 2)
-                elif gain >= hyperjackpot:
-                    sql.add(PlayerID, "Hyper Gamble Jackpot", 1, "trophy")
-                    desc += lang_P.forge_msg(lang, "gamble", None, False, 3)
                 sql.addGems(PlayerID, gain)
                 sql.add(PlayerID, "gamble | gain", gain, "statgems")
                 # =====================================
@@ -396,10 +389,6 @@ def gamble(param):
                 # =====================================
                 desc += GF.lootbox(PlayerID, lang)
             else:
-                val = 0-valeur
-                sql.addGems(PlayerID, val)
-                sql.addGems(GF.PlayerID_GetGems, int(valeur))
-                sql.add(PlayerID, "gamble | perte", valeur, "statgems")
                 desc = lang_P.forge_msg(lang, "gamble", [valeur], False, 0)
 
             sql.updateComTime(PlayerID, "gamble", "gems")
@@ -437,14 +426,14 @@ def mine(param):
             # Détection du meilleur outil
             # =====================================
             if sql.valueAtNumber(PlayerID, "diamond_pickaxe", "inventory") >= 1:
-                nbMax = 800
+                nbMax = 600
                 outil = "diamond_pickaxe"
-                mult = 5
+                mult = 2.5
 
             elif sql.valueAtNumber(PlayerID, "iron_pickaxe", "inventory") >= 1:
-                nbMax = 300
+                nbMax = 250
                 outil = "iron_pickaxe"
-                mult = 2
+                mult = 1.5
 
             elif sql.valueAtNumber(PlayerID, "pickaxe", "inventory") >= 1:
                 nbMax = 100
@@ -460,12 +449,12 @@ def mine(param):
                 Durability = sql.valueAtNumber(PlayerID, outil, "durability")
                 if Durability == 0:
                     sql.add(PlayerID, outil, -1, "inventory")
-                    if sql.valueAtNumber(PlayerID, outil, "inventory") > 1:
+                    if sql.valueAtNumber(PlayerID, outil, "inventory") >= 1:
                         for c in GF.objetOutil:
                             if c.nom == outil:
                                 sql.add(PlayerID, c.nom, c.durabilite, "durability")
                     desc = lang_P.forge_msg(lang, "mine", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
-                    sql.add(PlayerID, "mine | {} cassé".format(outil), 1, "statgems")
+                    sql.add(PlayerID, "mine | broken | {}".format(outil), 1, "statgems")
                     msg.append("OK")
                     msg.append(desc)
                     return msg
@@ -493,32 +482,31 @@ def mine(param):
                         add_item = "iron"
                         nbrand = r.randint(1, 8)
                     else:
-                        add_item = "cobblestone"
-                        nbrand = r.randint(1, 30)
+                        nbrand = 0
                 else:
                     if nbrand <= int(nbMax*(0.50)):
                         add_item = "iron"
                         nbrand = r.randint(1, 5)
                     else:
-                        add_item = "cobblestone"
-                        nbrand = r.randint(1, 30)
+                        nbrand = 0
 
                 if nbrand != 0:
-                    sql.add(PlayerID, add_item, nbrand*mult, "inventory")
-                    sql.add(PlayerID, "mine | item {}".format(add_item), nbrand*mult, "statgems")
-                    desc = lang_P.forge_msg(lang, "mine", [nbrand*mult, add_item, "{idmoji[gem_" + add_item + "]}"], False, 1)
-                if add_item != "cobblestone":
-                    nbcobble = r.randint(1, 30)
-                    sql.add(PlayerID, "cobblestone", nbcobble*mult, "inventory")
-                    sql.add(PlayerID, "mine | item cobblestone", nbcobble*mult, "statgems")
-                    desc += lang_P.forge_msg(lang, "mine", [nbcobble*mult, "{idmoji[gem_cobblestone]}"], False, 2)
+                    nbrand = int(nbrand*mult)
+                    sql.add(PlayerID, add_item, nbrand, "inventory")
+                    sql.add(PlayerID, "mine | item | {}".format(add_item), nbrand, "statgems")
+                    desc = lang_P.forge_msg(lang, "mine", [nbrand, add_item, "{idmoji[gem_" + add_item + "]}"], False, 1)
+                    # =====================================
+                    # Bonus
+                    # =====================================
+                    desc += GF.lootbox(PlayerID, lang)
+                    desc += GF.gift(PlayerID, lang)
+                nbcobble = r.randint(1, 10)
+                nbcobble = int(nbcobble*mult)
+                sql.add(PlayerID, "cobblestone", nbcobble, "inventory")
+                sql.add(PlayerID, "mine | item | cobblestone", nbcobble, "statgems")
+                desc += lang_P.forge_msg(lang, "mine", [nbcobble, "{idmoji[gem_cobblestone]}"], False, 2)
 
                 sql.add(PlayerID, "mine", 1, "statgems")
-                # =====================================
-                # Bonus
-                # =====================================
-                desc += GF.lootbox(PlayerID, lang)
-                desc += GF.gift(PlayerID, lang)
 
             else:
                 desc = lang_P.forge_msg(lang, "mine", None, False, 3)
@@ -556,12 +544,12 @@ def dig(param):
             if sql.valueAtNumber(PlayerID, "diamond_shovel", "inventory") >= 1:
                 nbMax = 400
                 outil = "diamond_shovel"
-                mult = 5
+                mult = 2.5
 
             elif sql.valueAtNumber(PlayerID, "iron_shovel", "inventory") >= 1:
                 nbMax = 200
                 outil = "iron_shovel"
-                mult = 2
+                mult = 1.5
 
             elif sql.valueAtNumber(PlayerID, "shovel", "inventory") >= 1:
                 nbMax = 100
@@ -577,12 +565,12 @@ def dig(param):
                 Durability = sql.valueAtNumber(PlayerID, outil, "durability")
                 if Durability == 0:
                     sql.add(PlayerID, outil, -1, "inventory")
-                    if sql.valueAtNumber(PlayerID, outil, "inventory") > 1:
+                    if sql.valueAtNumber(PlayerID, outil, "inventory") >= 1:
                         for c in GF.objetOutil:
                             if c.nom == outil:
                                 sql.add(PlayerID, c.nom, c.durabilite, "durability")
                     desc = lang_P.forge_msg(lang, "dig", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
-                    sql.add(PlayerID, "dig | {} cassé".format(outil), 1, "statgems")
+                    sql.add(PlayerID, "dig | broken | {}".format(outil), 1, "statgems")
                     msg.append("OK")
                     msg.append(desc)
                     return msg
@@ -599,25 +587,26 @@ def dig(param):
                 elif nbrand <= int(nbMax*(0.65)):
                     add_item = "seed"
                     nbrand = r.randint(0, 4)
-                elif nbrand <= int(nbMax*(0.80)):
+                elif nbrand <= int(nbMax*(0.95)):
                     add_item = "potato"
                     nbrand = r.randint(0, 3)
                 else:
                     nbrand = 0
 
                 if nbrand != 0:
-                    sql.add(PlayerID, add_item, nbrand*mult, "inventory")
-                    sql.add(PlayerID, "dig | item {}".format(add_item), nbrand*mult, "statgems")
-                    desc = lang_P.forge_msg(lang, "dig", [nbrand*mult, add_item, "{idmoji[gem_" + add_item + "]}"], False, 1)
+                    nbrand = int(nbrand*mult)
+                    sql.add(PlayerID, add_item, nbrand, "inventory")
+                    sql.add(PlayerID, "dig | item | {}".format(add_item), nbrand, "statgems")
+                    desc = lang_P.forge_msg(lang, "dig", [nbrand, add_item, "{idmoji[gem_" + add_item + "]}"], False, 1)
+                    # =====================================
+                    # Bonus
+                    # =====================================
+                    desc += GF.lootbox(PlayerID, lang)
+                    desc += GF.gift(PlayerID, lang)
                 else:
                     desc = lang_P.forge_msg(lang, "dig", None, False, 2)
 
                 sql.add(PlayerID, "dig", 1, "statgems")
-                # =====================================
-                # Bonus
-                # =====================================
-                desc += GF.lootbox(PlayerID, lang)
-                desc += GF.gift(PlayerID, lang)
 
             else:
                 desc = lang_P.forge_msg(lang, "dig", None, False, 3)
@@ -674,12 +663,12 @@ def fish(param):
                 Durability = sql.valueAtNumber(PlayerID, outil, "durability")
                 if Durability == 0:
                     sql.add(PlayerID, outil, -1, "inventory")
-                    if sql.valueAtNumber(PlayerID, outil, "inventory") > 1:
+                    if sql.valueAtNumber(PlayerID, outil, "inventory") >= 1:
                         for c in GF.objetOutil:
                             if c.nom == outil:
                                 sql.add(PlayerID, c.nom, c.durabilite, "durability")
                     desc = lang_P.forge_msg(lang, "fish", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
-                    sql.add(PlayerID, "fish | {} cassé".format(outil), 1, "statgems")
+                    sql.add(PlayerID, "fish | broken | {}".format(outil), 1, "statgems")
                     msg.append("OK")
                     msg.append(desc)
                     return msg
@@ -695,25 +684,31 @@ def fish(param):
                     nbrand = r.randint(0, 1)
                 elif nbrand <= int(nbMax*(0.25)):
                     add_item = "blowfish"
-                    nbrand = r.randint(0, 4)
+                    nbrand = r.randint(0, 3)
                 elif nbrand <= int(nbMax*(0.40)):
                     add_item = "tropicalfish"
-                    nbrand = r.randint(0, 4)
+                    nbrand = r.randint(0, 3)
                 elif nbrand <= int(nbMax*(0.90)):
                     add_item = "fish"
-                    nbrand = r.randint(1, 16)
                 else:
                     nbrand = 0
 
-                if nbrand != 0:
-                    sql.add(PlayerID, add_item, nbrand*mult, "inventory")
-                    sql.add(PlayerID, "fish | item {}".format(add_item), nbrand*mult, "statgems")
-                    desc = lang_P.forge_msg(lang, "fish", [nbrand*mult, add_item, "{idmoji[gem_" + add_item + "]}"], False, 1)
+                if nbrand != 0 or add_item == "fish":
                     if add_item != "fish":
-                        nb = r.randint(1, 16)
-                        sql.add(PlayerID, "fish", nb*mult, "inventory")
-                        sql.add(PlayerID, "fish | item fish", nb*mult, "statgems")
-                        desc += lang_P.forge_msg(lang, "fish", [nb*mult, "{idmoji[gem_fish]}"], False, 2)
+                        nbrand = int(nbrand*mult)
+                        sql.add(PlayerID, add_item, nbrand, "inventory")
+                        sql.add(PlayerID, "fish | item | {}".format(add_item), nbrand, "statgems")
+                        desc = lang_P.forge_msg(lang, "fish", [nbrand, add_item, "{idmoji[gem_" + add_item + "]}"], False, 1)
+                    nb = r.randint(1, 8)
+                    nb = int(nb*mult)
+                    sql.add(PlayerID, "fish", nb, "inventory")
+                    sql.add(PlayerID, "fish | item | fish", nb, "statgems")
+                    desc += lang_P.forge_msg(lang, "fish", [nb, "{idmoji[gem_fish]}"], False, 2)
+                    # =====================================
+                    # Bonus
+                    # =====================================
+                    desc += GF.lootbox(PlayerID, lang)
+                    desc += GF.gift(PlayerID, lang)
                 else:
                     desc = lang_P.forge_msg(lang, "fish", None, False, 3)
                     if mult >= 2:
@@ -721,11 +716,6 @@ def fish(param):
                         sql.add(PlayerID, "fish | fishhook utilisé", -1, "statgems")
 
                 sql.add(PlayerID, "fish", 1, "statgems")
-                # =====================================
-                # Bonus
-                # =====================================
-                desc += GF.lootbox(PlayerID, lang)
-                desc += GF.gift(PlayerID, lang)
 
             else:
                 desc = lang_P.forge_msg(lang, "fish", ["{idmoji[fishingrod]}"], False, 4)
@@ -778,63 +768,58 @@ def slots(param):
         mise = 10
 
     if sql.spam(PlayerID, GF.couldown_8s, "slots", "gems"):
-        tab = []
         result = []
         desc = lang_P.forge_msg(lang, "slots", [mise], False, 0)
         val = 0-mise
-        for i in range(0, 9): # Creation de la machine à sous
+        slotsItem = [
+            "zero",
+            "zero",
+            "one",
+            "one",
+            "two",
+            "two",
+            "three",
+            "three",
+            "four",
+            "four",
+            "five",
+            "five",
+            "six",
+            "six",
+            "seven",
+            "seven",
+            "eight",
+            "eight",
+            "nine",
+            "nine",
+            "gem",
+            "ticket",
+            "ticket",
+            "ticket",
+            "boom",
+            "boom",
+            "apple",
+            "green_apple",
+            "cherries",
+            "tangerine",
+            "banana",
+            "grapes",
+            "cookie",
+            "beer",
+            "backpack",
+            "ruby"
+        ]
+
+        # Creation de la machine à sous
+        LSI = len(slotsItem)
+        for i in range(0, 9):
             if i == 3:
                 desc += "\n"
             elif i == 6:
                 desc += " :arrow_backward:\n"
-            tab.append(r.randint(0, 344))
-            if tab[i] < 15 :
-                result.append("zero")
-            elif tab[i] >= 15 and tab[i] < 30:
-                result.append("one")
-            elif tab[i] >= 30 and tab[i] < 45:
-                result.append("two")
-            elif tab[i] >= 45 and tab[i] < 60:
-                result.append("three")
-            elif tab[i] >= 60 and tab[i] < 75:
-                result.append("four")
-            elif tab[i] >= 75 and tab[i] < 90:
-                result.append("five")
-            elif tab[i] >= 90 and tab[i] < 105:
-                result.append("six")
-            elif tab[i] >= 105 and tab[i] < 120:
-                result.append("seven")
-            elif tab[i] >= 120 and tab[i] < 135:
-                result.append("eight")
-            elif tab[i] >= 135 and tab[i] < 150:
-                result.append("nine")
-            elif tab[i] >= 150 and tab[i] < 170:
-                result.append("gem")
-            elif tab[i] >= 170 and tab[i] < 190:
-                result.append("ticket")
-            elif tab[i] >= 190 and tab[i] < 210:
-                result.append("boom")
-            elif tab[i] >= 210 and tab[i] < 220:
-                result.append("apple")
-            elif tab[i] >= 220 and tab[i] < 230:
-                result.append("green_apple")
-            elif tab[i] >= 230 and tab[i] < 240:
-                result.append("cherries")
-            elif tab[i] >= 240 and tab[i] < 250:
-                result.append("tangerine")
-            elif tab[i] >= 250 and tab[i] < 260:
-                result.append("banana")
-            elif tab[i] >= 260 and tab[i] < 280:
-                result.append("grapes")
-            elif tab[i] >= 280 and tab[i] < 310:
-                result.append("cookie")
-            elif tab[i] >= 310 and tab[i] < 340:
-                result.append("beer")
-            elif tab[i] >= 340 and tab[i] < 343:
-                result.append("backpack")
-            elif tab[i] >= 343:
-                result.append("ruby")
-            if tab[i] < 340:
+            nbrand = r.randint(0, LSI-1)
+            result.append(slotsItem[nbrand])
+            if nbrand < LSI-2:
                 desc += ":{}:".format(result[i])
             else:
                 desc += "<:gem_{}:{}>".format(result[i], "{idmoji[gem_" + result[i] + "]}")
@@ -846,17 +831,17 @@ def slots(param):
         # Ruby (hyper rare)
         if result[3] == "ruby" or result[4] == "ruby" or result[5] == "ruby":
             sql.add(PlayerID, "ruby", 1, "inventory")
-            sql.add(PlayerID, "Mineur de Merveilles", 1, "statgems")
-            sql.add(PlayerID, "Mineur de Merveilles", 1, "trophy")
-            gain = 42
+            sql.add(PlayerID, "slots | Mineur de Merveilles", 1, "statgems")
+            # sql.add(PlayerID, "Mineur de Merveilles", 1, "trophy")
+            gain = 16
             desc += lang_P.forge_msg(lang, "slots", ["{idmoji[gem_ruby]}"], False, 1)
             GF.lootbox(PlayerID, lang)
         # ===================================================================
         # Super gain, 3 chiffres identique
         elif result[3] == "seven" and result[4] == "seven" and result[5] == "seven":
             gain = 1000
-            sql.add(PlayerID, "Super Jackpot :seven::seven::seven:", 1, "statgems")
-            sql.add(PlayerID, "Super Jackpot :seven::seven::seven:", 1, "trophy")
+            sql.add(PlayerID, "slots | Super Jackpot :seven::seven::seven:", 1, "statgems")
+            # sql.add(PlayerID, "Super Jackpot :seven::seven::seven:", 1, "trophy")
             desc += lang_P.forge_msg(lang, "slots", [param["ID"]], False, 2)
         elif result[3] == "one" and result[4] == "one" and result[5] == "one":
             gain = 100
@@ -879,9 +864,9 @@ def slots(param):
         # ===================================================================
         # Beer
         elif (result[3] == "beer" and result[4] == "beer") or (result[4] == "beer" and result[5] == "beer") or (result[3] == "beer" and result[5] == "beer"):
-            sql.add(PlayerID, "La Squelatitude", 1, "statgems")
-            sql.add(PlayerID, "La Squelatitude", 1, "trophy")
-            gain = 4
+            sql.add(PlayerID, "slots | La Squellitude", 1, "statgems")
+            # sql.add(PlayerID, "La Squelatitude", 1, "trophy")
+            gain = 5
             desc += lang_P.forge_msg(lang, "slots", [param["ID"]], False, 3)
         # ===================================================================
         # Explosion de la machine
@@ -902,11 +887,11 @@ def slots(param):
         # ===================================================================
         # Tichet gratuit
         elif result[3] == "ticket" and result[4] == "ticket" and result[5] == "ticket":
-            gain = 10
+            gain = 8
         elif (result[3] == "ticket" and result[4] == "ticket") or (result[4] == "ticket" and result[5] == "ticket") or (result[3] == "ticket" and result[5] == "ticket"):
-            gain = 5
+            gain = 4
         elif result[3] == "ticket" or result[4] == "ticket" or result[5] == "ticket":
-            gain = 2
+            gain = 1
         else:
             gain = 0
         # ===================================================================
@@ -955,6 +940,8 @@ def slots(param):
 
         # Calcul du prix
         prix = gain * mise
+        sql.addGems(PlayerID, val)
+        sql.add(PlayerID, "slots | perte", mise, "statgems")
         if gain != 0 and gain != 1:
             if prix > 400:
                 desc += lang_P.forge_msg(lang, "slots", [prix], False, 8)
@@ -971,8 +958,6 @@ def slots(param):
             sql.addGems(PlayerID, prix)
         else:
             desc += lang_P.forge_msg(lang, "slots", None, False, 12)
-            sql.addGems(PlayerID, val)
-            sql.add(PlayerID, "slots | perte", mise, "statgems")
         sql.updateComTime(PlayerID, "slots", "gems")
         sql.add(PlayerID, "slots", 1, "statgems")
         if gain >= 0:
@@ -1042,7 +1027,7 @@ def boxes(param):
                                     else:
                                         desc += "\n:{0}:`{0}` x{1}".format(x.nom, nbgain)
                         lvl.addxp(PlayerID, lootbox.xp, "gems")
-                        sql.add(PlayerID, "boxes | open {}".format(lootbox.titre), 1, "statgems")
+                        sql.add(PlayerID, "boxes | open | {}".format(lootbox.titre), 1, "statgems")
                         sql.add(PlayerID, "boxes", 1, "statgems")
                         msg.append("OK")
                         msg.append(desc)
@@ -1165,7 +1150,7 @@ def hothouse(param):
                         data.append(0)
                         data.append("")
                         sql.add(PlayerID, item, nbHarvest, "inventory")
-                        sql.add(PlayerID, "hothouse | harvest | item {}".format(item), nbHarvest, "statgems")
+                        sql.add(PlayerID, "hothouse | harvest | item | {}".format(item), nbHarvest, "statgems")
                         sql.updateField(PlayerID, i, data, "hothouse")
                         if item == "grapes":
                             desc = lang_P.forge_msg(lang, "hothouse", ["{idmoji[gem_" + item + "]}", item, nbHarvest], False, 2)
@@ -1245,7 +1230,7 @@ def hothouse(param):
                         data.append(arg)
                         sql.add(PlayerID, arg2, data, "hothouse")
                         sql.add(PlayerID, arg, -1, "inventory")
-                        sql.add(PlayerID, "hothouse | plant | item {}".format(arg), 1, "statgems")
+                        sql.add(PlayerID, "hothouse | plant | item | {}".format(arg), 1, "statgems")
                         desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}", couldown], False, 8)
                     else:
                         desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}"], False, 9)
@@ -1283,7 +1268,7 @@ def hothouse(param):
                             data.append(arg)
                             sql.add(PlayerID, i, data, "hothouse")
                             sql.add(PlayerID, arg, -1, "inventory")
-                            sql.add(PlayerID, "hothouse | plant | item {}".format(arg), 1, "statgems")
+                            sql.add(PlayerID, "hothouse | plant | item | {}".format(arg), 1, "statgems")
                             desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}", couldown], False, 11)
                         else:
                             desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}"], False, 12)
@@ -1367,7 +1352,7 @@ def ferment(param):
                         data.append(item)
                         sql.add(PlayerID, i, data, "ferment")
                         sql.add(PlayerID, item, -nbitem, "inventory")
-                        sql.add(PlayerID, "ferment | plant | item {}".format(item), nbitem, "statgems")
+                        sql.add(PlayerID, "ferment | plant | item | {}".format(item), nbitem, "statgems")
                         if item == "grapes":
                             desc = lang_P.forge_msg(lang, "ferment", [item, couldownMsg], False, 1)
                         else:
@@ -1402,7 +1387,7 @@ def ferment(param):
                     data.append(0)
                     data.append("")
                     sql.add(PlayerID, gain, nbgain, "inventory")
-                    sql.add(PlayerID, "ferment | harvest | item {}".format(gain), nbgain, "statgems")
+                    sql.add(PlayerID, "ferment | harvest | item | {}".format(gain), nbgain, "statgems")
                     sql.updateField(PlayerID, i, data, "ferment")
                     desc = lang_P.forge_msg(lang, "ferment", [gain, "{idmoji[gem_" + gain + "]}", nbgain], False, 7)
                     lvl.addxp(PlayerID, 1, "gems")
@@ -1532,7 +1517,7 @@ def cooking(param):
                     data.append(0)
                     data.append("")
                     sql.add(PlayerID, gain, nbgain, "inventory")
-                    sql.add(PlayerID, "cooking | harvest | item {}".format(gain), nbgain, "statgems")
+                    sql.add(PlayerID, "cooking | harvest | item | {}".format(gain), nbgain, "statgems")
                     sql.updateField(PlayerID, i, data, "cooking")
                     desc = "{3} {2} <:gem_{0}:{1}>`{0}`".format(gain, "{idmoji[gem_" + gain + "]}", nbgain, lang_P.forge_msg(lang, "cooking", None, False, 1))
                     lvl.addxp(PlayerID, 1, "gems")
@@ -1564,7 +1549,7 @@ def cooking(param):
                         data.append(item)
                         sql.add(PlayerID, i, data, "cooking")
                         sql.add(PlayerID, item, -nbitem, "inventory")
-                        sql.add(PlayerID, "cooking | plant | item {}".format(item), nbitem, "statgems")
+                        sql.add(PlayerID, "cooking | plant | item | {}".format(item), nbitem, "statgems")
                         desc = lang_P.forge_msg(lang, "cooking", [couldownMsg], False, 4)
                     else:
                         if item == "pumpkin":

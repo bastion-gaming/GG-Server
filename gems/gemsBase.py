@@ -117,7 +117,7 @@ def baltop(param):
         #         j += 1
         #     msg.append("OK")
         #     msg.append(baltop)
-        #     sql.add(PlayerID, "baltop guilde", 1, "statgems")
+        #     sql.add(PlayerID, "baltop | guilde", 1, "statgems")
         else:
             msg.append("NOK")
             msg.append(lang_P.forge_msg(lang, "baltop"))
@@ -172,7 +172,7 @@ def buy(param):
                             argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
                         if check:
                             sql.add(ID, c.nom, nb, "inventory")
-                            sql.add(PlayerID, "buy | item {}".format(c.nom), nb, "statgems")
+                            sql.add(PlayerID, "buy | item | {}".format(c.nom), nb, "statgems")
                             if c.type != "emoji":
                                 desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}"], False, 0)
                             else:
@@ -215,14 +215,14 @@ def buy(param):
                         if c.type == "bank":
                             sql.add(PlayerID, "SoldeMax", nb*c.poids, "bank")
                             desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}"], False, 0)
-                            sql.add(PlayerID, "buy | item {}".format(c.nom), nb, "statgems")
+                            sql.add(PlayerID, "buy | item | {}".format(c.nom), nb, "statgems")
                             msg.append("bank")
                             msg.append(desc)
                             return msg
                         else:
                             sql.add(PlayerID, c.nom, nb, "inventory")
                             desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}"], False, 0)
-                            sql.add(PlayerID, "buy | item {}".format(c.nom), nb, "statgems")
+                            sql.add(PlayerID, "buy | item | {}".format(c.nom), nb, "statgems")
                             if c.nom != "bank_upgrade":
                                 if sql.valueAtNumber(PlayerID, c.nom, "durability") == 0:
                                     sql.add(PlayerID, c.nom, c.durabilite, "durability")
@@ -237,11 +237,11 @@ def buy(param):
                         if c.type == "gems" and sql.addGems(PlayerID, prix) >= "0":
                             sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
                             desc = lang_P.forge_msg(lang, "buy", [nb, c.titre, "{idmoji[gem_lootbox]}"], False, 5)
-                            sql.add(PlayerID, "buy | item {}".format(c.titre), nb, "statgems")
+                            sql.add(PlayerID, "buy | item | {}".format(c.titre), nb, "statgems")
                         elif c.type == "spinelle" and sql.addSpinelles(PlayerID, prix) >= "0":
                             sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
                             desc = lang_P.forge_msg(lang, "buy", [nb, c.titre], False, 6)
-                            sql.add(PlayerID, "buy | item {}".format(c.titre), nb, "statgems")
+                            sql.add(PlayerID, "buy | item | {}".format(c.titre), nb, "statgems")
                         else :
                             desc = lang_P.forge_msg(lang, "buy", [":gem:`gems`"], False, 2)
                         break
@@ -287,7 +287,7 @@ def sell(param):
             for c in GF.objetItem:
                 if item == c.nom:
                     test = False
-                    sql.add(PlayerID, "sell | item {}".format(c.nom), nb, "statgems")
+                    sql.add(PlayerID, "sell | item | {}".format(c.nom), nb, "statgems")
                     gain = c.vente*nb
                     if c.type != "spinelle":
                         sql.addGems(PlayerID, gain)
@@ -311,7 +311,7 @@ def sell(param):
                         sql.addSpinelles(PlayerID, gain)
                         argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
                     desc = lang_P.forge_msg(lang, "sell", [nb, item, gain, "{idmoji[gem_" + c.nom + "]}", argent], False, 0)
-                    sql.add(PlayerID, "sell | item {}".format(c.nom), nb, "statgems")
+                    sql.add(PlayerID, "sell | item | {}".format(c.nom), nb, "statgems")
                     if nbItem == 1:
                         if sql.valueAt(PlayerID, item, "durability") != 0:
                             sql.add(PlayerID, item, -1, "durability")
@@ -1063,7 +1063,7 @@ def give(param):
                         print("Gems >> {0} a donné {1} {2} à {3}".format(nom, nb, item, Nom_recu))
                         sql.add(PlayerID, "give", 1, "statgems")
                         sql.add(PlayerID, "give | nb items", nb, "statgems")
-                        sql.add(PlayerID, "give | item {}".format(item), nb, "statgems")
+                        sql.add(PlayerID, "give | item | {}".format(item), nb, "statgems")
                     else:
                         desc = lang_P.forge_msg(lang, "give", [Nom_recu], False, 4)
                 else:
@@ -1146,7 +1146,7 @@ def forge(param):
                             if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(PlayerID, c.item2, "inventory") >= nb2 and sql.valueAtNumber(PlayerID, c.item3, "inventory") >= nb3 and sql.valueAtNumber(PlayerID, c.item4, "inventory") >= nb4:
                                 sql.add(PlayerID, "forge", 1, "statgems")
                                 sql.add(PlayerID, "forge | nb items", nb, "statgems")
-                                sql.add(PlayerID, "forge | item {}".format(c.nom), nb, "statgems")
+                                sql.add(PlayerID, "forge | item | {}".format(c.nom), nb, "statgems")
                                 sql.add(PlayerID, c.nom, nb, "inventory")
                                 sql.add(PlayerID, c.item1, -1*nb1, "inventory")
                                 sql.add(PlayerID, c.item2, -1*nb2, "inventory")
@@ -1177,7 +1177,7 @@ def forge(param):
                             if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(PlayerID, c.item2, "inventory") >= nb2 and sql.valueAtNumber(PlayerID, c.item3, "inventory") >= nb3:
                                 sql.add(PlayerID, "forge", 1, "statgems")
                                 sql.add(PlayerID, "forge | nb items", nb, "statgems")
-                                sql.add(PlayerID, "forge | item {}".format(c.nom), nb, "statgems")
+                                sql.add(PlayerID, "forge | item | {}".format(c.nom), nb, "statgems")
                                 sql.add(PlayerID, c.nom, nb, "inventory")
                                 sql.add(PlayerID, c.item1, -1*nb1, "inventory")
                                 sql.add(PlayerID, c.item2, -1*nb2, "inventory")
@@ -1204,7 +1204,7 @@ def forge(param):
                             if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1 and sql.valueAtNumber(PlayerID, c.item2, "inventory") >= nb2:
                                 sql.add(PlayerID, "forge", 1, "statgems")
                                 sql.add(PlayerID, "forge | nb items", nb, "statgems")
-                                sql.add(PlayerID, "forge | item {}".format(c.nom), nb, "statgems")
+                                sql.add(PlayerID, "forge | item | {}".format(c.nom), nb, "statgems")
                                 sql.add(PlayerID, c.nom, nb, "inventory")
                                 sql.add(PlayerID, c.item1, -1*nb1, "inventory")
                                 sql.add(PlayerID, c.item2, -1*nb2, "inventory")
@@ -1227,7 +1227,7 @@ def forge(param):
                             if sql.valueAtNumber(PlayerID, c.item1, "inventory") >= nb1:
                                 sql.add(PlayerID, "forge", 1, "statgems")
                                 sql.add(PlayerID, "forge | nb items", nb, "statgems")
-                                sql.add(PlayerID, "forge | item {}".format(c.nom), nb, "statgems")
+                                sql.add(PlayerID, "forge | item | {}".format(c.nom), nb, "statgems")
                                 sql.add(PlayerID, c.nom, nb, "inventory")
                                 sql.add(PlayerID, c.item1, -1*nb1, "inventory")
                                 desc = lang_P.forge_msg(lang, "forge", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}"], False, 0)

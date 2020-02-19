@@ -237,13 +237,13 @@ def loadItem(F = None):
 
     global objetOutil
     objetOutil = [
-        Outil("pickaxe", itemBourse("pickaxe", "vente"), itemBourse("pickaxe", "achat"), 15, 75, ""),
-        Outil("shovel", itemBourse("shovel", "vente"), itemBourse("shovel", "achat"), 10, 35, ""),
         Outil("fishingrod", itemBourse("fishingrod", "vente"), itemBourse("fishingrod", "achat"), 25, 100, ""),
 
+        Outil("pickaxe", itemBourse("pickaxe", "vente"), itemBourse("pickaxe", "achat"), 15, 75, ""),
         Outil("iron_pickaxe", itemBourse("iron_pickaxe", "vente"), itemBourse("iron_pickaxe", "achat"), 70, 200, "forge"),
         Outil("diamond_pickaxe", itemBourse("diamond_pickaxe", "vente"), itemBourse("diamond_pickaxe", "achat"), 150, 450, "forge"),
 
+        Outil("shovel", itemBourse("shovel", "vente"), itemBourse("shovel", "achat"), 10, 35, ""),
         Outil("iron_shovel", itemBourse("iron_shovel", "vente"), itemBourse("iron_shovel", "achat"), 60, 100, "forge"),
         Outil("diamond_shovel", itemBourse("diamond_shovel", "vente"), itemBourse("diamond_shovel", "achat"), 120, 240, "forge"),
 
@@ -284,24 +284,6 @@ def loadItem(F = None):
         Trophy("Gems 100M", "`Avoir 100 Millions`:gem:`gems`", "unique", 100000000),
         Trophy("Gems 500M", "`Avoir 500 Millions`:gem:`gems`", "unique", 500000000),
         Trophy("Le Milliard !!!", "`Avoir 1 Milliard`:gem:`gems`", "unique", 1000000000)
-    ]
-
-    # ========== Statistiques affiché dans info ==========
-    class StatGems:
-
-        def __init__(self, nom, desc):
-            self.nom = nom
-            self.desc = desc
-
-    global objetStat
-    objetStat = [
-        StatGems("DiscordCop Arrestation", "`Nombre d'arrestation par la DiscordCop`"),
-        StatGems("DiscordCop Amende", "`Nombre d'ammende recue par la DiscordCop`"),
-
-        StatGems("gamble | win", "`Nombre de gamble gagné`"),
-        StatGems("Super Jackpot :seven::seven::seven:", "`Nombre de super jackpot gagné sur la machine à sous`"),
-        StatGems("Mineur de Merveilles", "`Nombre de ruby trouvé`"),
-        StatGems("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`")
     ]
 
     # ========== Loot Box ==========
@@ -557,18 +539,18 @@ def gift(PlayerID, lang):
 def lootbox(PlayerID, lang):
     desc = ""
 
-    D = r.randint(0, 40)
-    if D < 1:
+    D = r.randint(-40, 40)
+    if D == 0:
         sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
-        sql.add(PlayerID, "lootbox legendary | gain", 1, "statgems")
+        sql.add(PlayerID, "lootbox | legendary | gain", 1, "statgems")
         desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 2)
-    elif D > 38:
+    elif (D == 10) or (D == -10):
         sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
-        sql.add(PlayerID, "lootbox rare | gain", 1, "statgems")
+        sql.add(PlayerID, "lootbox |  rare | gain", 1, "statgems")
         desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 1)
-    elif D > 17 and D < 22:
+    elif (D >= 29 and D <= 31) or (D >= -31 and D <= -29):
         sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
-        sql.add(PlayerID, "lootbox common | gain", 1, "statgems")
+        sql.add(PlayerID, "lootbox | common | gain", 1, "statgems")
         desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 0)
 
     return desc
