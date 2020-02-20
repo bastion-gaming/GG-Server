@@ -961,7 +961,7 @@ def pay(param):
     """**[Nom_recu] [gain]** | Donner de l'argent à vos amis !"""
     nom = param["nom"]
     gain = param["gain"]
-    ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["platform"]))
+    ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["name_pl"]))
     Nom_recu = param["Nom_recu"]
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
@@ -1009,7 +1009,7 @@ def give(param):
     nom = param["nom"]
     item = param["item"]
     nb = param["nb"]
-    ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["platform"]))
+    ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["name_pl"]))
     Nom_recu = param["Nom_recu"]
     ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
