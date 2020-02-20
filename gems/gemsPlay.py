@@ -1460,7 +1460,7 @@ def cooking(param):
                 msg.append(lang_P.forge_msg(lang, "cooking", None, False, 8))
                 return msg
         elif item == "chocolate":
-            if (jour.month == 12 and jour.day >= 14) or (jour.month == 1 and jour.day <= 5):
+            if (jour.month == 12 and jour.day >= 21) or (jour.month == 1 and jour.day <= 14):
                 gain = "cupcake"
                 nbitem = 8
                 couldown = GF.couldown_4h

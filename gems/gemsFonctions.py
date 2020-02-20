@@ -211,7 +211,7 @@ def loadItem(F = None):
     if not (jour.month == 10 and jour.day >= 22) or (jour.month == 11 and jour.day <= 10):
         for one in GI.ObjetHalloween:
             ObjetEventEnd.append(one)
-    if not (jour.month == 12 and jour.day >= 13) or (jour.month == 1 and jour.day <= 5):
+    if not (jour.month == 12 and jour.day >= 20) or (jour.month == 1 and jour.day <= 14):
         for one in GI.ObjetChristmas:
             ObjetEventEnd.append(one)
 
