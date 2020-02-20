@@ -186,7 +186,7 @@ def loadItem(F = None):
 
         Item("seed", itemBourse("seed", "vente"), itemBourse("seed", "achat"), 0.5, "plante"),
         Item("cacao", itemBourse("cacao", "vente"), itemBourse("cacao", "achat"), 1, "plante"),
-        Item("potato", itemBourse("potato", "vente"), itemBourse("potato", "achat"), 1, "consommable"),
+        Item("potato", itemBourse("potato", "vente"), itemBourse("potato", "achat"), 1, "plante"),
 
         Item("oak", itemBourse("oak", "vente"), itemBourse("oak", "achat"), 50, "plante"),
         Item("spruce", itemBourse("spruce", "vente"), itemBourse("spruce", "achat"), 70, "plante"),
@@ -524,13 +524,13 @@ def gift(PlayerID, lang):
     if (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):
         if nbgift > 0:
             sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
-            sql.add(PlayerID, ["boxes", "lootbox gift | gain"], nbgift, "statgems")
+            sql.add(PlayerID, ["boxes", "lootbox | gift | gain"], nbgift, "statgems")
             desc = lang_P.forge_msg(lang, "lootbox", [nbgift], False, 3)
 
     elif (jour.month == 12 and jour.day >= 30) or (jour.month == 1 and jour.day <= 2):
         if nbgift > 0:
             sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
-            sql.add(PlayerID, ["boxes", "lootbox gift | gain"], nbgift, "statgems")
+            sql.add(PlayerID, ["boxes", "lootbox | gift | gain"], nbgift, "statgems")
             desc = lang_P.forge_msg(lang, "lootbox", [nbgift], False, 4)
 
     return desc
@@ -542,15 +542,15 @@ def lootbox(PlayerID, lang):
     D = r.randint(-40, 40)
     if D == 0:
         sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
-        sql.add(PlayerID, ["boxes", "lootbox | legendary | gain"], 1, "statgems")
+        sql.add(PlayerID, ["boxes", "lootbox | legendary gems | gain"], 1, "statgems")
         desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 2)
     elif (D == 10) or (D == -10):
         sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
-        sql.add(PlayerID, ["boxes", "lootbox |  rare | gain"], 1, "statgems")
+        sql.add(PlayerID, ["boxes", "lootbox |  rare gems | gain"], 1, "statgems")
         desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 1)
     elif (D >= 29 and D <= 31) or (D >= -31 and D <= -29):
         sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
-        sql.add(PlayerID, ["boxes", "lootbox | common | gain"], 1, "statgems")
+        sql.add(PlayerID, ["boxes", "lootbox | common gems | gain"], 1, "statgems")
         desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 0)
 
     return desc

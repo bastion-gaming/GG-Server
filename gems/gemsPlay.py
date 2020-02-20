@@ -204,7 +204,7 @@ def bank_saving(PlayerID, lang, ARG, ARG2, Taille):
                 sql.add(PlayerID, "solde", int(nbgm), "bank")
                 desc += lang_P.forge_msg(lang, "bank", [soldeMax], False, 11)
             desc += lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 7)
-            sql.add(PlayerID, ["bank", "bank | saving"], 1, "statgems")
+            sql.add(PlayerID, ["bank", "bank saving"], 1, "statgems")
             sql.add(PlayerID, ["bank", "bank | saving | gain"], int(soldeAdd), "statgems")
             # =====================================
             # Bonus
@@ -589,7 +589,7 @@ def dig(param):
                     nbrand = r.randint(0, 4)
                 elif nbrand <= int(nbMax*(0.95)):
                     add_item = "potato"
-                    nbrand = r.randint(0, 3)
+                    nbrand = r.randint(1, 4)
                 else:
                     nbrand = 0
 
@@ -831,7 +831,7 @@ def slots(param):
         # Ruby (hyper rare)
         if result[3] == "ruby" or result[4] == "ruby" or result[5] == "ruby":
             sql.add(PlayerID, "ruby", 1, "inventory")
-            sql.add(PlayerID, ["slots", "slots | Mineur de Merveilles"], 1, "statgems")
+            sql.add(PlayerID, ["slots", "slots | Ruby"], 1, "statgems")
             # sql.add(PlayerID, "Mineur de Merveilles", 1, "trophy")
             gain = 16
             desc += lang_P.forge_msg(lang, "slots", ["{idmoji[gem_ruby]}"], False, 1)
@@ -864,7 +864,7 @@ def slots(param):
         # ===================================================================
         # Beer
         elif (result[3] == "beer" and result[4] == "beer") or (result[4] == "beer" and result[5] == "beer") or (result[3] == "beer" and result[5] == "beer"):
-            sql.add(PlayerID, ["slots", "slots | La Squellitude"], 1, "statgems")
+            sql.add(PlayerID, ["slots", "slots | Beer"], 1, "statgems")
             # sql.add(PlayerID, "La Squelatitude", 1, "trophy")
             gain = 5
             desc += lang_P.forge_msg(lang, "slots", [param["ID"]], False, 3)
@@ -907,7 +907,7 @@ def slots(param):
             if GF.testInvTaille(PlayerID):
                 desc += lang_P.forge_msg(lang, "slots", [nbCookie], False, 4)
                 sql.add(PlayerID, "cookie", nbCookie, "inventory")
-                sql.add(PlayerID, ["slots", "slots | cookie"], nbCookie, "statgems")
+                sql.add(PlayerID, ["slots", "slots | Cookie"], nbCookie, "statgems")
             else:
                 desc += lang_P.forge_msg(lang, "slots", None, False, 5)
             GF.lootbox(PlayerID, lang)
@@ -924,14 +924,14 @@ def slots(param):
             if GF.testInvTaille(PlayerID):
                 desc += lang_P.forge_msg(lang, "slots", [nbGrapes], False, 6)
                 sql.add(PlayerID, "grapes", nbGrapes, "inventory")
-                sql.add(PlayerID, ["slots", "slots | grapes"], nbGrapes, "statgems")
+                sql.add(PlayerID, ["slots", "slots | Grapes"], nbGrapes, "statgems")
             else:
                 desc += lang_P.forge_msg(lang, "slots", None, False, 5)
         # ===================================================================
         # Backpack (hyper rare)
         if result[3] == "backpack" or result[4] == "backpack" or result[5] == "backpack":
             sql.add(PlayerID, "backpack", 1, "inventory")
-            sql.add(PlayerID, ["slots", "slots | backpack"], 1, "statgems")
+            sql.add(PlayerID, ["slots", "slots | Backpack"], 1, "statgems")
             p = 0
             for c in GF.objetItem:
                 if c.nom == "backpack":
@@ -945,6 +945,7 @@ def slots(param):
         if gain != 0 and gain != 1:
             if prix > 400:
                 desc += lang_P.forge_msg(lang, "slots", [prix], False, 8)
+                sql.add(PlayerID, ["slots", "slots | gain"], prix, "statgems")
             elif prix > 0:
                 desc += lang_P.forge_msg(lang, "slots", [prix], False, 9)
                 sql.add(PlayerID, ["slots", "slots | gain"], prix, "statgems")
@@ -1066,6 +1067,9 @@ def hothouse(param):
     arg2 = param["arg2"]
     msg = []
     desc = ""
+    jour = dt.date.today()
+    if not ((jour.month == 10 and jour.day >= 23) and (jour.month == 11 and jour.day <= 10)): # Special Halloween
+        arg = "None"
 
     maxplanting = 50
     if sql.spam(PlayerID, GF.couldown_4s, "hothouse", "gems"):
@@ -1095,7 +1099,7 @@ def hothouse(param):
                 else:
                     valueTime = 0
                     valueItem = ""
-                if valueItem == "cacao":
+                if valueItem == "pumpkin":
                     couldown = GF.couldown_4h
                 else:
                     couldown = GF.couldown_6h
@@ -1107,46 +1111,25 @@ def hothouse(param):
                     time = PlantingTime - (InstantTime-couldown)
                     if time <= 0:
                         De = r.randint(1, 15)
-                        jour = dt.date.today()
                         if valueItem == "seed" or valueItem == "":
-                            if (jour.month == 10 and jour.day >= 23) or (jour.month == 11 and jour.day <= 10): # Special Halloween
-                                if De <= 2:
-                                    nbHarvest = r.randint(1, 2)
-                                    item = "oak"
-                                elif De > 2 and De <= 7:
-                                    nbHarvest = r.randint(2, 4)
-                                    item = "pumpkin"
-                                elif De > 7 and De <= 10:
-                                    nbHarvest = r.randint(1, 2)
-                                    item = "spruce"
-                                elif De > 10 and De <= 12:
-                                    nbHarvest = r.randint(1, 2)
-                                    item = "palm"
-                                elif De > 12 and De <= 14:
-                                    nbHarvest = r.randint(4, 10)
-                                    item = "wheat"
-                                elif De > 14:
-                                    nbHarvest = r.randint(6, 12)
-                                    item = "grapes"
-                            else:
-                                if De <= 5:
-                                    nbHarvest = r.randint(1, 2)
-                                    item = "oak"
-                                elif De > 5 and De <= 9:
-                                    nbHarvest = r.randint(1, 2)
-                                    item = "spruce"
-                                elif De > 9 and De <= 12:
-                                    nbHarvest = r.randint(1, 2)
-                                    item = "palm"
-                                elif De > 12 and De <= 14:
-                                    nbHarvest = r.randint(4, 10)
-                                    item = "wheat"
-                                elif De > 14:
-                                    nbHarvest = r.randint(6, 12)
-                                    item = "grapes"
-                        elif valueItem == "cacao":
+                            if De <= 5:
+                                nbHarvest = r.randint(1, 2)
+                                item = "oak"
+                            elif De > 5 and De <= 9:
+                                nbHarvest = r.randint(1, 2)
+                                item = "spruce"
+                            elif De > 9 and De <= 12:
+                                nbHarvest = r.randint(1, 2)
+                                item = "palm"
+                            elif De > 12 and De <= 14:
+                                nbHarvest = r.randint(4, 10)
+                                item = "wheat"
+                            elif De > 14:
+                                nbHarvest = r.randint(6, 12)
+                                item = "grapes"
+                        elif valueItem == "pumpkin":
                             nbHarvest = r.randint(1, 4)
-                            item = "chocolate"
+                            item = "pumpkin"
                         data = []
                         data.append(0)
                         data.append("")
@@ -1176,7 +1159,19 @@ def hothouse(param):
                         time = time - timeH * 3600
                         timeM = int(time / 60)
                         timeS = int(time - timeM * 60)
-                        desc = lang_P.forge_msg(lang, "hothouse", [timeH, timeM, timeS, valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 4)
+                        if timeM <= 30:
+                            if timeH % 12 == 0:
+                                cl = "12"
+                            else:
+                                cl = timeH % 12
+                            cl = "clock{0}30".format(cl)
+                        else:
+                            if timeH % 12 == 0:
+                                cl = "12"
+                            else:
+                                cl = (timeH % 12)+1
+                            cl = "clock{0}".format(cl)
+                        desc = lang_P.forge_msg(lang, "hothouse", [timeH, timeM, timeS, valueItem, "{idmoji[gem_" + valueItem + "]}", cl], False, 4)
                 msg.append("{}".format(i))
                 msg.append(desc)
                 i += 1
@@ -1188,7 +1183,7 @@ def hothouse(param):
                 msg.append("NOK")
                 msg.append(desc)
                 return msg
-            if arg != "seed" and arg != "cacao":
+            if arg != "seed" and arg != "pumpkin":
                 arg = "seed"
             if arg2 != "None":
                 try:
@@ -1219,7 +1214,7 @@ def hothouse(param):
                 else:
                     valueTime = 0
                     valueItem = ""
-                if valueItem == "cacao":
+                if valueItem == "pumpkin":
                     couldown = ":clock4:`4h`"
                 else:
                     couldown = ":clock6:`6h`"
@@ -1258,10 +1253,10 @@ def hothouse(param):
                         valueTime = 0
                         valueItem = ""
                     PlantingItemValue = sql.valueAtNumber(PlayerID, arg, "inventory")
-                    if valueItem == "cacao" or (valueItem == "" and arg == "cacao"):
-                        couldown = "4h"
+                    if valueItem == "pumpkin" or (valueItem == "" and arg == "pumpkin"):
+                        couldown = ":clock4:`4h`"
                     else:
-                        couldown = "6h"
+                        couldown = ":clock6:`6h`"
                     if valueTime == 0:
                         if PlantingItemValue >= 1:
                             data = []
@@ -1276,7 +1271,7 @@ def hothouse(param):
                             if j == 0:
                                 j = -1
                                 if arg == "seed":
-                                    arg = "cacao"
+                                    arg = "pumpkin"
                                 else:
                                     arg = "seed"
                     else:
@@ -1410,11 +1405,23 @@ def ferment(param):
                     time = time - timeH * 3600
                     timeM = int(time / 60)
                     timeS = int(time - timeM * 60)
+                    if timeM <= 30:
+                        if timeH % 12 == 0:
+                            cl = "12"
+                        else:
+                            cl = timeH % 12
+                        cl = "clock{0}30".format(cl)
+                    else:
+                        if timeH % 12 == 0:
+                            cl = "12"
+                        else:
+                            cl = (timeH % 12)+1
+                        cl = "clock{0}".format(cl)
                     if valueItem == "grapes":
                         desc = lang_P.forge_msg(lang, "ferment", [valueItem], False, 5)
                     else:
                         desc = lang_P.forge_msg(lang, "ferment", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 6)
-                    desc += lang_P.forge_msg(lang, "ferment", [timeH, timeM, timeS], False, 8)
+                    desc += lang_P.forge_msg(lang, "ferment", [timeH, timeM, timeS, cl], False, 8)
             msg.append("{}".format(i))
             msg.append(desc)
             i += 1
@@ -1444,7 +1451,6 @@ def cooking(param):
     if sql.spam(PlayerID, GF.couldown_4s, "cooking", "gems"):
         if item == "pumpkin":
             if (jour.month == 10 and jour.day >= 26) or (jour.month == 11 and jour.day <= 10):
-                item = "pumpkin"
                 gain = "pumpkinpie"
                 nbitem = 12
                 couldown = GF.couldown_2h
@@ -1455,21 +1461,24 @@ def cooking(param):
                 return msg
         elif item == "chocolate":
             if (jour.month == 12 and jour.day >= 14) or (jour.month == 1 and jour.day <= 5):
-                item = "chocolate"
                 gain = "cupcake"
                 nbitem = 8
-                couldown = GF.couldown_2h
-                couldownMsg = ":clock2:`2h`"
+                couldown = GF.couldown_4h
+                couldownMsg = ":clock4:`4h`"
             else:
                 msg.append("NOK")
                 msg.append(lang_P.forge_msg(lang, "cooking", None, False, 9))
                 return msg
         elif item == "potato":
-            item = "potato"
             gain = "fries"
             nbitem = 6
             couldown = GF.couldown_3h
             couldownMsg = ":clock3:`3h`"
+        elif item == "cacao":
+            gain = "chocolate"
+            nbitem = 4
+            couldown = GF.couldown_2h
+            couldownMsg = ":clock2:`2h`"
         elif item != "None":
             msg.append("NOK")
             msg.append(lang_P.forge_msg(lang, "cooking", None, False, 7))
@@ -1504,11 +1513,15 @@ def cooking(param):
                 elif valueItem == "chocolate":
                     gain = "cupcake"
                     nbgain = r.randint(1, 4)
-                    couldown = GF.couldown_2h
+                    couldown = GF.couldown_4h
                 elif valueItem == "potato":
                     gain = "fries"
                     nbgain = r.randint(1, 5)
                     couldown = GF.couldown_3h
+                elif valueItem == "cacao":
+                    gain = "chocolate"
+                    nbgain = r.randint(1, 5)
+                    couldown = GF.couldown_2h
 
                 CookedTime = float(valueTime)
                 InstantTime = t.time()
@@ -1540,8 +1553,20 @@ def cooking(param):
                     time = time - timeH * 3600
                     timeM = int(time / 60)
                     timeS = int(time - timeM * 60)
+                    if timeM <= 30:
+                        if timeH % 12 == 0:
+                            cl = "12"
+                        else:
+                            cl = timeH % 12
+                        cl = "clock{0}30".format(cl)
+                    else:
+                        if timeH % 12 == 0:
+                            cl = "12"
+                        else:
+                            cl = (timeH % 12)+1
+                        cl = "clock{0}".format(cl)
                     desc = lang_P.forge_msg(lang, "cooking", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 2)
-                    desc += lang_P.forge_msg(lang, "cooking", [timeH, timeM, timeS], False, 3)
+                    desc += lang_P.forge_msg(lang, "cooking", [timeH, timeM, timeS, cl], False, 3)
             else:
                 if valueTime == 0:
                     if cookingItem >= nbitem:
@@ -1559,6 +1584,8 @@ def cooking(param):
                             gain = "cupcake"
                         elif item == "potato":
                             gain = "fries"
+                        elif item == "cacao":
+                            gain = "chocolate"
                         desc = lang_P.forge_msg(lang, "cooking", [item, "{idmoji[gem_" + item + "]}", gain, "{idmoji[gem_" + gain + "]}", nbitem], False, 5)
                 else:
                     desc = lang_P.forge_msg(lang, "cooking", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 6)

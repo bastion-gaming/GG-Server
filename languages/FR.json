@@ -156,14 +156,14 @@
       "Cette plantation est vide!",
       "Ta plantation à fini de pousser, en la coupant tu gagnes {2} :{1}:`{1}`",
       "Ta plantation à fini de pousser, en la coupant tu gagnes {2} <:gem_{1}:{0}>`{1}`",
-      "<:gem_{3}:{4}>`{3}` | Ta plantation aura fini de pousser dans :clock2:`{0}h {1}m {2}s`",
+      "<:gem_{3}:{4}>`{3}` | Ta plantation aura fini de pousser dans :{5}:`{0}h {1}m {2}s`",
       "Plantations endommagées! Un violent orage :cloud_lightning: à détruit tes plantations\nTes plantations seront réparrées au plus vite",
       "Veuillez indiquer un numéro de plantation valide",
       "Tu n'as pas assez de plantations ou cette plantation n'est pas disponible!",
       "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans {2}",
       "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire",
       "Tu as déjà planté une <:gem_{0}:{1}>`{0}` dans cette plantation",
-      "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans :clock2:`{2}`",
+      "<:gem_{0}:{1}>`{0}` plantée. Elle aura fini de pousser dans {2}",
       "Tu n'as pas de <:gem_{0}:{1}>`{0}` à planter dans ton inventaire",
       "Tu as déjà planté une <:gem_{0}:{1}>`{0}` dans cette plantation",
       "Fonction inconnu"
@@ -171,21 +171,21 @@
   "ferment":
     [
       "Ce barril est vide.",
-      "Ton barril a été rempli de :{0}:`{0}`. L'alcool aura fini de fermenter dans :clock2:`{1}`",
-      "Ton barril a été rempli de <:gem_{0}:{1}>`{0}`. L'alcool aura fini de fermenter dans :clock2:`{2}`",
+      "Ton barril a été rempli de :{0}:`{0}`. L'alcool aura fini de fermenter dans {1}",
+      "Ton barril a été rempli de <:gem_{0}:{1}>`{0}`. L'alcool aura fini de fermenter dans {2}",
       "Tu n'as pas assez de :{0}:`{0}` dans ton inventaire! \nIl te faut {2} :{0}:`{0}` pour faire des :{1}:`{1}`",
       "Tu n'as pas assez de <:gem_{0}:{1}>`{0}` dans ton inventaire! \nIl te faut {3} <:gem_{0}:{1}>`{0}` pour faire des :{2}:`{2}`",
       "Fermentation de :{0}:`{0}` en cours.",
       "Fermentation de <:gem_{0}:{1}>`{0}` en cours.",
       "Ton alcool à fini de fermenter, en ouvrant le barril tu gagnes {2} :{0}:`{0}`",
-      "Ton alcool aura fini de fermenter dans :clock2:`{0}h {1}m {2}s`"
+      "Ton alcool aura fini de fermenter dans :{3}:`{0}h {1}m {2}s`"
     ],
   "cooking":
     [
       "Ce four est vide.",
       "Ton plat à fini de cuire, en le sortant du four tu gagnes",
       "Cuisson de <:gem_{0}:{1}>`{0}` en cours.",
-      "Ton plat aura fini de cuir dans :clock2:`{0}h {1}m {2}s`",
+      "Ton plat aura fini de cuir dans :{3}:`{0}h {1}m {2}s`",
       "Ton plat a été mis au four. Il aura fini de cuire dans {0}",
       "Tu n'as pas assez de <:gem_{0}:{1}>`{0}` dans ton inventaire! \nIl te faut {4} <:gem_{0}:{1}>`{0}` pour faire des <:gem_{2}:{3}>`{2}`",
       "Cuisson de <:gem_{0}:{1}>`{0}` en cours.",

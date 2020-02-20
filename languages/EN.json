@@ -156,14 +156,14 @@
         "This plantation is empty !",
         "Your plantation has finished growing, if you cut it down you earn {2} :{1}:`{1}`",
         "Your plantation has finished growing, if you cut it down you earn {2} <:gem_{1}:{0}>`{1}`",
-        "<:gem_{3}:{4}>`{3}` | Your plantation will be finished growing in :clock2:`{0}h {1}m {2}s`",
+        "<:gem_{3}:{4}>`{3}` | Your plantation will be finished growing in :{5}:`{0}h {1}m {2}s`",
         "Plantations damaged! A violent storm :cloud_lightning: destroyed your plantations.\n Your plantations will be repaired as soon as possible",
         "Please indicate a valid plantation number",
         "You don't have enough plantations or this plantation isn't available!",
         "<:gem_{0}:{1}>`{0}` planted. It will be finished growing in {2}",
         "You don't have <:gem_{0}:{1}>`{0}` to plant in your inventory",
         "You've already planted one <:gem_{0}:{1}>`{0}` in this plantation",
-        "<:gem_{0}:{1}>`{0}` planted. It will be finished growing in :clock2:`{2}`",
+        "<:gem_{0}:{1}>`{0}` planted. It will be finished growing in {2}",
         "You don't have <:gem_{0}:{1}>`{0}` to plant in your inventory",
         "You've already planted one <:gem_{0}:{1}>`{0}` in this plantation",
         "Unknown function"
@@ -171,21 +171,21 @@
     "ferment":
       [
         "This barrel is empty.",
-        "Your barrel has been filled with :{0}:`{0}`. The alcohol will be finished fermenting in :clock2:`{1}`",
-        "Your barrel has been filled with <:gem_{0}:{1}>`{0}`. The alcohol will be finished fermenting in :clock2:`{2}`",
+        "Your barrel has been filled with :{0}:`{0}`. The alcohol will be finished fermenting in {1`",
+        "Your barrel has been filled with <:gem_{0}:{1}>`{0}`. The alcohol will be finished fermenting in {2}",
         "You don't have enough :{0}:`{0}` in your inventory! \nYou need {2} :{0}:`{0}`for make :{1}:`{1}`",
         "You don't have enough <:gem_{0}:{1}>`{0}` in your inventory! \nYou need {3} <:gem_{0}:{1}>`{0}` for make :{2}:`{2}`",
         "Fermentation of :{0}:`{0}` in progress.",
         "Fermentation of <:gem_{0}:{1}>`{0}` in progress.",
         "Your alcohol has finished fermenting, opening the barrel you win {2}:{0}:`{0}",
-        "Your alcohol will be finished fermenting in:clock2:`{0}h {1}m {2}s`"
+        "Your alcohol will be finished fermenting in:{3}:`{0}h {1}m {2}s`"
       ],
     "cooking":
       [
         "This oven is empty.",
         "Your dish has finished cooking, when you take it out of the oven you win",
         "Cooking of <:gem_{0}:{1}>`{0}` en cours.",
-        "Your dish will be done in :clock2:`{0}h {1}m {2}s`",
+        "Your dish will be done in :{3}:`{0}h {1}m {2}s`",
         "Your dish has been put in the oven. It'll be done baking in {0}",
         "You don't have enough <:gem_{0}:{1}>`{0}` in your inventory ! \nYou need {4} <:gem_{0}:{1}>`{0}` to make <:gem_{2}:{3}>`{2}`",
         "Cooking of <:gem_{0}:{1}>`{0}` in progress.",
