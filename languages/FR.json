@@ -258,5 +258,19 @@
       "Bravo, tu as réussi à forger {0} <:gem_{1}:{2}>`{1}`!",
       "Il te manque {0} <:gem_{1}:{2}>`{1}`\n",
       "Aucun recette disponible pour forger cette item !"
+    ],
+  "success desc":
+    [
+      "Avoir 500 :gem:gems",
+      "Avoir 1k :gem:gems",
+      "Avoir 5k :gem:gems",
+      "Avoir 50k :gem:gems",
+      "Avoir 200k :gem:gems",
+      "Avoir 500k :gem:gems",
+      "Avoir 1 Million :gem:gems",
+      "Avoir 10 Millions :gem:gems",
+      "Avoir 100 Millions :gem:gems",
+      "Avoir 500 Millions :gem:gems",
+      "Avoir 1 Milliard :gem:gems"
     ]
 }

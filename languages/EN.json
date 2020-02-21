@@ -258,5 +258,19 @@
         "Bravo, you've managed to forge {0} <:gem_{1}:{2}>`{1}`!",
         "You're missing {0} <:gem_{1}:{2}>`{1}`\n",
         "No recipes available to forge this item !"
+      ],
+    "success desc":
+      [
+        "Have 500 :gem:gems",
+        "Have 1k :gem:gems",
+        "Have 5k :gem:gems",
+        "Have 50k :gem:gems",
+        "Have 200k :gem:gems",
+        "Have 500k :gem:gems",
+        "Have 1 Million :gem:gems",
+        "Have 10 Millions :gem:gems",
+        "Have 100 Millions :gem:gems",
+        "Have 500 Millions :gem:gems",
+        "Have 1 Billion :gem:gems"
       ]
 }

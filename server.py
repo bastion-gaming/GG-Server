@@ -51,7 +51,7 @@ while check:
     print("\n•••••\nReceived request: %s" % message)
 
     if message["name_c"] == "connect":
-        print("Le bot : " + message["name_pl"] + " est connecté")
+        print(">>> " + message["name_pl"] + " est connecté")
         socket.send_string('1')
     elif message["name_c"] == "stop":
         print("Arret de GG Serveur ...")

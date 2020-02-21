@@ -387,7 +387,7 @@ def taille(nameDB):
 # Fonctions
 # ===============================================================================
 # Liste des tables dont l'enregistrement des données est spécifique
-nameDBexcept = ["inventory", "durability", "hothouse", "cooking", "ferment", "statgems", "gems_com_time"]
+nameDBexcept = ["inventory", "durability", "hothouse", "cooking", "ferment", "statgems", "gems_com_time", "success"]
 
 
 # -------------------------------------------------------------------------------
@@ -425,6 +425,8 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
                         script = "UPDATE {0} SET Stock = '{2}' WHERE Item = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
                     elif x == "statgems":
                         script = "UPDATE {0} SET Stock = '{2}' WHERE Nom = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
+                    elif x == "success":
+                        script = "UPDATE {0} SET Stock = '{2}' WHERE idsuccess = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
                     elif x == "durability":
                         script = "UPDATE {0} SET Durability = '{2}' WHERE Item = '{1}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
                     elif x == "gems_com_time":
@@ -486,6 +488,9 @@ def valueAt(PlayerID, fieldName, nameDB):
                     elif x == "statgems":
                         fieldName2 = "Nom"
                         fieldName3 = "Stock, Type, Nom"
+                    elif x == "success":
+                        fieldName2 = "idsuccess"
+                        fieldName3 = "Stock, idsuccess"
                     elif x == "hothouse":
                         fieldName2 = "idPlantation"
                         fieldName3 = "Time, Plante, idPlantation"
@@ -680,6 +685,9 @@ def add(PlayerID, nameElem, nbElem, nameDB):
             elif nameDB == "statgems":
                 data = "idgems, Type, Nom, Stock"
                 values = "'{3}', '{0}', '{1}', '{2}'".format(nameElem[0], nameElem[1], nbElem, PlayerID)
+            elif nameDB == "success":
+                data = "idgems, idsuccess, Stock"
+                values = "'{2}', '{0}', '{1}'".format(nameElem, nbElem, PlayerID)
         try:
             script = "INSERT INTO {0} ({1}) VALUES ({2})".format(nameDB, data, values)
             # print("==== add ====")

@@ -1270,7 +1270,6 @@ def lang(param):
     if ID == "Error 404":
         msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
     langlist = ["EN", "FR"]
     langue = param["langue"].upper()
@@ -1289,31 +1288,6 @@ def lang(param):
         else:
             msg.append("NOK")
             msg.append(lang_P.forge_msg(lang, "lang", None, False, 1))
-    return msg
-
-
-def stats(param):
-    nom = param["nom"]
-    if nom != "None":
-        nom = sql.nom_ID(nom)
-        ID = sql.get_SuperID(nom, param["name_pl"])
-    else:
-        ID = sql.get_SuperID(param["ID"], param["name_pl"])
-    lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
-    msg = []
-    desc = sql.valueAt(PlayerID, "all", "statgems")
-    if desc != 0:
-        msg.append("OK")
-        msg.append(lang)
-        for x in desc:
-            msg.append(str(x))
-    else:
-        msg.append("NOK")
-        msg.append(lang)
     return msg
 
 
@@ -1375,76 +1349,3 @@ def stats(param):
 #     msg.append("OK")
 #     msg.append(desc)
 #     return msg
-
-
-# @commands.command(pass_context=True)
-# async def trophy(self, ctx, nom = None):
-#     """**[nom]** | Liste de vos trophées !"""
-#     ID = ctx.author.id
-#     if sql.spam(ID,GF.couldown_4s, "trophy", "gems"):
-#         if nom != None:
-#             ID = sql.nom_ID(nom)
-#             nom = ctx.guild.get_member(ID)
-#             nom = nom.name
-#         else:
-#             nom = ctx.author.name
-#         d_trophy = ":trophy:Trophées de {}\n\n".format(nom)
-#         #-------------------------------------
-#         # Récupération de la liste des trophées de ID
-#         # et attribution de nouveau trophée si les conditions sont rempli
-#         trophy = sql.valueAt(ID, "all", "trophy")
-#         for c in GF.objetTrophy:
-#             GF.testTrophy(ID, c.nom)
-#
-#         #-------------------------------------
-#         # Affichage des trophées possédés par ID
-#         for c in GF.objetTrophy:
-#             for x in trophy:
-#                 if c.nom == str(x[1]):
-#                     if int(x[0]) > 0:
-#                         d_trophy += "•**{}**\n".format(c.nom)
-#
-#         sql.updateComTime(ID, "trophy", "gems")
-#         msg = discord.Embed(title = "Trophées",color= 6824352, description = d_trophy)
-#         # Message de réussite dans la console
-#         print("Gems >> {} a affiché les trophées de {}".format(ctx.author.name,nom))
-#         await ctx.channel.send(embed = msg)
-#     else:
-#         msg = "Il faut attendre " + str(GF.couldown_4s) + " secondes entre chaque commande !"
-#         await ctx.channel.send(msg)
-#
-#
-#
-# @commands.command(pass_context=True)
-# async def trophylist(self, ctx):
-#     """Liste de tout les trophées disponibles !"""
-#     ID = ctx.author.id
-#     d_trophy = "Liste des :trophy:Trophées\n\n"
-#     if sql.spam(ID,GF.couldown_6s, "trophylist", "gems"):
-#         #-------------------------------------
-#         # Affichage des trophées standard
-#         for c in GF.objetTrophy:
-#             if c.type != "unique" and c.type != "special":
-#                 d_trophy += "**{}**: {}\n".format(c.nom, c.desc)
-#         d_trophy += "▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
-#         #-------------------------------------
-#         # Affichage des trophées spéciaux
-#         for c in GF.objetTrophy:
-#             if c.type != "unique" and c.type == "special":
-#                 d_trophy += "**{}**: {}\n".format(c.nom, c.desc)
-#         d_trophy += "▬▬▬▬▬▬▬▬▬▬▬▬▬\n"
-#         #-------------------------------------
-#         # Affichage des trophées uniques
-#         for c in GF.objetTrophy:
-#             if c.type == "unique" and c.type != "special":
-#                 d_trophy += "**{}**: {}\n".format(c.nom, c.desc)
-#
-#         sql.updateComTime(ID, "trophylist", "gems")
-#         msg = discord.Embed(title = "Trophées",color= 6824352, description = d_trophy)
-#         # Message de réussite dans la console
-#         print("Gems >> {} a affiché la liste des trophées".format(ctx.author.name))
-#         await ctx.channel.send(embed = msg)
-#     else:
-#         msg = "Il faut attendre " + str(GF.couldown_6s) + " secondes entre chaque commande !"
-#         await ctx.channel.send(msg)
-#

@@ -271,19 +271,7 @@ def loadItem(F = None):
 
         Trophy("Super Jackpot :seven::seven::seven:", "`Gagner le super jackpot sur la machine à sous`", "special", 0),
         Trophy("Mineur de Merveilles", "`Trouvez un ruby`", "special", 0),
-        Trophy("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`", "special", 0),
-
-        Trophy("Gems 500", "`Avoir 500`:gem:`gems`", "unique", 500),
-        Trophy("Gems 1k", "`Avoir 1k`:gem:`gems`", "unique", 1000),
-        Trophy("Gems 5k", "`Avoir 5k`:gem:`gems`", "unique", 5000),
-        Trophy("Gems 50k", "`Avoir 50k`:gem:`gems`", "unique", 50000),
-        Trophy("Gems 200k", "`Avoir 200k`:gem:`gems`", "unique", 200000),
-        Trophy("Gems 500k", "`Avoir 500k`:gem:`gems`", "unique", 500000),
-        Trophy("Gems 1M", "`Avoir 1 Million`:gem:`gems`", "unique", 1000000),
-        Trophy("Gems 10M", "`Avoir 10 Millions`:gem:`gems`", "unique", 10000000),
-        Trophy("Gems 100M", "`Avoir 100 Millions`:gem:`gems`", "unique", 100000000),
-        Trophy("Gems 500M", "`Avoir 500 Millions`:gem:`gems`", "unique", 500000000),
-        Trophy("Le Milliard !!!", "`Avoir 1 Milliard`:gem:`gems`", "unique", 1000000000)
+        Trophy("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`", "special", 0)
     ]
 
     # ========== Loot Box ==========

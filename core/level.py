@@ -1,5 +1,6 @@
 from DB import SQLite as sql
 from languages import lang as lang_P
+from gems import gemsSuccess as success
 
 # Un = 100 × (1.4)^n
 
@@ -26,6 +27,7 @@ def checklevel(ID):
     PlayerID = sql.get_PlayerID(ID, "gems")
     # print(PlayerID)
     msg = []
+    S = success.checkSuccess(PlayerID, lang)
     try:
         lvl = sql.valueAtNumber(PlayerID, "lvl", "gems")
         xp = sql.valueAtNumber(PlayerID, "xp", "gems")
@@ -45,6 +47,8 @@ def checklevel(ID):
         else:
             msg.append("Level OK")
         msg.append(desc)
+        if S != []:
+            msg.append(S)
     except:
         print("Level >> Le joueur n'existe pas.")
         msg.append("Level NOK")
