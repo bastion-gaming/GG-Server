@@ -259,6 +259,11 @@
         "You're missing {0} <:gem_{1}:{2}>`{1}`\n",
         "No recipes available to forge this item !"
       ],
+    "success":
+      [
+        "Bravo, you've completed the success **{0}**.",
+        "You win {0}"
+      ],
     "success desc":
       [
         "Have 500 :gem:gems",
@@ -271,6 +276,11 @@
         "Have 10 Millions :gem:gems",
         "Have 100 Millions :gem:gems",
         "Have 500 Millions :gem:gems",
-        "Have 1 Billion :gem:gems"
+        "Have 1 Billion :gem:gems",
+        "Broken {0} {1}",
+        "Mining {0} {1}",
+        "Find {0} {1}",
+        "Fishing {0} {1}",
+        ""
       ]
 }
