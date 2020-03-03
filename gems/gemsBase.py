@@ -145,6 +145,7 @@ def buy(param):
             desc = lang_P.forge_msg(lang, "DiscordCop Amende")
             sql.add(PlayerID, ["divers", "DiscordCop Amende"], 1, "statgems")
             msg.append("anticheat")
+            msg.append(lang)
             msg.append(desc)
             return msg
 
@@ -220,6 +221,7 @@ def buy(param):
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.nom)], nb, "statgems")
                             sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
                             msg.append("bank")
+                            msg.append(lang)
                             msg.append(desc)
                             return msg
                         else:
@@ -258,17 +260,16 @@ def buy(param):
             else:
                 msg.append("OK")
                 sql.add(PlayerID, ["buy", "buy"], 1, "statgems")
-            msg.append(desc)
 
             sql.updateComTime(PlayerID, "buy", "gems")
         else:
             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
             msg.append("NOK")
-            msg.append(desc)
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
-        msg.append(desc)
+    msg.append(lang)
+    msg.append(desc)
     return msg
 
 
@@ -349,11 +350,11 @@ def sell(param):
         sql.updateComTime(PlayerID, "sell", "gems")
         sql.add(PlayerID, ["sell", "sell"], 1, "statgems")
         msg.append("OK")
-        msg.append(desc)
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
-        msg.append(desc)
+        msg.append(lang)
+    msg.append(desc)
     return msg
 
 
@@ -1006,6 +1007,7 @@ def pay(param):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -1028,6 +1030,7 @@ def give(param):
     checkLB = False
     if item == "bank_upgrade":
         msg.append("NOK")
+        msg.append(lang)
         msg.append(lang_P.forge_msg(lang, "give", None, False, 0))
         return msg
         return False
@@ -1042,6 +1045,7 @@ def give(param):
                 desc = lang_P.forge_msg(lang, "DiscordCop Amende")
                 sql.add(PlayerID, ["divers", "DiscordCop Amende"], 1, "statgems")
                 msg.append("anticheat")
+                msg.append(lang)
                 msg.append(desc)
                 return msg
             elif nb > 0:
@@ -1118,6 +1122,7 @@ def give(param):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -1251,6 +1256,7 @@ def forge(param):
                                 nbmissing = (sql.valueAtNumber(PlayerID, c.item1, "inventory") - nb1)*-1
                                 desc = lang_P.forge_msg(lang, "forge", [nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}"], False, 1)
                         msg.append("OK")
+                        msg.append(lang)
                         msg.append(desc)
                         return msg
                     else:
@@ -1263,6 +1269,7 @@ def forge(param):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
+    msg.append(lang)
     msg.append(desc)
     return msg
 

@@ -82,7 +82,7 @@
       ],
     "daily":
       [
-        "Daily reward! You've won 100:gem:`gems`",
+        "You've won 100:gem:`gems`",
         "\nNew series: `{0}`, Bonus: {1} :gem:`gems`",
         "\nCongratulations for {0} consecutive days :confetti_ball:! You deserve {1}:gem:`gems`",
         "You've already received your daily reward today. Come back tomorrow to earn more :gem:`gems`"

@@ -55,6 +55,7 @@ def daily(param):
         desc = lang_P.forge_msg(lang, "daily", None, False, 0)
         lvl.addxp(PlayerID, 10, "gems")
     msg.append("OK")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -122,6 +123,7 @@ def bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
+        msg.append(lang)
         msg.append(desc)
     return msg
 
@@ -151,6 +153,7 @@ def bank_add(PlayerID, lang, ARG, ARG2, Taille):
                 elif soldeNew < 0:
                     desc = lang_P.forge_msg(lang, "bank", [solde], False, 5)
                     msg.append("NOK")
+                    msg.append(lang)
                     msg.append(desc)
                     return msg
                 nbgm = -1*ARG2
@@ -169,6 +172,7 @@ def bank_add(PlayerID, lang, ARG, ARG2, Taille):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -228,6 +232,7 @@ def bank_saving(PlayerID, lang, ARG, ARG2, Taille):
         timeS = int(time - timeM * 60)
         desc = lang_P.forge_msg(lang, "bank", [timeH, timeM, timeS], False, 12)
     msg.append("saving")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -290,6 +295,7 @@ def stealing(param):
             if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems"):
                 desc = lang_P.forge_msg(lang, "stealing", None, False, 4)
     msg.append("OK")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -342,6 +348,7 @@ def crime(param):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
         msg.append("couldown")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -367,6 +374,7 @@ def gamble(param):
         else :
             sql.addGems(PlayerID, -gems)
         msg.append("anticheat")
+        msg.append(lang)
         msg.append(desc)
         return msg
 
@@ -404,6 +412,7 @@ def gamble(param):
     else:
         desc = lang_P.forge_msg(lang, "gamble", None, False, 5)
         msg.append("NOK")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -456,6 +465,7 @@ def mine(param):
                     desc = lang_P.forge_msg(lang, "mine", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
                     sql.add(PlayerID, ["mine", "mine | broken | {}".format(outil)], 1, "statgems")
                     msg.append("OK")
+                    msg.append(lang)
                     msg.append(desc)
                     return msg
                 else :
@@ -520,6 +530,7 @@ def mine(param):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
         msg.append("couldown")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -572,6 +583,7 @@ def dig(param):
                     desc = lang_P.forge_msg(lang, "dig", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
                     sql.add(PlayerID, ["dig", "dig | broken | {}".format(outil)], 1, "statgems")
                     msg.append("OK")
+                    msg.append(lang)
                     msg.append(desc)
                     return msg
                 else :
@@ -620,6 +632,7 @@ def dig(param):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
         msg.append("couldown")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -670,6 +683,7 @@ def fish(param):
                     desc = lang_P.forge_msg(lang, "fish", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
                     sql.add(PlayerID, ["fish", "fish | broken | {}".format(outil)], 1, "statgems")
                     msg.append("OK")
+                    msg.append(lang)
                     msg.append(desc)
                     return msg
                 else :
@@ -729,6 +743,7 @@ def fish(param):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
         msg.append("couldown")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
@@ -756,6 +771,7 @@ def slots(param):
             else :
                 sql.addGems(PlayerID, -gems)
             msg.append("anticheat")
+            msg.append(lang)
             msg.append(desc)
             return msg
         elif int(imise) < 10:
@@ -967,6 +983,7 @@ def slots(param):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
         msg.append("couldown")
+    msg.append(lang)
     msg.append(desc)
     return msg
 
