@@ -9,7 +9,7 @@ from languages import lang as lang_P
 
 def begin(param):
     """Pour créer son compte joueur et obtenir son starter Kit!"""
-    msg = sql.newPlayer(param["ID"], "gems", param["name_pl"], param["lang"])
+    msg = sql.newPlayer(param["ID"], "gems", param["name_pl"], param["name"])
     SuperID = sql.get_SuperID(param["ID"], param["name_pl"])
     GF.startKit(SuperID)
     return msg

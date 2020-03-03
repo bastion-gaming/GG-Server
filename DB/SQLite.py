@@ -228,12 +228,13 @@ def userID(i, nameDB = None):
 
 
 # -------------------------------------------------------------------------------
-def newPlayer(ID, nameDB, platform, langue = "EN"):
+def newPlayer(ID, nameDB, platform, name = None):
     """
     Permet d'ajouter un nouveau joueur à la base de donnée en fonction de son ID.
 
     ID: int de l'ID du joueur
     """
+    langue = "EN"
     with open("DB/Templates/{}Template.json".format(nameDB), "r") as f:
         t = json.load(f)
     if nameDB == "gems":
@@ -246,7 +247,7 @@ def newPlayer(ID, nameDB, platform, langue = "EN"):
     cursor = conn.cursor()
     if SuperID == "Error 404":
         # Init du joueur avec les champs de base
-        script = "INSERT INTO IDs (ID_{1}, LANG) VALUES ({0}, 'EN')".format(ID, platform)
+        script = "INSERT INTO IDs (ID_{1}, LANG, Pseudo) VALUES ({0}, 'EN', '{2}')".format(ID, platform, name)
         cursor.execute(script)
         conn.commit()
         SuperID = get_SuperID(ID, platform)
@@ -298,12 +299,14 @@ def newPlayer(ID, nameDB, platform, langue = "EN"):
 
 
 # -------------------------------------------------------------------------------
-def newGuild(IDGuild):
+def newGuild(param):
     """
     Permet d'ajouter un nouveau serveur discord à la base de donnée en fonction de son ID.
 
     ID: int de l'ID du serveur
     """
+    IDGuild = param["IDGuild"]
+    name = param["name"]
     nameDB = "Guild"
     with open("DB/Templates/{}Template.json".format(nameDB), "r") as f:
         t = json.load(f)
@@ -317,6 +320,8 @@ def newGuild(IDGuild):
                 data += ", {}".format(x)
                 if x == "Lang":
                     values += ', "EN"'
+                elif x == "Name":
+                    values += ', "{0}"'.format(name)
                 elif "INTEGER" in t[x]:
                     values += ", 0"
                 else:

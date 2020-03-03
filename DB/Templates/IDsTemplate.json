@@ -6,5 +6,7 @@
   "ID_discord":
     "INTEGER",
   "ID_messenger":
-    "INTEGER"
+    "INTEGER",
+  "Pseudo":
+    "TEXT"
 }

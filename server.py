@@ -28,8 +28,8 @@ elif "sup" in flag:
 elif "type" in flag:
     print("SQL >> Un ou plusieurs type ont été modifié sur la DB.")
 
-sql.newPlayer(GF.idGetGems, "gems", "discord")
-sql.newPlayer(GF.idBaBot, "gems", "discord")
+sql.newPlayer(GF.idGetGems, "gems", "discord", "Get Gems")
+sql.newPlayer(GF.idBaBot, "gems", "discord", "BaBot")
 
 lang.init()
 
@@ -62,7 +62,7 @@ while check:
         ID = sql.get_SuperID(message["name_p"], platform)
         socket.send_string(gg.std_answer_command(message["name_c"], message["name_p"], message["name_pl"], lvl.checklevel(ID)))
     elif message["name_c"] == "NewServer":
-        NewServer = sql.newGuild(message["name_p"])
+        NewServer = sql.newGuild(message["param_c"])
         msg = []
         if NewServer == "Le serveur a été ajouté !":
             msg.append("OK")
