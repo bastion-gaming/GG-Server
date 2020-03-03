@@ -89,7 +89,7 @@
     ],
   "bank":
     [
-      "bank **bal** *[name]* | Permet de connaitre la balance d'un utilisateur",
+      "bank **bal** *[nom]* | Permet de connaitre la balance d'un utilisateur",
       "\nbank **add** *[+/- nombre]* | Permet d'ajouter ou d'enlever des :gem:`gems` de son compte épargne",
       "\nbank **saving** | Permet de calculer son épargne (utilisable toute les 4h)",
       "\n\nLe prix de la <:gem_{0}:{1}>`{0}` dépend du plafond du compte",
@@ -266,21 +266,23 @@
     ],
   "success desc":
     [
-      "Avoir 500 :gem:gems",
-      "Avoir 1k :gem:gems",
-      "Avoir 5k :gem:gems",
-      "Avoir 50k :gem:gems",
-      "Avoir 200k :gem:gems",
-      "Avoir 500k :gem:gems",
-      "Avoir 1 Million :gem:gems",
-      "Avoir 10 Millions :gem:gems",
-      "Avoir 100 Millions :gem:gems",
-      "Avoir 500 Millions :gem:gems",
-      "Avoir 1 Milliard :gem:gems",
-      "Casser {0} {1}",
-      "Miner {0} {1}",
-      "Trouver {0} {1}",
-      "Pêcher {0} {1}",
+      "Avoir 500 :gem:`gems`",
+      "Avoir 1k :gem:`gems`",
+      "Avoir 5k :gem:`gems`",
+      "Avoir 50k :gem:`gems`",
+      "Avoir 200k :gem:`gems`",
+      "Avoir 500k :gem:`gems`",
+      "Avoir 1 Million :gem:`gems`",
+      "Avoir 10 Millions :gem:`gems`",
+      "Avoir 100 Millions :gem:`gems`",
+      "Avoir 500 Millions :gem:`gems`",
+      "Avoir 1 Milliard :gem:`gems`",
+      "Casser {0} <:gem_{1}:{2}>`{1}`",
+      "Miner {0} <:gem_{1}:{2}>`{1}`",
+      "Trouver {0} <:gem_{1}:{2}>`{1}`",
+      "Pêcher {0} <:gem_{1}:{2}>`{1}`",
+      "Acheter {0} objets au marché.",
+      "Vendre {0} objets au marché.",
       ""
     ]
 }

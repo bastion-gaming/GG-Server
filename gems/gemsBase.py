@@ -27,7 +27,6 @@ def bal(param):
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
-        sql.add(PlayerID, ["bal", "bal"], 1, "statgems")
         msg.append("OK")
         msg.append(lang)
         if fct == "info":
@@ -99,7 +98,7 @@ def baltop(param):
             msg.append("OK")
             msg.append(lang)
             msg.append(baltop)
-            sql.add(PlayerID, ["baltop", "baltop"], 1, "statgems")
+            # sql.add(PlayerID, ["baltop", "baltop"], 1, "statgems")
         # elif filtre == "guild" or filtre == "guilde":
         #     GuildList = []
         #     i = 1
@@ -174,6 +173,7 @@ def buy(param):
                         if check:
                             sql.add(ID, c.nom, nb, "inventory")
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.nom)], nb, "statgems")
+                            sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
                             if c.type != "emoji":
                                 desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}"], False, 0)
                             else:
@@ -218,6 +218,7 @@ def buy(param):
                             sql.add(PlayerID, "SoldeMax", nb*c.poids, "bank")
                             desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}"], False, 0)
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.nom)], nb, "statgems")
+                            sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
                             msg.append("bank")
                             msg.append(desc)
                             return msg
@@ -225,6 +226,7 @@ def buy(param):
                             sql.add(PlayerID, c.nom, nb, "inventory")
                             desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}"], False, 0)
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.nom)], nb, "statgems")
+                            sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
                             if c.nom != "bank_upgrade":
                                 if sql.valueAtNumber(PlayerID, c.nom, "durability") == 0:
                                     sql.add(PlayerID, c.nom, c.durabilite, "durability")
@@ -241,10 +243,12 @@ def buy(param):
                             sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
                             desc = lang_P.forge_msg(lang, "buy", [nb, c.titre, "{idmoji[gem_lootbox]}"], False, 5)
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.titre)], nb, "statgems")
+                            sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
                         elif c.type == "spinelle" and sql.addSpinelles(PlayerID, prix) >= "0":
                             sql.add(PlayerID, "lootbox_{}".format(c.nom), nb, "inventory")
                             desc = lang_P.forge_msg(lang, "buy", [nb, c.titre], False, 6)
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.titre)], nb, "statgems")
+                            sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
                         else :
                             desc = lang_P.forge_msg(lang, "buy", [":gem:`gems`"], False, 2)
                         break
@@ -291,6 +295,7 @@ def sell(param):
                 if item == c.nom:
                     test = False
                     sql.add(PlayerID, ["sell", "sell | item | {}".format(c.nom)], nb, "statgems")
+                    sql.add(PlayerID, ["sell", "sell | total"], nb, "statgems")
                     gain = c.vente*nb
                     if c.type != "spinelle":
                         sql.addGems(PlayerID, gain)
@@ -317,6 +322,7 @@ def sell(param):
                         argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
                     desc = lang_P.forge_msg(lang, "sell", [nb, item, gain, "{idmoji[gem_" + c.nom + "]}", argent], False, 0)
                     sql.add(PlayerID, ["sell", "sell | item | {}".format(c.nom)], nb, "statgems")
+                    sql.add(PlayerID, ["sell", "sell | total"], nb, "statgems")
                     if nbItem == 1:
                         if sql.valueAt(PlayerID, item, "durability") != 0:
                             sql.add(PlayerID, item, -1, "durability")
@@ -364,7 +370,7 @@ def inv(param):
 
     if sql.spam(PlayerID, GF.couldown_4s, "inv", "gems"):
         if fct == "None" or fct == "principale" or fct == "main":
-            sql.add(PlayerID, ["inv", "inv"], 1, "statgems")
+            # sql.add(PlayerID, ["inv", "inv"], 1, "statgems")
             msg_inv = ""
             msg_invOutils = ""
             msg_invSpeciaux = ""

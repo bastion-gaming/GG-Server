@@ -281,6 +281,8 @@
         "Mining {0} {1}",
         "Find {0} {1}",
         "Fishing {0} {1}",
+        "Buy {0} items at the market.",
+        "Sell {0} items at the market.",
         ""
       ]
 }
