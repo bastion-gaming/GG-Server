@@ -176,9 +176,9 @@ def buy(param):
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.nom)], nb, "statgems")
                             sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
                             if c.type != "emoji":
-                                desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}"], False, 0)
+                                desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}", prix, argent], False, 0)
                             else:
-                                desc = lang_P.forge_msg(lang, "buy", [nb, c.nom], False, 1)
+                                desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, prix, argent], False, 1)
                         else :
                             desc = lang_P.forge_msg(lang, "buy", [argent], False, 2)
                     else:
@@ -217,7 +217,7 @@ def buy(param):
                     if check:
                         if c.type == "bank":
                             sql.add(PlayerID, "SoldeMax", nb*c.poids, "bank")
-                            desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}"], False, 0)
+                            desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}", prix], False, 0)
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.nom)], nb, "statgems")
                             sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
                             msg.append("bank")
@@ -226,7 +226,7 @@ def buy(param):
                             return msg
                         else:
                             sql.add(PlayerID, c.nom, nb, "inventory")
-                            desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}"], False, 0)
+                            desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}", prix], False, 0)
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.nom)], nb, "statgems")
                             sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
                             if c.nom != "bank_upgrade":
@@ -353,7 +353,7 @@ def sell(param):
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("couldown")
-        msg.append(lang)
+    msg.append(lang)
     msg.append(desc)
     return msg
 

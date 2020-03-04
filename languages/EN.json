@@ -82,9 +82,9 @@
       ],
     "daily":
       [
-        "You've won 100:gem:`gems`",
+        "You've won 100 :gem:`gems`",
         "\nNew series: `{0}`, Bonus: {1} :gem:`gems`",
-        "\nCongratulations for {0} consecutive days :confetti_ball:! You deserve {1}:gem:`gems`",
+        "\nCongratulations for {0} consecutive days :confetti_ball:! You deserve {1} :gem:`gems`",
         "You've already received your daily reward today. Come back tomorrow to earn more :gem:`gems`"
       ],
     "bank":
@@ -199,8 +199,8 @@
       "Error! Incorrect command",
     "buy":
       [
-        "You just acquired {0} <:gem_{1}:{2}>`{1}`!",
-        "You have just acquired {0}:{1}:`{1}`!",
+        "You just acquired {0} <:gem_{1}:{2}>`{1}`!\nCost: {3} {4}",
+        "You have just acquired {0}:{1}:`{1}`!\nCost: {2} {3}",
         "Sorry, we can't execute this purchase, you don't have enough {0} in the bank",
         "Sorry, we can't execute this purchase, this item is not sold in the market.",
         "This item is not sold at the market!",
@@ -266,23 +266,30 @@
       ],
     "success desc":
       [
-        "Have 500 :gem:gems",
-        "Have 1k :gem:gems",
-        "Have 5k :gem:gems",
-        "Have 50k :gem:gems",
-        "Have 200k :gem:gems",
-        "Have 500k :gem:gems",
-        "Have 1 Million :gem:gems",
-        "Have 10 Millions :gem:gems",
-        "Have 100 Millions :gem:gems",
-        "Have 500 Millions :gem:gems",
-        "Have 1 Billion :gem:gems",
+        "Have 500 :gem:`gems`",
+        "Have 1k :gem:`gems`",
+        "Have 5k :gem:`gems`",
+        "Have 50k :gem:`gems`",
+        "Have 200k :gem:`gems`",
+        "Have 500k :gem:`gems`",
+        "Have 1 Million :gem:`gems`",
+        "Have 10 Millions :gem:`gems`",
+        "Have 100 Millions :gem:`gems`",
+        "Have 500 Millions :gem:`gems`",
+        "Have 1 Billion :gem:`gems`",
         "Broken {0} {1}",
         "Mining {0} {1}",
         "Find {0} {1}",
         "Fishing {0} {1}",
         "Buy {0} items at the market.",
         "Sell {0} items at the market.",
+        "Win {0} :gem:`gems` gambling.",
+        "Have 5 Billions :gem:`gems`",
+        "Have 20 Billions :gem:`gems`",
+        "Have 50 Billions :gem:`gems`",
+        "Have 200 Billions :gem:`gems`",
+        "Have 500 Billions :gem:`gems`",
+        "Have 1 Trillion :gem:`gems`",
         ""
       ]
 }

@@ -18,17 +18,23 @@ class Success:
 
 objetSuccess = [
     # Gems
-    Success(1, 1, "Gems I", 0, "gems|1", 500),
-    Success(1, 2, "Gems II", 1, "gems|2", 1000),
-    Success(1, 3, "Gems III", 2, "gems|3", 5000),
-    Success(1, 4, "Gems IV", 3, "gems|4", 50000),
-    Success(1, 5, "Gems V", 4, "gems|5", 200000),
-    Success(1, 6, "Gems VI", 5, "gems|6", 500000),
-    Success(1, 7, "Gems VII", 6, "gems|7", 1000000),
-    Success(1, 8, "Gems VIII", 7, "gems|8", 10000000),
-    Success(1, 9, "Gems IX", 8, "gems|9", 100000000),
-    Success(1, 10, "Gems X", 9, "gems|10", 500000000),
-    Success(1, 11, "Gems XI", 10, "gems|11", 1000000000),
+    Success(1, 1, "Gems I", 0, "gems|1", 500),                      # 500
+    Success(1, 2, "Gems II", 1, "gems|2", 1000),                    # 1k
+    Success(1, 3, "Gems III", 2, "gems|3", 5000),                   # 5k
+    Success(1, 4, "Gems IV", 3, "gems|4", 50000),                   # 50k
+    Success(1, 5, "Gems V", 4, "gems|5", 200000),                   # 200k
+    Success(1, 6, "Gems VI", 5, "gems|6", 500000),                  # 500k
+    Success(1, 7, "Gems VII", 6, "gems|7", 1000000),                # 1M
+    Success(1, 8, "Gems VIII", 7, "gems|8", 10000000),              # 10M
+    Success(1, 9, "Gems IX", 8, "gems|9", 100000000),               # 100M
+    Success(1, 10, "Gems X", 9, "gems|10", 500000000),              # 500M
+    Success(1, 11, "Gems XI", 10, "gems|11", 1000000000),           # 1G
+    Success(1, 12, "Gems XII", 18, "gems|12", 5000000000),          # 5G
+    Success(1, 13, "Gems XIII", 19, "gems|13", 20000000000),        # 20G
+    Success(1, 14, "Gems XIV", 20, "gems|14", 50000000000),         # 50G
+    Success(1, 15, "Gems XV", 21, "gems|15", 200000000000),         # 200G
+    Success(1, 16, "Gems XVI", 22, "gems|16", 500000000000),        # 500G
+    Success(1, 17, "Gems XVII", 23, "gems|17", 1000000000000),      # 1T
 
 
     # Mine
@@ -91,7 +97,21 @@ objetSuccess = [
     Success(9, 7, "Sell VII", 16, "sell|total", 55000),
     Success(9, 8, "Sell VIII", 16, "sell|total", 13000),
     Success(9, 9, "Sell IX", 16, "sell|total", 400000),
-    Success(9, 10, "Sell X", 16, "sell|total", 1000000)
+    Success(9, 10, "Sell X", 16, "sell|total", 1000000),
+
+
+    # Gamble
+    Success(10, 1, "Gamble I", 17, "gamble|max", 100),              # 100
+    Success(10, 2, "Gamble II", 17, "gamble|max", 1000),            # 1k
+    Success(10, 3, "Gamble III", 17, "gamble|max", 10000),          # 10k
+    Success(10, 4, "Gamble IV", 17, "gamble|max", 100000),          # 100k
+    Success(10, 5, "Gamble V", 17, "gamble|max", 1000000),          # 1M
+    Success(10, 6, "Gamble VI", 17, "gamble|max", 10000000),        # 10M
+    Success(10, 7, "Gamble VII", 17, "gamble|max", 100000000),      # 100M
+    Success(10, 8, "Gamble VIII", 17, "gamble|max", 1000000000),    # 1G
+    Success(10, 8, "Gamble IX", 17, "gamble|max", 10000000000),     # 10G
+    Success(10, 10, "Gamble X", 17, "gamble|max", 100000000000),    # 100G
+    Success(10, 11, "Gamble XI", 17, "gamble|max", 1000000000000)   # 1T
 ]
 
 
@@ -99,13 +119,13 @@ def checkSuccess(PlayerID, lang):
     result = []
     for x in objetSuccess:
         i = x.id
-    nom = ""
     myStat = 0
     for i in range(1, i+1):
         iS = sql.valueAtNumber(PlayerID, i, "success")
         for x in objetSuccess:
             if x.id == i and x.sid == iS+1:
                 type = x.type.split("|")
+                nom = ""
 
                 if type[0] == "gems":
                     solde = sql.valueAtNumber(PlayerID, "gems", "gems")
@@ -127,6 +147,11 @@ def checkSuccess(PlayerID, lang):
                     if myStat >= x.objectif:
                         nom = x.nom
 
+                elif type[0] == "gamble":
+                    myStat = sql.valueAtNumber(PlayerID, "gamble | {0}".format(type[1]), "statgems")
+                    if myStat >= x.objectif:
+                        nom = x.nom
+
 #                 elif type[0] == "":
 #                     myStat = sql.valueAtNumber(PlayerID, "", "statgems")
 #                     if myStat >= x.objectif:
@@ -137,7 +162,9 @@ def checkSuccess(PlayerID, lang):
                     result.append(x.nom)
                     desc = "{0}".format(lang_P.forge_msg(lang, "success", [x.nom], False, 0))
                     result.append(desc)
-                    gain = r.randint(5, 15)**(iS+1)
+                    if iS == 0:
+                        iS = 1
+                    gain = r.randint(1, 5)**(iS)
                     lvl.addxp(PlayerID, gain, "gems")
                     desc = "{0} XP".format(lang_P.forge_msg(lang, "success", [gain], False, 1))
                     result.append(desc)
@@ -200,6 +227,9 @@ def success(param):
                     arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
                 elif type[0] == "buy" or type[0] == "sell":
                     myStat = sql.valueAtNumber(PlayerID, "{0} | {1}".format(type[0], type[1]), "statgems")
+                    arg = [x.objectif]
+                elif type[0] == "gamble":
+                    myStat = sql.valueAtNumber(PlayerID, "gamble | {0}".format(type[1]), "statgems")
                     arg = [x.objectif]
                 result.append(x.nom)
                 desc = "{0} | `{1}`/`{2}`".format(lang_P.forge_msg(lang, "success desc", arg, False, x.desc), myStat, x.objectif)

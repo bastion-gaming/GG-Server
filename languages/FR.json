@@ -82,9 +82,9 @@
     ],
   "daily":
     [
-      "Tu as gagné 100:gem:`gems`",
+      "Tu as gagné 100 :gem:`gems`",
       "\nNouvelle série: `{0}`, Bonus: {1} :gem:`gems`",
-      "\nBravo pour ces {0} jours consécutifs :confetti_ball:! Tu as mérité {1}:gem:`gems`",
+      "\nBravo pour ces {0} jours consécutifs :confetti_ball:! Tu as mérité {1} :gem:`gems`",
       "Tu as déja reçu ta récompense journalière aujourd'hui. Reviens demain pour gagner plus de :gem:`gems`"
     ],
   "bank":
@@ -199,8 +199,8 @@
     "Erreur! Commande incorrect",
   "buy":
     [
-      "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}`!",
-      "Tu viens d'acquérir {0} :{1}:`{1}`!",
+      "Tu viens d'acquérir {0} <:gem_{1}:{2}>`{1}`!\nCoût: {3} {4}",
+      "Tu viens d'acquérir {0} :{1}:`{1}`!\nCoût: {2} {3}",
       "Désolé, nous ne pouvons pas executer cet achat, tu n'as pas assez de {0} en banque",
       "Désolé, nous ne pouvons pas executer cet achat, cette item n'est pas vendu au marché",
       "Cet item n'est pas vendu au marché !",
@@ -283,6 +283,13 @@
       "Pêcher {0} <:gem_{1}:{2}>`{1}`",
       "Acheter {0} objets au marché.",
       "Vendre {0} objets au marché.",
+      "Gagner {0} :gem:`gems` en pariant.",
+      "Avoir 5 Milliards :gem:`gems`",
+      "Avoir 20 Milliards :gem:`gems`",
+      "Avoir 50 Milliards :gem:`gems`",
+      "Avoir 200 Milliards :gem:`gems`",
+      "Avoir 500 Milliards :gem:`gems`",
+      "Avoir 1 Billion :gem:`gems`",
       ""
     ]
 }

@@ -392,6 +392,12 @@ def gamble(param):
                 sql.add(PlayerID, ["gamble", "gamble | win"], 1, "statgems")
                 sql.addGems(PlayerID, gain)
                 sql.add(PlayerID, ["gamble", "gamble | gain"], gain, "statgems")
+                gainmax = sql.valueAtNumber(PlayerID, "gamble | max", "statgems")
+                if gain > gainmax:
+                    if gainmax == 0:
+                        sql.add(PlayerID, ["gamble", "gamble | max"], gain, "statgems")
+                    else:
+                        sql.updateField(PlayerID, "gamble | max", gain, "statgems")
                 # =====================================
                 # Bonus
                 # =====================================
