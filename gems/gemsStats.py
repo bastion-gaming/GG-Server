@@ -39,16 +39,25 @@ def csv_add(name):
 def csv_read(param):
     lang = param["lang"]
     item = param["item"]
-    year = param["year"]
-    month = param["month"]
+    year = int(param["yearStart"])
+    month = int(param["monthStart"])
+    yearEnd = int(param["yearEnd"])
+    monthEnd = int(param["monthEnd"])
     msg = []
     temp = []
-    try:
-        with open('gems/bourse/{item}-{year}-{month}.csv'.format(item=item, year=year, month=month), 'r', newline='') as csvfile:
-            csvreader = csv.reader(csvfile, delimiter=',', quotechar='|')
-            for row in csvreader:
-                temp.append(row)
-    except:
+    while (month <= monthEnd and year == yearEnd) or year < yearEnd:
+        try:
+            with open('gems/bourse/{item}-{year}-{month}.csv'.format(item=item, year=year, month=month), 'r', newline='') as csvfile:
+                csvreader = csv.reader(csvfile, delimiter=',', quotechar='|')
+                for row in csvreader:
+                    temp.append(row)
+        except:
+            poubelle = False
+        month += 1
+        if month > 12:
+            month = 1
+            year += 1
+    if temp == []:
         msg.append("NOK")
         msg.append([])
         msg.append(lang)
