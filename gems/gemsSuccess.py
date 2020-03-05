@@ -1,6 +1,7 @@
 from DB import SQLite as sql
 from languages import lang as lang_P
 from core import level as lvl
+from gems import gemsFonctions as GF
 import random as r
 
 
@@ -39,34 +40,44 @@ objetSuccess = [
 
     # Mine
     Success(2, 1, "Pickaxe I", 11, "broken|mine|pickaxe", 1),
-    Success(2, 2, "Pickaxe II", 11, "broken|mine|pickaxe", 10),
-    Success(2, 3, "Pickaxe III", 11, "broken|mine|pickaxe", 100),
+    Success(2, 2, "Pickaxe II", 11, "broken|mine|pickaxe", 5),
+    Success(2, 3, "Pickaxe III", 11, "broken|mine|pickaxe", 10),
+    Success(2, 4, "Pickaxe IV", 11, "broken|mine|pickaxe", 20),
+    Success(2, 5, "Pickaxe V", 11, "broken|mine|pickaxe", 50),
+    Success(2, 6, "Pickaxe VI", 11, "broken|mine|pickaxe", 100),
 
     Success(3, 1, "Miner I", 12, "mine|cobblestone", 300),
     Success(3, 2, "Miner II", 12, "mine|cobblestone", 500),
     Success(3, 3, "Miner III", 12, "mine|iron", 200),
     Success(3, 4, "Miner IV", 12, "mine|gold", 200),
-    Success(3, 5, "Miner V", 12, "mine|iron", 400),
+    Success(3, 5, "Miner V", 12, "mine|iron", 500),
     Success(3, 6, "Miner VI", 12, "mine|diamond", 300),
     Success(3, 7, "Miner VII", 12, "mine|emerald", 400),
+    Success(3, 8, "Miner VIII", 12, "mine|diamond", 800),
 
 
     # Dig
     Success(4, 1, "Shovel I", 11, "broken|dig|shovel", 1),
-    Success(4, 2, "Shovel II", 11, "broken|dig|shovel", 10),
-    Success(4, 3, "Shovel III", 11, "broken|dig|shovel", 100),
+    Success(4, 2, "Shovel II", 11, "broken|dig|shovel", 5),
+    Success(4, 3, "Shovel III", 11, "broken|dig|shovel", 10),
+    Success(4, 4, "Shovel IV", 11, "broken|dig|shovel", 20),
+    Success(4, 5, "Shovel V", 11, "broken|dig|shovel", 50),
+    Success(4, 6, "Shovel VI", 11, "broken|dig|shovel", 100),
 
     Success(5, 1, "Digger I", 13, "dig|seed", 100),
-    Success(5, 2, "Digger II", 13, "dig|cacao", 200),
+    Success(5, 2, "Digger II", 13, "dig|cacao", 100),
     Success(5, 3, "Digger III", 13, "dig|potato", 600),
-    Success(5, 4, "Digger IV", 13, "dig|seed", 2000),
-    Success(5, 5, "Digger V", 13, "dig|potato", 3500),
+    Success(5, 4, "Digger IV", 13, "dig|seed", 800),
+    Success(5, 5, "Digger V", 13, "dig|potato", 2000),
 
 
     # Fish
     Success(6, 1, "Fishingrod I", 11, "broken|fish|fishingrod", 1),
-    Success(6, 2, "Fishingrod II", 11, "broken|fish|fishingrod", 10),
-    Success(6, 3, "Fishingrod III", 11, "broken|fish|fishingrod", 100),
+    Success(6, 2, "Fishingrod II", 11, "broken|fish|fishingrod", 5),
+    Success(6, 3, "Fishingrod III", 11, "broken|fish|fishingrod", 10),
+    Success(6, 4, "Fishingrod IV", 11, "broken|fish|fishingrod", 20),
+    Success(6, 5, "Fishingrod V", 11, "broken|fish|fishingrod", 50),
+    Success(6, 6, "Fishingrod VI", 11, "broken|fish|fishingrod", 100),
 
     Success(7, 1, "Fisher I", 14, "fish|fish", 200),
     Success(7, 2, "Fisher II", 14, "fish|fish", 500),
@@ -167,6 +178,8 @@ def checkSuccess(PlayerID, lang):
                     gain = r.randint(1, 5)**(iS)
                     lvl.addxp(PlayerID, gain, "gems")
                     desc = "{0} XP".format(lang_P.forge_msg(lang, "success", [gain], False, 1))
+                    if iS > 2:
+                        GF.lootbox(PlayerID, lang, True)
                     result.append(desc)
                     return result
     return result
@@ -207,33 +220,39 @@ def success(param):
     PlayerID = sql.get_PlayerID(ID, "gems")
     msg = []
     result = []
+    dict = {}
     for x in objetSuccess:
         i = x.id
+        dict[x.id] = x.sid
     for i in range(1, i+1):
         iS = sql.valueAtNumber(PlayerID, i, "success")
         for x in objetSuccess:
             arg = None
-            if x.id == i and x.sid == iS+1:
-                # print(x.nom)
-                type = x.type.split("|")
-                if type[0] == "gems":
-                    myStat = sql.valueAtNumber(PlayerID, "gems", "gems")
-                    arg = None
-                elif type[0] == "broken":
-                    myStat = sql.valueAtNumber(PlayerID, "{0} | broken | {1}".format(type[1], type[2]), "statgems")
-                    arg = [x.objectif, type[2], "{idmoji[gem_" + type[2] + "]}"]
-                elif type[0] == "mine" or type[0] == "dig" or type[0] == "fish":
-                    myStat = sql.valueAtNumber(PlayerID, "{0} | item | {1}".format(type[0], type[1]), "statgems")
-                    arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
-                elif type[0] == "buy" or type[0] == "sell":
-                    myStat = sql.valueAtNumber(PlayerID, "{0} | {1}".format(type[0], type[1]), "statgems")
-                    arg = [x.objectif]
-                elif type[0] == "gamble":
-                    myStat = sql.valueAtNumber(PlayerID, "gamble | {0}".format(type[1]), "statgems")
-                    arg = [x.objectif]
-                result.append(x.nom)
-                desc = "{0} | `{1}`/`{2}`".format(lang_P.forge_msg(lang, "success desc", arg, False, x.desc), myStat, x.objectif)
-                result.append(desc)
+            if x.id == i:
+                if x.sid == iS+1:
+                    type = x.type.split("|")
+                    if type[0] == "gems":
+                        myStat = sql.valueAtNumber(PlayerID, "gems", "gems")
+                        arg = None
+                    elif type[0] == "broken":
+                        myStat = sql.valueAtNumber(PlayerID, "{0} | broken | {1}".format(type[1], type[2]), "statgems")
+                        arg = [x.objectif, type[2], "{idmoji[gem_" + type[2] + "]}"]
+                    elif type[0] == "mine" or type[0] == "dig" or type[0] == "fish":
+                        myStat = sql.valueAtNumber(PlayerID, "{0} | item | {1}".format(type[0], type[1]), "statgems")
+                        arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
+                    elif type[0] == "buy" or type[0] == "sell":
+                        myStat = sql.valueAtNumber(PlayerID, "{0} | {1}".format(type[0], type[1]), "statgems")
+                        arg = [x.objectif]
+                    elif type[0] == "gamble":
+                        myStat = sql.valueAtNumber(PlayerID, "gamble | {0}".format(type[1]), "statgems")
+                        arg = [x.objectif]
+                    result.append(x.nom)
+                    desc = "{0} | `{1}`/`{2}`".format(lang_P.forge_msg(lang, "success desc", arg, False, x.desc), myStat, x.objectif)
+                    result.append(desc)
+                elif iS == dict[i] and x.sid == iS:
+                    desc = "{0} | **_{1}_**".format(lang_P.forge_msg(lang, "success desc", arg, False, x.desc), lang_P.forge_msg(lang, "success", None, False, 2))
+                    result.append(x.nom)
+                    result.append(desc)
     msg.append("OK")
     msg.append(lang)
     msg.append(result)

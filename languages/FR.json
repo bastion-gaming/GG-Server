@@ -42,7 +42,8 @@
       "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir",
       "\n\nTu as trouvé {0} :gift:`cadeau de Noël (gift)`",
       "\n\nTu as trouvé {0} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:",
-      "Items en folie"
+      "Items en folie",
+      "\n\nTu as trouvé {0} :gift:`gift`"
     ],
   "crime array":
     [
@@ -262,7 +263,8 @@
   "success":
     [
       "Bravo, tu as complété le succès **{0}**.",
-      "Tu gagne {0}"
+      "Tu gagne {0}",
+      "Terminé"
     ],
   "success desc":
     [

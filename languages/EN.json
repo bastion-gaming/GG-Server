@@ -262,7 +262,8 @@
     "success":
       [
         "Bravo, you've completed the success **{0}**.",
-        "You win {0}"
+        "You win {0}",
+        "Completed"
       ],
     "success desc":
       [

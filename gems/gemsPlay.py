@@ -455,9 +455,9 @@ def mine(param):
                 outil = "pickaxe"
                 mult = 1
 
-            nbrand = r.randint(1, nbMax)
             add_item = ""
             if nbMax != 0:
+                nbrand = r.randint(1, nbMax)
                 # =====================================
                 # Gestion de la durabilité de l'outil
                 # =====================================
@@ -573,9 +573,9 @@ def dig(param):
                 outil = "shovel"
                 mult = 1
 
-            nbrand = r.randint(1, nbMax)
             add_item = ""
             if nbMax != 0:
+                nbrand = r.randint(1, nbMax)
                 # =====================================
                 # Gestion de la durabilité de l'outil
                 # =====================================
@@ -673,9 +673,9 @@ def fish(param):
                 else:
                     mult = 1
 
-            nbrand = r.randint(1, nbMax)
             add_item = ""
             if nbMax != 0:
+                nbrand = r.randint(1, nbMax)
                 # =====================================
                 # Gestion de la durabilité de l'outil
                 # =====================================
@@ -766,7 +766,15 @@ def slots(param):
     msg = []
 
     gems = sql.valueAtNumber(PlayerID, "gems", "gems")
-    misemax = 200
+    niveau = sql.valueAtNumber(PlayerID, "level", "gems")
+    if niveau <= 5:
+        misemax = 50
+    elif niveau <= 10:
+        misemax = 150
+    elif niveau <= 15:
+        misemax = 360
+    else:
+        misemax = 500
     if imise != "None":
         if int(imise) < 0:
             desc = lang_P.forge_msg(lang, "DiscordCop Amende")

@@ -8,7 +8,7 @@ import zmq
 import gg_lib as gg
 import time
 
-name_pl = "Admin Bot" # Nom de la plateforme
+name_pl = "Admin" # Nom de la plateforme
 
 check = True
 error = 0

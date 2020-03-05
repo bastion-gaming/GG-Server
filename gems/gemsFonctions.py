@@ -154,7 +154,7 @@ def ActuBourse():
 
 
 # Fonction d'actualisation/initialisation des items
-def loadItem(F = None):
+def loadItem(F = False):
     jour = dt.date.today()
     if F:
         GI.initBourse()
@@ -504,12 +504,18 @@ def startKit(ID):
         sql.add(ID, "shovel", 20, "durability")
 
 
-def gift(PlayerID, lang):
+def gift(PlayerID, lang, param = False):
     desc = ""
     jour = dt.date.today()
     nbgift = r.randint(-3, 3)
 
-    if (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):
+    if param:
+        nbgift = r.randint(1, 3)
+        sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
+        sql.add(PlayerID, ["boxes", "lootbox | gift | gain"], nbgift, "statgems")
+        desc = lang_P.forge_msg(lang, "lootbox", [nbgift], False, 6)
+
+    elif (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):
         if nbgift > 0:
             sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
             sql.add(PlayerID, ["boxes", "lootbox | gift | gain"], nbgift, "statgems")
@@ -524,7 +530,7 @@ def gift(PlayerID, lang):
     return desc
 
 
-def lootbox(PlayerID, lang):
+def lootbox(PlayerID, lang, param = False):
     desc = ""
 
     D = r.randint(-40, 40)
@@ -540,5 +546,7 @@ def lootbox(PlayerID, lang):
         sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
         sql.add(PlayerID, ["boxes", "lootbox | common gems | gain"], 1, "statgems")
         desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 0)
+    elif param:
+        desc = gift(PlayerID, lang, True)
 
     return desc
