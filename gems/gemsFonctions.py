@@ -461,30 +461,6 @@ def testGuildInvTaille(ID):
         return False
 
 
-def testTrophy(ID, nameElem):
-    """
-    Permet de modifier le nombre de nameElem pour ID dans les trophées
-    Pour en retirer mettez nbElemn en négatif
-    """
-    trophy = sql.valueAt(ID, "all", "trophy")
-    gems = sql.valueAtNumber(ID, "gems", "gems")
-    for c in objetTrophy:
-        nbGemsNecessaire = c.mingem
-        if c.type == "unique":
-            if nameElem == c.nom:
-                for x in trophy:
-                    if nameElem == x[1]:
-                        if sql.valueAtNumber(ID, c.nom, "trophy") > 1:
-                            sql.updateField(ID, c.nom, 1, "trophy")
-                        return 0
-                if int(gems) >= nbGemsNecessaire:
-                    if sql.valueAtNumber(ID, c.nom, "trophy") < 1:
-                        sql.add(ID, c.nom, 1, "trophy")
-                    elif sql.valueAtNumber(ID, c.nom, "trophy") > 1:
-                        sql.updateField(ID, c.nom, 1, "trophy")
-                    return 1
-
-
 def taxe(solde, pourcentage):
     """Affiche la somme de la taxe en fonction du pourcentage """
     soldeTaxe = solde * pourcentage
@@ -550,3 +526,33 @@ def lootbox(PlayerID, lang, param = False):
         desc = gift(PlayerID, lang, True)
 
     return desc
+
+
+def ChiffreRomain(nb):
+    CR = ""
+    CR_I = 'I'   # 1
+    CR_X = 'X' # 10
+
+    if nb >= 100:
+        return nb
+    nbu = nb % 10
+    nbd = nb // 10
+
+    if nbd < 4:
+        CR += "{0}".format(CR_X*nbd)
+    elif nbd == 4:
+        CR += "XL"
+    elif nbd < 9:
+        CR += "L{0}".format(CR_X*(nbd-5))
+    elif nbd == 9:
+        CR += "XC"
+
+    if nbu < 4:
+        CR += "{0}".format(CR_I*nbu)
+    elif nbu == 4:
+        CR += "IV"
+    elif nbu < 9:
+        CR += "V{0}".format(CR_I*(nbu-5))
+    elif nbu == 9:
+        CR += "IX"
+    return CR

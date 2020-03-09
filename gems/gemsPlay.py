@@ -138,7 +138,7 @@ def bank_add(PlayerID, lang, ARG, ARG2, Taille):
     # un nombre négatif enlève des Gems
     # =======================================================================
     if sql.spam(PlayerID, GF.couldown_4s, "bank_add", "gems"):
-        if ARG2 != None:
+        if ARG2 != "None":
             ARG2 = int(ARG2)
             gems = sql.valueAtNumber(PlayerID, "gems", "gems")
             solde = sql.valueAtNumber(PlayerID, "Solde", "bank")
@@ -1159,7 +1159,7 @@ def hothouse(param):
                                 nbHarvest = r.randint(6, 12)
                                 item = "grapes"
                         elif valueItem == "pumpkin":
-                            nbHarvest = r.randint(1, 4)
+                            nbHarvest = r.randint(2, 5)
                             item = "pumpkin"
                         data = []
                         data.append(0)

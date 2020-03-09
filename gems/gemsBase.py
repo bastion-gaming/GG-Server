@@ -992,6 +992,18 @@ def pay(param):
                     print("Gems >> {} a donné {} Gems à {}".format(nom, gain, Nom_recu))
                     sql.add(PlayerID, ["pay", "pay"], 1, "statgems")
                     sql.add(PlayerID, ["pay", "pay | nb gems"], gain, "statgems")
+                    donmax = sql.valueAtNumber(PlayerID, "pay | don max", "statgems")
+                    recumax = sql.valueAtNumber(ID_recu, "pay | recu max", "statgems")
+                    if gain > donmax:
+                        if donmax == 0:
+                            sql.add(PlayerID, ["pay", "pay | don max"], gain, "statgems")
+                        else:
+                            sql.updateField(PlayerID, "pay | don max", gain, "statgems")
+                    if gain > recumax:
+                        if recumax == 0:
+                            sql.add(ID_recu, ["pay", "pay | recu max"], gain, "statgems")
+                        else:
+                            sql.updateField(ID_recu, "pay | recu max", gain, "statgems")
                 else:
                     desc = lang_P.forge_msg(lang, "pay", [nom, gain, Nom_recu], False, 1)
 

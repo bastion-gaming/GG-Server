@@ -3,7 +3,7 @@ import datetime as dt
 
 jour = dt.date.today()
 exception = ["bank_upgrade", "backpack", "hyperpack", "candy", "lollipop", "fishhook", "pickaxe", "shovel", "fishingrod"]
-
+objetEmoji = ["grapes", "wine_glass", "beer", "cookie"]
 
 # ========== Items ==========
 class Item:
