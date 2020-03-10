@@ -1,0 +1,10 @@
+{
+  "idgems":
+    "link_gems",
+  "idseasons":
+    "PRIMARYKEY_TEXT",
+  "gem":
+    "INTEGER",
+  "bank":
+    "INTEGER"
+}

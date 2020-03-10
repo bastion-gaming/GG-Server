@@ -426,6 +426,9 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
             if nameDB == "IDs":
                 IDname = "ID"
                 script = "UPDATE {0} SET {1} = '{2}' WHERE {4} = '{3}'".format(nameDB, fieldName, fieldValue, PlayerID, IDname)
+            elif nameDB == "seasons":
+                script = "UPDATE {0} SET {1} = '{2}' WHERE idseasons = '{5}' and {4} = '{3}'".format(nameDB, fieldName, fieldValue[0], PlayerID, IDname, fieldValue[1])
+
             for x in nameDBexcept:
                 if x == nameDB:
                     if x == "inventory":
