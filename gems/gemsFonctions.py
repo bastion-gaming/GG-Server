@@ -530,13 +530,27 @@ def lootbox(PlayerID, lang, param = False):
 
 def ChiffreRomain(nb):
     CR = ""
-    CR_I = 'I'   # 1
-    CR_X = 'X' # 10
+    CR_I = 'I'  # 1
+    CR_X = 'X'  # 10
+    CR_C = 'C'  # 100
+    CR_M = 'M'  # 1000
 
-    if nb >= 100:
+    if nb == 1000:
+        return CR_M
+    elif nb > 1000:
         return nb
+    nbc = nb // 100
+    nbd = (nb % 100) // 10
     nbu = nb % 10
-    nbd = nb // 10
+
+    if nbc < 4:
+        CR += "{0}".format(CR_C*nbc)
+    elif nbc == 4:
+        CR += "CD"
+    elif nbc < 9:
+        CR += "D{0}".format(CR_C*(nbc-5))
+    elif nbc == 9:
+        CR += "CM"
 
     if nbd < 4:
         CR += "{0}".format(CR_X*nbd)
