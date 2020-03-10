@@ -38,35 +38,35 @@ objetSuccess = [
 
 
     # Argent
-    Success(1, 1, "Gems", 1, 0, "gems|1", 500),                      # 500
-    Success(1, 2, "Gems", 1, 1, "gems|2", 1000),                    # 1k
-    Success(1, 3, "Gems", 1, 2, "gems|3", 5000),                   # 5k
-    Success(1, 4, "Gems", 1, 3, "gems|4", 50000),                   # 50k
-    Success(1, 5, "Gems", 1, 4, "gems|5", 200000),                   # 200k
-    Success(1, 6, "Gems", 1, 5, "gems|6", 500000),                  # 500k
-    Success(1, 7, "Gems", 1, 6, "gems|7", 1000000),                # 1M
-    Success(1, 8, "Gems", 1, 7, "gems|8", 10000000),              # 10M
-    Success(1, 9, "Gems", 1, 8, "gems|9", 100000000),               # 100M
-    Success(1, 10, "Gems", 1, 9, "gems|10", 500000000),              # 500M
-    Success(1, 11, "Gems", 1, 10, "gems|11", 1000000000),           # 1G
-    Success(1, 12, "Gems", 1, 18, "gems|12", 5000000000),          # 5G
-    Success(1, 13, "Gems", 1, 19, "gems|13", 20000000000),        # 20G
-    Success(1, 14, "Gems", 1, 20, "gems|14", 50000000000),         # 50G
-    Success(1, 15, "Gems", 1, 21, "gems|15", 200000000000),         # 200G
-    Success(1, 16, "Gems", 1, 22, "gems|16", 500000000000),        # 500G
-    Success(1, 17, "Gems", 1, 23, "gems|17", 1000000000000),      # 1T
+    Success(1, 1, "Gems", 1, 0, "gems|gems", 500),                  # 500
+    Success(1, 2, "Gems", 1, 1, "gems|gems", 1000),                 # 1k
+    Success(1, 3, "Gems", 1, 2, "gems|gems", 5000),                 # 5k
+    Success(1, 4, "Gems", 1, 3, "gems|gems", 50000),                # 50k
+    Success(1, 5, "Gems", 1, 4, "gems|gems", 200000),               # 200k
+    Success(1, 6, "Gems", 1, 5, "gems|gems", 500000),               # 500k
+    Success(1, 7, "Gems", 1, 6, "gems|gems", 1000000),              # 1M
+    Success(1, 8, "Gems", 1, 7, "gems|gems", 10000000),             # 10M
+    Success(1, 9, "Gems", 1, 8, "gems|gems", 100000000),            # 100M
+    Success(1, 10, "Gems", 1, 9, "gems|gems", 500000000),           # 500M
+    Success(1, 11, "Gems", 1, 10, "gems|gems", 1000000000),         # 1G
+    Success(1, 12, "Gems", 1, 18, "gems|gems", 5000000000),         # 5G
+    Success(1, 13, "Gems", 1, 19, "gems|gems", 20000000000),        # 20G
+    Success(1, 14, "Gems", 1, 20, "gems|gems", 50000000000),        # 50G
+    Success(1, 15, "Gems", 1, 21, "gems|gems", 200000000000),       # 200G
+    Success(1, 16, "Gems", 1, 22, "gems|gems", 500000000000),       # 500G
+    Success(1, 17, "Gems", 1, 23, "gems|gems", 1000000000000),      # 1T
 
     Success(2, 1, "Gamble", 2, 17, "gamble|max", 100),              # 100
-    Success(2, 2, "Gamble", 2, 17, "gamble|max", 1000),            # 1k
-    Success(2, 3, "Gamble", 2, 17, "gamble|max", 10000),          # 10k
-    Success(2, 4, "Gamble", 2, 17, "gamble|max", 100000),          # 100k
+    Success(2, 2, "Gamble", 2, 17, "gamble|max", 1000),             # 1k
+    Success(2, 3, "Gamble", 2, 17, "gamble|max", 10000),            # 10k
+    Success(2, 4, "Gamble", 2, 17, "gamble|max", 100000),           # 100k
     Success(2, 5, "Gamble", 2, 17, "gamble|max", 1000000),          # 1M
-    Success(2, 6, "Gamble", 2, 17, "gamble|max", 10000000),        # 10M
-    Success(2, 7, "Gamble", 2, 17, "gamble|max", 100000000),      # 100M
-    Success(2, 8, "Gamble", 2, 17, "gamble|max", 1000000000),    # 1G
-    Success(2, 8, "Gamble", 2, 17, "gamble|max", 10000000000),     # 10G
+    Success(2, 6, "Gamble", 2, 17, "gamble|max", 10000000),         # 10M
+    Success(2, 7, "Gamble", 2, 17, "gamble|max", 100000000),        # 100M
+    Success(2, 8, "Gamble", 2, 17, "gamble|max", 1000000000),       # 1G
+    Success(2, 8, "Gamble", 2, 17, "gamble|max", 10000000000),      # 10G
     Success(2, 10, "Gamble", 2, 17, "gamble|max", 100000000000),    # 100G
-    Success(2, 11, "Gamble", 2, 17, "gamble|max", 1000000000000),  # 1T
+    Success(2, 11, "Gamble", 2, 17, "gamble|max", 1000000000000),   # 1T
 
     Success(3, 1, "Robin Hood", 3, 24, "stealing|gain", 15000),
     Success(3, 2, "Robin Hood", 3, 24, "stealing|gain", 100000),
