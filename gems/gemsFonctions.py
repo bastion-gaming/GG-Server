@@ -254,26 +254,6 @@ def loadItem(F = False):
         Outil("bank_upgrade", itemBourse("bank_upgrade", "vente"), itemBourse("bank_upgrade", "achat"), 10000, None, "bank")
     ]
 
-    # ========== Trophées ==========
-    class Trophy:
-
-        def __init__(self, nom, desc, type, mingem):
-            self.nom = nom
-            self.desc = desc
-            self.type = type
-            self.mingem = mingem # nombre de gems minimum necessaire
-
-    global objetTrophy
-    objetTrophy = [
-        Trophy("Gamble Jackpot", "`Gagner plus de 10000`:gem:`gems au gamble`", "special", 10000),
-        Trophy("Super Gamble Jackpot", "`Gagner plus de 100000`:gem:`gems au gamble`", "special", 100000),
-        Trophy("Hyper Gamble Jackpot", "`Gagner plus de 1000000`:gem:`gems au gamble`", "special", 1000000),
-
-        Trophy("Super Jackpot :seven::seven::seven:", "`Gagner le super jackpot sur la machine à sous`", "special", 0),
-        Trophy("Mineur de Merveilles", "`Trouvez un ruby`", "special", 0),
-        Trophy("La Squelatitude", "`Avoir 2`:beer:` sur la machine à sous`", "special", 0)
-    ]
-
     # ========== Loot Box ==========
     class Box:
 

@@ -862,7 +862,6 @@ def slots(param):
         if result[3] == "ruby" or result[4] == "ruby" or result[5] == "ruby":
             sql.add(PlayerID, "ruby", 1, "inventory")
             sql.add(PlayerID, ["slots", "slots | Ruby"], 1, "statgems")
-            # sql.add(PlayerID, "Mineur de Merveilles", 1, "trophy")
             gain = 16
             desc += lang_P.forge_msg(lang, "slots", ["{idmoji[gem_ruby]}"], False, 1)
             GF.lootbox(PlayerID, lang)
@@ -871,7 +870,6 @@ def slots(param):
         elif result[3] == "seven" and result[4] == "seven" and result[5] == "seven":
             gain = 1000
             sql.add(PlayerID, ["slots", "slots | Super Jackpot :seven::seven::seven:"], 1, "statgems")
-            # sql.add(PlayerID, "Super Jackpot :seven::seven::seven:", 1, "trophy")
             desc += lang_P.forge_msg(lang, "slots", [param["ID"]], False, 2)
         elif result[3] == "one" and result[4] == "one" and result[5] == "one":
             gain = 100
@@ -895,7 +893,6 @@ def slots(param):
         # Beer
         elif (result[3] == "beer" and result[4] == "beer") or (result[4] == "beer" and result[5] == "beer") or (result[3] == "beer" and result[5] == "beer"):
             sql.add(PlayerID, ["slots", "slots | Beer"], 1, "statgems")
-            # sql.add(PlayerID, "La Squelatitude", 1, "trophy")
             gain = 5
             desc += lang_P.forge_msg(lang, "slots", [param["ID"]], False, 3)
         # ===================================================================
