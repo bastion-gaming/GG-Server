@@ -27,20 +27,32 @@ def end_season():
     res = load_dates()
     nbs = res["total"]
     for i in range(1, sql.taille("gems")+1):
-        IDd = sql.userID(i, "gems")
-        SuperID = sql.get_SuperID(IDd, "discord")
+        # Récupération des données par Joueur
+        IDs = sql.userID(i, "gems")
+        IDd = IDs[1]
+        IDm = IDs[2]
+        if IDd is not None:
+            SuperID = sql.get_SuperID(IDd, "discord")
+        elif IDm is not None:
+            SuperID = sql.get_SuperID(IDd, "messenger")
+        else:
+            SuperID = 0
         PlayerID = sql.get_PlayerID(SuperID)
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         bank = sql.valueAtNumber(PlayerID, "Solde", "bank")
         if solde != 0:
+            # Sauvegarde des valeurs de la saison en  cours par Joueur
             sql.add(PlayerID, "idseasons", nbs, "seasons")
             sql.updateField(PlayerID, "gem", [solde, nbs], "seasons")
             sql.updateField(PlayerID, "bank", [bank, nbs], "seasons")
+            # Reset solde de gems et solde de la banque
             sql.updateField(PlayerID, "gems", 0, "gems")
             sql.updateField(PlayerID, "Solde", 0, "bank")
+            # Reset dans l'inventaire des objets à prix fixe du marché
             for x in GI.exception:
                 if x != "bank_upgrade":
                     sql.updateField(PlayerID, x, 0, "inventory")
+            # reset dans l'inventaire des objets événementiels
             for x in GF.ObjetEventEnd:
                 if x != "bank_upgrade":
                     sql.updateField(PlayerID, x, 0, "inventory")

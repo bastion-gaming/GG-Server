@@ -219,12 +219,12 @@ def get_PlayerID(ID, nameDB = None):
 # -------------------------------------------------------------------------------
 def userID(i, nameDB = None):
     if nameDB == None:
-        nameDB = "bastion"
-    script = "SELECT ID_discord FROM {1} JOIN IDs USING(ID) WHERE id{1} = '{0}'".format(i, nameDB)
+        nameDB = "gems"
+    script = "SELECT Pseudo, ID_discord, ID_messenger FROM {1} JOIN IDs USING(ID) WHERE id{1} = '{0}'".format(i, nameDB)
     cursor = conn.cursor()
     cursor.execute(script)
     ID = cursor.fetchall()
-    return ID[0][0]
+    return ID[0]
 
 
 # -------------------------------------------------------------------------------

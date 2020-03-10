@@ -74,12 +74,29 @@ def baltop(param):
             i = 1
             taille = sql.taille("gems")
             while i <= taille:
-                user = sql.userID(i, "gems")
-                gems = sql.valueAtNumber(i, "gems", "gems")
-                spinelles = sql.valueAtNumber(i, "spinelles", "gems")
-                guilde = sql.valueAtNumber(i, "guilde", "gems")
-                if guilde == None:
+                IDs = sql.userID(i, "gems")
+                Pseudo = IDs[0]
+                IDd = IDs[1]
+                IDm = IDs[2]
+                if IDd is not None:
+                    SuperID = sql.get_SuperID(IDd, "discord")
+                elif IDm is not None:
+                    SuperID = sql.get_SuperID(IDm, "messenger")
+                else:
+                    SuperID = 0
+                PlayerID = sql.get_PlayerID(SuperID)
+                if Pseudo is None or Pseudo == "" or True:
+                    user = "<@{0}>".format(IDd)
+                else:
+                    user = "**{0}**".format(Pseudo)
+                gems = sql.valueAtNumber(PlayerID, "gems", "gems")
+                spinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
+                guilde = sql.valueAtNumber(PlayerID, "guilde", "gems")
+                if guilde is None or guilde == "":
                     guilde = ""
+                else:
+                    guilde = guilde.replace("_", " ")
+                    guilde = " _{0}_".format(guilde)
                 UserList.append((user, gems, spinelles, guilde))
                 i = i + 1
             UserList = sorted(UserList, key=itemgetter(1), reverse=True)
@@ -88,7 +105,7 @@ def baltop(param):
             j = 1
             for one in UserList: # affichage des données trié
                 if j <= n:
-                    baltop += "{2} | _{3} _<@{0}> {1}:gem:".format(one[0], one[1], j, one[3])
+                    baltop += "{2} |{3} {0} {1}:gem:".format(one[0], one[1], j, one[3])
                     # if one[2] != 0:
                     #     baltop += " | {0}<:spinelle:{1}>\n".format(one[2], "{idmoji[spinelle]}")
                     # else:
