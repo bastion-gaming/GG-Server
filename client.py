@@ -112,6 +112,8 @@ while check:
                 print("\n• ID du joueur sur la platforme:")
                 param["ID"] = input()
             socket.send_string(gg.std_send_command("admin", 129362501187010561, name_pl, param))
+        elif x == "test":
+            print("> test")
 
         #  Get the reply.
         socks = dict(poll.poll(REQUEST_TIMEOUT))
