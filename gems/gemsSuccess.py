@@ -19,6 +19,24 @@ class Success:
 
 
 objetSuccess = [
+    # Daily
+    Success(0, 1, "Daily", 0, 34, "daily|DailyMult", 5),
+    Success(0, 2, "Daily", 0, 34, "daily|DailyMult", 15),
+    Success(0, 3, "Daily", 0, 34, "daily|DailyMult", 30),
+    Success(0, 4, "Daily", 0, 34, "daily|DailyMult", 45),
+    Success(0, 5, "Daily", 0, 34, "daily|DailyMult", 60),
+    Success(0, 6, "Daily", 0, 34, "daily|DailyMult", 90),
+    Success(0, 7, "Daily", 0, 34, "daily|DailyMult", 120),
+    Success(0, 8, "Daily", 0, 34, "daily|DailyMult", 150),
+    Success(0, 9, "Daily", 0, 34, "daily|DailyMult", 200),
+    Success(0, 10, "Daily", 0, 34, "daily|DailyMult", 300),
+    Success(0, 11, "Daily", 0, 34, "daily|DailyMult", 400),
+    Success(0, 12, "Daily", 0, 34, "daily|DailyMult", 500),
+    Success(0, 13, "Daily", 0, 34, "daily|DailyMult", 600),
+    Success(0, 14, "Daily", 0, 34, "daily|DailyMult", 800),
+    Success(0, 15, "Daily", 0, 34, "daily|DailyMult", 1000),
+
+
     # Argent
     Success(1, 1, "Gems", 1, 0, "gems|1", 500),                      # 500
     Success(1, 2, "Gems", 1, 1, "gems|2", 1000),                    # 1k
@@ -156,6 +174,27 @@ objetSuccess = [
     Success(23, 5, "Banquier", 31, 32, "buy|bank_upgrade", 40),
     Success(23, 6, "Banquier", 32, 32, "buy|bank_upgrade", 60),
 
+    Success(24, 1, "Rentré des classes", 25, 32, "buy|backpack", 1),
+    Success(24, 2, "Rentré des classes", 25, 32, "buy|backpack", 5),
+    Success(24, 3, "Rentré des classes", 25, 32, "buy|hyperpack", 1),
+    Success(24, 4, "Rentré des classes", 25, 32, "buy|hyperpack", 5),
+    Success(24, 5, "Rentré des classes", 25, 32, "buy|hyperpack", 10),
+    Success(24, 6, "Rentré des classes", 25, 32, "buy|hyperpack", 25),
+    Success(24, 7, "Rentré des classes", 25, 32, "buy|hyperpack", 42),
+    Success(24, 8, "Rentré des classes", 25, 32, "buy|hyperpack", 66),
+    Success(24, 9, "Rentré des classes", 25, 32, "buy|hyperpack", 100),
+    Success(24, 10, "Rentré des classes", 25, 32, "buy|hyperpack", 200),
+    Success(24, 11, "Rentré des classes", 25, 32, "buy|hyperpack", 400),
+    Success(24, 12, "Rentré des classes", 25, 32, "buy|hyperpack", 700),
+    Success(24, 13, "Rentré des classes", 25, 32, "buy|hyperpack", 1000),
+    Success(24, 14, "Rentré des classes", 25, 32, "buy|hyperpack", 1400),
+    Success(24, 15, "Rentré des classes", 25, 32, "buy|hyperpack", 2000),
+    Success(24, 16, "Rentré des classes", 25, 32, "buy|hyperpack", 3000),
+    Success(24, 17, "Rentré des classes", 25, 32, "buy|hyperpack", 5000),
+    Success(24, 18, "Rentré des classes", 25, 32, "buy|hyperpack", 10000),
+    Success(24, 19, "Rentré des classes", 25, 32, "buy|hyperpack", 50000),
+    Success(24, 20, "Rentré des classes", 25, 32, "buy|hyperpack", 100000),
+
 
     # Serre | Cave | Cuisine
     Success(13, 1, "Nature lover", 13, 27, "hothouse|plant|seed", 100),
@@ -233,25 +272,41 @@ objetSuccess = [
     Success(20, 3, "Germinal", 21, 29, "forge|iron_pickaxe", 10),
     Success(20, 4, "Germinal", 22, 29, "forge|diamond_pickaxe", 1),
     Success(20, 5, "Germinal", 22, 29, "forge|diamond_pickaxe", 5),
-    Success(20, 6, "Germinal", 22, 29, "forge|diamond_pickaxe", 10)
+    Success(20, 6, "Germinal", 22, 29, "forge|diamond_pickaxe", 10),
+
+
+    # Inventaire
+    Success(25, 1, "#Tragédie", 28, 33, "inv|cookie", 10),
+    Success(25, 2, "#Tragédie", 28, 33, "inv|cookie", 50),
+    Success(25, 3, "#Tragédie", 28, 33, "inv|cookie", 100),
+    Success(25, 4, "#Tragédie", 28, 33, "inv|cookie", 300),
+    Success(25, 5, "#Tragédie", 28, 33, "inv|cookie", 500),
+    Success(25, 6, "#Tragédie", 28, 33, "inv|cookie", 1000),
+    Success(25, 7, "#Tragédie", 28, 33, "inv|cookie", 2000),
+    Success(25, 8, "#Tragédie", 28, 33, "inv|cookie", 5000),
+    Success(25, 9, "#Tragédie", 28, 33, "inv|cookie", 10000),
+    Success(25, 10, "#Tragédie", 28, 33, "inv|cookie", 50000),
+    Success(25, 11, "#Tragédie", 28, 33, "inv|cookie", 100000)
 ]
 
 
 def checkSuccess(PlayerID, lang):
     result = []
+    i = -1
     for x in objetSuccess:
-        i = x.id
+        if x.id > i:
+            i = x.id
     myStat = 0
-    for i in range(1, i+1):
+    for i in range(0, i+1):
         iS = sql.valueAtNumber(PlayerID, i, "success")
         for x in objetSuccess:
             if x.id == i and x.sid == iS+1:
                 type = x.type.split("|")
                 nom = ""
 
-                if type[0] == "gems":
-                    solde = sql.valueAtNumber(PlayerID, "gems", "gems")
-                    if solde >= x.objectif:
+                if type[0] == "gems" or type[0] == "daily":
+                    myStat = sql.valueAtNumber(PlayerID, "{0}".format(type[1]), "{0}".format(type[0]))
+                    if myStat >= x.objectif:
                         nom = lang_P.forge_msg(lang, "success titre", [GF.ChiffreRomain(x.sid)], False, x.titre)
 
                 elif type[0] == "broken":
@@ -284,6 +339,11 @@ def checkSuccess(PlayerID, lang):
 
                 elif type[0] == "pay":
                     myStat = sql.valueAtNumber(PlayerID, "pay | {0}".format(type[1]), "statgems")
+                    if myStat >= x.objectif:
+                        nom = lang_P.forge_msg(lang, "success titre", [GF.ChiffreRomain(x.sid)], False, x.titre)
+
+                elif type[0] == "inv":
+                    myStat = sql.valueAtNumber(PlayerID, "{0}".format(type[1]), "inventory")
                     if myStat >= x.objectif:
                         nom = lang_P.forge_msg(lang, "success titre", [GF.ChiffreRomain(x.sid)], False, x.titre)
 
@@ -345,27 +405,33 @@ def success(param):
     msg = []
     result = []
     dict = {}
-    i = 0
+    i = -1
     for x in objetSuccess:
         if x.id > i:
             i = x.id
         dict[x.id] = x.sid
-    for i in range(1, i+1):
+    for i in range(0, i+1):
         iS = sql.valueAtNumber(PlayerID, i, "success")
         for x in objetSuccess:
             arg = None
             if x.id == i:
                 if x.sid == iS+1:
                     type = x.type.split("|")
-                    if type[0] == "gems":
-                        myStat = sql.valueAtNumber(PlayerID, "gems", "gems")
-                        arg = None
+                    if type[0] == "gems" or type[0] == "daily":
+                        myStat = sql.valueAtNumber(PlayerID, "{0}".format(type[1]), "{0}".format(type[0]))
+                        if type[0] == "gems":
+                            arg = None
+                        else:
+                            arg = [x.objectif]
+
                     elif type[0] == "broken":
                         myStat = sql.valueAtNumber(PlayerID, "{0} | broken | {1}".format(type[1], type[2]), "statgems")
                         arg = [x.objectif, type[2], "{idmoji[gem_" + type[2] + "]}"]
+
                     elif type[0] == "mine" or type[0] == "dig" or type[0] == "fish":
                         myStat = sql.valueAtNumber(PlayerID, "{0} | item | {1}".format(type[0], type[1]), "statgems")
                         arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
+
                     elif type[0] == "buy" or type[0] == "sell":
                         if (type[0] == "buy" or type[0] == "sell") and type[1] != "total":
                             myStat = sql.valueAtNumber(PlayerID, "{0} | item | {1}".format(type[0], type[1]), "statgems")
@@ -373,15 +439,19 @@ def success(param):
                         else:
                             myStat = sql.valueAtNumber(PlayerID, "{0} | {1}".format(type[0], type[1]), "statgems")
                             arg = [x.objectif]
+
                     elif type[0] == "gamble" or type[0] == "stealing" or type[0] == "slots":
                         myStat = sql.valueAtNumber(PlayerID, "gamble | {1}".format(type[0], type[1]), "statgems")
                         arg = [x.objectif]
+
                     elif type[0] == "pay":
                         myStat = sql.valueAtNumber(PlayerID, "pay | {0}".format(type[1]), "statgems")
                         arg = [x.objectif]
+
                     elif type[0] == "forge":
                         myStat = sql.valueAtNumber(PlayerID, "forge | item | {0}".format(type[1]), "statgems")
                         arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
+
                     elif type[0] == "hothouse" or type[0] == "ferment" or type[0] == "cooking":
                         myStat = sql.valueAtNumber(PlayerID, "{0} | {1} | item | {2}".format(type[0], type[1], type[2]), "statgems")
                         if type[2] in GI.objetEmoji:
@@ -389,6 +459,15 @@ def success(param):
                         else:
                             idmoji = "<:gem_{0}:{1}>".format(type[2], "{idmoji[gem_" + type[2] + "]}")
                         arg = [x.objectif, type[2], idmoji]
+
+                    elif type[0] == "inv":
+                        myStat = sql.valueAtNumber(PlayerID, "{0}".format(type[1]), "inventory")
+                        if type[1] in GI.objetEmoji:
+                            idmoji = ":{0}:".format(type[1])
+                        else:
+                            idmoji = "<:gem_{0}:{1}>".format(type[1], "{idmoji[gem_" + type[1] + "]}")
+                        arg = [x.objectif, type[1], idmoji]
+
                     result.append(lang_P.forge_msg(lang, "success titre", [GF.ChiffreRomain(x.sid)], False, x.titre))
                     desc = "{0} | `{1}`/`{2}`".format(lang_P.forge_msg(lang, "success desc", arg, False, x.desc), myStat, x.objectif)
                     result.append(desc)

@@ -976,19 +976,25 @@ def slots(param):
             if prix > 400:
                 desc += lang_P.forge_msg(lang, "slots", [prix], False, 8)
                 sql.add(PlayerID, ["slots", "slots | gain"], prix, "statgems")
+                sql.add(PlayerID, ["slots", "slots | win"], 1, "statgems")
             elif prix > 0:
                 desc += lang_P.forge_msg(lang, "slots", [prix], False, 9)
                 sql.add(PlayerID, ["slots", "slots | gain"], prix, "statgems")
+                sql.add(PlayerID, ["slots", "slots | win"], 1, "statgems")
             else:
                 desc += lang_P.forge_msg(lang, "slots", [-1*prix], False, 10)
                 sql.add(PlayerID, ["slots", "slots | perte"], -prix, "statgems")
+                sql.add(PlayerID, ["slots", "slots | lose"], 1, "statgems")
             sql.addGems(PlayerID, prix)
             sql.addGems(GF.PlayerID_GetGems, -prix)
         elif gain == 1:
             desc += lang_P.forge_msg(lang, "slots", None, False, 11)
+            sql.add(PlayerID, ["slots", "slots | gain"], prix, "statgems")
+            sql.add(PlayerID, ["slots", "slots | win"], 1, "statgems")
             sql.addGems(PlayerID, prix)
         else:
             desc += lang_P.forge_msg(lang, "slots", None, False, 12)
+            sql.add(PlayerID, ["slots", "slots | lose"], 1, "statgems")
         sql.updateComTime(PlayerID, "slots", "gems")
         sql.add(PlayerID, ["slots", "slots"], 1, "statgems")
         if gain >= 0:

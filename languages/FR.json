@@ -268,7 +268,7 @@
     ],
   "success titre":
     [
-      " {0}",
+      "Bro {0}",
       "Gems {0}",
       "Pari {0}",
       "Robin des bois {0}",
@@ -338,6 +338,8 @@
       "Donner {0} :gem:`gems`",
       "Recevoir {0} :gem:`gems`",
       "Acheter {0} <:gem_{1}:{2}>`{1}`",
+      "Avoir {0} {2}`{1}` dans son inventaire",
+      "Exécuter la commande `daily` {0} jours consécutifs",
       ""
     ]
 }

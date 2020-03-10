@@ -267,7 +267,7 @@
       ],
     "success titre":
       [
-        " {0}",
+        "Bro {0}",
         "Gems {0}",
         "Gamble {0}",
         "Robin Hood {0}",
@@ -295,7 +295,7 @@
         "Back to school {0}",
         "It's fresh my fish! {0}",
         "Ordralfabétix {0}",
-        "#Tragédie {0}",
+        "#Cookies {0}",
         "Swiss Banker",
         "Balkany Jr",
         "Cahuzak Jr",
@@ -337,6 +337,8 @@
         "Donate {0} :gem:`gems`",
         "Receive {0} :gem:`gems`",
         "Buy {0} <:gem_{1}:{2}>`{1}`",
+        "Having {0} {1} in his inventory",
+        "Run the command `daily` {0} consecutive days",
         ""
       ]
 }

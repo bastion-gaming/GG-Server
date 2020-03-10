@@ -19,7 +19,7 @@ gagner xx slots
 
 ✔   il faut aussi un succès "apéro" très dur a avoir genre faire 10 000 000 de bière comme ça squel il va farmer à fond
 
-"rentré des classes" quand tu achète ton premier sac à dos
+✔   "rentré des classes" quand tu achète ton premier sac à dos
 
 ✔   "germinal" quand tu fabrique une pioche
 ✔   "bourgeois" quand tu fabrique une pioche en diams
@@ -27,7 +27,7 @@ gagner xx slots
 "il est frais mon poisson!" quand t'as vendu 100 fish
 "Ordralfabétix" quand t'en a vendu 1000
 
-"Tragédie" quand tu as 1000 cookies dans ton inventaire :sunglasses:
+✔   "Tragédie" quand tu as 1000 cookies dans ton inventaire :sunglasses:
 
 ✔   "ami de la nature" quand t'as planté 500 graine
 ✔   "reboucheur d'amazonie" quand t'en es à 5000
@@ -36,4 +36,4 @@ gagner xx slots
       il faudrait qu'il n'y ai que le premier à 500 000 qui puisse l'avoir alors
       (pareil pour apéro)
 
-"Solange attitude" quand tu donnes 100 tropical fish à quelqu'un :>
+✔   "Himiko attitude" quand t'as 300 dailys
