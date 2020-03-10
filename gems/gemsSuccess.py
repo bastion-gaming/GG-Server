@@ -20,21 +20,23 @@ class Success:
 
 objetSuccess = [
     # Daily
-    Success(0, 1, "Daily", 0, 34, "daily|DailyMult", 5),
-    Success(0, 2, "Daily", 0, 34, "daily|DailyMult", 15),
-    Success(0, 3, "Daily", 0, 34, "daily|DailyMult", 30),
-    Success(0, 4, "Daily", 0, 34, "daily|DailyMult", 45),
-    Success(0, 5, "Daily", 0, 34, "daily|DailyMult", 60),
-    Success(0, 6, "Daily", 0, 34, "daily|DailyMult", 90),
-    Success(0, 7, "Daily", 0, 34, "daily|DailyMult", 120),
-    Success(0, 8, "Daily", 0, 34, "daily|DailyMult", 150),
-    Success(0, 9, "Daily", 0, 34, "daily|DailyMult", 200),
-    Success(0, 10, "Daily", 0, 34, "daily|DailyMult", 300),
-    Success(0, 11, "Daily", 0, 34, "daily|DailyMult", 400),
-    Success(0, 12, "Daily", 0, 34, "daily|DailyMult", 500),
-    Success(0, 13, "Daily", 0, 34, "daily|DailyMult", 600),
-    Success(0, 14, "Daily", 0, 34, "daily|DailyMult", 800),
-    Success(0, 15, "Daily", 0, 34, "daily|DailyMult", 1000),
+    Success(0, 1, "Daily", 0, 34, "daily|DailyMult", 2),
+    Success(0, 2, "Daily", 0, 34, "daily|DailyMult", 5),
+    Success(0, 3, "Daily", 0, 34, "daily|DailyMult", 8),
+    Success(0, 4, "Daily", 0, 34, "daily|DailyMult", 15),
+    Success(0, 5, "Daily", 0, 34, "daily|DailyMult", 30),
+    Success(0, 6, "Daily", 0, 34, "daily|DailyMult", 45),
+    Success(0, 7, "Daily", 0, 34, "daily|DailyMult", 60),
+    Success(0, 8, "Daily", 0, 34, "daily|DailyMult", 90),
+    Success(0, 9, "Daily", 0, 34, "daily|DailyMult", 120),
+    Success(0, 10, "Daily", 0, 34, "daily|DailyMult", 150),
+    Success(0, 11, "Daily", 0, 34, "daily|DailyMult", 200),
+    Success(0, 12, "Daily", 0, 34, "daily|DailyMult", 300),
+    Success(0, 13, "Daily", 0, 34, "daily|DailyMult", 400),
+    Success(0, 14, "Daily", 0, 34, "daily|DailyMult", 500),
+    Success(0, 15, "Daily", 0, 34, "daily|DailyMult", 600),
+    Success(0, 16, "Daily", 0, 34, "daily|DailyMult", 800),
+    Success(0, 17, "Daily", 0, 34, "daily|DailyMult", 1000),
 
 
     # Argent
@@ -56,44 +58,56 @@ objetSuccess = [
     Success(1, 16, "Gems", 1, 22, "gems|gems", 500000000000),       # 500G
     Success(1, 17, "Gems", 1, 23, "gems|gems", 1000000000000),      # 1T
 
-    Success(2, 1, "Gamble", 2, 17, "gamble|max", 100),              # 100
-    Success(2, 2, "Gamble", 2, 17, "gamble|max", 1000),             # 1k
-    Success(2, 3, "Gamble", 2, 17, "gamble|max", 10000),            # 10k
-    Success(2, 4, "Gamble", 2, 17, "gamble|max", 100000),           # 100k
-    Success(2, 5, "Gamble", 2, 17, "gamble|max", 1000000),          # 1M
-    Success(2, 6, "Gamble", 2, 17, "gamble|max", 10000000),         # 10M
-    Success(2, 7, "Gamble", 2, 17, "gamble|max", 100000000),        # 100M
-    Success(2, 8, "Gamble", 2, 17, "gamble|max", 1000000000),       # 1G
-    Success(2, 8, "Gamble", 2, 17, "gamble|max", 10000000000),      # 10G
-    Success(2, 10, "Gamble", 2, 17, "gamble|max", 100000000000),    # 100G
-    Success(2, 11, "Gamble", 2, 17, "gamble|max", 1000000000000),   # 1T
+    Success(2, 1, "Gamble", 2, 17, "gamble|max", 10),               # 10
+    Success(2, 2, "Gamble", 2, 17, "gamble|max", 50),               # 50
+    Success(2, 3, "Gamble", 2, 17, "gamble|max", 100),              # 100
+    Success(2, 4, "Gamble", 2, 17, "gamble|max", 300),              # 300
+    Success(2, 5, "Gamble", 2, 17, "gamble|max", 700),              # 700
+    Success(2, 6, "Gamble", 2, 17, "gamble|max", 1000),             # 1k
+    Success(2, 7, "Gamble", 2, 17, "gamble|max", 10000),            # 10k
+    Success(2, 8, "Gamble", 2, 17, "gamble|max", 100000),           # 100k
+    Success(2, 9, "Gamble", 2, 17, "gamble|max", 1000000),          # 1M
+    Success(2, 10, "Gamble", 2, 17, "gamble|max", 10000000),         # 10M
+    Success(2, 11, "Gamble", 2, 17, "gamble|max", 100000000),        # 100M
+    Success(2, 12, "Gamble", 2, 17, "gamble|max", 1000000000),       # 1G
+    Success(2, 13, "Gamble", 2, 17, "gamble|max", 10000000000),      # 10G
+    Success(2, 14, "Gamble", 2, 17, "gamble|max", 100000000000),    # 100G
+    Success(2, 15, "Gamble", 2, 17, "gamble|max", 1000000000000),   # 1T
 
-    Success(3, 1, "Robin Hood", 3, 24, "stealing|gain", 15000),
-    Success(3, 2, "Robin Hood", 3, 24, "stealing|gain", 100000),
-    Success(3, 3, "Robin Hood", 3, 24, "stealing|gain", 400000),
-    Success(3, 4, "Robin Hood", 3, 24, "stealing|gain", 1000000),
-    Success(3, 5, "Robin Hood", 3, 24, "stealing|gain", 6000000),
+    Success(3, 1, "Robin Hood", 3, 24, "stealing|gain", 1000),
+    Success(3, 2, "Robin Hood", 3, 24, "stealing|gain", 15000),
+    Success(3, 3, "Robin Hood", 3, 24, "stealing|gain", 42000),
+    Success(3, 4, "Robin Hood", 3, 24, "stealing|gain", 100000),
+    Success(3, 5, "Robin Hood", 3, 24, "stealing|gain", 300000),
+    Success(3, 6, "Robin Hood", 3, 24, "stealing|gain", 600000),
+    Success(3, 7, "Robin Hood", 3, 24, "stealing|gain", 1000000),
+    Success(3, 8, "Robin Hood", 3, 24, "stealing|gain", 6000000),
 
-    Success(21, 1, "Lobbyiste", 23, 30, "pay|don max", 1000),
-    Success(21, 2, "Lobbyiste", 23, 30, "pay|don max", 10000),
-    Success(21, 3, "Lobbyiste", 23, 30, "pay|don max", 100000),
-    Success(21, 4, "Lobbyiste", 23, 30, "pay|don max", 1000000),
-    Success(21, 5, "Lobbyiste", 23, 30, "pay|don max", 10000000),
+    Success(21, 1, "Lobbyiste", 23, 30, "pay|don max", 100),
+    Success(21, 2, "Lobbyiste", 23, 30, "pay|don max", 1000),
+    Success(21, 3, "Lobbyiste", 23, 30, "pay|don max", 10000),
+    Success(21, 4, "Lobbyiste", 23, 30, "pay|don max", 100000),
+    Success(21, 5, "Lobbyiste", 23, 30, "pay|don max", 1000000),
+    Success(21, 6, "Lobbyiste", 23, 30, "pay|don max", 10000000),
 
-    Success(22, 1, "Politicien", 24, 31, "pay|recu max", 2000),
-    Success(22, 2, "Politicien", 24, 31, "pay|recu max", 20000),
-    Success(22, 3, "Politicien", 24, 31, "pay|recu max", 200000),
-    Success(22, 4, "Politicien", 24, 31, "pay|recu max", 2000000),
-    Success(22, 5, "Politicien", 24, 31, "pay|recu max", 20000000),
+    Success(22, 1, "Politicien", 24, 31, "pay|recu max", 200),
+    Success(22, 2, "Politicien", 24, 31, "pay|recu max", 2000),
+    Success(22, 3, "Politicien", 24, 31, "pay|recu max", 20000),
+    Success(22, 4, "Politicien", 24, 31, "pay|recu max", 200000),
+    Success(22, 5, "Politicien", 24, 31, "pay|recu max", 2000000),
+    Success(22, 6, "Politicien", 24, 31, "pay|recu max", 20000000),
 
 
     # Minage
     Success(4, 1, "Pickaxe", 4, 11, "broken|mine|pickaxe", 1),
-    Success(4, 2, "Pickaxe", 4, 11, "broken|mine|pickaxe", 5),
-    Success(4, 3, "Pickaxe", 4, 11, "broken|mine|pickaxe", 10),
-    Success(4, 4, "Pickaxe", 4, 11, "broken|mine|pickaxe", 20),
-    Success(4, 5, "Pickaxe", 4, 11, "broken|mine|pickaxe", 50),
-    Success(4, 6, "Pickaxe", 4, 11, "broken|mine|pickaxe", 100),
+    Success(4, 2, "Pickaxe", 4, 11, "broken|mine|pickaxe", 2),
+    Success(4, 3, "Pickaxe", 4, 11, "broken|mine|pickaxe", 4),
+    Success(4, 4, "Pickaxe", 4, 11, "broken|mine|pickaxe", 6),
+    Success(4, 5, "Pickaxe", 4, 11, "broken|mine|pickaxe", 10),
+    Success(4, 6, "Pickaxe", 4, 11, "broken|mine|pickaxe", 15),
+    Success(4, 7, "Pickaxe", 4, 11, "broken|mine|pickaxe", 20),
+    Success(4, 8, "Pickaxe", 4, 11, "broken|mine|pickaxe", 50),
+    Success(4, 9, "Pickaxe", 4, 11, "broken|mine|pickaxe", 100),
 
     Success(5, 1, "Miner", 5, 12, "mine|cobblestone", 300),
     Success(5, 2, "Miner", 5, 12, "mine|cobblestone", 500),
@@ -104,22 +118,27 @@ objetSuccess = [
     Success(5, 7, "Miner", 5, 12, "mine|iron", 2000),
     Success(5, 8, "Miner", 5, 12, "mine|gold", 3000),
 
-    Success(6, 1, "Wonders Miner", 6, 12, "mine|diamond", 50),
-    Success(6, 2, "Wonders Miner", 6, 12, "mine|emerald", 70),
-    Success(6, 3, "Wonders Miner", 6, 12, "mine|diamond", 200),
-    Success(6, 4, "Wonders Miner", 6, 12, "mine|ruby", 100),
-    Success(6, 5, "Wonders Miner", 6, 12, "mine|emerald", 500),
-    Success(6, 6, "Wonders Miner", 6, 12, "mine|diamond", 1000),
-    Success(6, 7, "Wonders Miner", 6, 12, "mine|ruby", 1000),
+    Success(6, 1, "Wonders Miner", 6, 12, "mine|diamond", 10),
+    Success(6, 2, "Wonders Miner", 6, 12, "mine|diamond", 25),
+    Success(6, 3, "Wonders Miner", 6, 12, "mine|diamond", 50),
+    Success(6, 4, "Wonders Miner", 6, 12, "mine|emerald", 70),
+    Success(6, 5, "Wonders Miner", 6, 12, "mine|diamond", 200),
+    Success(6, 6, "Wonders Miner", 6, 12, "mine|ruby", 100),
+    Success(6, 7, "Wonders Miner", 6, 12, "mine|emerald", 500),
+    Success(6, 8, "Wonders Miner", 6, 12, "mine|diamond", 1000),
+    Success(6, 9, "Wonders Miner", 6, 12, "mine|ruby", 1000),
 
 
     # Excavation
-    Success(7, 1, "Shovel", 7, 11, "broken|dig|shovel", 1),
-    Success(7, 2, "Shovel", 7, 11, "broken|dig|shovel", 5),
-    Success(7, 3, "Shovel", 7, 11, "broken|dig|shovel", 10),
-    Success(7, 4, "Shovel", 7, 11, "broken|dig|shovel", 20),
-    Success(7, 5, "Shovel", 7, 11, "broken|dig|shovel", 50),
-    Success(7, 6, "Shovel", 7, 11, "broken|dig|shovel", 100),
+    Success(7, 1, "Shovel", 4, 11, "broken|dig|shovel", 1),
+    Success(7, 2, "Shovel", 4, 11, "broken|dig|shovel", 2),
+    Success(7, 3, "Shovel", 4, 11, "broken|dig|shovel", 4),
+    Success(7, 4, "Shovel", 4, 11, "broken|dig|shovel", 6),
+    Success(7, 5, "Shovel", 4, 11, "broken|dig|shovel", 10),
+    Success(7, 6, "Shovel", 4, 11, "broken|dig|shovel", 15),
+    Success(7, 7, "Shovel", 7, 11, "broken|dig|shovel", 20),
+    Success(7, 8, "Shovel", 7, 11, "broken|dig|shovel", 50),
+    Success(7, 9, "Shovel", 7, 11, "broken|dig|shovel", 100),
 
     Success(8, 1, "Digger", 8, 13, "dig|seed", 100),
     Success(8, 2, "Digger", 8, 13, "dig|cacao", 100),
@@ -129,12 +148,15 @@ objetSuccess = [
 
 
     # Pêche
-    Success(9, 1, "Fishingrod", 9, 11, "broken|fish|fishingrod", 1),
-    Success(9, 2, "Fishingrod", 9, 11, "broken|fish|fishingrod", 5),
-    Success(9, 3, "Fishingrod", 9, 11, "broken|fish|fishingrod", 10),
-    Success(9, 4, "Fishingrod", 9, 11, "broken|fish|fishingrod", 20),
-    Success(9, 5, "Fishingrod", 9, 11, "broken|fish|fishingrod", 50),
-    Success(9, 6, "Fishingrod", 9, 11, "broken|fish|fishingrod", 100),
+    Success(9, 1, "Fishingrod", 4, 11, "broken|fish|fishingrod", 1),
+    Success(9, 2, "Fishingrod", 4, 11, "broken|fish|fishingrod", 2),
+    Success(9, 3, "Fishingrod", 4, 11, "broken|fish|fishingrod", 4),
+    Success(9, 4, "Fishingrod", 4, 11, "broken|fish|fishingrod", 6),
+    Success(9, 5, "Fishingrod", 4, 11, "broken|fish|fishingrod", 10),
+    Success(9, 6, "Fishingrod", 4, 11, "broken|fish|fishingrod", 15),
+    Success(9, 7, "Fishingrod", 9, 11, "broken|fish|fishingrod", 20),
+    Success(9, 8, "Fishingrod", 9, 11, "broken|fish|fishingrod", 50),
+    Success(9, 9, "Fishingrod", 9, 11, "broken|fish|fishingrod", 100),
 
     Success(10, 1, "Fisher", 10, 14, "fish|fish", 200),
     Success(10, 2, "Fisher", 10, 14, "fish|fish", 500),
@@ -168,41 +190,46 @@ objetSuccess = [
     Success(12, 10, "Sell", 12, 16, "sell|total", 1000000),
 
     Success(23, 1, "Banquier", 29, 32, "buy|bank_upgrade", 1),
-    Success(23, 2, "Banquier", 29, 32, "buy|bank_upgrade", 5),
-    Success(23, 3, "Banquier", 29, 32, "buy|bank_upgrade", 15),
-    Success(23, 4, "Banquier", 30, 32, "buy|bank_upgrade", 25),
-    Success(23, 5, "Banquier", 31, 32, "buy|bank_upgrade", 40),
-    Success(23, 6, "Banquier", 32, 32, "buy|bank_upgrade", 60),
+    Success(23, 2, "Banquier", 29, 32, "buy|bank_upgrade", 2),
+    Success(23, 3, "Banquier", 29, 32, "buy|bank_upgrade", 5),
+    Success(23, 4, "Banquier", 29, 32, "buy|bank_upgrade", 10),
+    Success(23, 5, "Banquier", 29, 32, "buy|bank_upgrade", 15),
+    Success(23, 6, "Banquier", 30, 32, "buy|bank_upgrade", 25),
+    Success(23, 7, "Banquier", 31, 32, "buy|bank_upgrade", 40),
+    Success(23, 8, "Banquier", 32, 32, "buy|bank_upgrade", 60),
 
     Success(24, 1, "Rentré des classes", 25, 32, "buy|backpack", 1),
     Success(24, 2, "Rentré des classes", 25, 32, "buy|backpack", 5),
-    Success(24, 3, "Rentré des classes", 25, 32, "buy|hyperpack", 1),
-    Success(24, 4, "Rentré des classes", 25, 32, "buy|hyperpack", 5),
-    Success(24, 5, "Rentré des classes", 25, 32, "buy|hyperpack", 10),
-    Success(24, 6, "Rentré des classes", 25, 32, "buy|hyperpack", 25),
-    Success(24, 7, "Rentré des classes", 25, 32, "buy|hyperpack", 42),
-    Success(24, 8, "Rentré des classes", 25, 32, "buy|hyperpack", 66),
-    Success(24, 9, "Rentré des classes", 25, 32, "buy|hyperpack", 100),
-    Success(24, 10, "Rentré des classes", 25, 32, "buy|hyperpack", 200),
-    Success(24, 11, "Rentré des classes", 25, 32, "buy|hyperpack", 400),
-    Success(24, 12, "Rentré des classes", 25, 32, "buy|hyperpack", 700),
-    Success(24, 13, "Rentré des classes", 25, 32, "buy|hyperpack", 1000),
-    Success(24, 14, "Rentré des classes", 25, 32, "buy|hyperpack", 1400),
-    Success(24, 15, "Rentré des classes", 25, 32, "buy|hyperpack", 2000),
-    Success(24, 16, "Rentré des classes", 25, 32, "buy|hyperpack", 3000),
-    Success(24, 17, "Rentré des classes", 25, 32, "buy|hyperpack", 5000),
-    Success(24, 18, "Rentré des classes", 25, 32, "buy|hyperpack", 10000),
-    Success(24, 19, "Rentré des classes", 25, 32, "buy|hyperpack", 50000),
-    Success(24, 20, "Rentré des classes", 25, 32, "buy|hyperpack", 100000),
+    Success(24, 3, "Rentré des classes", 25, 32, "buy|backpack", 10),
+    Success(24, 4, "Rentré des classes", 25, 32, "buy|hyperpack", 2),
+    Success(24, 5, "Rentré des classes", 25, 32, "buy|hyperpack", 5),
+    Success(24, 6, "Rentré des classes", 25, 32, "buy|hyperpack", 10),
+    Success(24, 7, "Rentré des classes", 25, 32, "buy|hyperpack", 25),
+    Success(24, 8, "Rentré des classes", 25, 32, "buy|hyperpack", 42),
+    Success(24, 9, "Rentré des classes", 25, 32, "buy|hyperpack", 66),
+    Success(24, 10, "Rentré des classes", 25, 32, "buy|hyperpack", 100),
+    Success(24, 11, "Rentré des classes", 25, 32, "buy|hyperpack", 200),
+    Success(24, 12, "Rentré des classes", 25, 32, "buy|hyperpack", 400),
+    Success(24, 13, "Rentré des classes", 25, 32, "buy|hyperpack", 700),
+    Success(24, 14, "Rentré des classes", 25, 32, "buy|hyperpack", 1000),
+    Success(24, 15, "Rentré des classes", 25, 32, "buy|hyperpack", 1400),
+    Success(24, 16, "Rentré des classes", 25, 32, "buy|hyperpack", 2000),
+    Success(24, 17, "Rentré des classes", 25, 32, "buy|hyperpack", 3000),
+    Success(24, 18, "Rentré des classes", 25, 32, "buy|hyperpack", 5000),
+    Success(24, 19, "Rentré des classes", 25, 32, "buy|hyperpack", 10000),
+    Success(24, 20, "Rentré des classes", 25, 32, "buy|hyperpack", 50000),
+    Success(24, 21, "Rentré des classes", 25, 32, "buy|hyperpack", 100000),
 
 
     # Serre | Cave | Cuisine
     Success(13, 1, "Nature lover", 13, 27, "hothouse|plant|seed", 100),
-    Success(13, 2, "Nature lover", 13, 27, "hothouse|plant|seed", 500),
-    Success(13, 3, "Nature lover", 13, 27, "hothouse|plant|seed", 5000),
-    Success(13, 4, "Nature lover | Amazonian filler", 14, 27, "hothouse|plant|seed", 15000),
-    Success(13, 5, "Nature lover | Amazonian filler", 14, 27, "hothouse|plant|seed", 50000),
-    Success(13, 6, "Nature lover | Amazonian filler", 14, 27, "hothouse|plant|seed", 200000),
+    Success(13, 2, "Nature lover", 13, 27, "hothouse|plant|seed", 200),
+    Success(13, 3, "Nature lover", 13, 27, "hothouse|plant|seed", 500),
+    Success(13, 4, "Nature lover", 13, 27, "hothouse|plant|seed", 1500),
+    Success(13, 5, "Nature lover", 13, 27, "hothouse|plant|seed", 5000),
+    Success(13, 6, "Nature lover | Amazonian filler", 14, 27, "hothouse|plant|seed", 15000),
+    Success(13, 7, "Nature lover | Amazonian filler", 14, 27, "hothouse|plant|seed", 50000),
+    Success(13, 8, "Nature lover | Amazonian filler", 14, 27, "hothouse|plant|seed", 200000),
 
     Success(14, 1, "Woodcutter", 15, 25, "hothouse|harvest|oak", 100),
     Success(14, 2, "Woodcutter", 15, 25, "hothouse|harvest|spruce", 200),
@@ -259,11 +286,15 @@ objetSuccess = [
     Success(18, 7, "My life is Potato", 19, 28, "cooking|plant|potato", 30000),
     Success(18, 8, "My life is Potato", 19, 28, "cooking|plant|potato", 100000),
 
-    Success(19, 1, "Barack à frite", 20, 26, "cooking|harvest|fries", 100),
-    Success(19, 2, "Barack à frite", 20, 26, "cooking|harvest|fries", 500),
-    Success(19, 3, "Barack à frite", 20, 26, "cooking|harvest|fries", 1500),
-    Success(19, 4, "Barack à frite", 20, 26, "cooking|harvest|fries", 4000),
-    Success(19, 5, "Barack à frite", 20, 26, "cooking|harvest|fries", 12000),
+    Success(19, 1, "Barack à frite", 20, 26, "cooking|harvest|fries", 10),
+    Success(19, 2, "Barack à frite", 20, 26, "cooking|harvest|fries", 20),
+    Success(19, 3, "Barack à frite", 20, 26, "cooking|harvest|fries", 50),
+    Success(19, 4, "Barack à frite", 20, 26, "cooking|harvest|fries", 100),
+    Success(19, 5, "Barack à frite", 20, 26, "cooking|harvest|fries", 200),
+    Success(19, 6, "Barack à frite", 20, 26, "cooking|harvest|fries", 500),
+    Success(19, 7, "Barack à frite", 20, 26, "cooking|harvest|fries", 1500),
+    Success(19, 8, "Barack à frite", 20, 26, "cooking|harvest|fries", 4000),
+    Success(19, 9, "Barack à frite", 20, 26, "cooking|harvest|fries", 12000),
 
 
     # Forge
