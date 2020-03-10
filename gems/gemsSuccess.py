@@ -130,12 +130,12 @@ objetSuccess = [
 
 
     # Excavation
-    Success(7, 1, "Shovel", 4, 11, "broken|dig|shovel", 1),
-    Success(7, 2, "Shovel", 4, 11, "broken|dig|shovel", 2),
-    Success(7, 3, "Shovel", 4, 11, "broken|dig|shovel", 4),
-    Success(7, 4, "Shovel", 4, 11, "broken|dig|shovel", 6),
-    Success(7, 5, "Shovel", 4, 11, "broken|dig|shovel", 10),
-    Success(7, 6, "Shovel", 4, 11, "broken|dig|shovel", 15),
+    Success(7, 1, "Shovel", 7, 11, "broken|dig|shovel", 1),
+    Success(7, 2, "Shovel", 7, 11, "broken|dig|shovel", 2),
+    Success(7, 3, "Shovel", 7, 11, "broken|dig|shovel", 4),
+    Success(7, 4, "Shovel", 7, 11, "broken|dig|shovel", 6),
+    Success(7, 5, "Shovel", 7, 11, "broken|dig|shovel", 10),
+    Success(7, 6, "Shovel", 7, 11, "broken|dig|shovel", 15),
     Success(7, 7, "Shovel", 7, 11, "broken|dig|shovel", 20),
     Success(7, 8, "Shovel", 7, 11, "broken|dig|shovel", 50),
     Success(7, 9, "Shovel", 7, 11, "broken|dig|shovel", 100),
@@ -148,12 +148,12 @@ objetSuccess = [
 
 
     # Pêche
-    Success(9, 1, "Fishingrod", 4, 11, "broken|fish|fishingrod", 1),
-    Success(9, 2, "Fishingrod", 4, 11, "broken|fish|fishingrod", 2),
-    Success(9, 3, "Fishingrod", 4, 11, "broken|fish|fishingrod", 4),
-    Success(9, 4, "Fishingrod", 4, 11, "broken|fish|fishingrod", 6),
-    Success(9, 5, "Fishingrod", 4, 11, "broken|fish|fishingrod", 10),
-    Success(9, 6, "Fishingrod", 4, 11, "broken|fish|fishingrod", 15),
+    Success(9, 1, "Fishingrod", 9, 11, "broken|fish|fishingrod", 1),
+    Success(9, 2, "Fishingrod", 9, 11, "broken|fish|fishingrod", 2),
+    Success(9, 3, "Fishingrod", 9, 11, "broken|fish|fishingrod", 4),
+    Success(9, 4, "Fishingrod", 9, 11, "broken|fish|fishingrod", 6),
+    Success(9, 5, "Fishingrod", 9, 11, "broken|fish|fishingrod", 10),
+    Success(9, 6, "Fishingrod", 9, 11, "broken|fish|fishingrod", 15),
     Success(9, 7, "Fishingrod", 9, 11, "broken|fish|fishingrod", 20),
     Success(9, 8, "Fishingrod", 9, 11, "broken|fish|fishingrod", 50),
     Success(9, 9, "Fishingrod", 9, 11, "broken|fish|fishingrod", 100),
