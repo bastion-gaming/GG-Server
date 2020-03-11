@@ -1,6 +1,8 @@
 import json
 from DB import SQLite as sql
 from gems import gemsItems as GI, gemsFonctions as GF
+from datetime import date
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 def load_dates():
@@ -23,7 +25,68 @@ def load_dates():
     return res
 
 
+def parse_dates():
+    dict_Dates = load_dates()
+    Dyear = dict()
+    Dmonth = dict()
+    Dday = dict()
+
+    for i in range(1, 5):
+        Dyear[i] = int(dict_Dates[i][6:10])
+        Dmonth[i] = int(dict_Dates[i][3:5])
+        Dday[i] = int(dict_Dates[i][:2])
+
+    return Dday, Dmonth, Dyear, dict_Dates
+
+
+def new_season(idS):
+    # 3 temps
+    # fermer la précédente saisons
+    # lancer la nouvelle saison
+    # lancer la saison dans 1 an
+    Dday, Dmonth, Dyear, dict_Dates = parse_dates()
+    idS_old = 0
+
+    if idS == 1:
+        idS_old = 4
+    else:
+        idS_old = idS - 1
+
+    print("Nouvelle saison en cours de lancement...")
+    if end_season():
+
+        # Ecriture de la nouvelle année dans le fichier
+        dict_Dates[idS_old] = dict_Dates[idS_old][:6] + str(Dyear[idS_old]+1)
+
+        path = "core/saisons.json"
+        with open(path, encoding='utf-8') as json_file:
+            json.dump(dict_Dates, json_file, indent=4)
+
+        
+
+    else:
+        print("\n\n\n ...Impossible de mettre fin à la précédente saison.")
+
+
+def init_season():
+
+    Dday, Dmonth, Dyear, dict_Dates = parse_dates()
+
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(new_season, 'date', run_date=date(Dyear[1], Dmonth[1], Dday[1]), args=[1], id="S1")
+    scheduler.add_job(new_season, 'date', run_date=date(Dyear[2], Dmonth[2], Dday[2]), args=[2], id="S2")
+    scheduler.add_job(new_season, 'date', run_date=date(Dyear[3], Dmonth[3], Dday[3]), args=[3], id="S3")
+    scheduler.add_job(new_season, 'date', run_date=date(Dyear[4], Dmonth[4], Dday[4]), args=[4], id="S4")
+
+    scheduler.start()
+
+
 def end_season():
+    """
+    recupere le nombre de gem et le nombre de gems dans la banque,
+    stock ces valeurs dans la base de donnée (table seasons) et met
+     ces 2 valeurs a 0 + supprime tous les items a prix fixe dans l'inventaire
+    """
     res = load_dates()
     nbs = res["total"]
     for i in range(1, sql.taille("gems")+1):

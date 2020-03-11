@@ -3,8 +3,10 @@ import gg_lib as gg
 from DB import SQLite as sql
 from gems import gemsFonctions as GF, gemsItems as GI
 from core import level as lvl
+from core import manage_seasons as MS
 import manage_commands as mc
 from languages import lang
+import apscheduler as apsS
 
 # Ouverture du port
 context = zmq.Context()
@@ -32,6 +34,7 @@ sql.newPlayer(GF.idGetGems, "gems", "discord", "Get Gems")
 sql.newPlayer(GF.idBaBot, "gems", "discord", "BaBot")
 
 lang.init()
+
 
 try:
     GF.loadItem(True)
