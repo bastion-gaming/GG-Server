@@ -57,10 +57,14 @@ def new_season(idS):
 
         # Ecriture de la nouvelle année dans le fichier
         dict_Dates[idS_old] = dict_Dates[idS_old][:6] + str(Dyear[idS_old]+1)
-
         path = "core/saisons.json"
         with open(path, encoding='utf-8') as json_file:
             json.dump(dict_Dates, json_file, indent=4)
+
+        # Reprogrammation de la nouvelle date
+        scheduler = BackgroundScheduler()
+        scheduler.reschedule_job('S'+str(idS_old), trigger='date', run_date=date(dict_Dates[idS_old], Dmonth[idS_old], Dday[idS_old]))
+
 
     else:
         print("\n\n\n ...Impossible de mettre fin à la précédente saison.")

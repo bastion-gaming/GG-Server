@@ -1,6 +1,6 @@
 from os import listdir
 import json
-
+    
 general_dict_lang = dict()
 for file in listdir("languages"):
     if ".json" in file:
