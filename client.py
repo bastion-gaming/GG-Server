@@ -54,7 +54,7 @@ while check:
     else:
         if x == "stop server":
             socket.send_string(gg.std_send_command("stop", "admin", name_pl))
-        elif x == "commands":
+        elif x == "commands" or x == "help" or x == "?":
             print("=====================================")
             print("======== Liste des commandes ========")
             print("\n=== Commandes générales ===")
