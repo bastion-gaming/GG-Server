@@ -6,8 +6,6 @@ from core import level as lvl
 from core import manage_seasons as MS
 import manage_commands as mc
 from languages import lang
-import apscheduler as apsS
-
 # Ouverture du port
 context = zmq.Context()
 socket = context.socket(zmq.REP)
@@ -34,6 +32,8 @@ sql.newPlayer(GF.idGetGems, "gems", "discord", "Get Gems")
 sql.newPlayer(GF.idBaBot, "gems", "discord", "BaBot")
 
 lang.init()
+
+MS.init_season()
 
 
 try:
