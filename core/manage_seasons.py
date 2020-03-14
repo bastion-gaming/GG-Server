@@ -1,7 +1,7 @@
 import json
 from DB import SQLite as sql
 from gems import gemsItems as GI, gemsFonctions as GF
-from datetime import date
+from datetime import date, datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 
 
@@ -65,7 +65,6 @@ def new_season(idS):
         scheduler = BackgroundScheduler()
         scheduler.reschedule_job('S'+str(idS_old), trigger='date', run_date=date(dict_Dates[idS_old], Dmonth[idS_old], Dday[idS_old]))
 
-
     else:
         print("\n\n\n ...Impossible de mettre fin à la précédente saison.")
 
@@ -75,12 +74,18 @@ def init_season():
     Dday, Dmonth, Dyear, dict_Dates = parse_dates()
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(new_season, 'date', run_date=date(Dyear[1], Dmonth[1], Dday[1]), args=[1], id="S1")
-    scheduler.add_job(new_season, 'date', run_date=date(Dyear[2], Dmonth[2], Dday[2]), args=[2], id="S2")
-    scheduler.add_job(new_season, 'date', run_date=date(Dyear[3], Dmonth[3], Dday[3]), args=[3], id="S3")
-    scheduler.add_job(new_season, 'date', run_date=date(Dyear[4], Dmonth[4], Dday[4]), args=[4], id="S4")
+    # scheduler.add_job(new_season, 'date', run_date=date(Dyear[1], Dmonth[1], Dday[1]), args=[1], id="S1")
+    # scheduler.add_job(new_season, 'date', run_date=date(Dyear[2], Dmonth[2], Dday[2]), args=[2], id="S2")
+    # scheduler.add_job(new_season, 'date', run_date=date(Dyear[3], Dmonth[3], Dday[3]), args=[3], id="S3")
+    # scheduler.add_job(new_season, 'date', run_date=date(Dyear[4], Dmonth[4], Dday[4]), args=[4], id="S4")
+    scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[1], Dmonth[1], Dday[1], 1, 52, 5), args=[1], id="S1")
+    scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[2], Dmonth[2], Dday[2], 1, 53, 5), args=[2], id="S2")
+    scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[3], Dmonth[3], Dday[3], 1, 54, 5), args=[3], id="S3")
+    scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[4], Dmonth[4], Dday[4], 1, 55, 5), args=[4], id="S4")
 
     scheduler.start()
+
+    scheduler.print_jobs()
 
 
 def end_season():
