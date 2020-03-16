@@ -15,7 +15,7 @@ def admin(param):
             platform = arg2
     else:
         platform = param["name_pl"]
-    if param["name_pl"] == "Admin Bot" and fct != "playerid":
+    if param["name_pl"] == "Admin" and fct != "playerid":
         PlayerID = int(param["ID"])
     else:
         ID = sql.get_SuperID(int(param["ID"]), platform)
