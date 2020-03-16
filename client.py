@@ -28,7 +28,7 @@ socket.connect(SERVER_ENDPOINT)
 poll = zmq.Poller()
 poll.register(socket, zmq.POLLIN)
 
-socket.send_string(gg.std_send_command("connect", "__client", name_pl))
+socket.send_string(gg.std_send_command("GGconnect", "__client", name_pl))
 time.sleep(1)
 socks = dict(poll.poll(REQUEST_TIMEOUT))
 if socks.get(socket) == zmq.POLLIN:
@@ -68,7 +68,7 @@ while check:
         elif x in AdminCommands:
             param = dict()
             param["fct"] = x.lower()
-            param["ID"] = 1
+            param["ID"] = 620558080551157770
             param["arg2"] = "None"
             param["arg3"] = "None"
             param["arg4"] = "None"
@@ -111,7 +111,7 @@ while check:
                 param["arg2"] = input()
                 print("\n• ID du joueur sur la platforme:")
                 param["ID"] = input()
-            socket.send_string(gg.std_send_command("admin", 129362501187010561, name_pl, param))
+            socket.send_string(gg.std_send_command("admin", 620558080551157770, name_pl, param))
         elif x == "test":
             print("> test")
 
