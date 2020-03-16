@@ -9,10 +9,12 @@
     ],
   "WarningMsg":
     [
-      "No user account has been found.",
+      "No user account has been found.\nCreate yourself an account with the command `begin`\nor connect your account with the command `connect`.",
       "Incorrectly formulated order",
       "Your inventory is full.",
-      "The order is badly formulated."
+      "The order is badly formulated.",
+      "Coming Soon",
+      "You already have an account on this platform. "
     ],
   "newPlayer":
     [
@@ -20,7 +22,7 @@
       "The player already exists."
     ],
   "PlayerID":
-    "Your PlayerID: {0}",
+    "Your PlayerID: **{0}**",
   "level":
     [
       "reached the level **{0}**",
