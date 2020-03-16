@@ -9,10 +9,12 @@
     ],
   "WarningMsg":
     [
-      "Aucun compte utilisateur n'a été trouvé.",
+      "Aucun compte utilisateur n'a été trouvé.\nCrée toi un compte avec la commande `begin`\nou connecte ton compte avec la commande `connect`",
       "Commande mal formulée",
       "Ton inventaire est plein.",
-      "La commande est mal formulée."
+      "La commande est mal formulée.",
+      "Bientôt disponible",
+      "Tu poccède deja un compte sur cette plateforme."
     ],
   "newPlayer":
     [
@@ -20,7 +22,7 @@
       "Le joueur existe déjà."
     ],
   "PlayerID":
-    "Votre PlayerID: {0}",
+    "Votre PlayerID: **{0}**",
   "level":
     [
       "a atteint le niveau **{0}**",
