@@ -111,18 +111,24 @@ def end_season():
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         bank = sql.valueAtNumber(PlayerID, "Solde", "bank")
         # Sauvegarde des valeurs de la saison en  cours par Joueur
-        sql.add(PlayerID, "idseasons", nbs, "seasons")
-        sql.updateField(PlayerID, "gem", [solde, nbs], "seasons")
-        sql.updateField(PlayerID, "bank", [bank, nbs], "seasons")
-        # Reset solde de gems et solde de la banque
-        sql.updateField(PlayerID, "gems", 0, "gems")
-        sql.updateField(PlayerID, "Solde", 0, "bank")
-        # Reset dans l'inventaire des objets à prix fixe du marché
-        for x in GI.exception:
-            if x != "bank_upgrade":
-                sql.updateField(PlayerID, x, 0, "inventory")
-        # reset dans l'inventaire des objets événementiels
-        for x in GF.ObjetEventEnd:
-            if x != "bank_upgrade":
-                sql.updateField(PlayerID, x, 0, "inventory")
+        save = sql.add(PlayerID, "idseasons", nbs, "seasons")
+        if save != 404 and save != 102:
+            sql.updateField(PlayerID, "gem", [solde, nbs], "seasons")
+            sql.updateField(PlayerID, "bank", [bank, nbs], "seasons")
+            # Reset solde de gems et solde de la banque
+            sql.updateField(PlayerID, "gems", 0, "gems")
+            sql.updateField(PlayerID, "Solde", 0, "bank")
+            # Reset dans l'inventaire des objets à prix fixe du marché
+            for x in GI.exception:
+                if x != "bank_upgrade":
+                    sql.updateField(PlayerID, x, 0, "inventory")
+            # reset dans l'inventaire des objets événementiels
+            for x in GF.ObjetEventEnd:
+                if x != "bank_upgrade":
+                    sql.updateField(PlayerID, x, 0, "inventory")
+    with open('gems/bourse.json', 'r') as fp:
+        dict = json.load(fp)
+    dict["total"] = nbs + 1
+    with open('gems/bourse.json', 'w') as fp:
+        json.dump(dict, fp, indent=4)
     return True

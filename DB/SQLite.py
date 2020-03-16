@@ -642,6 +642,8 @@ def add(PlayerID, nameElem, nbElem, nameDB):
     if old_value != 0:
         if nameDB == "hothouse" or nameDB == "cooking" or nameDB == "daily" or nameDB == "ferment":
             updateField(PlayerID, nameElem, nbElem, nameDB)
+        elif nameDB == "seasons":
+            return 102
         else:
             new_value = int(old_value[0]) + int(nbElem)
             if new_value < 0:
