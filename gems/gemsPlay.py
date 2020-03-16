@@ -437,21 +437,14 @@ def mine(param):
                 # =====================================
                 # Gestion de la durabilité de l'outil
                 # =====================================
-                Durability = sql.valueAtNumber(PlayerID, outil, "durability")
-                if Durability == 0:
-                    sql.add(PlayerID, outil, -1, "inventory")
-                    if sql.valueAtNumber(PlayerID, outil, "inventory") >= 1:
-                        for c in GF.objetOutil:
-                            if c.nom == outil:
-                                sql.add(PlayerID, c.nom, c.durabilite, "durability")
+                Durability = GF.durability(PlayerID, outil)
+                if Durability:
                     desc = lang_P.forge_msg(lang, "mine", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
                     sql.add(PlayerID, ["mine", "mine | broken | {}".format(outil)], 1, "statgems")
                     msg.append("OK")
                     msg.append(lang)
                     msg.append(desc)
                     return msg
-                else :
-                    sql.add(PlayerID, outil, -1, "durability")
 
                 # =====================================
                 # Gestion des résultats
@@ -551,21 +544,14 @@ def dig(param):
                 # =====================================
                 # Gestion de la durabilité de l'outil
                 # =====================================
-                Durability = sql.valueAtNumber(PlayerID, outil, "durability")
-                if Durability == 0:
-                    sql.add(PlayerID, outil, -1, "inventory")
-                    if sql.valueAtNumber(PlayerID, outil, "inventory") >= 1:
-                        for c in GF.objetOutil:
-                            if c.nom == outil:
-                                sql.add(PlayerID, c.nom, c.durabilite, "durability")
+                Durability = GF.durability(PlayerID, outil)
+                if Durability:
                     desc = lang_P.forge_msg(lang, "dig", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
                     sql.add(PlayerID, ["dig", "dig | broken | {}".format(outil)], 1, "statgems")
                     msg.append("OK")
                     msg.append(lang)
                     msg.append(desc)
                     return msg
-                else :
-                    sql.add(PlayerID, outil, -1, "durability")
 
                 # =====================================
                 # Gestion des résultats
@@ -647,21 +633,14 @@ def fish(param):
                 # =====================================
                 # Gestion de la durabilité de l'outil
                 # =====================================
-                Durability = sql.valueAtNumber(PlayerID, outil, "durability")
-                if Durability == 0:
-                    sql.add(PlayerID, outil, -1, "inventory")
-                    if sql.valueAtNumber(PlayerID, outil, "inventory") >= 1:
-                        for c in GF.objetOutil:
-                            if c.nom == outil:
-                                sql.add(PlayerID, c.nom, c.durabilite, "durability")
+                Durability = GF.durability(PlayerID, outil)
+                if Durability:
                     desc = lang_P.forge_msg(lang, "fish", [outil, "{idmoji[gem_" + outil + "]}"], False, 0)
                     sql.add(PlayerID, ["fish", "fish | broken | {}".format(outil)], 1, "statgems")
                     msg.append("OK")
                     msg.append(lang)
                     msg.append(desc)
                     return msg
-                else :
-                    sql.add(PlayerID, outil, -1, "durability")
 
                 # =====================================
                 # Gestion des résultats
@@ -1132,17 +1111,7 @@ def hothouse(param):
                             desc = lang_P.forge_msg(lang, "hothouse", ["{idmoji[gem_" + item + "]}", item, nbHarvest], False, 3)
                         lvl.addxp(PlayerID, 1, "gems")
                         if i > 1:
-                            if sql.valueAtNumber(PlayerID, "planting_plan", "inventory") > 0:
-                                if sql.valueAt(PlayerID, "planting_plan", "durability") == 0:
-                                    for c in GF.objetOutil:
-                                        if c.nom == "planting_plan":
-                                            sql.add(PlayerID, "planting_plan", c.durabilite, "durability")
-                                sql.add(PlayerID, "planting_plan", -1, "durability")
-                                if sql.valueAt(PlayerID, "planting_plan", "durability")[0] <= 0:
-                                    for c in GF.objetOutil:
-                                        if c.nom == "planting_plan":
-                                            sql.add(PlayerID, "planting_plan", c.durabilite, "durability")
-                                    sql.add(PlayerID, "planting_plan", -1, "inventory")
+                            GF.durability(PlayerID, "planting_plan")
 
                     else:
                         timeH = int(time / 60 / 60)
@@ -1374,18 +1343,7 @@ def ferment(param):
                     desc = lang_P.forge_msg(lang, "ferment", [gain, "{idmoji[gem_" + gain + "]}", nbgain], False, 7)
                     lvl.addxp(PlayerID, 1, "gems")
                     if i > 1:
-                        nbbarrel = int(sql.valueAtNumber(PlayerID, "barrel", "inventory"))
-                        if nbbarrel > 0:
-                            if sql.valueAtNumber(PlayerID, "barrel", "durability") == 0:
-                                for c in GF.objetOutil:
-                                    if c.nom == "barrel":
-                                        sql.add(PlayerID, "barrel", c.durabilite, "durability")
-                            sql.add(PlayerID, "barrel", -1, "durability")
-                            if sql.valueAtNumber(PlayerID, "barrel", "durability") <= 0:
-                                for c in GF.objetOutil:
-                                    if c.nom == "barrel":
-                                        sql.add(PlayerID, "barrel", c.durabilite, "durability")
-                                sql.add(PlayerID, "barrel", -1, "inventory")
+                        GF.durability(PlayerID, "barrel")
                 else:
                     timeH = int(time / 60 / 60)
                     time = time - timeH * 3600
@@ -1518,18 +1476,7 @@ def cooking(param):
                     desc = "{3} {2} <:gem_{0}:{1}>`{0}`".format(gain, "{idmoji[gem_" + gain + "]}", nbgain, lang_P.forge_msg(lang, "cooking", None, False, 1))
                     lvl.addxp(PlayerID, 1, "gems")
                     if i > 1:
-                        nbfurnace = int(sql.valueAtNumber(PlayerID, "furnace", "inventory"))
-                        if nbfurnace > 0:
-                            if sql.valueAtNumber(PlayerID, "furnace", "durability") == 0:
-                                for c in GF.objetOutil:
-                                    if c.nom == "furnace":
-                                        sql.add(PlayerID, "furnace", c.durabilite, "durability")
-                            sql.add(PlayerID, "furnace", -1, "durability")
-                            if sql.valueAtNumber(PlayerID, "furnace", "durability") <= 0:
-                                for c in GF.objetOutil:
-                                    if c.nom == "furnace":
-                                        sql.add(PlayerID, "furnace", c.durabilite, "durability")
-                                sql.add(PlayerID, "furnace", -1, "inventory")
+                        GF.durability(PlayerID, "furnace")
                 else:
                     timeH = int(time / 60 / 60)
                     time = time - timeH * 3600

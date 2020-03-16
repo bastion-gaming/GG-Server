@@ -550,3 +550,16 @@ def ChiffreRomain(nb):
     elif nbu == 9:
         CR += "IX"
     return CR
+
+
+def durability(PlayerID, outil):
+    nb = int(sql.valueAtNumber(PlayerID, outil, "inventory"))
+    if nb > 0:
+        sql.add(PlayerID, outil, -1, "durability")
+        if sql.valueAtNumber(PlayerID, outil, "durability") <= 0:
+            for c in objetOutil:
+                if c.nom == outil:
+                    sql.add(PlayerID, outil, c.durabilite, "durability")
+            sql.add(PlayerID, outil, -1, "inventory")
+            return True
+    return False
