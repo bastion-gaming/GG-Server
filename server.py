@@ -6,6 +6,7 @@ from core import level as lvl
 from core import manage_seasons as MS
 import manage_commands as mc
 from languages import lang
+
 # Ouverture du port
 context = zmq.Context()
 socket = context.socket(zmq.REP)
@@ -50,7 +51,7 @@ while check:
 
     print("\n•••••\nReceived request: %s" % message)
 
-    if message["name_c"] == "connect":
+    if message["name_c"] == "GGconnect":
         print(">>> Client " + message["name_pl"] + " est connecté")
         socket.send_string('1')
         skip = True
