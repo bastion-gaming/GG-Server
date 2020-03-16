@@ -15,14 +15,27 @@ def begin(param):
     return msg
 
 
+def connect(param):
+    """Connecter un meme compte sur plusieurs plateforme (commande à effectuer sur la nouvelle plateforme)"""
+    lang = param["lang"]
+    msg = []
+    SuperID = sql.get_SuperID(param["ID"], param["name_pl"])
+    if SuperID != "Error 404":
+        msg.append("NOK")
+        msg.append(lang)
+        msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 5))
+    else:
+        PlayerID = param["PlayerID"]
+        msg.append("OK")
+        msg.append(lang)
+        msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 4))
+    return msg
+
+
 def bal(param):
     """**[nom]** | Êtes vous riche ou pauvre ?"""
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
+    PlayerID = param["PlayerID"]
     fct = param["fct"]
     msg = []
 
@@ -46,7 +59,7 @@ def bal(param):
         titre = lang_P.forge_msg(lang, "bal", [lvlValue], False)
         msg.append(titre)
         msg.append(desc)
-        sql.updateComTime(ID, "bal", "gems")
+        sql.updateComTime(PlayerID, "bal", "gems")
         # Message de réussite dans la console
         print("Gems >> Balance de {} affichée".format(PlayerID))
     else:
@@ -59,12 +72,8 @@ def baltop(param):
     """**_{filtre}_ [nombre]** | Classement des joueurs (10 premiers par défaut)"""
     n = param["nb"]
     filtre = param["filtre"]
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
+    PlayerID = param["PlayerID"]
     msg = []
     baltop = ""
     if sql.spam(PlayerID, GF.couldown_4s, "baltop", "gems"):
@@ -147,12 +156,8 @@ def buy(param):
     """**[item] [nombre]** | Permet d'acheter les items vendus au marché"""
     nb = param["nb"]
     item = param["item"]
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
+    PlayerID = param["PlayerID"]
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "buy", "gems"):
@@ -189,7 +194,7 @@ def buy(param):
                                 check = True
                             argent = "<:spinelle:{}>`spinelles`".format("{idmoji[spinelle]}")
                         if check:
-                            sql.add(ID, c.nom, nb, "inventory")
+                            sql.add(PlayerID, c.nom, nb, "inventory")
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.nom)], nb, "statgems")
                             sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
                             if c.type != "emoji":
@@ -294,12 +299,8 @@ def sell(param):
     """**[item] [nombre]** | Permet de vendre vos items !"""
     nb = param["nb"]
     item = param["item"]
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
+    PlayerID = param["PlayerID"]
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "sell", "gems"):
@@ -378,12 +379,8 @@ def sell(param):
 def inv(param):
     """**[nom de la poche]** | Permet de voir ce que vous avez dans le ventre !"""
     fct = param["fct"]
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
+    PlayerID = param["PlayerID"]
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "inv", "gems"):
@@ -504,12 +501,8 @@ def inv(param):
 def market(param):
     """**[stand]** | Permet de voir tout les objets que l'on peux acheter ou vendre !"""
     fct = param["fct"]
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
+    PlayerID = param["PlayerID"]
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "market", "gems"):
@@ -987,12 +980,8 @@ def pay(param):
     gain = param["gain"]
     ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["name_pl"]))
     Nom_recu = param["Nom_recu"]
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
+    PlayerID = param["PlayerID"]
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "pay", "gems"):
@@ -1048,12 +1037,8 @@ def give(param):
     nb = param["nb"]
     ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["name_pl"]))
     Nom_recu = param["Nom_recu"]
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
+    PlayerID = param["PlayerID"]
     msg = []
 
     checkLB = False
@@ -1160,12 +1145,8 @@ def forge(param):
     """**[item] [nombre]** | Permet de concevoir des items spécifiques"""
     item = param["item"]
     nb = param["nb"]
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
+    PlayerID = param["PlayerID"]
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "forge", "gems"):

@@ -1,6 +1,7 @@
 from gems import *
 import gems
 from DB import SQLite as sql
+from languages import lang as lang_P
 
 
 def exec_commands(c):
@@ -53,6 +54,7 @@ def exec_commands(c):
                 ID = sql.get_SuperID(c["name_p"], c["name_pl"])
                 if ID != "Error 404":
                     c["param_c"]["lang"] = sql.valueAtNumber(ID, "LANG", "IDs")
+                    c["param_c"]["PlayerID"] = sql.get_PlayerID(ID, "gems")
                 else:
                     c["param_c"]["lang"] = "EN"
             else:
@@ -63,14 +65,16 @@ def exec_commands(c):
         # Appelle la fonction
 
         print(commande_forgee)
+        if ID != "Error 404" or commande == "connect" or commande == "begin":
+            ret = eval(commande_forgee)
 
-        ret = eval(commande_forgee)
+            res["reponse"] = ret
+        else:
+            res["reponse"] = ["WarningMsg", c["param_c"]["lang"], lang_P.forge_msg(c["param_c"]["lang"], "WarningMsg", None, False, 0)]
 
         res["name_c"] = commande
         res["name_p"] = c["name_p"]
         res["name_pl"] = c["name_pl"]
-        res["reponse"] = ret
-
     else:
         res = None
 

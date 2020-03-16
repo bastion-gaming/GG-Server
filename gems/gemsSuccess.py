@@ -427,12 +427,8 @@ def stats(param):
 
 
 def success(param):
-    ID = sql.get_SuperID(param["ID"], param["name_pl"])
     lang = param["lang"]
-    if ID == "Error 404":
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return msg
-    PlayerID = sql.get_PlayerID(ID, "gems")
+    PlayerID = param["PlayerID"]
     msg = []
     result = []
     dict = {}
