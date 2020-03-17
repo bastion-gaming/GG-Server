@@ -509,6 +509,9 @@ def lootbox(PlayerID, lang, param = False):
 
 
 def ChiffreRomain(nb):
+    # Transforme un chiffre arabe (nb) en chiffre romain (CR)
+    # minimum = 1
+    # maximum = 1000
     CR = ""
     CR_I = 'I'  # 1
     CR_X = 'X'  # 10
@@ -553,6 +556,7 @@ def ChiffreRomain(nb):
 
 
 def durability(PlayerID, outil):
+    # gestion de la durabilité d'un outil
     nb = int(sql.valueAtNumber(PlayerID, outil, "inventory"))
     if nb > 0:
         sql.add(PlayerID, outil, -1, "durability")
@@ -567,6 +571,7 @@ def durability(PlayerID, outil):
 
 def param_prod(item):
     res = dict()
+    # Items utilisé dans la production de la serre (hothouse)
     if item == "seed":
         res["nbitem"] = 1
         De = r.randint(1, 16)
@@ -594,6 +599,8 @@ def param_prod(item):
         res["nbgain"] = r.randint(2, 5)
         res["couldown"] = couldown_4s
         res["couldownMsg"] = ":clock4:`4h`"
+
+    # Items utilisé dans la production de la cave (ferment)
     elif item == "grapes":
         res["nbitem"] = 10
         res["gain"] = "wine_glass"
@@ -606,6 +613,8 @@ def param_prod(item):
         res["nbgain"] = r.randint(2, 6)
         res["couldown"] = couldown_4s
         res["couldownMsg"] = ":clock8:`8h`"
+
+    # Items utilisé dans la production de la cuisine (cooking)
     elif item == "potato":
         res["nbitem"] = 6
         res["gain"] = "fries"
@@ -630,6 +639,8 @@ def param_prod(item):
         res["nbgain"] = r.randint(1, 4)
         res["couldown"] = couldown_2h
         res["couldownMsg"] = ":clock2:`2h`"
+
+    # Autre
     else:
         res["nbitem"] = 0
         res["gain"] = ""
@@ -640,6 +651,8 @@ def param_prod(item):
 
 
 def time_aff(time):
+    # Traduit une valeur time en valeur HH:mm:ss
+    # (avec un emoji correspondant devant)
     dtime = dict()
     dtime["timeH"] = int(time / 60 / 60)
     dtime["time"] = time - dtime["timeH"] * 3600
