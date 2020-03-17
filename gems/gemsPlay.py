@@ -1027,231 +1027,130 @@ def boxes(param):
     return msg
 
 
+def prod_HFC(PlayerID, lang, item, commande, i):
+    jour = dt.date.today()
+    if commande == "hothouse":
+        itemlist = ["seed"]
+        if (jour.month == 10 and jour.day >= 26) or (jour.month == 11 and jour.day <= 10):
+            itemlist.append("pumpkin")
+        outil = "planting_plan"
+    elif commande == "ferment":
+        itemlist = ["grapes", "wheat"]
+        outil = "barrel"
+    elif commande == "cooking":
+        itemlist = ["potato", "cacao"]
+        if (jour.month == 10 and jour.day >= 26) or (jour.month == 11 and jour.day <= 10):
+            itemlist.append("pumpkin")
+        if (jour.month == 12 and jour.day >= 21) or (jour.month == 1 and jour.day <= 14):
+            itemlist.append("chocolate")
+        outil = "furnace"
+    data = []
+    desc = ""
+    valueOutil = sql.valueAt(PlayerID, i, commande)
+    if valueOutil != 0:
+        valueTime = float(valueOutil[0])
+        valueItem = valueOutil[1]
+    else:
+        valueTime = 0
+        valueItem = ""
+    OutilItem = sql.valueAtNumber(PlayerID, item, "inventory")
+
+    if valueItem == "" and item == "None":
+        desc = lang_P.forge_msg(lang, commande, None, False, 0)
+
+    elif item in itemlist:
+        if commande == "hothouse" and item == "pumpkin":
+            prod = GF.param_prod("{0}H".format(item))
+        else:
+            prod = GF.param_prod(item)
+        nbitem = prod["nbitem"]
+        gain = prod["gain"]
+        couldownMsg = prod["couldownMsg"]
+        if valueTime == 0:
+            if OutilItem >= nbitem:
+                data = []
+                data.append(str(t.time()))
+                data.append(item)
+                sql.add(PlayerID, i, data, commande)
+                sql.add(PlayerID, item, -nbitem, "inventory")
+                sql.add(PlayerID, [commande, "{1} | plant | item | {0}".format(item, commande)], nbitem, "statgems")
+                if item == "grapes":
+                    desc = lang_P.forge_msg(lang, commande, [item, couldownMsg], False, 1)
+                else:
+                    desc = lang_P.forge_msg(lang, commande, [item, "{idmoji[gem_" + item + "]}", couldownMsg], False, 2)
+            else:
+                if item == "grapes":
+                    desc = lang_P.forge_msg(lang, commande, [item, gain, nbitem], False, 3)
+                else:
+                    desc = lang_P.forge_msg(lang, commande, [item, "{idmoji[gem_" + item + "]}", gain, nbitem], False, 4)
+
+        else:
+            if valueItem == "grapes":
+                desc = lang_P.forge_msg(lang, commande, [valueItem], False, 5)
+            else:
+                desc = lang_P.forge_msg(lang, commande, [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 6)
+
+    elif item == "None":
+        prod = GF.param_prod(valueItem)
+        nbitem = prod["nbitem"]
+        gain = prod["gain"]
+        couldown = prod["couldown"]
+        nbgain = prod["nbgain"]
+
+        EndTime = float(valueTime)
+        InstantTime = t.time()
+        time = EndTime - (InstantTime-couldown)
+        if time <= 0:
+            data = []
+            data.append(0)
+            data.append("")
+            sql.add(PlayerID, gain, nbgain, "inventory")
+            sql.add(PlayerID, [commande, "{1} | harvest | item | {0}".format(gain, commande)], nbgain, "statgems")
+            sql.updateField(PlayerID, i, data, commande)
+            if gain == "grapes" or gain == "beer" or gain == "wine_glass":
+                desc = lang_P.forge_msg(lang, commande, [gain, "{idmoji[gem_" + gain + "]}", nbgain], False, 7)
+            else:
+                desc = lang_P.forge_msg(lang, commande, [gain, "{idmoji[gem_" + gain + "]}", nbgain], False, 8)
+            lvl.addxp(PlayerID, 1, "gems")
+            if i > 1:
+                GF.durability(PlayerID, outil)
+        else:
+            restime = GF.time_aff(time)
+            if valueItem == "grapes":
+                desc = lang_P.forge_msg(lang, commande, [valueItem], False, 5)
+            else:
+                desc = lang_P.forge_msg(lang, commande, [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 6)
+            desc += lang_P.forge_msg(lang, commande, [restime["timeH"], restime["timeM"], restime["timeS"], restime["cl"]], False, 9)
+    else:
+        desc = lang_P.forge_msg(lang, commande, None, False, 10)
+    return desc
+
+
 def hothouse(param):
-    """**[harvest / plant]** {_n° plantation / item à planter_} | Plantons compagnons !!"""
+    """**{seed/pumpkin}** | Plantons compagnons !!"""
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    fct = param["fct"]
-    arg = param["arg"]
-    arg2 = param["arg2"]
+    item = param["item"]
     msg = []
-    desc = ""
-    jour = dt.date.today()
-    if not ((jour.month == 10 and jour.day >= 23) and (jour.month == 11 and jour.day <= 10)): # Special Halloween
-        arg = "None"
+    i = 1
+    max = 50
 
-    maxplanting = 50
     if sql.spam(PlayerID, GF.couldown_4s, "hothouse", "gems"):
-        nbplanting = int(sql.valueAtNumber(PlayerID, "planting_plan", "inventory")) + 1
-        if nbplanting >= maxplanting:
-            nbplanting = maxplanting
-        i = 1
         sql.updateComTime(PlayerID, "hothouse", "gems")
-        if fct == "None" or fct == "harvest":
-            if arg != "None":
-                if int(arg) <= nbplanting:
-                    nbplanting = int(arg)
-                else:
-                    desc = lang_P.forge_msg(lang, "hothouse", None, False, 0)
-                    msg.append("NOK")
-                    msg.append(desc)
-                    return msg
-            msg.append("OK")
-            msg.append(lang)
-            msg.append("{}".format(nbplanting))
-            while i <= nbplanting:
-                data = []
-                valuePlanting = sql.valueAt(PlayerID, i, "hothouse")
-                if valuePlanting != 0:
-                    valueTime = float(valuePlanting[0])
-                    valueItem = valuePlanting[1]
-                else:
-                    valueTime = 0
-                    valueItem = ""
-                if valueItem == "pumpkin":
-                    couldown = GF.couldown_4h
-                else:
-                    couldown = GF.couldown_6h
-                if valueTime == 0:
-                    desc = lang_P.forge_msg(lang, "hothouse", None, False, 1)
-                else:
-                    PlantingTime = float(valueTime)
-                    InstantTime = t.time()
-                    time = PlantingTime - (InstantTime-couldown)
-                    if time <= 0:
-                        De = r.randint(1, 15)
-                        if valueItem == "seed" or valueItem == "":
-                            if De <= 5:
-                                nbHarvest = r.randint(1, 2)
-                                item = "oak"
-                            elif De > 5 and De <= 9:
-                                nbHarvest = r.randint(1, 2)
-                                item = "spruce"
-                            elif De > 9 and De <= 12:
-                                nbHarvest = r.randint(1, 2)
-                                item = "palm"
-                            elif De > 12 and De <= 14:
-                                nbHarvest = r.randint(4, 10)
-                                item = "wheat"
-                            elif De > 14:
-                                nbHarvest = r.randint(6, 12)
-                                item = "grapes"
-                        elif valueItem == "pumpkin":
-                            nbHarvest = r.randint(2, 5)
-                            item = "pumpkin"
-                        data = []
-                        data.append(0)
-                        data.append("")
-                        sql.add(PlayerID, item, nbHarvest, "inventory")
-                        sql.add(PlayerID, ["hothouse", "hothouse | harvest | item | {}".format(item)], nbHarvest, "statgems")
-                        sql.updateField(PlayerID, i, data, "hothouse")
-                        if item == "grapes":
-                            desc = lang_P.forge_msg(lang, "hothouse", ["{idmoji[gem_" + item + "]}", item, nbHarvest], False, 2)
-                        else:
-                            desc = lang_P.forge_msg(lang, "hothouse", ["{idmoji[gem_" + item + "]}", item, nbHarvest], False, 3)
-                        lvl.addxp(PlayerID, 1, "gems")
-                        if i > 1:
-                            GF.durability(PlayerID, "planting_plan")
-
-                    else:
-                        timeH = int(time / 60 / 60)
-                        time = time - timeH * 3600
-                        timeM = int(time / 60)
-                        timeS = int(time - timeM * 60)
-                        if timeM <= 30:
-                            if timeH % 12 == 0:
-                                cl = "12"
-                            else:
-                                cl = timeH % 12
-                            cl = "clock{0}30".format(cl)
-                        else:
-                            if timeH % 12 == 0:
-                                cl = "12"
-                            else:
-                                cl = (timeH % 12)+1
-                            cl = "clock{0}".format(cl)
-                        desc = lang_P.forge_msg(lang, "hothouse", [timeH, timeM, timeS, valueItem, "{idmoji[gem_" + valueItem + "]}", cl], False, 4)
-                msg.append("{}".format(i))
-                msg.append(desc)
-                i += 1
-            # << while i <= nbplanting:
-            return msg
-        elif fct == "plant":
-            if sql.valueAtNumber(GF.PlayerID_GetGems, "DailyMult", "daily") == 1:
-                desc = lang_P.forge_msg(lang, "hothouse", None, False, 5)
-                msg.append("NOK")
-                msg.append(desc)
-                return msg
-            if arg != "seed" and arg != "pumpkin":
-                arg = "seed"
-            if arg2 != "None":
-                try:
-                    arg2 = int(arg2)
-                except:
-                    msg.append("NOK")
-                    desc = lang_P.forge_msg(lang, "hothouse", None, False, 6)
-                    msg.append(desc)
-                    return msg
-                if arg2 > nbplanting:
-                    desc = lang_P.forge_msg(lang, "hothouse", None, False, 7)
-                    msg.append("NOK")
-                    msg.append(desc)
-                    return msg
-                elif int(arg2) < 0:
-                    sql.addGems(PlayerID, -100)
-                    lvl.addxp(PlayerID, -10, "gems")
-                    desc = lang_P.forge_msg(lang, "DiscordCop Amende")
-                    sql.add(PlayerID, ["divers", "DiscordCop Amende"], 1, "statgems")
-                    msg.append("anticheat")
-                    msg.append(desc)
-                    return msg
-                data = []
-                valuePlanting = sql.valueAt(PlayerID, i, "hothouse")
-                if valuePlanting != 0:
-                    valueTime = float(valuePlanting[0])
-                    valueItem = valuePlanting[1]
-                else:
-                    valueTime = 0
-                    valueItem = ""
-                if valueItem == "pumpkin":
-                    couldown = ":clock4:`4h`"
-                else:
-                    couldown = ":clock6:`6h`"
-                if valueTime == 0:
-                    PlantingItemValue = sql.valueAtNumber(PlayerID, arg, "inventory")
-                    if PlantingItemValue >= 1:
-                        data = []
-                        data.append(str(t.time()))
-                        data.append(arg)
-                        sql.add(PlayerID, arg2, data, "hothouse")
-                        sql.add(PlayerID, arg, -1, "inventory")
-                        sql.add(PlayerID, ["hothouse", "hothouse | plant | item | {}".format(arg)], 1, "statgems")
-                        desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}", couldown], False, 8)
-                    else:
-                        desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}"], False, 9)
-                else:
-                    desc = lang_P.forge_msg(lang, "hothouse", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 10)
-                msg.append("OK")
-                msg.append(lang)
-                msg.append("{}".format(nbplanting))
-                msg.append("{}".format(arg2))
-                msg.append(desc)
-                return msg
-            else:
-                j = 0
-                msg.append("OK")
-                msg.append(lang)
-                msg.append("{}".format(nbplanting))
-                while i <= nbplanting:
-                    data = []
-                    valuePlanting = sql.valueAt(PlayerID, i, "hothouse")
-                    if valuePlanting != 0:
-                        valueTime = float(valuePlanting[0])
-                        valueItem = valuePlanting[1]
-                    else:
-                        valueTime = 0
-                        valueItem = ""
-                    PlantingItemValue = sql.valueAtNumber(PlayerID, arg, "inventory")
-                    if valueItem == "pumpkin" or (valueItem == "" and arg == "pumpkin"):
-                        couldown = ":clock4:`4h`"
-                    else:
-                        couldown = ":clock6:`6h`"
-                    if valueTime == 0:
-                        if PlantingItemValue >= 1:
-                            data = []
-                            data.append(str(t.time()))
-                            data.append(arg)
-                            sql.add(PlayerID, i, data, "hothouse")
-                            sql.add(PlayerID, arg, -1, "inventory")
-                            sql.add(PlayerID, ["hothouse", "hothouse | plant | item | {}".format(arg)], 1, "statgems")
-                            desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}", couldown], False, 11)
-                        else:
-                            desc = lang_P.forge_msg(lang, "hothouse", [arg, "{idmoji[gem_" + arg + "]}"], False, 12)
-                            if j == 0:
-                                j = -1
-                                if arg == "seed":
-                                    arg = "pumpkin"
-                                else:
-                                    arg = "seed"
-                    else:
-                        desc = lang_P.forge_msg(lang, "hothouse", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 13)
-                    msg.append("{}".format(i))
-                    msg.append(desc)
-                    if j == -1:
-                        j = 1
-                    else:
-                        i += 1
-            return msg
-        else:
-            desc = lang_P.forge_msg(lang, "hothouse", None, False, 14)
-            msg.append("NOK")
-            msg.append(desc)
-            return msg
+        nboutil = sql.valueAtNumber(PlayerID, "planting_plan", "inventory") + 1
+        if nboutil >= max:
+            nboutil = max
+        msg.append("OK")
+        msg.append(lang)
+        msg.append("{}".format(nboutil))
+        while i <= nboutil:
+            msg.append("{}".format(i))
+            msg.append(prod_HFC(PlayerID, lang, item, "hothouse", i))
+            i += 1
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
-        msg.append("couldown")
-        msg.append(desc)
-        return msg
+        msg.append("NOK")
+        msg.append(lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)]))
+    return msg
 
 
 def ferment(param):
@@ -1260,119 +1159,24 @@ def ferment(param):
     PlayerID = param["PlayerID"]
     item = param["item"]
     msg = []
-    desc = ""
-    gain = ""
     i = 1
     max = 20
 
     if sql.spam(PlayerID, GF.couldown_4s, "ferment", "gems"):
-        if item == "grapes":
-            nbitem = 10
-            gain = "wine_glass"
-            couldown = GF.couldown_3h
-            couldownMsg = ":clock3:`3h`"
-        elif item == "wheat":
-            nbitem = 8
-            gain = "beer"
-            couldown = GF.couldown_8h
-            couldownMsg = ":clock8:`8h`"
         sql.updateComTime(PlayerID, "ferment", "gems")
-        nbferment = sql.valueAtNumber(PlayerID, "barrel", "inventory") + 1
-        if nbferment >= max:
-            nbferment = max
+        nboutil = sql.valueAtNumber(PlayerID, "barrel", "inventory") + 1
+        if nboutil >= max:
+            nboutil = max
         msg.append("OK")
         msg.append(lang)
-        msg.append("{}".format(nbferment))
-        while i <= nbferment:
-            data = []
-            valueFerment = sql.valueAt(PlayerID, i, "ferment")
-            if valueFerment != 0:
-                valueTime = float(valueFerment[0])
-                valueItem = valueFerment[1]
-            else:
-                valueTime = 0
-                valueItem = ""
-            fermentItem = sql.valueAtNumber(PlayerID, item, "inventory")
-            if valueItem == "" and item == "None":
-                desc = lang_P.forge_msg(lang, "ferment", None, False, 0)
-            elif item == "grapes" or item == "wheat":
-                if valueTime == 0:
-                    if fermentItem >= nbitem:
-                        data = []
-                        data.append(str(t.time()))
-                        data.append(item)
-                        sql.add(PlayerID, i, data, "ferment")
-                        sql.add(PlayerID, item, -nbitem, "inventory")
-                        sql.add(PlayerID, ["ferment", "ferment | plant | item | {}".format(item)], nbitem, "statgems")
-                        if item == "grapes":
-                            desc = lang_P.forge_msg(lang, "ferment", [item, couldownMsg], False, 1)
-                        else:
-                            desc = lang_P.forge_msg(lang, "ferment", [item, "{idmoji[gem_" + item + "]}", couldownMsg], False, 2)
-                    else:
-                        if item == "grapes":
-                            desc = lang_P.forge_msg(lang, "ferment", [item, gain, nbitem], False, 3)
-                        else:
-                            desc = lang_P.forge_msg(lang, "ferment", [item, "{idmoji[gem_" + item + "]}", gain, nbitem], False, 4)
-
-                else:
-                    if valueItem == "grapes":
-                        desc = lang_P.forge_msg(lang, "ferment", [valueItem], False, 5)
-                    else:
-                        desc = lang_P.forge_msg(lang, "ferment", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 6)
-            elif item == "None":
-                couldown = GF.couldown_3h
-                nbgain = 0
-                if valueItem == "grapes":
-                    gain = "wine_glass"
-                    nbgain = r.randint(1, 4)
-                    couldown = GF.couldown_3h
-                elif valueItem == "wheat":
-                    gain = "beer"
-                    nbgain = r.randint(2, 6)
-                    couldown = GF.couldown_8h
-                CookedTime = float(valueTime)
-                InstantTime = t.time()
-                time = CookedTime - (InstantTime-couldown)
-                if time <= 0:
-                    data = []
-                    data.append(0)
-                    data.append("")
-                    sql.add(PlayerID, gain, nbgain, "inventory")
-                    sql.add(PlayerID, ["ferment", "ferment | harvest | item | {}".format(gain)], nbgain, "statgems")
-                    sql.updateField(PlayerID, i, data, "ferment")
-                    desc = lang_P.forge_msg(lang, "ferment", [gain, "{idmoji[gem_" + gain + "]}", nbgain], False, 7)
-                    lvl.addxp(PlayerID, 1, "gems")
-                    if i > 1:
-                        GF.durability(PlayerID, "barrel")
-                else:
-                    timeH = int(time / 60 / 60)
-                    time = time - timeH * 3600
-                    timeM = int(time / 60)
-                    timeS = int(time - timeM * 60)
-                    if timeM <= 30:
-                        if timeH % 12 == 0:
-                            cl = "12"
-                        else:
-                            cl = timeH % 12
-                        cl = "clock{0}30".format(cl)
-                    else:
-                        if timeH % 12 == 0:
-                            cl = "12"
-                        else:
-                            cl = (timeH % 12)+1
-                        cl = "clock{0}".format(cl)
-                    if valueItem == "grapes":
-                        desc = lang_P.forge_msg(lang, "ferment", [valueItem], False, 5)
-                    else:
-                        desc = lang_P.forge_msg(lang, "ferment", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 6)
-                    desc += lang_P.forge_msg(lang, "ferment", [timeH, timeM, timeS, cl], False, 8)
+        msg.append("{}".format(nboutil))
+        while i <= nboutil:
             msg.append("{}".format(i))
-            msg.append(desc)
+            msg.append(prod_HFC(PlayerID, lang, item, "ferment", i))
             i += 1
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("NOK")
-        msg.append(desc)
+        msg.append(lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)]))
     return msg
 
 
@@ -1382,147 +1186,33 @@ def cooking(param):
     PlayerID = param["PlayerID"]
     item = param["item"]
     msg = []
-    desc = ""
-    gain = ""
     i = 1
     jour = dt.date.today()
     max = 20
-
-    if sql.spam(PlayerID, GF.couldown_4s, "cooking", "gems"):
-        if item == "pumpkin":
-            if (jour.month == 10 and jour.day >= 26) or (jour.month == 11 and jour.day <= 10):
-                gain = "pumpkinpie"
-                nbitem = 12
-                couldown = GF.couldown_2h
-                couldownMsg = ":clock2:`2h`"
-            else:
-                msg.append("NOK")
-                msg.append(lang_P.forge_msg(lang, "cooking", None, False, 8))
-                return msg
-        elif item == "chocolate":
-            if (jour.month == 12 and jour.day >= 21) or (jour.month == 1 and jour.day <= 14):
-                gain = "cupcake"
-                nbitem = 8
-                couldown = GF.couldown_4h
-                couldownMsg = ":clock4:`4h`"
-            else:
-                msg.append("NOK")
-                msg.append(lang_P.forge_msg(lang, "cooking", None, False, 9))
-                return msg
-        elif item == "potato":
-            gain = "fries"
-            nbitem = 6
-            couldown = GF.couldown_3h
-            couldownMsg = ":clock3:`3h`"
-        elif item == "cacao":
-            gain = "chocolate"
-            nbitem = 4
-            couldown = GF.couldown_2h
-            couldownMsg = ":clock2:`2h`"
-        elif item != "None":
+    if item == "pumpkin":
+        if not ((jour.month == 10 and jour.day >= 26) or (jour.month == 11 and jour.day <= 10)):
             msg.append("NOK")
-            msg.append(lang_P.forge_msg(lang, "cooking", None, False, 7))
+            msg.append(lang_P.forge_msg(lang, "cooking", None, False, 11))
+            return msg
+    elif item == "chocolate":
+        if not ((jour.month == 12 and jour.day >= 21) or (jour.month == 1 and jour.day <= 14)):
+            msg.append("NOK")
+            msg.append(lang_P.forge_msg(lang, "cooking", None, False, 12))
             return msg
 
+    if sql.spam(PlayerID, GF.couldown_4s, "cooking", "gems"):
         sql.updateComTime(PlayerID, "cooking", "gems")
-        nbcooking = sql.valueAtNumber(PlayerID, "furnace", "inventory") + 1
-        if nbcooking >= max:
-            nbcooking = max
+        nboutil = sql.valueAtNumber(PlayerID, "furnace", "inventory") + 1
+        if nboutil >= max:
+            nboutil = max
         msg.append("OK")
         msg.append(lang)
-        msg.append("{}".format(nbcooking))
-        while i <= nbcooking:
-            data = []
-            valueCooking = sql.valueAt(PlayerID, i, "cooking")
-            if valueCooking != 0:
-                valueTime = float(valueCooking[0])
-                valueItem = valueCooking[1]
-            else:
-                valueTime = 0
-                valueItem = ""
-            cookingItem = sql.valueAtNumber(PlayerID, item, "inventory")
-            if valueItem == "" and item == "None":
-                desc = lang_P.forge_msg(lang, "cooking", None, False, 0)
-            elif item == "None":
-                couldown = GF.couldown_3h
-                nbgain = 0
-                if valueItem == "pumpkin":
-                    gain = "pumpkinpie"
-                    nbgain = r.randint(1, 4)
-                    couldown = GF.couldown_2h
-                elif valueItem == "chocolate":
-                    gain = "cupcake"
-                    nbgain = r.randint(1, 4)
-                    couldown = GF.couldown_4h
-                elif valueItem == "potato":
-                    gain = "fries"
-                    nbgain = r.randint(1, 5)
-                    couldown = GF.couldown_3h
-                elif valueItem == "cacao":
-                    gain = "chocolate"
-                    nbgain = r.randint(1, 5)
-                    couldown = GF.couldown_2h
-
-                CookedTime = float(valueTime)
-                InstantTime = t.time()
-                time = CookedTime - (InstantTime-couldown)
-                if time <= 0:
-                    data = []
-                    data.append(0)
-                    data.append("")
-                    sql.add(PlayerID, gain, nbgain, "inventory")
-                    sql.add(PlayerID, ["cooking", "cooking | harvest | item | {}".format(gain)], nbgain, "statgems")
-                    sql.updateField(PlayerID, i, data, "cooking")
-                    desc = "{3} {2} <:gem_{0}:{1}>`{0}`".format(gain, "{idmoji[gem_" + gain + "]}", nbgain, lang_P.forge_msg(lang, "cooking", None, False, 1))
-                    lvl.addxp(PlayerID, 1, "gems")
-                    if i > 1:
-                        GF.durability(PlayerID, "furnace")
-                else:
-                    timeH = int(time / 60 / 60)
-                    time = time - timeH * 3600
-                    timeM = int(time / 60)
-                    timeS = int(time - timeM * 60)
-                    if timeM <= 30:
-                        if timeH % 12 == 0:
-                            cl = "12"
-                        else:
-                            cl = timeH % 12
-                        cl = "clock{0}30".format(cl)
-                    else:
-                        if timeH % 12 == 0:
-                            cl = "12"
-                        else:
-                            cl = (timeH % 12)+1
-                        cl = "clock{0}".format(cl)
-                    desc = lang_P.forge_msg(lang, "cooking", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 2)
-                    desc += lang_P.forge_msg(lang, "cooking", [timeH, timeM, timeS, cl], False, 3)
-            else:
-                if valueTime == 0:
-                    if cookingItem >= nbitem:
-                        data = []
-                        data.append(str(t.time()))
-                        data.append(item)
-                        sql.add(PlayerID, i, data, "cooking")
-                        sql.add(PlayerID, item, -nbitem, "inventory")
-                        sql.add(PlayerID, ["cooking", "cooking | plant | item | {}".format(item)], nbitem, "statgems")
-                        desc = lang_P.forge_msg(lang, "cooking", [couldownMsg], False, 4)
-                    else:
-                        if item == "pumpkin":
-                            gain = "pumpkinpie"
-                        elif item == "chocolate":
-                            gain = "cupcake"
-                        elif item == "potato":
-                            gain = "fries"
-                        elif item == "cacao":
-                            gain = "chocolate"
-                        desc = lang_P.forge_msg(lang, "cooking", [item, "{idmoji[gem_" + item + "]}", gain, "{idmoji[gem_" + gain + "]}", nbitem], False, 5)
-                else:
-                    desc = lang_P.forge_msg(lang, "cooking", [valueItem, "{idmoji[gem_" + valueItem + "]}"], False, 6)
+        msg.append("{}".format(nboutil))
+        while i <= nboutil:
             msg.append("{}".format(i))
-            msg.append(desc)
+            msg.append(prod_HFC(PlayerID, lang, item, "cooking", i))
             i += 1
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
         msg.append("NOK")
-        msg.append(desc)
+        msg.append(lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)]))
     return msg

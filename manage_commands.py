@@ -52,11 +52,11 @@ def exec_commands(c):
             c["param_c"]["name_pl"] = c["name_pl"]
             if c["name_pl"] != "Admin":
                 ID = sql.get_SuperID(c["name_p"], c["name_pl"])
-                if ID != "Error 404":
-                    c["param_c"]["lang"] = sql.valueAtNumber(ID, "LANG", "IDs")
-                    c["param_c"]["PlayerID"] = sql.get_PlayerID(ID, "gems")
-                else:
-                    c["param_c"]["lang"] = "EN"
+            else:
+                ID = sql.get_SuperID(c["name_p"], "discord")
+            if ID != "Error 404":
+                c["param_c"]["lang"] = sql.valueAtNumber(ID, "LANG", "IDs")
+                c["param_c"]["PlayerID"] = sql.get_PlayerID(ID, "gems")
             else:
                 c["param_c"]["lang"] = "EN"
             commande_forgee = commande_forgee + '(' + str(c["param_c"]) + ')'

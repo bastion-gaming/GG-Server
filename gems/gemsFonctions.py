@@ -563,3 +563,98 @@ def durability(PlayerID, outil):
             sql.add(PlayerID, outil, -1, "inventory")
             return True
     return False
+
+
+def param_prod(item):
+    res = dict()
+    if item == "seed":
+        res["nbitem"] = 1
+        De = r.randint(1, 16)
+        if De <= 5:
+            res["nbgain"] = r.randint(1, 2)
+            res["gain"] = "oak"
+        elif De > 5 and De <= 9:
+            res["nbgain"] = r.randint(1, 2)
+            res["gain"] = "spruce"
+        elif De > 9 and De <= 12:
+            res["nbgain"] = r.randint(1, 2)
+            res["gain"] = "palm"
+        elif De > 12 and De <= 14:
+            res["nbgain"] = r.randint(4, 10)
+            res["gain"] = "wheat"
+        elif De > 14:
+            res["nbgain"] = r.randint(6, 12)
+            res["gain"] = "grapes"
+
+        res["couldown"] = couldown_4s
+        res["couldownMsg"] = ":clock6:`6h`"
+    elif item == "pumpkinH":
+        res["nbitem"] = 1
+        res["gain"] = "pumpkin"
+        res["nbgain"] = r.randint(2, 5)
+        res["couldown"] = couldown_4s
+        res["couldownMsg"] = ":clock4:`4h`"
+    elif item == "grapes":
+        res["nbitem"] = 10
+        res["gain"] = "wine_glass"
+        res["nbgain"] = r.randint(1, 4)
+        res["couldown"] = couldown_4s
+        res["couldownMsg"] = ":clock3:`3h`"
+    elif item == "wheat":
+        res["nbitem"] = 8
+        res["gain"] = "beer"
+        res["nbgain"] = r.randint(2, 6)
+        res["couldown"] = couldown_4s
+        res["couldownMsg"] = ":clock8:`8h`"
+    elif item == "potato":
+        res["nbitem"] = 6
+        res["gain"] = "fries"
+        res["nbgain"] = r.randint(1, 5)
+        res["couldown"] = couldown_4s
+        res["couldownMsg"] = ":clock3:`3h`"
+    elif item == "cacao":
+        res["nbitem"] = 4
+        res["gain"] = "chocolate"
+        res["nbgain"] = r.randint(1, 5)
+        res["couldown"] = couldown_4s
+        res["couldownMsg"] = ":clock2:`2h`"
+    elif item == "chocolate":
+        res["nbitem"] = 8
+        res["gain"] = "cupcake"
+        res["nbgain"] = r.randint(1, 4)
+        res["couldown"] = couldown_4h
+        res["couldownMsg"] = ":clock4:`4h`"
+    elif item == "pumpkin":
+        res["nbitem"] = 12
+        res["gain"] = "pumpkinpie"
+        res["nbgain"] = r.randint(1, 4)
+        res["couldown"] = couldown_2h
+        res["couldownMsg"] = ":clock2:`2h`"
+    else:
+        res["nbitem"] = 0
+        res["gain"] = ""
+        res["nbgain"] = 0
+        res["couldown"] = 0
+        res["couldownMsg"] = ""
+    return res
+
+
+def time_aff(time):
+    dtime = dict()
+    dtime["timeH"] = int(time / 60 / 60)
+    dtime["time"] = time - dtime["timeH"] * 3600
+    dtime["timeM"] = int(time / 60)
+    dtime["timeS"] = int(time - dtime["timeM"] * 60)
+    if dtime["timeM"] <= 30:
+        if dtime["timeH"] % 12 == 0:
+            dtime["cl"] = "12"
+        else:
+            dtime["cl"] = dtime["timeH"] % 12
+        dtime["cl"] = "clock{0}30".format(dtime["cl"])
+    else:
+        if dtime["timeH"] % 12 == 0:
+            dtime["cl"] = "12"
+        else:
+            dtime["cl"] = (dtime["timeH"] % 12)+1
+        dtime["cl"] = "clock{0}".format(dtime["cl"])
+    return dtime
