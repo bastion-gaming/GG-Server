@@ -19,7 +19,8 @@
   "newPlayer":
     [
       "Le joueur a été ajouté !",
-      "Le joueur existe déjà."
+      "Le joueur existe déjà.",
+      "\n\nPour permettre un affichage en jeu plus clair, les informations suivantes sont collectées:\n• Votre identifiant discord\n• Votre pseudo discord\n_Aucunes données personnels n'est vendu à une entreprise_\n\nVous pouvez vous opposer au traitement des données vous concernant et disposez du droit de retirer votre consentement à tout moment en envoyant un email a l'adresse `admin@bastion-gaming.fr`"
     ],
   "PlayerID":
     "Votre PlayerID: **{0}**",

@@ -19,7 +19,8 @@
   "newPlayer":
     [
       "The player has been added!",
-      "The player already exists."
+      "The player already exists.",
+      "\n\nIn order to allow a clearer in-game display, the following information is collected:\n• Your discord id\n• Your discord nickname\n_No personal data is sold to any company_\nYou can oppose the processing of your data and have the right to withdraw your consent at any time by sending an email to the address `admin@bastion-gaming.fr`"
     ],
   "PlayerID":
     "Your PlayerID: **{0}**",

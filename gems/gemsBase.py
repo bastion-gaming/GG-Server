@@ -9,9 +9,18 @@ from languages import lang as lang_P
 
 def begin(param):
     """Pour créer son compte joueur et obtenir son starter Kit!"""
-    msg = sql.newPlayer(param["ID"], "gems", param["name_pl"], param["name"])
+    msg = []
+    desc = sql.newPlayer(param["ID"], "gems", param["name_pl"], param["name"])
     SuperID = sql.get_SuperID(param["ID"], param["name_pl"])
     GF.startKit(SuperID)
+    if desc == lang_P.forge_msg(param["lang"], "newPlayer", None, False, 0):
+        msg.append("OK")
+        # Message RGPD
+        desc += lang_P.forge_msg(param["lang"], "newPlayer", None, False, 2)
+    else:
+        msg.append("NOK")
+    msg.append(param["lang"])
+    msg.append(desc)
     return msg
 
 
