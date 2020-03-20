@@ -36,6 +36,7 @@ lang.init()
 
 MS.init_season()
 
+MSD = MS.load_dates()
 try:
     GF.loadItem(True)
 except FileNotFoundError:
@@ -52,7 +53,7 @@ while check:
 
     if message["name_c"] == "GGconnect":
         print(">>> Client " + message["name_pl"] + " est connecté")
-        socket.send_string('1')
+        socket.send_string('[1, {}]'.format(MSD["total"]))
         skip = True
 
     if message["name_pl"] == "babot" or message["name_pl"] == "get gems":
