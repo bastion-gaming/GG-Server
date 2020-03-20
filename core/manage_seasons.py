@@ -126,9 +126,9 @@ def end_season():
             for x in GF.ObjetEventEnd:
                 if x != "bank_upgrade":
                     sql.updateField(PlayerID, x, 0, "inventory")
-    with open('gems/bourse.json', 'r') as fp:
+    with open('core/saisons.json', 'r') as fp:
         dict = json.load(fp)
     dict["total"] = nbs + 1
-    with open('gems/bourse.json', 'w') as fp:
+    with open('core/saisons.json', 'w') as fp:
         json.dump(dict, fp, indent=4)
     return True
