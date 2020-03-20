@@ -36,7 +36,6 @@ lang.init()
 
 MS.init_season()
 
-
 try:
     GF.loadItem(True)
 except FileNotFoundError:

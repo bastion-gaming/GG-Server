@@ -3,6 +3,7 @@ from DB import SQLite as sql
 from gems import gemsItems as GI, gemsFonctions as GF
 from datetime import date, datetime
 from apscheduler.schedulers.background import BackgroundScheduler
+import math
 
 
 def load_dates():
@@ -53,10 +54,17 @@ def new_season(idS):
         idS_old = idS - 1
 
     print("Nouvelle saison en cours de lancement...")
-    if end_season():
+    es, nb_invest, bank_tot = end_season()
+    if es:
 
-        # Ecriture de la nouvelle année dans le fichier
+        # Calcul du multiplicateur
+        m_x = bank_tot/nb_invest
+        m_n = int(dict_Dates["mult"])
+        mult = m_n * math.log10(m_x)
+
+        # Ecriture de la nouvelle année et du nouveau mult dans le fichier
         dict_Dates[idS_old] = dict_Dates[idS_old][:6] + str(Dyear[idS_old]+1)
+        dict_Dates["mult"] = mult
         path = "core/saisons.json"
         with open(path, 'w', encoding='utf-8') as json_file:
             json.dump(dict_Dates, json_file, indent=4)
@@ -96,6 +104,8 @@ def end_season():
     """
     res = load_dates()
     nbs = res["total"]
+    nb_invest = 0 # Nombre de joueur considéré comme ayant joué
+    bank_tot = 0 # Total de la banque
     for i in range(1, sql.taille("gems")+1):
         # Récupération des données par Joueur
         IDs = sql.userID(i, "gems")
@@ -110,6 +120,12 @@ def end_season():
         PlayerID = sql.get_PlayerID(SuperID)
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         bank = sql.valueAtNumber(PlayerID, "Solde", "bank")
+
+        # Valeurs nécessaires au multiplicateur
+        if solde != 100:
+            nb_invest = nb_invest + 1
+            bank_tot = bank_tot + bank
+
         # Sauvegarde des valeurs de la saison en  cours par Joueur
         save = sql.add(PlayerID, "idseasons", nbs, "seasons")
         if save != 404 and save != 102:
@@ -131,4 +147,4 @@ def end_season():
     dict["total"] = nbs + 1
     with open('core/saisons.json', 'w') as fp:
         json.dump(dict, fp, indent=4)
-    return True
+    return True, nb_invest, bank_tot

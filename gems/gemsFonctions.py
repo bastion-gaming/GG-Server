@@ -154,8 +154,19 @@ def ActuBourse():
 
 
 # Fonction d'actualisation/initialisation des items
-def loadItem(F = False):
+def loadItem(F=False):
     jour = dt.date.today()
+
+    # Récupere le multiplicateur
+    m = 1
+    if jour.day == 5 or jour.day == 13 or jour.day == 20:
+        path = "core/saisons.json"
+        with open(path, encoding='utf-8') as json_file:
+            data = json.load(json_file)
+        m = data["mult"]
+        if m < 1:
+            m = 1
+
     if F:
         GI.initBourse()
     global ObjetEventEnd
@@ -172,40 +183,40 @@ def loadItem(F = False):
 
     global objetItem
     objetItem = [
-        Item("cobblestone", itemBourse("cobblestone", "vente"), itemBourse("cobblestone", "achat"), 4, "minerai"),
-        Item("iron", itemBourse("iron", "vente"), itemBourse("iron", "achat"), 10, "minerai"),
-        Item("gold", itemBourse("gold", "vente"), itemBourse("gold", "achat"), 20, "minerai"),
-        Item("diamond", itemBourse("diamond", "vente"), itemBourse("diamond", "achat"), 40, "minerai"),
-        Item("emerald", itemBourse("emerald", "vente"), itemBourse("emerald", "achat"), 50, "minerai"),
-        Item("ruby", itemBourse("ruby", "vente"), itemBourse("ruby", "achat"), 70, "minerai"),
+        Item("cobblestone", m*itemBourse("cobblestone", "vente"), m*itemBourse("cobblestone", "achat"), 4, "minerai"),
+        Item("iron", m*itemBourse("iron", "vente"), m*itemBourse("iron", "achat"), 10, "minerai"),
+        Item("gold", m*itemBourse("gold", "vente"), m*itemBourse("gold", "achat"), 20, "minerai"),
+        Item("diamond", m*itemBourse("diamond", "vente"), m*itemBourse("diamond", "achat"), 40, "minerai"),
+        Item("emerald", m*itemBourse("emerald", "vente"), m*itemBourse("emerald", "achat"), 50, "minerai"),
+        Item("ruby", m*itemBourse("ruby", "vente"), m*itemBourse("ruby", "achat"), 70, "minerai"),
 
-        Item("fish", itemBourse("fish", "vente"), itemBourse("fish", "achat"), 2, "poisson"),
-        Item("tropicalfish", itemBourse("tropicalfish", "vente"), itemBourse("tropicalfish", "achat"), 8, "poisson"),
-        Item("blowfish", itemBourse("blowfish", "vente"), itemBourse("blowfish", "achat"), 8, "poisson"),
-        Item("octopus", itemBourse("octopus", "vente"), itemBourse("octopus", "achat"), 16, "poisson"),
+        Item("fish", m*itemBourse("fish", "vente"), m*itemBourse("fish", "achat"), 2, "poisson"),
+        Item("tropicalfish", m*itemBourse("tropicalfish", "vente"), m*itemBourse("tropicalfish", "achat"), 8, "poisson"),
+        Item("blowfish", m*itemBourse("blowfish", "vente"), m*itemBourse("blowfish", "achat"), 8, "poisson"),
+        Item("octopus", m*itemBourse("octopus", "vente"), m*itemBourse("octopus", "achat"), 16, "poisson"),
 
-        Item("seed", itemBourse("seed", "vente"), itemBourse("seed", "achat"), 0.5, "plante"),
-        Item("cacao", itemBourse("cacao", "vente"), itemBourse("cacao", "achat"), 1, "plante"),
-        Item("potato", itemBourse("potato", "vente"), itemBourse("potato", "achat"), 1, "plante"),
+        Item("seed", m*itemBourse("seed", "vente"), m*itemBourse("seed", "achat"), 0.5, "plante"),
+        Item("cacao", m*itemBourse("cacao", "vente"), m*itemBourse("cacao", "achat"), 1, "plante"),
+        Item("potato", m*itemBourse("potato", "vente"), m*itemBourse("potato", "achat"), 1, "plante"),
 
-        Item("oak", itemBourse("oak", "vente"), itemBourse("oak", "achat"), 50, "plante"),
-        Item("spruce", itemBourse("spruce", "vente"), itemBourse("spruce", "achat"), 70, "plante"),
-        Item("palm", itemBourse("palm", "vente"), itemBourse("palm", "achat"), 60, "plante"),
-        Item("wheat", itemBourse("wheat", "vente"), itemBourse("wheat", "achat"), 3, "plante"),
-        Item("grapes", itemBourse("grapes", "vente"), itemBourse("grapes", "achat"), 1, "emoji"),
+        Item("oak", m*itemBourse("oak", "vente"), m*itemBourse("oak", "achat"), 50, "plante"),
+        Item("spruce", m*itemBourse("spruce", "vente"), m*itemBourse("spruce", "achat"), 70, "plante"),
+        Item("palm", m*itemBourse("palm", "vente"), m*itemBourse("palm", "achat"), 60, "plante"),
+        Item("wheat", m*itemBourse("wheat", "vente"), m*itemBourse("wheat", "achat"), 3, "plante"),
+        Item("grapes", m*itemBourse("grapes", "vente"), m*itemBourse("grapes", "achat"), 1, "emoji"),
 
-        Item("wine_glass", itemBourse("wine_glass", "vente"), itemBourse("wine_glass", "achat"), 2, "emoji"),
-        Item("beer", itemBourse("beer", "vente"), itemBourse("beer", "achat"), 2, "emoji"),
+        Item("wine_glass", m*itemBourse("wine_glass", "vente"), m*itemBourse("wine_glass", "achat"), 2, "emoji"),
+        Item("beer", m*itemBourse("beer", "vente"), m*itemBourse("beer", "achat"), 2, "emoji"),
 
-        Item("chocolate", itemBourse("chocolate", "vente"), itemBourse("chocolate", "achat"), 3, "consommable"),
-        Item("fries", itemBourse("fries", "vente"), itemBourse("fries", "achat"), 30, "consommable"),
-        Item("cookie", itemBourse("cookie", "vente"), itemBourse("cookie", "achat"), 1, "emoji"),
-        Item("candy", itemBourse("candy", "vente"), itemBourse("candy", "achat"), 1, "emoji"),
-        Item("lollipop", itemBourse("lollipop", "vente"), itemBourse("lollipop", "achat"), 2, "emoji"),
+        Item("chocolate", m*itemBourse("chocolate", "vente"), m*itemBourse("chocolate", "achat"), 3, "consommable"),
+        Item("fries", m*itemBourse("fries", "vente"), m*itemBourse("fries", "achat"), 30, "consommable"),
+        Item("cookie", m*itemBourse("cookie", "vente"), m*itemBourse("cookie", "achat"), 1, "emoji"),
+        Item("candy", m*itemBourse("candy", "vente"), m*itemBourse("candy", "achat"), 1, "emoji"),
+        Item("lollipop", m*itemBourse("lollipop", "vente"), m*itemBourse("lollipop", "achat"), 2, "emoji"),
 
-        Item("backpack", itemBourse("backpack", "vente"), itemBourse("backpack", "achat"), -200, "special"),
-        Item("hyperpack", itemBourse("hyperpack", "vente"), itemBourse("hyperpack", "achat"), -2000, "special"),
-        Item("fishhook", itemBourse("fishhook", "vente"), itemBourse("fishhook", "achat"), 1, "special")
+        Item("backpack", m*itemBourse("backpack", "vente"), m*itemBourse("backpack", "achat"), -200, "special"),
+        Item("hyperpack", m*itemBourse("hyperpack", "vente"), m*itemBourse("hyperpack", "achat"), -2000, "special"),
+        Item("fishhook", m*itemBourse("fishhook", "vente"), m*itemBourse("fishhook", "achat"), 1, "special")
     ]
 
     if not (jour.month == 10 and jour.day >= 22) or (jour.month == 11 and jour.day <= 10):
@@ -216,12 +227,12 @@ def loadItem(F = False):
             ObjetEventEnd.append(one)
 
     objetItem += [
-        Item("pumpkin", itemBourse("pumpkin", "vente"), itemBourse("pumpkin", "achat"), 5, "halloween"),
-        Item("pumpkinpie", itemBourse("pumpkinpie", "vente"), itemBourse("pumpkinpie", "achat"), 30, "halloween")
+        Item("pumpkin", m*itemBourse("pumpkin", "vente"), m*itemBourse("pumpkin", "achat"), 5, "halloween"),
+        Item("pumpkinpie", m*itemBourse("pumpkinpie", "vente"), m*itemBourse("pumpkinpie", "achat"), 30, "halloween")
     ]
 
     objetItem += [
-        Item("cupcake", itemBourse("cupcake", "vente"), itemBourse("cupcake", "achat"), 10, "christmas")
+        Item("cupcake", m*itemBourse("cupcake", "vente"), m*itemBourse("cupcake", "achat"), 10, "christmas")
     ]
 
     # ========== Outils ==========
