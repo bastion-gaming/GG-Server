@@ -45,7 +45,8 @@
       "\nYou found a <:gem_lootbox:{0}>**Legendary Loot Box Gems**! Use the command `boxes open legendarygems` to open it.",
       "\n\nYou found {0} :gift:`Christmas present (gift)`",
       "\n\nYou found {0} :gift:`New Year's present (gift)`:confetti_ball:",
-      "Items in madness"
+      "Items in madness",
+      "\n\nYou found {0} :gift:`gift`"
     ],
   "crime array":
     [
