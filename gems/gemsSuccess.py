@@ -468,7 +468,7 @@ def success(param):
                             arg = [x.objectif]
 
                     elif type[0] == "gamble" or type[0] == "stealing" or type[0] == "slots":
-                        myStat = sql.valueAtNumber(PlayerID, "gamble | {1}".format(type[0], type[1]), "statgems")
+                        myStat = sql.valueAtNumber(PlayerID, "{0} | {1}".format(type[0], type[1]), "statgems")
                         arg = [x.objectif]
 
                     elif type[0] == "pay":
