@@ -111,3 +111,4 @@ guildesDB.json
 # Autres
 */bourse/*.csv
 gems/bourse*.json
+core/saisons.json
