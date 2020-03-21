@@ -36,7 +36,14 @@ lang.init()
 
 MS.init_season()
 
+# Calcul de l'ID de saison
 MSD = MS.load_dates()
+MSD_tot = MSD["total"]
+MSD_ID = MSD_tot % 4
+if MSD_ID == 0:
+    MSD_ID = 4
+
+
 try:
     GF.loadItem(True)
 except FileNotFoundError:
@@ -51,9 +58,10 @@ while check:
 
     print("\n•••••\nReceived request: %s" % message)
 
+    # Message envoyé au client
     if message["name_c"] == "GGconnect":
         print(">>> Client " + message["name_pl"] + " est connecté")
-        socket.send_string('[1, {}]'.format(MSD["total"]))
+        socket.send_string('[1, {}, {}]'.format(MSD_tot, MSD[MSD_ID]))
         skip = True
 
     if message["name_pl"] == "babot" or message["name_pl"] == "get gems":

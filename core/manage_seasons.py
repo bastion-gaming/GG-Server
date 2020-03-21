@@ -58,16 +58,22 @@ def new_season(idS):
     if es:
 
         # Calcul du multiplicateur
-        m_x = bank_tot/nb_invest
-        print("m_x : {}".format(m_x))
+        try:
+            m_x = bank_tot/nb_invest
+            print("m_x : {}".format(m_x))
+        except ValueError:
+            m_x = 10
 
         m_n = dict_Dates["mult"]
         print("m_n : {}".format(m_n))
         if m_n == 0:
             m_n = 2
-        mult = math.log2(m_n) * math.log10(m_x)
-        print("mult : {}".format(mult))
 
+        try :
+            mult = math.log2(m_n) * math.log10(m_x)
+            print("mult : {}".format(mult))
+        except ValueError:
+            mult = 1
         # Ecriture de la nouvelle année et du nouveau mult dans le fichier
         dict_Dates[idS_old] = dict_Dates[idS_old][:6] + str(Dyear[idS_old]+1)
         dict_Dates["mult"] = mult
@@ -94,11 +100,11 @@ def init_season():
     # scheduler.add_job(new_season, 'date', run_date=date(Dyear[2], Dmonth[2], Dday[2]), args=[2], id="S2")
     # scheduler.add_job(new_season, 'date', run_date=date(Dyear[3], Dmonth[3], Dday[3]), args=[3], id="S3")
     # scheduler.add_job(new_season, 'date', run_date=date(Dyear[4], Dmonth[4], Dday[4]), args=[4], id="S4")
-    # scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[1], Dmonth[1], Dday[1], 19, 50, 5), args=[1], id="S1")
-    # scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[2], Dmonth[2], Dday[2], 2, 13, 5), args=[2], id="S2")
-    # scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[3], Dmonth[3], Dday[3], 2, 14, 5), args=[3], id="S3")
-    # scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[4], Dmonth[4], Dday[4], 2, 15, 5), args=[4], id="S4")
-    scheduler.add_job(new_season, 'interval', seconds=15, args=[1], id="S1")
+    scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[1], Dmonth[1], Dday[1], 1, 58, 5), args=[1], id="S1")
+    scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[2], Dmonth[2], Dday[2], 2, 13, 5), args=[2], id="S2")
+    scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[3], Dmonth[3], Dday[3], 2, 14, 5), args=[3], id="S3")
+    scheduler.add_job(new_season, 'date', run_date=datetime(Dyear[4], Dmonth[4], Dday[4], 2, 15, 5), args=[4], id="S4")
+    #scheduler.add_job(new_season, 'interval', seconds=70, args=[1], id="S1")
 
     scheduler.start()
 
@@ -137,11 +143,12 @@ def end_season():
 
         # Sauvegarde des valeurs de la saison en  cours par Joueur
         save = sql.add(PlayerID, "idseasons", nbs, "seasons")
+        print(save)
         if save != 404 and save != 102:
             sql.updateField(PlayerID, "gem", [solde, nbs], "seasons")
             sql.updateField(PlayerID, "bank", [bank, nbs], "seasons")
             # Reset solde de gems et solde de la banque
-            sql.updateField(PlayerID, "gems", 0, "gems")
+            sql.updateField(PlayerID, "gems", 100, "gems")
             sql.updateField(PlayerID, "Solde", 0, "bank")
             # Reset dans l'inventaire des objets à prix fixe du marché
             for x in GI.exception:

@@ -164,7 +164,7 @@ def loadItem(F=False):
         with open(path, encoding='utf-8') as json_file:
             data = json.load(json_file)
         m = data["mult"]
-        if m < 1:
+        if m <= 0:
             m = 1
 
     if F:
