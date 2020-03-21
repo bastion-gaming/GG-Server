@@ -66,6 +66,7 @@ def bank(param):
     ARG = param["ARG"]
     ARG2 = param["ARG2"]
     platform = param["name_pl"]
+    msg = []
 
     if ARG != "None":
         mARG = ARG.lower()
@@ -83,6 +84,9 @@ def bank(param):
         msg = bank_add(PlayerID, lang, ARG, ARG2, Taille)
     elif mARG == "saving":
         msg = bank_saving(PlayerID, lang, ARG, ARG2, Taille)
+    else:
+        msg.append("NOK")
+        msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 1))
     return msg
 
 
@@ -1053,6 +1057,7 @@ def prod_HFC(PlayerID, lang, item, commande, i):
     else:
         valueTime = 0
         valueItem = ""
+
     OutilItem = sql.valueAtNumber(PlayerID, item, "inventory")
 
     if valueItem == "" and item == "None":

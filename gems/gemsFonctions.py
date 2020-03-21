@@ -602,13 +602,13 @@ def param_prod(item):
             res["nbgain"] = r.randint(6, 12)
             res["gain"] = "grapes"
 
-        res["couldown"] = couldown_4s
+        res["couldown"] = couldown_6h
         res["couldownMsg"] = ":clock6:`6h`"
     elif item == "pumpkinH":
         res["nbitem"] = 1
         res["gain"] = "pumpkin"
         res["nbgain"] = r.randint(2, 5)
-        res["couldown"] = couldown_4s
+        res["couldown"] = couldown_4h
         res["couldownMsg"] = ":clock4:`4h`"
 
     # Items utilisé dans la production de la cave (ferment)
@@ -616,13 +616,13 @@ def param_prod(item):
         res["nbitem"] = 10
         res["gain"] = "wine_glass"
         res["nbgain"] = r.randint(1, 4)
-        res["couldown"] = couldown_4s
+        res["couldown"] = couldown_3h
         res["couldownMsg"] = ":clock3:`3h`"
     elif item == "wheat":
         res["nbitem"] = 8
         res["gain"] = "beer"
         res["nbgain"] = r.randint(2, 6)
-        res["couldown"] = couldown_4s
+        res["couldown"] = couldown_8h
         res["couldownMsg"] = ":clock8:`8h`"
 
     # Items utilisé dans la production de la cuisine (cooking)
@@ -630,13 +630,13 @@ def param_prod(item):
         res["nbitem"] = 6
         res["gain"] = "fries"
         res["nbgain"] = r.randint(1, 5)
-        res["couldown"] = couldown_4s
+        res["couldown"] = couldown_3h
         res["couldownMsg"] = ":clock3:`3h`"
     elif item == "cacao":
         res["nbitem"] = 4
         res["gain"] = "chocolate"
         res["nbgain"] = r.randint(1, 5)
-        res["couldown"] = couldown_4s
+        res["couldown"] = couldown_2h
         res["couldownMsg"] = ":clock2:`2h`"
     elif item == "chocolate":
         res["nbitem"] = 8
