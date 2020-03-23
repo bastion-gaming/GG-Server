@@ -66,9 +66,11 @@ def exec_commands(c):
 
         print(commande_forgee)
         if ID != "Error 404" or commande == "connect" or commande == "begin":
-            ret = eval(commande_forgee)
-
-            res["reponse"] = ret
+            try:
+                ret = eval(commande_forgee)
+                res["reponse"] = ret
+            except:
+                res["reponse"] = ["WarningMsg", c["param_c"]["lang"], lang_P.forge_msg(c["param_c"]["lang"], "WarningMsg", None, False, 0)]
         else:
             res["reponse"] = ["WarningMsg", c["param_c"]["lang"], lang_P.forge_msg(c["param_c"]["lang"], "WarningMsg", None, False, 0)]
 
