@@ -28,7 +28,7 @@ def daily(param):
 
         # Un = 200 × (2.5)^(n-1)
         if DailyMult >= 30:
-            f = 200 * (2.5**((DailyMult//30)-1))
+            f = 200 * (1.5**((DailyMult//30)-1))
             bonus = int(f)
         else:
             bonus = 125
@@ -247,7 +247,7 @@ def stealing(param):
             ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name), param["name_pl"]))
             # Calcul du pourcentage
             if ID_Vol == GF.PlayerID_GetGems or ID_Vol == GF.PlayerID_Babot:
-                R = r.randint(1, 6)
+                R = r.randint(1, 8)
             else:
                 R = "05"
             P = float("0.0{}".format(R))
@@ -255,7 +255,7 @@ def stealing(param):
                 Solde = sql.valueAtNumber(ID_Vol, "gems", "gems")
                 gain = int(Solde*P)
                 if gain != 0:
-                    if r.randint(0, 9) == 0:
+                    if r.randint(0, 6) == 0:
                         sql.add(PlayerID, ["divers", "DiscordCop Arrestation"], 1, "statgems")
                         if int(sql.addGems(PlayerID, int(gain/4))) >= 100:
                             desc = lang_P.forge_msg(lang, "DiscordCop Arrestation", [int(gain/4)], False, 0)
@@ -453,7 +453,7 @@ def mine(param):
                 # =====================================
                 # Gestion des résultats
                 # =====================================
-                print(nbrand)
+                # print(nbrand)
                 if mult > 1:
                     if nbrand <= int(nbMax*(0.01)):
                         add_item = "ruby"
@@ -560,7 +560,7 @@ def dig(param):
                 # =====================================
                 # Gestion des résultats
                 # =====================================
-                print(nbrand)
+                # print(nbrand)
                 if nbrand <= int(nbMax*(0.25)):
                     add_item = "cacao"
                     nbrand = r.randint(0, 2)
@@ -649,7 +649,7 @@ def fish(param):
                 # =====================================
                 # Gestion des résultats
                 # =====================================
-                print(nbrand)
+                # print(nbrand)
                 if nbrand <= int(nbMax*(0.10)):
                     add_item = "octopus"
                     nbrand = r.randint(0, 1)
