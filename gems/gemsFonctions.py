@@ -477,10 +477,11 @@ def gift(PlayerID, lang, param = False):
     nbgift = r.randint(-3, 3)
 
     if param:
-        nbgift = r.randint(1, 3)
-        sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
-        sql.add(PlayerID, ["boxes", "lootbox | gift | gain"], nbgift, "statgems")
-        desc = lang_P.forge_msg(lang, "lootbox", [nbgift], False, 6)
+        nbgift = r.randint(0, 2)
+        if nbgift > 0:
+            sql.add(PlayerID, "lootbox_gift", nbgift, "inventory")
+            sql.add(PlayerID, ["boxes", "lootbox | gift | gain"], nbgift, "statgems")
+            desc = lang_P.forge_msg(lang, "lootbox", [nbgift], False, 6)
 
     elif (jour.month == 12 and jour.day >= 22) and (jour.month == 12 and jour.day <= 25):
         if nbgift > 0:
