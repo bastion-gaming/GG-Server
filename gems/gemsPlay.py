@@ -268,10 +268,10 @@ def stealing(param):
                         # Message
                         desc = lang_P.forge_msg(lang, "stealing", [gain, name], False, 1)
                         print("Gems >> PlayerID {2} viens de voler {0} gems à {1}".format(gain, ID_Vol, PlayerID))
+                        sql.add(PlayerID, ["stealing", "stealing | gain"], gain, "statgems")
                     sql.updateComTime(PlayerID, "stealing", "gems")
                     lvl.addxp(PlayerID, 1, "gems")
                     sql.add(PlayerID, ["stealing", "stealing"], 1, "statgems")
-                    sql.add(PlayerID, ["stealing", "stealing | gain"], gain, "statgems")
                 else:
                     desc = lang_P.forge_msg(lang, "stealing", None, False, 2)
             except:
