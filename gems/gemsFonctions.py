@@ -668,8 +668,8 @@ def time_aff(time):
     dtime = dict()
     dtime["timeH"] = int(time / 60 / 60)
     dtime["time"] = time - dtime["timeH"] * 3600
-    dtime["timeM"] = int(time / 60)
-    dtime["timeS"] = int(time - dtime["timeM"] * 60)
+    dtime["timeM"] = int(dtime["time"] / 60)
+    dtime["timeS"] = int(dtime["time"] - dtime["timeM"] * 60)
     if dtime["timeM"] <= 30:
         if dtime["timeH"] % 12 == 0:
             dtime["cl"] = "12"
