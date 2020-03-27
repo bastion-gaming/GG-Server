@@ -206,19 +206,6 @@ objetSuccess = [
     Success(24, 6, "Rentré des classes", 25, 32, "buy|hyperpack", 10),
     Success(24, 7, "Rentré des classes", 25, 32, "buy|hyperpack", 25),
     Success(24, 8, "Rentré des classes", 25, 32, "buy|hyperpack", 42),
-    Success(24, 9, "Rentré des classes", 25, 32, "buy|hyperpack", 66),
-    Success(24, 10, "Rentré des classes", 25, 32, "buy|hyperpack", 100),
-    Success(24, 11, "Rentré des classes", 25, 32, "buy|hyperpack", 200),
-    Success(24, 12, "Rentré des classes", 25, 32, "buy|hyperpack", 400),
-    Success(24, 13, "Rentré des classes", 25, 32, "buy|hyperpack", 700),
-    Success(24, 14, "Rentré des classes", 25, 32, "buy|hyperpack", 1000),
-    Success(24, 15, "Rentré des classes", 25, 32, "buy|hyperpack", 1400),
-    Success(24, 16, "Rentré des classes", 25, 32, "buy|hyperpack", 2000),
-    Success(24, 17, "Rentré des classes", 25, 32, "buy|hyperpack", 3000),
-    Success(24, 18, "Rentré des classes", 25, 32, "buy|hyperpack", 5000),
-    Success(24, 19, "Rentré des classes", 25, 32, "buy|hyperpack", 10000),
-    Success(24, 20, "Rentré des classes", 25, 32, "buy|hyperpack", 50000),
-    Success(24, 21, "Rentré des classes", 25, 32, "buy|hyperpack", 100000),
 
 
     # Serre | Cave | Cuisine
