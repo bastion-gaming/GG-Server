@@ -37,10 +37,7 @@ def checklevel(ID):
             lvl = lvl+1
             sql.updateField(PlayerID, "lvl", lvl, "gems")
             desc = lang_P.forge_msg(lang, "level", [lvl], False, 0)
-            if lvl < 8:
-                nbG = 100*lvl
-            else:
-                nbG = int((2.5)**lvl)
+            nbG = 100*lvl
             sql.addGems(PlayerID, nbG)
             desc += lang_P.forge_msg(lang, "level", [nbG], False, 1)
             msg.append("Level UP")

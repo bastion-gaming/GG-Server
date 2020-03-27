@@ -390,7 +390,7 @@ def checkSuccess(PlayerID, lang):
                     result.append(desc)
                     if iS == 0:
                         iS = 1
-                    gain = r.randint(1, 3)*(3**(iS))
+                    gain = r.randint(1, 3)*(6*(iS))
                     lvl.addxp(PlayerID, gain, "gems")
                     desc = "{0} XP".format(lang_P.forge_msg(lang, "success", [gain], False, 1))
                     if iS > 2:
