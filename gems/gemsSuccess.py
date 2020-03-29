@@ -206,19 +206,6 @@ objetSuccess = [
     Success(24, 6, "Rentré des classes", 25, 32, "buy|hyperpack", 10),
     Success(24, 7, "Rentré des classes", 25, 32, "buy|hyperpack", 25),
     Success(24, 8, "Rentré des classes", 25, 32, "buy|hyperpack", 42),
-    Success(24, 9, "Rentré des classes", 25, 32, "buy|hyperpack", 66),
-    Success(24, 10, "Rentré des classes", 25, 32, "buy|hyperpack", 100),
-    Success(24, 11, "Rentré des classes", 25, 32, "buy|hyperpack", 200),
-    Success(24, 12, "Rentré des classes", 25, 32, "buy|hyperpack", 400),
-    Success(24, 13, "Rentré des classes", 25, 32, "buy|hyperpack", 700),
-    Success(24, 14, "Rentré des classes", 25, 32, "buy|hyperpack", 1000),
-    Success(24, 15, "Rentré des classes", 25, 32, "buy|hyperpack", 1400),
-    Success(24, 16, "Rentré des classes", 25, 32, "buy|hyperpack", 2000),
-    Success(24, 17, "Rentré des classes", 25, 32, "buy|hyperpack", 3000),
-    Success(24, 18, "Rentré des classes", 25, 32, "buy|hyperpack", 5000),
-    Success(24, 19, "Rentré des classes", 25, 32, "buy|hyperpack", 10000),
-    Success(24, 20, "Rentré des classes", 25, 32, "buy|hyperpack", 50000),
-    Success(24, 21, "Rentré des classes", 25, 32, "buy|hyperpack", 100000),
 
 
     # Serre | Cave | Cuisine
@@ -390,7 +377,7 @@ def checkSuccess(PlayerID, lang):
                     result.append(desc)
                     if iS == 0:
                         iS = 1
-                    gain = r.randint(1, 3)*(3**(iS))
+                    gain = r.randint(1, 3)*(6*(iS))
                     lvl.addxp(PlayerID, gain, "gems")
                     desc = "{0} XP".format(lang_P.forge_msg(lang, "success", [gain], False, 1))
                     if iS > 2:
@@ -442,59 +429,59 @@ def success(param):
         for x in objetSuccess:
             arg = None
             if x.id == i:
-                if x.sid == iS+1:
-                    type = x.type.split("|")
-                    if type[0] == "gems" or type[0] == "daily":
-                        myStat = sql.valueAtNumber(PlayerID, "{0}".format(type[1]), "{0}".format(type[0]))
-                        if type[0] == "gems":
-                            arg = None
-                        else:
-                            arg = [x.objectif]
+                type = x.type.split("|")
+                if type[0] == "gems" or type[0] == "daily":
+                    myStat = sql.valueAtNumber(PlayerID, "{0}".format(type[1]), "{0}".format(type[0]))
+                    if type[0] == "gems":
+                        arg = None
+                    else:
+                        arg = [x.objectif]
 
-                    elif type[0] == "broken":
-                        myStat = sql.valueAtNumber(PlayerID, "{0} | broken | {1}".format(type[1], type[2]), "statgems")
-                        arg = [x.objectif, type[2], "{idmoji[gem_" + type[2] + "]}"]
+                elif type[0] == "broken":
+                    myStat = sql.valueAtNumber(PlayerID, "{0} | broken | {1}".format(type[1], type[2]), "statgems")
+                    arg = [x.objectif, type[2], "{idmoji[gem_" + type[2] + "]}"]
 
-                    elif type[0] == "mine" or type[0] == "dig" or type[0] == "fish":
+                elif type[0] == "mine" or type[0] == "dig" or type[0] == "fish":
+                    myStat = sql.valueAtNumber(PlayerID, "{0} | item | {1}".format(type[0], type[1]), "statgems")
+                    arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
+
+                elif type[0] == "buy" or type[0] == "sell":
+                    if (type[0] == "buy" or type[0] == "sell") and type[1] != "total":
                         myStat = sql.valueAtNumber(PlayerID, "{0} | item | {1}".format(type[0], type[1]), "statgems")
                         arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
-
-                    elif type[0] == "buy" or type[0] == "sell":
-                        if (type[0] == "buy" or type[0] == "sell") and type[1] != "total":
-                            myStat = sql.valueAtNumber(PlayerID, "{0} | item | {1}".format(type[0], type[1]), "statgems")
-                            arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
-                        else:
-                            myStat = sql.valueAtNumber(PlayerID, "{0} | {1}".format(type[0], type[1]), "statgems")
-                            arg = [x.objectif]
-
-                    elif type[0] == "gamble" or type[0] == "stealing" or type[0] == "slots":
+                    else:
                         myStat = sql.valueAtNumber(PlayerID, "{0} | {1}".format(type[0], type[1]), "statgems")
                         arg = [x.objectif]
 
-                    elif type[0] == "pay":
-                        myStat = sql.valueAtNumber(PlayerID, "pay | {0}".format(type[1]), "statgems")
-                        arg = [x.objectif]
+                elif type[0] == "gamble" or type[0] == "stealing" or type[0] == "slots":
+                    myStat = sql.valueAtNumber(PlayerID, "{0} | {1}".format(type[0], type[1]), "statgems")
+                    arg = [x.objectif]
 
-                    elif type[0] == "forge":
-                        myStat = sql.valueAtNumber(PlayerID, "forge | item | {0}".format(type[1]), "statgems")
-                        arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
+                elif type[0] == "pay":
+                    myStat = sql.valueAtNumber(PlayerID, "pay | {0}".format(type[1]), "statgems")
+                    arg = [x.objectif]
 
-                    elif type[0] == "hothouse" or type[0] == "ferment" or type[0] == "cooking":
-                        myStat = sql.valueAtNumber(PlayerID, "{0} | {1} | item | {2}".format(type[0], type[1], type[2]), "statgems")
-                        if type[2] in GI.objetEmoji:
-                            idmoji = ":{0}:".format(type[2])
-                        else:
-                            idmoji = "<:gem_{0}:{1}>".format(type[2], "{idmoji[gem_" + type[2] + "]}")
-                        arg = [x.objectif, type[2], idmoji]
+                elif type[0] == "forge":
+                    myStat = sql.valueAtNumber(PlayerID, "forge | item | {0}".format(type[1]), "statgems")
+                    arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
 
-                    elif type[0] == "inv":
-                        myStat = sql.valueAtNumber(PlayerID, "{0}".format(type[1]), "inventory")
-                        if type[1] in GI.objetEmoji:
-                            idmoji = ":{0}:".format(type[1])
-                        else:
-                            idmoji = "<:gem_{0}:{1}>".format(type[1], "{idmoji[gem_" + type[1] + "]}")
-                        arg = [x.objectif, type[1], idmoji]
+                elif type[0] == "hothouse" or type[0] == "ferment" or type[0] == "cooking":
+                    myStat = sql.valueAtNumber(PlayerID, "{0} | {1} | item | {2}".format(type[0], type[1], type[2]), "statgems")
+                    if type[2] in GI.objetEmoji:
+                        idmoji = ":{0}:".format(type[2])
+                    else:
+                        idmoji = "<:gem_{0}:{1}>".format(type[2], "{idmoji[gem_" + type[2] + "]}")
+                    arg = [x.objectif, type[2], idmoji]
 
+                elif type[0] == "inv":
+                    myStat = sql.valueAtNumber(PlayerID, "{0}".format(type[1]), "inventory")
+                    if type[1] in GI.objetEmoji:
+                        idmoji = ":{0}:".format(type[1])
+                    else:
+                        idmoji = "<:gem_{0}:{1}>".format(type[1], "{idmoji[gem_" + type[1] + "]}")
+                    arg = [x.objectif, type[1], idmoji]
+
+                if x.sid == iS+1:
                     result.append(lang_P.forge_msg(lang, "success titre", [GF.ChiffreRomain(x.sid)], False, x.titre))
                     desc = "{0} | `{1}`/`{2}`".format(lang_P.forge_msg(lang, "success desc", arg, False, x.desc), myStat, x.objectif)
                     result.append(desc)
