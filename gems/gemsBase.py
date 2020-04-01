@@ -41,32 +41,81 @@ def connect(param):
     return msg
 
 
-def bal(param):
-    """**[nom]** | Êtes vous riche ou pauvre ?"""
+def infos(param):
+    """**[nom]** | Affiche les informations sur un joueur"""
     lang = param["lang"]
-    PlayerID = param["PlayerID"]
-    fct = param["fct"]
+    PlayerID = sql.get_PlayerID(sql.get_SuperID(param["ID"], param["name_pl"]))
+    name = param["name"]
+    pseudo = sql.valueAtNumber(PlayerID, "Pseudo", "IDs")
     msg = []
+    desc = ""
 
-    if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
+    if PlayerID != "Error 404":
         msg.append("OK")
         msg.append(lang)
-        if fct == "info":
-            msg.append(lang_P.forge_msg(lang, "PlayerID", [PlayerID]))
-        else:
-            msg.append(" ")
+
+        # PlayerID
+        msg.append(lang_P.forge_msg(lang, "PlayerID", [PlayerID, pseudo]))
+
+        # Balance
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         desc = "{} :gem:`gems`\n".format(solde)
         soldeSpinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
         if soldeSpinelles > 0:
             desc += "{0} <:spinelle:{1}>`spinelles`".format(soldeSpinelles, "{idmoji[spinelle]}")
         msg.append(desc)
+
+        # Level et XP
         lvlValue = sql.valueAtNumber(PlayerID, "lvl", "gems")
         xp = sql.valueAtNumber(PlayerID, "xp", "gems")
         # Niveaux part
-        desc = "XP: `{0}/{1}`".format(xp, lvl.lvlPalier(lvlValue))
-        titre = lang_P.forge_msg(lang, "bal", [lvlValue], False)
-        msg.append(titre)
+        msg.append(lang_P.forge_msg(lang, "bal", [lvlValue], False))
+        msg.append("XP: `{0}/{1}`".format(xp, lvl.lvlPalier(lvlValue)))
+
+        # Parrain/Marraine
+        P = sql.valueAtNumber(PlayerID, "godparent", "gems")
+        Pname = sql.valueAtNumber(P, "Pseudo", "IDs")
+        F_li = sql.valueAt(PlayerID, "all", "godchilds")
+        desc = ""
+        msg.append(lang_P.forge_msg(lang, "godparent", None, False, 2))
+        if P != 0 and P != None:
+            desc += "\n{1}: **{0}**".format(Pname, lang_P.forge_msg(lang, "godparent", None, False, 0))
+        else:
+            desc += "\n{0}: `None`".format(lang_P.forge_msg(lang, "godparent", None, False, 0))
+
+        if F_li != 0:
+            if len(F_li) > 1:
+                sV = "s"
+            else:
+                sV = ""
+            desc += "\n{2}{1} `x{0}`:".format(len(F_li), sV, lang_P.forge_msg(lang, "godparent", None, False, 1))
+            for one in F_li:
+                Fname = sql.valueAtNumber(one[0], "Pseudo", "IDs")
+                desc += "\n• _{0}_".format(Fname)
+        msg.append(desc)
+        # Message de réussite dans la console
+        print("Gems >> Informations de {} affichée".format(name))
+    else:
+        msg.append("NOK")
+        msg.append(lang)
+        msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 6))
+    return msg
+
+
+def bal(param):
+    """**[nom]** | Êtes vous riche ou pauvre ?"""
+    lang = param["lang"]
+    PlayerID = param["PlayerID"]
+    msg = []
+
+    if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
+        msg.append("OK")
+        msg.append(lang)
+        solde = sql.valueAtNumber(PlayerID, "gems", "gems")
+        desc = "{} :gem:`gems`\n".format(solde)
+        soldeSpinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
+        if soldeSpinelles > 0:
+            desc += "{0} <:spinelle:{1}>`spinelles`".format(soldeSpinelles, "{idmoji[spinelle]}")
         msg.append(desc)
         sql.updateComTime(PlayerID, "bal", "gems")
         # Message de réussite dans la console
@@ -1320,6 +1369,38 @@ def lang(param):
         else:
             msg.append("NOK")
             msg.append(lang_P.forge_msg(lang, "lang", None, False, 1))
+    return msg
+
+
+def godparent(param):
+    """Permet d'ajouter un joueur comme parrain. En le faisant vous touchez un bonus et lui aussi"""
+    lang = param["lang"]
+    PlayerID = param["PlayerID"]
+    GPID = sql.get_PlayerID(sql.get_SuperID(param["GPID"], param["name_pl"]))
+    msg = []
+    myGP = sql.valueAtNumber(PlayerID, "godparent", "gems")
+
+    if (myGP == 0 or myGP == None) and PlayerID != GPID and GPID != "Error 404":
+        sql.updateField(PlayerID, "godparent", GPID, "gems")
+        sql.add(GPID, PlayerID, 1, "godchilds")
+        lvl.addxp(PlayerID, 15, "gems")
+        sql.addGems(PlayerID, 100)
+        fil_L = sql.valueAt(GPID, "all", "godchilds")
+        gainXP = 15 * len(fil_L)
+        gainG = 100 * len(fil_L)
+        lvl.addxp(GPID, gainXP, "gems")
+        sql.addGems(GPID, gainG)
+        msg.append("OK")
+        msg.append(lang)
+        msg.append(lang_P.forge_msg(lang, "godparent", [gainG], False, 3))
+    elif myGP != 0 and myGP != None:
+        msg.append("NOK")
+        msg.append(lang)
+        msg.append(lang_P.forge_msg(lang, "godparent", None, False, 4))
+    else:
+        msg.append("NOK")
+        msg.append(lang)
+        msg.append(lang_P.forge_msg(lang, "godparent", None, False, 5))
     return msg
 
 

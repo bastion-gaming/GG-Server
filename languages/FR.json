@@ -14,7 +14,8 @@
       "Ton inventaire est plein.",
       "La commande est mal formulée.",
       "Bientôt disponible",
-      "Tu poccède deja un compte sur cette plateforme."
+      "Tu poccède deja un compte sur cette plateforme.",
+      "Aucun compte utilisateur n'a été trouvé."
     ],
   "newPlayer":
     [
@@ -23,7 +24,7 @@
       "\n\nPour permettre un affichage en jeu plus clair, les informations suivantes sont collectées:\n• Votre identifiant discord\n• Votre pseudo discord\n_Aucunes données personnels n'est vendu à une entreprise_\n\nVous pouvez vous opposer au traitement des données vous concernant et disposez du droit de retirer votre consentement à tout moment en envoyant un email a l'adresse `admin@bastion-gaming.fr`"
     ],
   "PlayerID":
-    "Votre PlayerID: **{0}**",
+    "PlayerID: **{0}**\nNom d'utilisateur: **{1}**",
   "level":
     [
       "a atteint le niveau **{0}**",
@@ -345,5 +346,14 @@
       "Avoir {0} {2}`{1}` dans son inventaire",
       "Exécuter la commande `daily` {0} jours consécutifs",
       ""
+    ],
+  "godparent":
+    [
+      "Parrain/Marraine",
+      "Filleul",
+      "**_Parrainage_**",
+      "Votre parrain ou marraine a bien été ajouté ! Vous empochez 100 :gem:`gems` et lui/elle {0} :gem:`gems`.",
+      "Tu as déjà un parrain ou une marraine.",
+      "Impossible d'ajouter ce joueur comme parrain ou marraine."
     ]
 }

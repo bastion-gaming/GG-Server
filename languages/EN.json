@@ -23,7 +23,7 @@
       "\n\nIn order to allow a clearer in-game display, the following information is collected:\n• Your discord id\n• Your discord nickname\n_No personal data is sold to any company_\nYou can oppose the processing of your data and have the right to withdraw your consent at any time by sending an email to the address `admin@bastion-gaming.fr`"
     ],
   "PlayerID":
-    "Your PlayerID: **{0}**",
+    "PlayerID: **{0}**\nUsername: **{1}**",
   "level":
     [
       "reached the level **{0}**",
@@ -345,5 +345,14 @@
         "Having {0} {1} in his inventory",
         "Run the command `daily` {0} consecutive days",
         ""
+      ],
+    "godparent":
+      [
+        "Godparent",
+        "Godchild",
+        "**_Sponsorship_**",
+        "Your godparent has been added! You pocket 100 :gem:`gems` and he {0} :gem:`gems`.",
+        "You already have a godparent.",
+        "Impossible to add this player as godparent."
       ]
 }

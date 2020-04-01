@@ -1,0 +1,6 @@
+{
+  "idgems":
+    "link_gems",
+  "idGodchild":
+    "PRIMARYKEY_INTEGER"
+}

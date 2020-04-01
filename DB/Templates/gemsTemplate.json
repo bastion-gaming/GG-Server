@@ -12,5 +12,7 @@
   "lvl":
     "INTEGER",
   "xp":
+    "INTEGER",
+  "godparent":
     "INTEGER"
 }
