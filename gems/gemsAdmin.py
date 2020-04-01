@@ -17,6 +17,7 @@ def admin(param):
         platform = param["name_pl"]
     if param["name_pl"] == "Admin" and fct != "playerid":
         PlayerID = int(param["ID"])
+        lang = "EN"
     else:
         ID = sql.get_SuperID(int(param["ID"]), platform)
         lang = param["lang"]
@@ -53,5 +54,6 @@ def admin(param):
         desc = ":regional_indicator_s::regional_indicator_q::regional_indicator_l:"
 
     msg.append("Admin {}".format(fct))
+    msg.append(lang)
     msg.append(str(desc))
     return msg

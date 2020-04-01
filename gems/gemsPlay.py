@@ -28,20 +28,22 @@ def daily(param):
 
         # Un = 200 × (2.5)^(n-1)
         if DailyMult >= 30:
-            f = 200 * (1.5**((DailyMult//30)-1))
+            f = 200 * (1.1**((DailyMult//30)-1))
             bonus = int(f)
         else:
-            bonus = 125
-        gain = 100 + bonus*DailyMult
+            bonus = 75
+        gain = 100 + int(bonus*DailyMult)
         sql.addGems(PlayerID, gain)
         desc = lang_P.forge_msg(lang, "daily", None, False, 0)
-        desc += lang_P.forge_msg(lang, "daily", [DailyMult, bonus*DailyMult], False, 1)
-        lvl.addxp(PlayerID, 10*(DailyMult/2), "gems")
+        desc += lang_P.forge_msg(lang, "daily", [DailyMult, int(bonus*DailyMult)], False, 1)
+        if DailyMult < 6:
+            lvl.addxp(PlayerID, 5, "gems")
+        else:
+            lvl.addxp(PlayerID, int(5*(DailyMult/6)), "gems")
         if DailyMult % 30 == 0:
-            m = (DailyMult//30)*5
-            # sql.addSpinelles(PlayerID, m)
-            sql.addGems(PlayerID, m*250000)
-            desc += lang_P.forge_msg(lang, "daily", [DailyMult, m*250000], False, 2)
+            m = int(f*0.3)
+            sql.addGems(PlayerID, m)
+            desc += lang_P.forge_msg(lang, "daily", [DailyMult, m], False, 2)
 
     elif DailyTime == str(jour):
         desc = lang_P.forge_msg(lang, "daily", None, False, 3)
@@ -49,7 +51,7 @@ def daily(param):
         sql.add(PlayerID, "DailyMult", 1, "daily")
         sql.add(PlayerID, "DailyTime", str(jour), "daily")
         desc = lang_P.forge_msg(lang, "daily", None, False, 0)
-        lvl.addxp(PlayerID, 10, "gems")
+        lvl.addxp(PlayerID, 5, "gems")
     msg.append("OK")
     msg.append(lang)
     msg.append(desc)
@@ -57,7 +59,7 @@ def daily(param):
 
 
 def bank(param):
-    """Compte épargne"""
+    """La banque"""
     # =======================================================================
     # Initialistation des variables générales de la fonction
     # =======================================================================
@@ -91,7 +93,7 @@ def bank(param):
 
 
 def bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform):
-    """Compte épargne | Balance du compte"""
+    """La banque | Balance du compte"""
     msg = []
     desc = ""
     # =======================================================================
@@ -108,7 +110,12 @@ def bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform):
         soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
         if soldeMax == 0:
             soldeMax = Taille
-        desc = "{} / {} :gem:`gems`\n".format(solde, soldeMax)
+        soldeMult = soldeMax/Taille
+        pourcentage = 0.049 + soldeMult*0.001
+        if pourcentage > 0.6:
+            pourcentage = 0.6
+        desc = "{0} / {1} :gem:`gems`\n".format(solde, soldeMax)
+        desc += "\n{0}\n".format(lang_P.forge_msg(lang, "bank", [pourcentage*100], False, 14))
         msg.append(desc)
         desc = lang_P.forge_msg(lang, "bank", None, False, 0)
         desc += lang_P.forge_msg(lang, "bank", None, False, 1)
@@ -125,7 +132,7 @@ def bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform):
 
 
 def bank_add(PlayerID, lang, ARG, ARG2, Taille):
-    """Compte épargne | Crédits"""
+    """La banque | Crédits"""
     msg = []
     desc = ""
     # =======================================================================
@@ -174,7 +181,7 @@ def bank_add(PlayerID, lang, ARG, ARG2, Taille):
 
 
 def bank_saving(PlayerID, lang, ARG, ARG2, Taille):
-    """Compte épargne | Épargne"""
+    """La banque | Épargne"""
     msg = []
     desc = ""
     # =======================================================================
@@ -184,13 +191,6 @@ def bank_saving(PlayerID, lang, ARG, ARG2, Taille):
     if sql.spam(PlayerID, GF.couldown_4h, "bank_saving", "gems"):
         solde = sql.valueAtNumber(PlayerID, "Solde", "bank")
         if solde != 0:
-            soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
-            if soldeMax == 0:
-                soldeMax = Taille
-            soldeMult = soldeMax/Taille
-            pourcentage = 0.150 + soldeMult*0.002
-            if pourcentage > 0.6:
-                pourcentage = 0.6
             soldeAdd = pourcentage*solde
             soldeTaxe = GF.taxe(soldeAdd, 0.1)
             soldeAdd = soldeTaxe[1]

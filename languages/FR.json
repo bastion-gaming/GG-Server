@@ -107,7 +107,8 @@
       "Tu as épargné {0} :gem:`gems`\n",
       "Plafond de {0} :gem:`gems` du compte épargne atteint\nTon épargne a été tranférée sur ton compte principal\n\n",
       "Il te faut attendre :clock2:`{0}h {1}m {2}s` avant d'épargner à nouveau !",
-      "Solde du compte: {0} :gem:`gems`"
+      "Solde du compte: {0} :gem:`gems`",
+      "Taux d'épargne: {0}%"
     ],
   "mine":
     [

@@ -106,7 +106,8 @@
         "You saved {0} :gem:`gems`\n",
         "savings account ceiling of {0} :gem:`gems` reached\nYour savings have been transferred.\n\n",
         "You need to wait :clock2:`{0}h {1}m {2}s` before saving again !",
-        "Account balance: {0} :gem:`gems`"
+        "Account balance: {0} :gem:`gems`",
+        "Savings rate: {0}%"
       ],
     "mine":
       [

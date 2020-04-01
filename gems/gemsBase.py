@@ -105,7 +105,7 @@ def infos(param):
 def bal(param):
     """**[nom]** | Êtes vous riche ou pauvre ?"""
     lang = param["lang"]
-    PlayerID = param["PlayerID"]
+    PlayerID = sql.get_PlayerID(sql.get_SuperID(param["ID"], param["name_pl"]))
     msg = []
 
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
