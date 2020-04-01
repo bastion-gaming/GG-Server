@@ -9,7 +9,7 @@
     ],
   "WarningMsg":
     [
-      "Aucun compte utilisateur n'a été trouvé.\nCrée toi un compte avec la commande `begin`\nou connecte ton compte avec la commande `connect`",
+      "Aucun compte utilisateur n'a été trouvé.\nCrée toi un compte avec la commande `begin`.",
       "Commande mal formulée",
       "Ton inventaire est plein.",
       "La commande est mal formulée.",

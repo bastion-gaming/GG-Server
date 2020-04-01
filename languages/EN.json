@@ -9,7 +9,7 @@
     ],
   "WarningMsg":
     [
-      "No user account has been found.\nCreate yourself an account with the command `begin`\nor connect your account with the command `connect`.",
+      "No user account has been found.\nCreate yourself an account with the command `begin`.",
       "Incorrectly formulated order",
       "Your inventory is full.",
       "The order is badly formulated.",
