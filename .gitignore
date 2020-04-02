@@ -112,3 +112,4 @@ guildesDB.json
 */bourse/*.csv
 gems/bourse*.json
 core/saisons.json
+/test

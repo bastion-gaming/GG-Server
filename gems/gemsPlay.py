@@ -26,12 +26,8 @@ def daily(param):
         sql.updateField(PlayerID, "DailyTime", str(jour), "daily")
         sql.updateField(PlayerID, "DailyMult", DailyMult + 1, "daily")
 
-        # Un = 200 × (2.5)^(n-1)
-        if DailyMult >= 30:
-            f = 200 * (1.1**((DailyMult//30)-1))
-            bonus = int(f)
-        else:
-            bonus = 75
+        f = 100 * (1.1**((DailyMult//20)-1))
+        bonus = int(f)
         gain = 100 + int(bonus*DailyMult)
         sql.addGems(PlayerID, gain)
         desc = lang_P.forge_msg(lang, "daily", None, False, 0)
@@ -41,7 +37,7 @@ def daily(param):
         else:
             lvl.addxp(PlayerID, int(5*(DailyMult/6)), "gems")
         if DailyMult % 30 == 0:
-            m = int(f*0.3)
+            m = int(gain*0.2)
             sql.addGems(PlayerID, m)
             desc += lang_P.forge_msg(lang, "daily", [DailyMult, m], False, 2)
 
@@ -191,9 +187,16 @@ def bank_saving(PlayerID, lang, ARG, ARG2, Taille):
     if sql.spam(PlayerID, GF.couldown_4h, "bank_saving", "gems"):
         solde = sql.valueAtNumber(PlayerID, "Solde", "bank")
         if solde != 0:
+            soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
+            if soldeMax == 0:
+                soldeMax = Taille
+            soldeMult = soldeMax/Taille
+            pourcentage = 0.049 + soldeMult*0.001
+            if pourcentage > 0.6:
+                pourcentage = 0.6
             soldeAdd = pourcentage*solde
-            soldeTaxe = GF.taxe(soldeAdd, 0.1)
-            soldeAdd = soldeTaxe[1]
+            Taxe = GF.taxe(soldeAdd, 0.1)
+            soldeAdd = Taxe["new solde"]
             sql.add(PlayerID, "solde", int(soldeAdd), "bank")
             desc = lang_P.forge_msg(lang, "bank", [int(soldeAdd)], False, 10)
             soldeNew = solde + soldeAdd
@@ -212,7 +215,7 @@ def bank_saving(PlayerID, lang, ARG, ARG2, Taille):
             desc += GF.lootbox(PlayerID, lang)
             desc += GF.gift(PlayerID, lang)
             try:
-                sql.addGems(GF.PlayerID_GetGems, int(soldeTaxe[0]))
+                sql.addGems(GF.PlayerID_GetGems, int(Taxe["taxe"]))
             except:
                 print("Le bot ne fait pas parti de la DB")
             sql.updateComTime(PlayerID, "bank_saving", "gems")
@@ -247,14 +250,22 @@ def stealing(param):
             ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name), param["name_pl"]))
             # Calcul du pourcentage
             if ID_Vol == GF.PlayerID_GetGems or ID_Vol == GF.PlayerID_Babot:
-                R = r.randint(1, 8)
+                R = r.randint(1, 9)
             else:
                 R = "05"
             P = float("0.0{}".format(R))
             try:
                 Solde = sql.valueAtNumber(ID_Vol, "gems", "gems")
-                gain = int(Solde*P)
+                Taxe = GF.taxe(int(Solde*P), 0.2)
+                gain = Taxe["new solde"]
                 if gain != 0:
+                    try:
+                        if ID_Vol == GF.PlayerID_GetGems:
+                            sql.addGems(GF.PlayerID_Babot, int(Taxe["taxe"]))
+                        else:
+                            sql.addGems(GF.PlayerID_GetGems, int(Taxe["taxe"]))
+                    except:
+                        print("Le bot ne fait pas parti de la DB")
                     if r.randint(0, 6) == 0:
                         sql.add(PlayerID, ["divers", "DiscordCop Arrestation"], 1, "statgems")
                         if int(sql.addGems(PlayerID, int(gain/4))) >= 100:
@@ -371,6 +382,11 @@ def gamble(param):
 
             if r.randint(0, 3) == 0:
                 gain = valeur*3
+                Taxe = GF.taxe(gain, 0.2)
+                try:
+                    sql.addGems(GF.PlayerID_GetGems, int(Taxe["taxe"]))
+                except:
+                    print("Le bot ne fait pas parti de la DB")
                 # l'espérence est de 0 sur la gamble
                 desc = "{1} {0} :gem:`gems`".format(gain, lang_P.forge_msg(lang, "gamble array", None, True))
                 sql.add(PlayerID, ["gamble", "gamble | win"], 1, "statgems")

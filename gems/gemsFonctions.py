@@ -16,25 +16,57 @@ except:
     PlayerID_GetGems = 1
     PlayerID_Babot = 2
 
-
-# def checkDB_Guilde():
-#     if DB.dbExist("DB/guildesDB"):
-#         print("Guildes >> La DB existe, poursuite sans soucis.")
-#     else:
-#         print("Guildes >> La DB n'existait pas. Elle a été (re)créée.")
-#     flag = DB.checkField("DB/guildesDB", "DB/Templates/guildesTemplate")
-#     if flag == 0:
-#         print("DB >> Aucun champ n'a été ajouté, supprimé ou modifié.")
-#     elif "add" in flag:
-#         print("DB >> Un ou plusieurs champs ont été ajoutés à la DB.")
-#     elif "type" in flag:
-#         print("DB >> Un ou plusieurs type ont été modifié sur la DB.")
-#     elif "sup" in flag:
-#         print("DB >> Un ou plusieurs champs ont été supprimés de la DB.")
-
-
 # Taille max de l'Inventaire
 invMax = 5000
+
+
+# Définition des classes
+class Item:
+
+    def __init__(self, nom, vente, achat, poids, type):
+        self.nom = nom
+        self.vente = vente
+        self.achat = achat
+        self.poids = poids
+        self.type = type
+
+
+class Outil:
+
+    def __init__(self, nom, vente, achat, poids, durabilite, type):
+        self.nom = nom
+        self.vente = vente
+        self.achat = achat
+        self.poids = poids
+        self.durabilite = durabilite
+        self.type = type
+
+
+class Box:
+
+    def __init__(self, nom, titre, achat, min, max, type, xp):
+        self.nom = nom
+        self.titre = titre
+        self.achat = achat
+        self.min = min
+        self.max = max
+        self.type = type
+        self.xp = xp
+
+
+class Recette:
+
+    def __init__(self, nom, type, nb1, item1, nb2, item2, nb3, item3, nb4, item4):
+        self.nom = nom
+        self.type = type
+        self.nb1 = nb1
+        self.item1 = item1
+        self.nb2 = nb2
+        self.item2 = item2
+        self.nb3 = nb3
+        self.item3 = item3
+        self.nb4 = nb4
+        self.item4 = item4
 
 
 def itemBourse(item, type):
@@ -172,14 +204,6 @@ def loadItem(F=False):
     global ObjetEventEnd
     ObjetEventEnd = []
     # ========== Items ==========
-    class Item:
-
-        def __init__(self, nom, vente, achat, poids, type):
-            self.nom = nom
-            self.vente = vente
-            self.achat = achat
-            self.poids = poids
-            self.type = type
 
     global objetItem
     objetItem = [
@@ -236,15 +260,6 @@ def loadItem(F=False):
     ]
 
     # ========== Outils ==========
-    class Outil:
-
-        def __init__(self, nom, vente, achat, poids, durabilite, type):
-            self.nom = nom
-            self.vente = vente
-            self.achat = achat
-            self.poids = poids
-            self.durabilite = durabilite
-            self.type = type
 
     global objetOutil
     objetOutil = [
@@ -266,16 +281,6 @@ def loadItem(F=False):
     ]
 
     # ========== Loot Box ==========
-    class Box:
-
-        def __init__(self, nom, titre, achat, min, max, type, xp):
-            self.nom = nom
-            self.titre = titre
-            self.achat = achat
-            self.min = min
-            self.max = max
-            self.type = type
-            self.xp = xp
 
     global objetBox
     objetBox = [
@@ -299,20 +304,6 @@ def loadItem(F=False):
 
 ##############################################
 # ========== Recettes ==========
-class Recette:
-
-    def __init__(self, nom, type, nb1, item1, nb2, item2, nb3, item3, nb4, item4):
-        self.nom = nom
-        self.type = type
-        self.nb1 = nb1
-        self.item1 = item1
-        self.nb2 = nb2
-        self.item2 = item2
-        self.nb3 = nb3
-        self.item3 = item3
-        self.nb4 = nb4
-        self.item4 = item4
-
 
 objetRecette = [
     Recette("iron_pickaxe", "forge", 20, "iron", 1, "pickaxe", 0, "", 0, ""),
@@ -454,9 +445,10 @@ def testGuildInvTaille(ID):
 
 def taxe(solde, pourcentage):
     """Affiche la somme de la taxe en fonction du pourcentage """
-    soldeTaxe = solde * pourcentage
-    soldeNew = solde - soldeTaxe
-    return (soldeTaxe, soldeNew)
+    taxe = dict()
+    taxe["taxe"] = solde * pourcentage
+    taxe["new solde"] = solde - taxe["taxe"]
+    return taxe
 
 
 def startKit(ID):
