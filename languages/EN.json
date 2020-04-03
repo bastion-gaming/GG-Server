@@ -40,9 +40,9 @@
     ":no_entry: Anti-cheat! I'm fining you 100 :gem:`gems` for trying to cheat!",
   "lootbox":
     [
-      "\nYou found a <:gem_lootbox:{0}>**Common Loot Box Gems**! Use the command `boxes open commongems` to open it.",
-      "\nYou found a <:gem_lootbox:{0}>**Rare Loot Box Gems**! Use the command `boxes open raregems` to open it.",
-      "\nYou found a <:gem_lootbox:{0}>**Legendary Loot Box Gems**! Use the command `boxes open legendarygems` to open it.",
+      "\nYou found a <:gem_lootbox:{0}>**Common Loot Box Gems**! Use the command `open commongems` to open it.",
+      "\nYou found a <:gem_lootbox:{0}>**Rare Loot Box Gems**! Use the command `open raregems` to open it.",
+      "\nYou found a <:gem_lootbox:{0}>**Legendary Loot Box Gems**! Use the command `open legendarygems` to open it.",
       "\n\nYou found {0} :gift:`Christmas present (gift)`",
       "\n\nYou found {0} :gift:`New Year's present (gift)`:confetti_ball:",
       "Items in madness",
@@ -153,7 +153,7 @@
         "You don't own this Loot Box.",
         "Command `boxes open` incomplete",
         "Command `boxes` incomplete",
-        "Invalid `boxes` command"
+        "Invalid command"
       ],
     "hothouse":
       [

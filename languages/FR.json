@@ -41,9 +41,9 @@
     ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !",
   "lootbox":
     [
-      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Common**! Utilise la commande `boxes open commongems` pour l'ouvrir",
-      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir",
-      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir",
+      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Common**! Utilise la commande `open commongems` pour l'ouvrir",
+      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Rare**! Utilise la commande `open raregems` pour l'ouvrir",
+      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Légendaire**! Utilise la commande `open legendarygems` pour l'ouvrir",
       "\n\nTu as trouvé {0} :gift:`cadeau de Noël (gift)`",
       "\n\nTu as trouvé {0} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:",
       "Items en folie",
@@ -154,7 +154,7 @@
       "Tu ne possèdes pas cette Loot Box",
       "Commande `boxes open` incomplète",
       "Commande `boxes` incomplète",
-      "Commande `boxes` invalide"
+      "Commande invalide"
     ],
   "hothouse":
     [

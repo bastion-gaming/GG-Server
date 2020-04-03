@@ -968,78 +968,70 @@ def slots(param):
     return msg
 
 
-def boxes(param):
-    """**open [nom]** | Ouverture de Loot Box"""
+def open(param):
+    """**[nom]** | Ouverture de Loot Box"""
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    fct = param["fct"]
     name = param["name"]
     msg = []
 
-    if fct == "open":
-        if name != "None":
+    if name != "None":
+        for lootbox in GF.objetBox:
+            if name == "lootbox_{}".format(lootbox.nom):
+                name = lootbox.nom
+        if sql.valueAtNumber(PlayerID, "lootbox_{}".format(name), "inventory") > 0:
             for lootbox in GF.objetBox:
-                if name == "lootbox_{}".format(lootbox.nom):
-                    name = lootbox.nom
-            if sql.valueAtNumber(PlayerID, "lootbox_{}".format(name), "inventory") > 0:
-                for lootbox in GF.objetBox:
-                    if name == lootbox.nom:
-                        titre = lootbox.titre
-                        gain = r.randint(lootbox.min, lootbox.max)
-                        sql.add(PlayerID, "lootbox_{}".format(lootbox.nom), -1, "inventory")
+                if name == lootbox.nom:
+                    titre = lootbox.titre
+                    gain = r.randint(lootbox.min, lootbox.max)
+                    sql.add(PlayerID, "lootbox_{}".format(lootbox.nom), -1, "inventory")
 
-                        sql.addGems(PlayerID, gain)
-                        desc = "{} :gem:`gems`\n".format(gain)
-                        if name == "gift":
-                            # if r.randint(0, 6) == 0:
-                            #     nb = r.randint(-2, 3)
-                            #     if nb < 1:
-                            #         nb = 1
-                            #     sql.addSpinelles(PlayerID, nb)
-                            #     desc += "{nombre} <:spinelle:{idmoji}>`spinelle`\n".format(idmoji="{idmoji[spinelle]}", nombre=nb)
-                            for x in GF.objetItem:
-                                if r.randint(0, 10) <= 1:
-                                    if x.nom == "hyperpack":
-                                        nbgain = 1
-                                    else:
-                                        nbgain = r.randint(3, 8)
-                                    sql.add(PlayerID, x.nom, nbgain, "inventory")
-                                    if x.type != "emoji":
-                                        desc += "\n<:gem_{0}:{2}>`{0}` x{1}".format(x.nom, nbgain, "{idmoji[gem_" + x.nom + "]}")
-                                    else:
-                                        desc += "\n:{0}:`{0}` x{1}".format(x.nom, nbgain)
-                        elif name == "gift_heart":
-                            for x in GF.objetItem:
-                                if r.randint(0, 15) >= 14:
-                                    if x.nom == "hyperpack":
-                                        nbgain = r.randint(1, 2)
-                                    else:
-                                        nbgain = r.randint(4, 10)
-                                    sql.add(PlayerID, x.nom, nbgain, "inventory")
-                                    if x.type != "emoji":
-                                        desc += "\n<:gem_{0}:{2}>`{0}` x{1}".format(x.nom, nbgain, "{idmoji[gem_" + x.nom + "]}")
-                                    else:
-                                        desc += "\n:{0}:`{0}` x{1}".format(x.nom, nbgain)
-                        lvl.addxp(PlayerID, lootbox.xp, "gems")
-                        sql.add(PlayerID, ["boxes", "boxes | open | {}".format(lootbox.titre)], 1, "statgems")
-                        sql.add(PlayerID, ["boxes", "boxes | gain"], gain, "statgems")
-                        sql.add(PlayerID, ["boxes", "boxes"], 1, "statgems")
-                        msg.append("OK")
-                        msg.append(desc)
-                        msg.append(titre)
-                        return msg
+                    sql.addGems(PlayerID, gain)
+                    desc = "{} :gem:`gems`\n".format(gain)
+                    if name == "gift":
+                        # if r.randint(0, 6) == 0:
+                        #     nb = r.randint(-2, 3)
+                        #     if nb < 1:
+                        #         nb = 1
+                        #     sql.addSpinelles(PlayerID, nb)
+                        #     desc += "{nombre} <:spinelle:{idmoji}>`spinelle`\n".format(idmoji="{idmoji[spinelle]}", nombre=nb)
+                        for x in GF.objetItem:
+                            if r.randint(0, 10) <= 1:
+                                if x.nom == "hyperpack":
+                                    nbgain = 1
+                                else:
+                                    nbgain = r.randint(3, 8)
+                                sql.add(PlayerID, x.nom, nbgain, "inventory")
+                                if x.type != "emoji":
+                                    desc += "\n<:gem_{0}:{2}>`{0}` x{1}".format(x.nom, nbgain, "{idmoji[gem_" + x.nom + "]}")
+                                else:
+                                    desc += "\n:{0}:`{0}` x{1}".format(x.nom, nbgain)
+                    elif name == "gift_heart":
+                        for x in GF.objetItem:
+                            if r.randint(0, 15) >= 14:
+                                if x.nom == "hyperpack":
+                                    nbgain = r.randint(1, 2)
+                                else:
+                                    nbgain = r.randint(4, 10)
+                                sql.add(PlayerID, x.nom, nbgain, "inventory")
+                                if x.type != "emoji":
+                                    desc += "\n<:gem_{0}:{2}>`{0}` x{1}".format(x.nom, nbgain, "{idmoji[gem_" + x.nom + "]}")
+                                else:
+                                    desc += "\n:{0}:`{0}` x{1}".format(x.nom, nbgain)
+                    lvl.addxp(PlayerID, lootbox.xp, "gems")
+                    sql.add(PlayerID, ["boxes", "boxes | open | {}".format(lootbox.titre)], 1, "statgems")
+                    sql.add(PlayerID, ["boxes", "boxes | gain"], gain, "statgems")
+                    sql.add(PlayerID, ["boxes", "boxes"], 1, "statgems")
+                    msg.append("OK")
+                    msg.append(desc)
+                    msg.append(titre)
+                    return msg
 
-                desc = lang_P.forge_msg(lang, "boxes", None, False, 0)
-                msg.append("NOK")
-            else:
-                desc = lang_P.forge_msg(lang, "boxes", None, False, 1)
-                msg.append("NOK")
-        else:
-            desc = lang_P.forge_msg(lang, "boxes", None, False, 2)
+            desc = lang_P.forge_msg(lang, "boxes", None, False, 0)
             msg.append("NOK")
-    elif fct == "None":
-        desc = lang_P.forge_msg(lang, "boxes", None, False, 3)
-        msg.append("NOK")
+        else:
+            desc = lang_P.forge_msg(lang, "boxes", None, False, 1)
+            msg.append("NOK")
     else:
         desc = lang_P.forge_msg(lang, "boxes", None, False, 4)
         msg.append("NOK")
