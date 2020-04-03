@@ -1,4 +1,16 @@
 # gemsFonctions 
+## class Item:
+
+### def __init__(self, nom, vente, achat, poids, type):
+
+## class Outil:
+
+### def __init__(self, nom, vente, achat, poids, durabilite, type):
+
+## class Box:
+
+### def __init__(self, nom, titre, achat, min, max, type, xp):
+
 ## class Recette:
 
 ### def __init__(self, nom, type, nb1, item1, nb2, item2, nb3, item3, nb4, item4):
