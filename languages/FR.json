@@ -9,12 +9,13 @@
     ],
   "WarningMsg":
     [
-      "Aucun compte utilisateur n'a été trouvé.\nCrée toi un compte avec la commande `begin`\nou connecte ton compte avec la commande `connect`",
+      "Aucun compte utilisateur n'a été trouvé.\nCrée toi un compte avec la commande `begin`.",
       "Commande mal formulée",
       "Ton inventaire est plein.",
       "La commande est mal formulée.",
       "Bientôt disponible",
-      "Tu poccède deja un compte sur cette plateforme."
+      "Tu poccède deja un compte sur cette plateforme.",
+      "Aucun compte utilisateur n'a été trouvé."
     ],
   "newPlayer":
     [
@@ -23,7 +24,7 @@
       "\n\nPour permettre un affichage en jeu plus clair, les informations suivantes sont collectées:\n• Votre identifiant discord\n• Votre pseudo discord\n_Aucunes données personnels n'est vendu à une entreprise_\n\nVous pouvez vous opposer au traitement des données vous concernant et disposez du droit de retirer votre consentement à tout moment en envoyant un email a l'adresse `admin@bastion-gaming.fr`"
     ],
   "PlayerID":
-    "Votre PlayerID: **{0}**",
+    "PlayerID: **{0}**\nNom d'utilisateur: **{1}**",
   "level":
     [
       "a atteint le niveau **{0}**",
@@ -40,9 +41,9 @@
     ":no_entry: Anti-cheat! Je vous met un amende de 100 :gem:`gems` pour avoir essayé de tricher !",
   "lootbox":
     [
-      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Common**! Utilise la commande `boxes open commongems` pour l'ouvrir",
-      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Rare**! Utilise la commande `boxes open raregems` pour l'ouvrir",
-      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Légendaire**! Utilise la commande `boxes open legendarygems` pour l'ouvrir",
+      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Common**! Utilise la commande `open commongems` pour l'ouvrir",
+      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Rare**! Utilise la commande `open raregems` pour l'ouvrir",
+      "\nTu as trouvé une <:gem_lootbox:{0}>**Loot Box Gems Légendaire**! Utilise la commande `open legendarygems` pour l'ouvrir",
       "\n\nTu as trouvé {0} :gift:`cadeau de Noël (gift)`",
       "\n\nTu as trouvé {0} :gift:`cadeau de la nouvelle année (gift)`:confetti_ball:",
       "Items en folie",
@@ -106,7 +107,8 @@
       "Tu as épargné {0} :gem:`gems`\n",
       "Plafond de {0} :gem:`gems` du compte épargne atteint\nTon épargne a été tranférée sur ton compte principal\n\n",
       "Il te faut attendre :clock2:`{0}h {1}m {2}s` avant d'épargner à nouveau !",
-      "Solde du compte: {0} :gem:`gems`"
+      "Solde du compte: {0} :gem:`gems`",
+      "Taux d'épargne: {0}%"
     ],
   "mine":
     [
@@ -152,7 +154,7 @@
       "Tu ne possèdes pas cette Loot Box",
       "Commande `boxes open` incomplète",
       "Commande `boxes` incomplète",
-      "Commande `boxes` invalide"
+      "Commande invalide"
     ],
   "hothouse":
     [
@@ -295,7 +297,7 @@
       "Baraque à frite {0}",
       "Germinal {0}",
       "Bourgeois {0}",
-      "Lobbyiste",
+      "Lobbyiste {0}",
       "Politicien {0}",
       "Rentré des classes {0}",
       "Il est frais mon poisson! {0}",
@@ -345,5 +347,14 @@
       "Avoir {0} {2}`{1}` dans son inventaire",
       "Exécuter la commande `daily` {0} jours consécutifs",
       ""
+    ],
+  "godparent":
+    [
+      "Parrain/Marraine",
+      "Filleul",
+      "**_Parrainage_**",
+      "Votre parrain ou marraine a bien été ajouté ! Vous empochez 100 :gem:`gems` et lui/elle {0} :gem:`gems`.",
+      "Tu as déjà un parrain ou une marraine.",
+      "Impossible d'ajouter ce joueur comme parrain ou marraine."
     ]
 }

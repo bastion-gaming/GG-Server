@@ -1,4 +1,4 @@
-# gemsPlay 
+# gemsPlay
 ## def daily(param):
 
 ## def bank(param):
@@ -23,7 +23,7 @@
 
 ## def slots(param):
 
-## def boxes(param):
+## def open(param):
 
 ## def prod_HFC(PlayerID, lang, item, commande, i):
 
@@ -32,4 +32,3 @@
 ## def ferment(param):
 
 ## def cooking(param):
-

@@ -395,7 +395,7 @@ def taille(nameDB):
 # Fonctions
 # ===============================================================================
 # Liste des tables dont l'enregistrement des données est spécifique
-nameDBexcept = ["inventory", "durability", "hothouse", "cooking", "ferment", "statgems", "gems_com_time", "success"]
+nameDBexcept = ["inventory", "durability", "hothouse", "cooking", "ferment", "statgems", "gems_com_time", "success", "godchilds"]
 
 
 # -------------------------------------------------------------------------------
@@ -410,7 +410,7 @@ def updateField(PlayerID, fieldName, fieldValue, nameDB):
     conn = sql.connect('DB/{}.db'.format(DB_NOM))
     if PlayerID != "Error 404":
         if nameDB == None:
-            nameDB = "bastion"
+            nameDB = "gems"
         cursor = conn.cursor()
 
         # Vérification que la donnée fieldName existe dans la table nameDB
@@ -514,6 +514,9 @@ def valueAt(PlayerID, fieldName, nameDB):
                     elif x == "gems_com_time":
                         fieldName2 = "Commande"
                         fieldName3 = "Com_time, Commande"
+                    elif x == "godchilds":
+                        fieldName2 = "idGodchild"
+                        fieldName3 = "idGodchild"
                     link = "gems"
             try:
                 # Paramètre spécial (à mettre a la place du fieldName) permettant de retourner toutes les valeurs liées à un PlayerID dans la table nameDB
@@ -701,6 +704,9 @@ def add(PlayerID, nameElem, nbElem, nameDB):
             elif nameDB == "success":
                 data = "idgems, idsuccess, Stock"
                 values = "'{2}', '{0}', '{1}'".format(nameElem, nbElem, PlayerID)
+            elif nameDB == "godchilds":
+                data = "idgems, idGodchild"
+                values = "{1}, {0}".format(nameElem, PlayerID)
         try:
             script = "INSERT INTO {0} ({1}) VALUES ({2})".format(nameDB, data, values)
             # print("==== add ====")

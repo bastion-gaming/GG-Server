@@ -9,7 +9,7 @@
     ],
   "WarningMsg":
     [
-      "No user account has been found.\nCreate yourself an account with the command `begin`\nor connect your account with the command `connect`.",
+      "No user account has been found.\nCreate yourself an account with the command `begin`.",
       "Incorrectly formulated order",
       "Your inventory is full.",
       "The order is badly formulated.",
@@ -23,7 +23,7 @@
       "\n\nIn order to allow a clearer in-game display, the following information is collected:\n• Your discord id\n• Your discord nickname\n_No personal data is sold to any company_\nYou can oppose the processing of your data and have the right to withdraw your consent at any time by sending an email to the address `admin@bastion-gaming.fr`"
     ],
   "PlayerID":
-    "Your PlayerID: **{0}**",
+    "PlayerID: **{0}**\nUsername: **{1}**",
   "level":
     [
       "reached the level **{0}**",
@@ -40,9 +40,9 @@
     ":no_entry: Anti-cheat! I'm fining you 100 :gem:`gems` for trying to cheat!",
   "lootbox":
     [
-      "\nYou found a <:gem_lootbox:{0}>**Common Loot Box Gems**! Use the command `boxes open commongems` to open it.",
-      "\nYou found a <:gem_lootbox:{0}>**Rare Loot Box Gems**! Use the command `boxes open raregems` to open it.",
-      "\nYou found a <:gem_lootbox:{0}>**Legendary Loot Box Gems**! Use the command `boxes open legendarygems` to open it.",
+      "\nYou found a <:gem_lootbox:{0}>**Common Loot Box Gems**! Use the command `open commongems` to open it.",
+      "\nYou found a <:gem_lootbox:{0}>**Rare Loot Box Gems**! Use the command `open raregems` to open it.",
+      "\nYou found a <:gem_lootbox:{0}>**Legendary Loot Box Gems**! Use the command `open legendarygems` to open it.",
       "\n\nYou found {0} :gift:`Christmas present (gift)`",
       "\n\nYou found {0} :gift:`New Year's present (gift)`:confetti_ball:",
       "Items in madness",
@@ -106,7 +106,8 @@
         "You saved {0} :gem:`gems`\n",
         "savings account ceiling of {0} :gem:`gems` reached\nYour savings have been transferred.\n\n",
         "You need to wait :clock2:`{0}h {1}m {2}s` before saving again !",
-        "Account balance: {0} :gem:`gems`"
+        "Account balance: {0} :gem:`gems`",
+        "Savings rate: {0}%"
       ],
     "mine":
       [
@@ -152,7 +153,7 @@
         "You don't own this Loot Box.",
         "Command `boxes open` incomplete",
         "Command `boxes` incomplete",
-        "Invalid `boxes` command"
+        "Invalid command"
       ],
     "hothouse":
       [
@@ -295,7 +296,7 @@
         "Fried booth {0}",
         "Germinal {0}",
         "Bourgeois {0}",
-        "Lobbyist",
+        "Lobbyist {0}",
         "Politician {0}",
         "Back to school {0}",
         "It's fresh my fish! {0}",
@@ -345,5 +346,14 @@
         "Having {0} {1} in his inventory",
         "Run the command `daily` {0} consecutive days",
         ""
+      ],
+    "godparent":
+      [
+        "Godparent",
+        "Godchild",
+        "**_Sponsorship_**",
+        "Your godparent has been added! You pocket 100 :gem:`gems` and he {0} :gem:`gems`.",
+        "You already have a godparent.",
+        "Impossible to add this player as godparent."
       ]
 }

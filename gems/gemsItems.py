@@ -46,8 +46,8 @@ PrixItem = [
     Item("candy", 1, 2),
     Item("lollipop", 5, 12),
 
-    Item("backpack", 3000, 3000),
-    Item("hyperpack", 29000, 29000),
+    Item("backpack", 2900, 3000),
+    Item("hyperpack", 28000, 29000),
     Item("fishhook", 46, 64)
     ]
 

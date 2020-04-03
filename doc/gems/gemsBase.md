@@ -3,6 +3,8 @@
 
 ## def connect(param):
 
+## def infos(param):
+
 ## def bal(param):
 
 ## def baltop(param):
@@ -22,4 +24,6 @@
 ## def forge(param):
 
 ## def lang(param):
+
+## def godparent(param):
 
