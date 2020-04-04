@@ -731,7 +731,7 @@ def market(param):
 
             for c in GF.objetBox :
                 if c.nom == "gift":
-                    d_marketBox += ":{0}:`{0}`: {2} **{1}:gem:** | {6}: {7}!\n".format(c.nom, c.achat, prop_achat, lang_P.forge_msg(lang, "lootbox", None, False, 5))
+                    d_marketBox += ":{0}:`{0}`: {2} **{1}:gem:** | {3}!\n".format(c.nom, c.achat, prop_achat, lang_P.forge_msg(lang, "lootbox", None, False, 5))
                 elif c.type == "gems":
                     d_marketBox += "<:gem_lootbox:{4}>`{0}`: {5} **{1}** | {6}: `{2} ▶ {3}`:gem:`gems` \n".format(c.nom, c.achat, c.min, c.max, "{idmoji[gem_lootbox]}", prop_achat, prop_gain)
 
