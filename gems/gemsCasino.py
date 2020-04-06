@@ -250,3 +250,121 @@ def slots(param):
     msg.append(lang)
     msg.append(desc)
     return msg
+
+
+def roulette(param):
+    lang = param["lang"]
+    PlayerID = param["PlayerID"]
+    myV = int(param["valeur"])
+    if param["mise"] == "None":
+        mise = 20
+    else:
+        mise = int(param["mise"])
+    msg = []
+    VM = []
+    desc = ""
+
+    if sql.spam(PlayerID, GF.couldown_8s, "roulette", "gems"):
+        # Prix du ticket
+        sql.addGems(PlayerID, -mise)
+        # Vérification que la valeur renseigner par le joueur est présente sur le plateau
+        if myV >= 0 and myV < 100:
+            # Choix des 4 valeurs maudites
+            i = 0
+            while i < 4:
+                check = True
+                V = r.randint(0, 100)
+                for one in VM:
+                    M = one - 9
+                    P = one + 9
+                    if V >= M and V <= P:
+                        check = False
+                if check:
+                    VM.append(V)
+                    i += 1
+            print(myV)
+            print("------\n{0}".format(VM))
+            # Choix de la valeur bénite
+            i = 0
+            while i < 1:
+                check = True
+                VB = r.randint(0, 100)
+                for one in VM:
+                    M = one - 10
+                    P = one + 10
+                    if VB >= M and VB <= P:
+                        check = False
+                if check:
+                    i = 1
+            print("------\n{0}".format(VB))
+            V = myV - VB
+            if V >= -5 and V <= 5:
+                desc = "Victoire"
+                if V < 0:
+                    V = -V
+                if myV == VB:
+                    gain = 2*mise
+                else:
+                    gain = int(mise + ((10-V)/10)*mise)
+            else:
+                desc = "Rien"
+                gain = 0
+                for one in VM:
+                    V = myV - one
+                    if V >= -5 and V <= 5:
+                        desc = "Défaite"
+                        if V > 0:
+                            V = -V
+                        if myV == one:
+                            gain = -mise
+                        else:
+                            gain = int(-((10+V)/10)*mise)
+            desc += "\n{0}".format(gain)
+            sql.addGems(PlayerID, gain)
+            msg.append("OK")
+            msg.append(lang)
+            msg.append(desc)
+            msg.append(VM)
+            msg.append(VB)
+            return msg
+        else:
+            msg.append("NOK")
+            desc = "Valeur incorrecte!"
+    else:
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
+        msg.append("couldown")
+    msg.append(lang)
+    msg.append(desc)
+    return msg
+
+
+def marketbet(param):
+    lang = param["lang"]
+    PlayerID = param["PlayerID"]
+    msg = []
+    desc = ""
+
+    if sql.spam(PlayerID, GF.couldown_8s, "marketbet", "gems"):
+        msg.append("OK")
+    else:
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
+        msg.append("couldown")
+    msg.append(lang)
+    msg.append(desc)
+    return msg
+
+
+def weatherbet(param):
+    lang = param["lang"]
+    PlayerID = param["PlayerID"]
+    msg = []
+    desc = ""
+
+    if sql.spam(PlayerID, GF.couldown_8s, "weatherbet", "gems"):
+        msg.append("OK")
+    else:
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
+        msg.append("couldown")
+    msg.append(lang)
+    msg.append(desc)
+    return msg
