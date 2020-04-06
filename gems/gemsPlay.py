@@ -257,7 +257,7 @@ def stealing(param):
             try:
                 Solde = sql.valueAtNumber(ID_Vol, "gems", "gems")
                 Taxe = GF.taxe(int(Solde*P), 0.2)
-                gain = Taxe["new solde"]
+                gain = int(Taxe["new solde"])
                 if gain != 0:
                     try:
                         if ID_Vol == GF.PlayerID_GetGems:
