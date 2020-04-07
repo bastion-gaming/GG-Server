@@ -256,15 +256,19 @@ def roulette(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
     myV = int(param["valeur"])
-    if param["mise"] == "None":
-        mise = 20
-    else:
+    try:
         mise = int(param["mise"])
+    except:
+        mise = 0
     msg = []
     VM = []
-    desc = ""
+    desc = dict()
 
-    if sql.spam(PlayerID, GF.couldown_8s, "roulette", "gems"):
+    if mise <= 0:
+        msg.append("NOK")
+        desc = "Mise incorrecte!"
+
+    elif sql.spam(PlayerID, GF.couldown_8s, "roulette", "gems"):
         # Prix du ticket
         sql.addGems(PlayerID, -mise)
         # Vérification que la valeur renseigner par le joueur est présente sur le plateau
@@ -299,33 +303,33 @@ def roulette(param):
             print("------\n{0}".format(VB))
             V = myV - VB
             if V >= -5 and V <= 5:
-                desc = "Victoire"
+                desc["desc"] = lang_P.forge_msg(lang, "roulette", None, False, 1)
                 if V < 0:
                     V = -V
                 if myV == VB:
-                    gain = 2*mise
+                    desc["gain"] = 2*mise
                 else:
-                    gain = int(mise + ((10-V)/10)*mise)
+                    desc["gain"] = int(mise + ((10-V)/10)*mise)
             else:
-                desc = "Rien"
-                gain = 0
+                desc["desc"] = lang_P.forge_msg(lang, "roulette", None, False, 0)
+                desc["gain"] = 0
                 for one in VM:
                     V = myV - one
                     if V >= -5 and V <= 5:
-                        desc = "Défaite"
+                        desc["desc"] = lang_P.forge_msg(lang, "roulette", None, False, 2)
                         if V > 0:
                             V = -V
                         if myV == one:
-                            gain = -mise
+                            desc["gain"] = -mise
                         else:
-                            gain = int(-((10+V)/10)*mise)
-            desc += "\n{0}".format(gain)
-            sql.addGems(PlayerID, gain)
+                            desc["gain"] = int(-((10+V)/10)*mise)
+            sql.addGems(PlayerID, desc["gain"])
+            desc["VM"] = VM
+            desc["VB"] = VB
+
             msg.append("OK")
             msg.append(lang)
             msg.append(desc)
-            msg.append(VM)
-            msg.append(VB)
             return msg
         else:
             msg.append("NOK")

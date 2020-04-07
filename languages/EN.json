@@ -355,5 +355,11 @@
         "Your godparent has been added! You pocket 100 :gem:`gems` and he {0} :gem:`gems`.",
         "You already have a godparent.",
         "Impossible to add this player as godparent."
+      ],
+    "roulette":
+      [
+        "Nothing",
+        "Victory",
+        "Defeat"
       ]
 }

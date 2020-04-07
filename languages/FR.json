@@ -356,5 +356,11 @@
       "Votre parrain ou marraine a bien été ajouté ! Vous empochez 100 :gem:`gems` et lui/elle {0} :gem:`gems`.",
       "Tu as déjà un parrain ou une marraine.",
       "Impossible d'ajouter ce joueur comme parrain ou marraine."
+    ],
+  "roulette":
+    [
+      "Rien",
+      "Victoire",
+      "Défaite"
     ]
 }
