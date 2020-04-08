@@ -70,9 +70,9 @@ def exec_commands(c):
                 ret = eval(commande_forgee)
                 res["reponse"] = ret
             # except:
-            #     res["reponse"] = ["WarningMsg", c["param_c"]["lang"], lang_P.forge_msg(c["param_c"]["lang"], "WarningMsg", None, False, 1)]
+            #     res["reponse"] = {"type": "WarningMsg", "lang": c["param_c"]["lang"], "desc": lang_P.forge_msg(c["param_c"]["lang"], "WarningMsg", None, False, 0)}
         else:
-            res["reponse"] = ["WarningMsg", c["param_c"]["lang"], lang_P.forge_msg(c["param_c"]["lang"], "WarningMsg", None, False, 0)]
+            res["reponse"] = {"type": "WarningMsg", "lang": c["param_c"]["lang"], "desc": lang_P.forge_msg(c["param_c"]["lang"], "WarningMsg", None, False, 0)}
 
         res["name_c"] = commande
         res["name_p"] = c["name_p"]
