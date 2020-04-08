@@ -9,35 +9,34 @@ from languages import lang as lang_P
 
 def begin(param):
     """Pour créer son compte joueur et obtenir son starter Kit!"""
-    msg = []
+    msg = dict()
     desc = sql.newPlayer(param["ID"], "gems", param["name_pl"], param["name"])
     SuperID = sql.get_SuperID(param["ID"], param["name_pl"])
     GF.startKit(SuperID)
     if desc == lang_P.forge_msg(param["lang"], "newPlayer", None, False, 0):
-        msg.append("OK")
+        msg["type"] = "OK"
         # Message RGPD
         desc += lang_P.forge_msg(param["lang"], "newPlayer", None, False, 2)
     else:
-        msg.append("NOK")
-    msg.append(param["lang"])
-    msg.append(desc)
+        msg["type"] = "NOK"
+    msg["lang"] = param["lang"]
+    msg["desc"] = desc
     return msg
 
 
 def connect(param):
     """Connecter un meme compte sur plusieurs plateforme (commande à effectuer sur la nouvelle plateforme)"""
     lang = param["lang"]
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
     SuperID = sql.get_SuperID(param["ID"], param["name_pl"])
     if SuperID != "Error 404":
-        msg.append("NOK")
-        msg.append(lang)
-        msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 5))
+        msg["type"] = "NOK"
+        msg["desc"] = lang_P.forge_msg(lang, "WarningMsg", None, False, 5)
     else:
         PlayerID = param["PlayerID"]
-        msg.append("OK")
-        msg.append(lang)
-        msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 4))
+        msg["type"] = "OK"
+        msg["desc"] = lang_P.forge_msg(lang, "WarningMsg", None, False, 4)
     return msg
 
 
@@ -47,15 +46,15 @@ def infos(param):
     PlayerID = sql.get_PlayerID(sql.get_SuperID(param["ID"], param["name_pl"]))
     name = param["name"]
     pseudo = sql.valueAtNumber(PlayerID, "Pseudo", "IDs")
-    msg = []
+    msg = dict()
     desc = ""
+    msg["lang"] = lang
 
     if PlayerID != "Error 404":
-        msg.append("OK")
-        msg.append(lang)
+        msg["type"] = "OK"
 
         # PlayerID
-        msg.append(lang_P.forge_msg(lang, "PlayerID", [PlayerID, pseudo]))
+        msg["playerid"] = lang_P.forge_msg(lang, "PlayerID", [PlayerID, pseudo])
 
         # Balance
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
@@ -63,21 +62,21 @@ def infos(param):
         soldeSpinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
         if soldeSpinelles > 0:
             desc += "{0} <:spinelle:{1}>`spinelles`".format(soldeSpinelles, "{idmoji[spinelle]}")
-        msg.append(desc)
+        msg["balance"] = desc
 
         # Level et XP
         lvlValue = sql.valueAtNumber(PlayerID, "lvl", "gems")
         xp = sql.valueAtNumber(PlayerID, "xp", "gems")
         # Niveaux part
-        msg.append(lang_P.forge_msg(lang, "bal", [lvlValue], False))
-        msg.append("XP: `{0}/{1}`".format(xp, lvl.lvlPalier(lvlValue)))
+        msg["lvl"] = lang_P.forge_msg(lang, "bal", [lvlValue], False)
+        msg["xp"] = "XP: `{0}/{1}`".format(xp, lvl.lvlPalier(lvlValue))
 
         # Parrain/Marraine
         P = sql.valueAtNumber(PlayerID, "godparent", "gems")
         Pname = sql.valueAtNumber(P, "Pseudo", "IDs")
         F_li = sql.valueAt(PlayerID, "all", "godchilds")
         desc = ""
-        msg.append(lang_P.forge_msg(lang, "godparent", None, False, 2))
+        msg["godparent titre"] = lang_P.forge_msg(lang, "godparent", None, False, 2)
         if P != 0 and P != None:
             desc += "\n{1}: **{0}**".format(Pname, lang_P.forge_msg(lang, "godparent", None, False, 0))
         else:
@@ -92,13 +91,12 @@ def infos(param):
             for one in F_li:
                 Fname = sql.valueAtNumber(one[0], "Pseudo", "IDs")
                 desc += "\n• _{0}_".format(Fname)
-        msg.append(desc)
+        msg["godparent"] = desc
         # Message de réussite dans la console
         print("Gems >> Informations de {} affichée".format(name))
     else:
-        msg.append("NOK")
-        msg.append(lang)
-        msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 6))
+        msg["type"] = "NOK"
+        msg["desc"] = lang_P.forge_msg(lang, "WarningMsg", None, False, 6)
     return msg
 
 
@@ -106,23 +104,23 @@ def bal(param):
     """**[nom]** | Êtes vous riche ou pauvre ?"""
     lang = param["lang"]
     PlayerID = sql.get_PlayerID(sql.get_SuperID(param["ID"], param["name_pl"]))
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
 
     if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
-        msg.append("OK")
-        msg.append(lang)
+        msg["type"] = "OK"
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         desc = "{} :gem:`gems`\n".format(solde)
         soldeSpinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
         if soldeSpinelles > 0:
             desc += "{0} <:spinelle:{1}>`spinelles`".format(soldeSpinelles, "{idmoji[spinelle]}")
-        msg.append(desc)
+        msg["balance"] = desc
         sql.updateComTime(PlayerID, "bal", "gems")
         # Message de réussite dans la console
         print("Gems >> Balance de {} affichée".format(PlayerID))
     else:
-        msg.append("couldown")
-        msg.append(lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)]))
+        msg["type"] = "couldown"
+        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
     return msg
 
 
@@ -132,7 +130,8 @@ def baltop(param):
     filtre = param["filtre"]
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
     baltop = ""
     if sql.spam(PlayerID, GF.couldown_4s, "baltop", "gems"):
         sql.updateComTime(PlayerID, "baltop", "gems")
@@ -179,9 +178,8 @@ def baltop(param):
                     #     baltop += "\n"
                     baltop += "\n"
                 j += 1
-            msg.append("OK")
-            msg.append(lang)
-            msg.append(baltop)
+            msg["type"] = "OK"
+            msg["baltop"] = baltop
             # sql.add(PlayerID, ["baltop", "baltop"], 1, "statgems")
         # elif filtre == "guild" or filtre == "guilde":
         #     GuildList = []
@@ -198,15 +196,15 @@ def baltop(param):
         #         if j <= n:
         #             baltop += "{2} | {0} {1} <:spinelle:{3}>\n".format(one[0], one[1], j, "{idmoji[spinelle]}")
         #         j += 1
-        #     msg.append("OK")
-        #     msg.append(baltop)
+        #     msg["type"] = "OK"
+        #     msg["baltop"] = baltop
         #     sql.add(PlayerID, ["baltop", "baltop | guilde"], 1, "statgems")
         else:
-            msg.append("NOK")
-            msg.append(lang_P.forge_msg(lang, "baltop"))
+            msg["type"] = "NOK"
+            msg["desc"] = lang_P.forge_msg(lang, "baltop")
     else:
-        msg.append("couldown")
-        msg.append(lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)]))
+        msg["type"] = "couldown"
+        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
     return msg
 
 
@@ -216,7 +214,8 @@ def buy(param):
     item = param["item"]
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
 
     if sql.spam(PlayerID, GF.couldown_4s, "buy", "gems"):
         if int(nb) < 0:
@@ -224,9 +223,8 @@ def buy(param):
             lvl.addxp(PlayerID, -10, "gems")
             desc = lang_P.forge_msg(lang, "DiscordCop Amende")
             sql.add(PlayerID, ["divers", "DiscordCop Amende"], 1, "statgems")
-            msg.append("anticheat")
-            msg.append(lang)
-            msg.append(desc)
+            msg["type"] = "anticheat"
+            msg["desc"] = desc
             return msg
 
         elif GF.testInvTaille(PlayerID) or item == "backpack" or item == "hyperpack" or item == "bank_upgrade":
@@ -300,9 +298,8 @@ def buy(param):
                             desc = lang_P.forge_msg(lang, "buy", [nb, c.nom, "{idmoji[gem_" + c.nom + "]}", prix, argent], False, 0)
                             sql.add(PlayerID, ["buy", "buy | item | {}".format(c.nom)], nb, "statgems")
                             sql.add(PlayerID, ["buy", "buy | total"], nb, "statgems")
-                            msg.append("bank")
-                            msg.append(lang)
-                            msg.append(desc)
+                            msg["type"] = "bank"
+                            msg["desc"] = desc
                             return msg
                         else:
                             sql.add(PlayerID, c.nom, nb, "inventory")
@@ -336,20 +333,19 @@ def buy(param):
                         break
             if test :
                 desc = lang_P.forge_msg(lang, "buy", None, False, 4)
-                msg.append("NOK")
+                msg["type"] = "NOK"
             else:
-                msg.append("OK")
+                msg["type"] = "OK"
                 sql.add(PlayerID, ["buy", "buy"], 1, "statgems")
 
             sql.updateComTime(PlayerID, "buy", "gems")
         else:
             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
-            msg.append("NOK")
+            msg["type"] = "NOK"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
-        msg.append("couldown")
-    msg.append(lang)
-    msg.append(desc)
+        msg["type"] = "couldown"
+    msg["desc"] = desc
     return msg
 
 
@@ -359,7 +355,8 @@ def sell(param):
     item = param["item"]
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
 
     if sql.spam(PlayerID, GF.couldown_4s, "sell", "gems"):
         nbItem = sql.valueAtNumber(PlayerID, item, "inventory")
@@ -425,12 +422,11 @@ def sell(param):
 
         sql.updateComTime(PlayerID, "sell", "gems")
         sql.add(PlayerID, ["sell", "sell"], 1, "statgems")
-        msg.append("OK")
+        msg["type"] = "OK"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
-        msg.append("couldown")
-    msg.append(lang)
-    msg.append(desc)
+        msg["type"] = "couldown"
+    msg["desc"] = desc
     return msg
 
 
@@ -439,20 +435,13 @@ def inv(param):
     fct = param["fct"]
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    msg = []
+    msg = dict()
 
     if sql.spam(PlayerID, GF.couldown_4s, "inv", "gems"):
         if fct == "None" or fct == "principale" or fct == "main":
             # sql.add(PlayerID, ["inv", "inv"], 1, "statgems")
+            invD = dict()
             msg_inv = ""
-            msg_invOutils = ""
-            msg_invSpeciaux = ""
-            msg_invItems = ""
-            msg_invItemsMinerai = ""
-            msg_invItemsPoisson = ""
-            msg_invItemsPlante = ""
-            msg_invItemsEvent = ""
-            msg_invBox = ""
             tailleMax = GF.invMax
             inv = sql.valueAt(PlayerID, "all", "inventory")
             tailletot = 0
@@ -463,96 +452,79 @@ def inv(param):
                     if c.nom == str(x[1]):
                         if int(x[0]) > 0:
                             if c.type == "consommable":
-                                msg_invSpeciaux += "<:gem_{0}:{2}>`{0}`: `x{1}` | {5}: `{3}/{4}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}", sql.valueAtNumber(PlayerID, c.nom, "durability"), c.durabilite, prop_durabilite)
+                                type = "special"
                             else:
-                                msg_invOutils += "<:gem_{0}:{2}>`{0}`: `x{1}` | {5}: `{3}/{4}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}", sql.valueAtNumber(PlayerID, c.nom, "durability"), c.durabilite, prop_durabilite)
+                                type = "outils"
+                            try:
+                                invD[type] += "<:gem_{0}:{2}>`{0}`: `x{1}` | {5}: `{3}/{4}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}", sql.valueAtNumber(PlayerID, c.nom, "durability"), c.durabilite, prop_durabilite)
+                            except KeyError:
+                                invD[type] = "<:gem_{0}:{2}>`{0}`: `x{1}` | {5}: `{3}/{4}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}", sql.valueAtNumber(PlayerID, c.nom, "durability"), c.durabilite, prop_durabilite)
                             tailletot += c.poids*int(x[0])
 
             for c in GF.objetItem:
                 for x in inv:
                     if c.nom == str(x[1]):
                         if int(x[0]) > 0:
-                            if c.type == "minerai":
-                                msg_invItemsMinerai += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
-                            elif c.type == "poisson":
-                                msg_invItemsPoisson += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
-                            elif c.type == "plante":
-                                msg_invItemsPlante += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                            if c.type == "halloween" or c.type == "christmas" or c.type == "event":
+                                try:
+                                    invD["event"] += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                                except KeyError:
+                                    invD["event"] = "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
                             elif c.type == "emoji":
-                                msg_invItems += ":{0}:`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]))
-                            elif c.type == "halloween" or c.type == "christmas" or c.type == "event":
-                                msg_invItemsEvent += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
-                            elif c.type == "spinelle" or c.type == "special":
-                                msg_invSpeciaux += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                                try:
+                                    invD["consommable"] += ":{0}:`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]))
+                                except KeyError:
+                                    invD["consommable"] = ":{0}:`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]))
                             else:
-                                if c.type == "emoji":
-                                    msg_invItems += ":{0}:`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]))
-                                else:
-                                    msg_invItems += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                                try:
+                                    invD[c.type] += "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+                                except KeyError:
+                                    invD[c.type] = "<:gem_{0}:{2}>`{0}`: `x{1}`\n".format(str(x[1]), str(x[0]), "{idmoji[gem_" + c.nom + "]}")
+
                             if c.nom == "backpack" or c.nom == "hyperpack":
                                 tailleMax += -1 * c.poids * int(x[0])
                             else:
                                 tailletot += c.poids*int(x[0])
 
-            for c in GF.objetBox :
+            invD["lootbox"] = ""
+            for c in GF.objetBox:
                 for x in inv:
                     name = "lootbox_{}".format(c.nom)
                     if name == str(x[1]):
                         if int(x[0]) > 0:
                             if c.nom != "gift" and c.nom != "gift_heart":
-                                msg_invBox += "<:gem_lootbox:{2}>`{0}`: `x{1}`\n".format(c.nom, str(x[0]), "{idmoji[gem_lootbox]}")
+                                invD["lootbox"] += "<:gem_lootbox:{2}>`{0}`: `x{1}`\n".format(c.nom, str(x[0]), "{idmoji[gem_lootbox]}")
                             else:
-                                msg_invBox += ":{0}:`{0}`: `x{1}`\n".format(c.nom, str(x[0]))
+                                invD["lootbox"] += ":{0}:`{0}`: `x{1}`\n".format(c.nom, str(x[0]))
 
             if int(tailletot) >= tailleMax:
                 msg_inv += "\n{2}: `{0}/{1}` :bangbang:".format(int(tailletot), tailleMax, prop_taille)
             else:
                 msg_inv += "\n{2}: `{0}/{1}`".format(int(tailletot), tailleMax, prop_taille)
 
-            msg.append("OK")
-            msg.append(lang)
-            msg.append(msg_inv)
-            if msg_invOutils == "":
-                msg_invOutils = "None"
-            if msg_invSpeciaux == "":
-                msg_invSpeciaux = "None"
-            if msg_invItems == "":
-                msg_invItems = "None"
-            if msg_invItemsMinerai == "":
-                msg_invItemsMinerai = "None"
-            if msg_invItemsPoisson == "":
-                msg_invItemsPoisson = "None"
-            if msg_invItemsPlante == "":
-                msg_invItemsPlante = "None"
-            if msg_invItemsEvent == "":
-                msg_invItemsEvent = "None"
-            if msg_invBox == "":
-                msg_invBox = "None"
-            msg.append(msg_invOutils)
-            msg.append(msg_invSpeciaux)
-            msg.append(msg_invItems)
-            msg.append(msg_invItemsMinerai)
-            msg.append(msg_invItemsPoisson)
-            msg.append(msg_invItemsPlante)
-            msg.append(msg_invItemsEvent)
-            msg.append(msg_invBox)
+            msg["type"] = "OK"
+            msg["lang"] = lang
+            msg["desc"] = msg_inv
+            msg["inv"] = invD
 
             sql.updateComTime(PlayerID, "inv", "gems")
 
-        elif fct == "pockets" or fct == "poches":
+        elif "pocket" or "poche" in fct:
             desc = "• Principale >> `!inv`"
-            msg.append("pockets")
-            msg.append(lang)
-            msg.append(desc)
+            msg["type"] = "pockets"
+            msg["lang"] = lang
+            msg["desc"] = desc
 
         else:
             desc = lang_P.forge_msg(lang, "inv", None, False, 0)
-            msg.append("NOK")
-            msg.append(desc)
+            msg["type"] = "NOK"
+            msg["lang"] = lang
+            msg["desc"] = desc
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
-        msg.append("couldown")
-        msg.append(desc)
+        msg["type"] = "couldown"
+        msg["lang"] = lang
+        msg["desc"] = desc
     return msg
 
 
@@ -1040,7 +1012,8 @@ def pay(param):
     Nom_recu = param["Nom_recu"]
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
 
     if sql.spam(PlayerID, GF.couldown_4s, "pay", "gems"):
         try:
@@ -1072,19 +1045,18 @@ def pay(param):
                     desc = lang_P.forge_msg(lang, "pay", [nom, gain, Nom_recu], False, 1)
 
                 sql.updateComTime(PlayerID, "pay", "gems")
-                msg.append("OK")
+                msg["type"] = "OK"
             else :
                 desc = lang_P.forge_msg(lang, "pay", None, False, 2)
-                msg.append("NOK")
+                msg["type"] = "NOK"
         except ValueError:
             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 3)
-            msg.append("NOK")
+            msg["type"] = "NOK"
             pass
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
-        msg.append("couldown")
-    msg.append(lang)
-    msg.append(desc)
+        msg["type"] = "couldown"
+    msg["desc"] = desc
     return msg
 
 
@@ -1097,13 +1069,13 @@ def give(param):
     Nom_recu = param["Nom_recu"]
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
 
     checkLB = False
     if item == "bank_upgrade":
-        msg.append("NOK")
-        msg.append(lang)
-        msg.append(lang_P.forge_msg(lang, "give", None, False, 0))
+        msg["type"] = "NOK"
+        msg["desc"] = lang_P.forge_msg(lang, "give", None, False, 0)
         return msg
         return False
     if sql.spam(PlayerID, GF.couldown_4s, "give", "gems"):
@@ -1116,9 +1088,8 @@ def give(param):
                 sql.addGems(PlayerID, -100)
                 desc = lang_P.forge_msg(lang, "DiscordCop Amende")
                 sql.add(PlayerID, ["divers", "DiscordCop Amende"], 1, "statgems")
-                msg.append("anticheat")
-                msg.append(lang)
-                msg.append(desc)
+                msg["type"] = "anticheat"
+                msg["desc"] = desc
                 return msg
             elif nb > 0:
                 for lootbox in GF.objetBox:
@@ -1155,7 +1126,7 @@ def give(param):
                         desc = lang_P.forge_msg(lang, "give", [Nom_recu], False, 4)
                 else:
                     desc = lang_P.forge_msg(lang, "give", [nom, Nom_recu], False, 5)
-                msg.append("OK")
+                msg["type"] = "OK"
             elif nb == -1:
                 nbItem = int(sql.valueAtNumber(PlayerID, item, "inventory"))
                 if nb > 0:
@@ -1182,20 +1153,19 @@ def give(param):
                         desc = lang_P.forge_msg(lang, "give", [Nom_recu], False, 4)
                 else:
                     desc = lang_P.forge_msg(lang, "give", [nom, Nom_recu], False, 5)
-                msg.append("OK")
+                msg["type"] = "OK"
             else :
                 desc = lang_P.forge_msg(lang, "give", None, False, 6)
-                msg.append("NOK")
+                msg["type"] = "NOK"
             sql.updateComTime(PlayerID, "give", "gems")
         except ValueError:
             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 3)
-            msg.append("NOK")
+            msg["type"] = "NOK"
             pass
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
-        msg.append("couldown")
-    msg.append(lang)
-    msg.append(desc)
+        msg["type"] = "couldown"
+    msg["desc"] = desc
     return msg
 
 
@@ -1205,7 +1175,8 @@ def forge(param):
     nb = param["nb"]
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
 
     if sql.spam(PlayerID, GF.couldown_4s, "forge", "gems"):
         if GF.testInvTaille(PlayerID):
@@ -1213,9 +1184,8 @@ def forge(param):
             # Affichage des recettes disponible
             if item == "None":
                 desc = GF.recette(lang)
-                msg.append("OK")
-                msg.append(lang)
-                msg.append(desc)
+                msg["type"] = "OK"
+                msg["desc"] = desc
                 return msg
             # -------------------------------------
             else:
@@ -1323,22 +1293,20 @@ def forge(param):
                             else:
                                 nbmissing = (sql.valueAtNumber(PlayerID, c.item1, "inventory") - nb1)*-1
                                 desc = lang_P.forge_msg(lang, "forge", [nbmissing, c.item1, "{idmoji[gem_" + c.item1 + "]}"], False, 1)
-                        msg.append("OK")
-                        msg.append(lang)
-                        msg.append(desc)
+                        msg["type"] = "OK"
+                        msg["desc"] = desc
                         return msg
                     else:
                         desc = lang_P.forge_msg(lang, "forge", None, False, 2)
-                msg.append("NOK")
+                msg["type"] = "NOK"
             sql.updateComTime(PlayerID, "forge", "gems")
         else:
             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
-            msg.append("NOK")
+            msg["type"] = "NOK"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
-        msg.append("couldown")
-    msg.append(lang)
-    msg.append(desc)
+        msg["type"] = "couldown"
+    msg["desc"] = desc
     return msg
 
 
@@ -1351,24 +1319,24 @@ def lang(param):
     if ID == "Error 404":
         msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
         return msg
-    msg = []
+    msg = dict()
     langlist = ["EN", "FR"]
     langue = param["langue"].upper()
 
     if langue == "NONE":
-        msg.append("OK")
-        msg.append(lang_P.forge_msg(lang, "lang", None, False, 2))
+        msg["type"] = "OK"
+        msg["desc"] = lang_P.forge_msg(lang, "lang", None, False, 2)
     else:
         if langue in langlist:
             if sql.updateField(ID, "LANG", langue, "IDs") == "200":
-                msg.append("OK")
-                msg.append(lang_P.forge_msg(langue, "lang", None, False, 0))
+                msg["type"] = "OK"
+                msg["desc"] = lang_P.forge_msg(langue, "lang", None, False, 0)
             else:
-                msg.append("NOK")
-                msg.append(lang_P.forge_msg(lang, "WarningMsg", None, False, 0))
+                msg["type"] = "NOK"
+                msg["desc"] = lang_P.forge_msg(lang, "WarningMsg", None, False, 0)
         else:
-            msg.append("NOK")
-            msg.append(lang_P.forge_msg(lang, "lang", None, False, 1))
+            msg["type"] = "NOK"
+            msg["desc"] = lang_P.forge_msg(lang, "lang", None, False, 1)
     return msg
 
 
@@ -1377,7 +1345,8 @@ def godparent(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
     GPID = sql.get_PlayerID(sql.get_SuperID(param["GPID"], param["name_pl"]))
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
     myGP = sql.valueAtNumber(PlayerID, "godparent", "gems")
 
     if (myGP == 0 or myGP == None) and PlayerID != GPID and GPID != "Error 404":
@@ -1390,17 +1359,14 @@ def godparent(param):
         gainG = 100 * len(fil_L)
         lvl.addxp(GPID, gainXP, "gems")
         sql.addGems(GPID, gainG)
-        msg.append("OK")
-        msg.append(lang)
-        msg.append(lang_P.forge_msg(lang, "godparent", [gainG], False, 3))
+        msg["type"] = "OK"
+        msg["desc"] = lang_P.forge_msg(lang, "godparent", [gainG], False, 3)
     elif myGP != 0 and myGP != None:
-        msg.append("NOK")
-        msg.append(lang)
-        msg.append(lang_P.forge_msg(lang, "godparent", None, False, 4))
+        msg["type"] = "NOK"
+        msg["desc"] = lang_P.forge_msg(lang, "godparent", None, False, 4)
     else:
-        msg.append("NOK")
-        msg.append(lang)
-        msg.append(lang_P.forge_msg(lang, "godparent", None, False, 5))
+        msg["type"] = "NOK"
+        msg["desc"] = lang_P.forge_msg(lang, "godparent", None, False, 5)
     return msg
 
 
@@ -1416,7 +1382,8 @@ def godparent(param):
 #         msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
 #         return msg
 #     PlayerID = sql.get_PlayerID(ID, "gems")
-#     msg = []
+#     msg = dict()
+#     msg["lang"] = lang
 #
 #     n = 250000
 #     balGems = sql.valueAtNumber(PlayerID, "gems", "gems")
@@ -1427,29 +1394,29 @@ def godparent(param):
 #             nb = int(nb)
 #         except:
 #             desc = "Erreur! Nombre de <:spinelle:{idmoji}>`spinelles` incorrect".format(idmoji = "{idmoji[spinelle]}")
-#             msg.append("NOK")
-#             msg.append(desc)
+#             msg["type"] = "NOK"
+#             msg["desc"] = desc
 #             return msg
 #         if nb < 0:
 #             if balspinelle >= -nb:
 #                 max = nb
 #             else:
 #                 desc = "Tu n'as pas assez de <:spinelle:{idmoji}>`spinelles`".format(idmoji="{idmoji[spinelle]}")
-#                 msg.append("NOK")
-#                 msg.append(desc)
+#                 msg["type"] = "NOK"
+#                 msg["desc"] = desc
 #                 return msg
 #         elif nb <= max:
 #             max = nb
 #         else:
 #             desc = "Tu n'as pas assez de :gem:`gems`"
-#             msg.append("NOK")
-#             msg.append(desc)
+#             msg["type"] = "NOK"
+#             msg["desc"] = desc
 #             return msg
 #     else:
 #         if max == 0:
 #             desc = "Tu n'as pas assez de :gem:`gems`"
-#             msg.append("NOK")
-#             msg.append(desc)
+#             msg["type"] = "NOK"
+#             msg["desc"] = desc
 #             return msg
 #     sql.addGems(PlayerID, -(max*n))
 #     sql.addSpinelles(PlayerID, max)
@@ -1459,6 +1426,6 @@ def godparent(param):
 #         desc = "Convertion terminée! Ton compte a été débité de {nb} <:spinelle:{idmoji}>`spinelles`".format(nb=-max, idmoji="{idmoji[spinelle]}")
 #     else:
 #         desc = "Aucune convertion effectuée"
-#     msg.append("OK")
-#     msg.append(desc)
+#     msg["type"] = "OK"
+#     msg["desc"] = desc
 #     return msg

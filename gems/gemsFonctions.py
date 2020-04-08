@@ -207,6 +207,10 @@ def loadItem(F=False):
 
     global objetItem
     objetItem = [
+        Item("backpack", m*itemBourse("backpack", "vente"), m*itemBourse("backpack", "achat"), -200, "special"),
+        Item("hyperpack", m*itemBourse("hyperpack", "vente"), m*itemBourse("hyperpack", "achat"), -2000, "special"),
+        Item("fishhook", m*itemBourse("fishhook", "vente"), m*itemBourse("fishhook", "achat"), 1, "special"),
+
         Item("cobblestone", m*itemBourse("cobblestone", "vente"), m*itemBourse("cobblestone", "achat"), 4, "minerai"),
         Item("iron", m*itemBourse("iron", "vente"), m*itemBourse("iron", "achat"), 10, "minerai"),
         Item("gold", m*itemBourse("gold", "vente"), m*itemBourse("gold", "achat"), 20, "minerai"),
@@ -236,11 +240,7 @@ def loadItem(F=False):
         Item("fries", m*itemBourse("fries", "vente"), m*itemBourse("fries", "achat"), 30, "consommable"),
         Item("cookie", m*itemBourse("cookie", "vente"), m*itemBourse("cookie", "achat"), 1, "emoji"),
         Item("candy", m*itemBourse("candy", "vente"), m*itemBourse("candy", "achat"), 1, "emoji"),
-        Item("lollipop", m*itemBourse("lollipop", "vente"), m*itemBourse("lollipop", "achat"), 2, "emoji"),
-
-        Item("backpack", m*itemBourse("backpack", "vente"), m*itemBourse("backpack", "achat"), -200, "special"),
-        Item("hyperpack", m*itemBourse("hyperpack", "vente"), m*itemBourse("hyperpack", "achat"), -2000, "special"),
-        Item("fishhook", m*itemBourse("fishhook", "vente"), m*itemBourse("fishhook", "achat"), 1, "special")
+        Item("lollipop", m*itemBourse("lollipop", "vente"), m*itemBourse("lollipop", "achat"), 2, "emoji")
     ]
 
     if not (jour.month == 10 and jour.day >= 22) or (jour.month == 11 and jour.day <= 10):

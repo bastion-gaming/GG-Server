@@ -10,7 +10,8 @@ def slots(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
     imise = param["imise"]
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
 
     gems = sql.valueAtNumber(PlayerID, "gems", "gems")
     niveau = sql.valueAtNumber(PlayerID, "level", "gems")
@@ -31,9 +32,8 @@ def slots(param):
                 sql.addGems(PlayerID, -100)
             else :
                 sql.addGems(PlayerID, -gems)
-            msg.append("anticheat")
-            msg.append(lang)
-            msg.append(desc)
+            msg["type"] = "anticheat"
+            msg["desc"] = desc
             return msg
         elif int(imise) < 10:
             mise = 10
@@ -243,12 +243,11 @@ def slots(param):
         sql.add(PlayerID, ["slots", "slots"], 1, "statgems")
         if gain >= 0:
             lvl.addxp(PlayerID, gain + 1, "gems")
-        msg.append("OK")
+        msg["type"] = "OK"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
-        msg.append("couldown")
-    msg.append(lang)
-    msg.append(desc)
+        msg["type"] = "couldown"
+    msg["desc"] = desc
     return msg
 
 
@@ -260,15 +259,17 @@ def roulette(param):
         mise = int(param["mise"])
     except:
         mise = 0
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
     VM = []
     desc = dict()
 
     if mise <= 0:
-        msg.append("NOK")
+        msg["type"] = "NOK"
         desc = "Mise incorrecte!"
 
     elif sql.spam(PlayerID, GF.couldown_8s, "roulette", "gems"):
+        sql.updateComTime(PlayerID, "roulette", "gems")
         # Prix du ticket
         sql.addGems(PlayerID, -mise)
         # Vérification que la valeur renseigner par le joueur est présente sur le plateau
@@ -327,48 +328,46 @@ def roulette(param):
             desc["VM"] = VM
             desc["VB"] = VB
 
-            msg.append("OK")
-            msg.append(lang)
-            msg.append(desc)
+            msg["type"] = "OK"
+            msg["desc"] = desc
             return msg
         else:
-            msg.append("NOK")
+            msg["type"] = "NOK"
             desc = "Valeur incorrecte!"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
-        msg.append("couldown")
-    msg.append(lang)
-    msg.append(desc)
+        msg["type"] = "couldown"
+    msg["desc"] = desc
     return msg
 
 
 def marketbet(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
     desc = ""
 
     if sql.spam(PlayerID, GF.couldown_8s, "marketbet", "gems"):
-        msg.append("OK")
+        msg["type"] = "OK"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
-        msg.append("couldown")
-    msg.append(lang)
-    msg.append(desc)
+        msg["type"] = "couldown"
+    msg["desc"] = desc
     return msg
 
 
 def weatherbet(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    msg = []
+    msg = dict()
+    msg["lang"] = lang
     desc = ""
 
     if sql.spam(PlayerID, GF.couldown_8s, "weatherbet", "gems"):
-        msg.append("OK")
+        msg["type"] = "OK"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
-        msg.append("couldown")
-    msg.append(lang)
-    msg.append(desc)
+        msg["type"] = "couldown"
+    msg["desc"] = desc
     return msg

@@ -416,7 +416,8 @@ def stats(param):
 def success(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    msg = []
+    msg = {}
+    msg["lang"] = lang
     result = []
     dict = {}
     i = -1
@@ -489,7 +490,6 @@ def success(param):
                     desc = "{0} | **_{1}_**".format(lang_P.forge_msg(lang, "success desc", arg, False, x.desc), lang_P.forge_msg(lang, "success", None, False, 2))
                     result.append(lang_P.forge_msg(lang, "success titre", [GF.ChiffreRomain(x.sid)], False, x.titre))
                     result.append(desc)
-    msg.append("OK")
-    msg.append(lang)
-    msg.append(result)
+    msg["type"] = "OK"
+    msg["result"] = result
     return msg
