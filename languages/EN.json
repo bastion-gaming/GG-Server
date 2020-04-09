@@ -14,7 +14,9 @@
       "Your inventory is full.",
       "The order is badly formulated.",
       "Coming Soon",
-      "You already have an account on this platform. "
+      "You already have an account on this platform.",
+      "Wrong bet!",
+      "Wrong value!"
     ],
   "newPlayer":
     [
@@ -73,7 +75,7 @@
       "\nCongratulations! You have the soul of a bettor, we're offering you the prize  :trophy:`Gamble Jackpot` ! ",
       "\nCongratulations! You have the soul of a bettor, we're offering you the prize  :trophy::trophy:`Super Gamble Jackpot` ! ",
       "\nCongratulations! You have the soul of a bettor, we're offering you the prize  :trophy::trophy::trophy:`Hyper Gamble Jackpot`. ! ",
-      "You don't have enough :gem: `gems` en banque",
+      "You don't have enough :gem: `gems` in the bank.",
       "Incorrect value"
     ],
     "stealing":
@@ -358,8 +360,8 @@
       ],
     "roulette":
       [
-        "Nothing",
-        "Victory",
-        "Defeat"
+        "**Failure**\nYou lose your bet.\n",
+        "**Victory**\nYou win your bet + {0}%\n",
+        "**Defeat\n**You lose your bet + {0}%\n"
       ]
 }

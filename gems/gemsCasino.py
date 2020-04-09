@@ -114,7 +114,10 @@ def slots(param):
     else:
         mise = 10
 
-    if sql.spam(PlayerID, GF.couldown_8s, "slots", "gems"):
+    if gems < mise:
+        desc = lang_P.forge_msg(lang, "gamble", None, False, 4)
+        msg["type"] = "NOK"
+    elif sql.spam(PlayerID, GF.couldown_8s, "slots", "gems"):
         result = []
         desc = lang_P.forge_msg(lang, "slots", [mise], False, 0)
         val = 0-mise
@@ -153,8 +156,8 @@ def slots(param):
             "grapes",
             "cookie",
             "beer",
-            "backpack",
-            "ruby"
+            "gem_backpack",
+            "gem_ruby"
         ]
 
         # Creation de la machine à sous
@@ -166,19 +169,23 @@ def slots(param):
                 desc += " :arrow_backward:\n"
             nbrand = r.randint(0, LSI-1)
             result.append(slotsItem[nbrand])
-            if nbrand < LSI-2:
-                desc += ":{}:".format(result[i])
+            # if nbrand < LSI-2:
+            #     desc += ":{}:".format(result[i])
+            # else:
+            #     desc += "<:gem_{}:{}>".format(result[i], "{idmoji[" + result[i] + "]}")
+            if "gem_" in result[i]:
+                desc += "<:gem_{}:{}>".format(result[i], "{idmoji[" + result[i] + "]}")
             else:
-                desc += "<:gem_{}:{}>".format(result[i], "{idmoji[gem_" + result[i] + "]}")
+                desc += ":{}:".format(result[i])
         desc += "\n"
 
         # ===================================================================
         # Attribution des prix
         # ===================================================================
         # Ruby (hyper rare)
-        if result[3] == "ruby" or result[4] == "ruby" or result[5] == "ruby":
+        if result[3] == "gem_ruby" or result[4] == "gem_ruby" or result[5] == "gem_ruby":
             sql.add(PlayerID, "ruby", 1, "inventory")
-            sql.add(PlayerID, ["slots", "slots | Ruby"], 1, "statgems")
+            sql.add(PlayerID, ["slots", "slots | ruby"], 1, "statgems")
             gain = 16
             desc += lang_P.forge_msg(lang, "slots", ["{idmoji[gem_ruby]}"], False, 1)
             GF.lootbox(PlayerID, lang)
@@ -273,7 +280,7 @@ def slots(param):
                 desc += lang_P.forge_msg(lang, "slots", None, False, 5)
         # ===================================================================
         # Backpack (hyper rare)
-        if result[3] == "backpack" or result[4] == "backpack" or result[5] == "backpack":
+        if result[3] == "gem_backpack" or result[4] == "gem_backpack" or result[5] == "gem_backpack":
             sql.add(PlayerID, "backpack", 1, "inventory")
             sql.add(PlayerID, ["slots", "slots | Backpack"], 1, "statgems")
             p = 0
@@ -324,7 +331,10 @@ def slots(param):
 def roulette(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    myV = int(param["valeur"])
+    try:
+        myV = int(param["valeur"])
+    except:
+        myV = -1
     try:
         mise = int(param["mise"])
     except:
@@ -333,10 +343,15 @@ def roulette(param):
     msg["lang"] = lang
     VM = []
     desc = dict()
+    gems = sql.valueAtNumber(PlayerID, "gems", "gems")
 
     if mise <= 0:
         msg["type"] = "NOK"
-        desc = "Mise incorrecte!"
+        desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 7)
+
+    elif gems < mise:
+        desc = lang_P.forge_msg(lang, "gamble", None, False, 4)
+        msg["type"] = "NOK"
 
     elif sql.spam(PlayerID, GF.couldown_8s, "roulette", "gems"):
         sql.updateComTime(PlayerID, "roulette", "gems")
@@ -348,7 +363,7 @@ def roulette(param):
             i = 0
             while i < 4:
                 check = True
-                V = r.randint(0, 100)
+                V = r.randint(0, 99)
                 for one in VM:
                     M = one - 9
                     P = one + 9
@@ -363,7 +378,7 @@ def roulette(param):
             i = 0
             while i < 1:
                 check = True
-                VB = r.randint(0, 100)
+                VB = r.randint(0, 99)
                 for one in VM:
                     M = one - 10
                     P = one + 10
@@ -374,26 +389,28 @@ def roulette(param):
             print("------\n{0}".format(VB))
             V = myV - VB
             if V >= -5 and V <= 5:
-                desc["desc"] = lang_P.forge_msg(lang, "roulette", None, False, 1)
                 if V < 0:
                     V = -V
+                pourcentage = (10-V)/10
+                desc["desc"] = lang_P.forge_msg(lang, "roulette", [int(pourcentage*100)], False, 1)
                 if myV == VB:
                     desc["gain"] = 2*mise
                 else:
-                    desc["gain"] = int(mise + ((10-V)/10)*mise)
+                    desc["gain"] = int(mise + pourcentage*mise)
             else:
                 desc["desc"] = lang_P.forge_msg(lang, "roulette", None, False, 0)
                 desc["gain"] = 0
                 for one in VM:
                     V = myV - one
                     if V >= -5 and V <= 5:
-                        desc["desc"] = lang_P.forge_msg(lang, "roulette", None, False, 2)
-                        if V > 0:
+                        if V < 0:
                             V = -V
+                        pourcentage = (10-V)/10
+                        desc["desc"] = lang_P.forge_msg(lang, "roulette", [int(pourcentage*100)], False, 2)
                         if myV == one:
                             desc["gain"] = -mise
                         else:
-                            desc["gain"] = int(-((10+V)/10)*mise)
+                            desc["gain"] = int(-(pourcentage*mise))
             sql.addGems(PlayerID, desc["gain"])
             desc["VM"] = VM
             desc["VB"] = VB
@@ -403,7 +420,7 @@ def roulette(param):
             return msg
         else:
             msg["type"] = "NOK"
-            desc = "Valeur incorrecte!"
+            desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 8)
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
         msg["type"] = "couldown"
@@ -414,11 +431,17 @@ def roulette(param):
 def marketbet(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
+    mise = param["mise"]
     msg = dict()
     msg["lang"] = lang
     desc = ""
+    gems = sql.valueAtNumber(PlayerID, "gems", "gems")
 
-    if sql.spam(PlayerID, GF.couldown_8s, "marketbet", "gems"):
+    if gems < mise:
+        desc = lang_P.forge_msg(lang, "gamble", None, False, 4)
+        msg["type"] = "NOK"
+
+    elif sql.spam(PlayerID, GF.couldown_8s, "marketbet", "gems"):
         msg["type"] = "OK"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
@@ -430,11 +453,17 @@ def marketbet(param):
 def weatherbet(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
+    mise = param["mise"]
     msg = dict()
     msg["lang"] = lang
     desc = ""
+    gems = sql.valueAtNumber(PlayerID, "gems", "gems")
 
-    if sql.spam(PlayerID, GF.couldown_8s, "weatherbet", "gems"):
+    if gems < mise:
+        desc = lang_P.forge_msg(lang, "gamble", None, False, 4)
+        msg["type"] = "NOK"
+
+    elif sql.spam(PlayerID, GF.couldown_8s, "weatherbet", "gems"):
         msg["type"] = "OK"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])

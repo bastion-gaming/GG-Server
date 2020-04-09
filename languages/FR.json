@@ -15,7 +15,9 @@
       "La commande est mal formulée.",
       "Bientôt disponible",
       "Tu poccède deja un compte sur cette plateforme.",
-      "Aucun compte utilisateur n'a été trouvé."
+      "Aucun compte utilisateur n'a été trouvé.",
+      "Mise incorrecte!",
+      "Valeur incorrecte!"
     ],
   "newPlayer":
     [
@@ -74,7 +76,7 @@
       "\nFélicitation! Tu as l'ame d'un parieur, nous t'offrons le prix :trophy:`Gamble Jackpot`.",
       "\nFélicitation! Tu as l'ame d'un parieur, nous t'offrons le prix :trophy::trophy:`Super Gamble Jackpot`.",
       "\nFélicitation! Tu as l'ame d'un parieur, nous t'offrons le prix :trophy::trophy::trophy:`Hyper Gamble Jackpot`.",
-      "Tu n'as pas assez de :gem:`gems` en banque",
+      "Tu n'as pas assez de :gem:`gems` en banque.",
       "La valeur rentré est incorrect"
     ],
   "stealing":
@@ -359,8 +361,8 @@
     ],
   "roulette":
     [
-      "Rien",
-      "Victoire",
-      "Défaite"
+      "**Échec**\nTu perd ta mise.\n",
+      "**Victoire**\nTu gagne ta mise + {0}%\n",
+      "**Défaite\n**Tu perd ta mise + {0}%\n"
     ]
 }
