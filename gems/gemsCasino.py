@@ -59,7 +59,10 @@ def gamble(param):
                 desc = lang_P.forge_msg(lang, "gamble", [valeur], False, 0)
 
             sql.updateComTime(PlayerID, "gamble", "gems")
-            lvl.addxp(PlayerID, 1, "gems")
+            if valeur >= 10000:
+                lvl.addxp(PlayerID, 1+(int(valeur//10000)), "gems")
+            else:
+                lvl.addxp(PlayerID, 1, "gems")
             sql.add(PlayerID, ["gamble", "gamble"], 1, "statgems")
             msg["type"] = "OK"
         else:
@@ -84,15 +87,15 @@ def slots(param):
     msg["lang"] = lang
 
     gems = sql.valueAtNumber(PlayerID, "gems", "gems")
-    niveau = sql.valueAtNumber(PlayerID, "level", "gems")
+    niveau = sql.valueAtNumber(PlayerID, "lvl", "gems")
     if niveau <= 5:
-        misemax = 50
+        msg["misemax"] = 50
     elif niveau <= 10:
-        misemax = 150
+        msg["misemax"] = 150
     elif niveau <= 15:
-        misemax = 360
+        msg["misemax"] = 360
     else:
-        misemax = 500
+        msg["misemax"] = 500
     if imise != "None":
         if int(imise) < 0:
             desc = lang_P.forge_msg(lang, "DiscordCop Amende")
@@ -107,8 +110,8 @@ def slots(param):
             return msg
         elif int(imise) < 10:
             mise = 10
-        elif int(imise) > misemax:
-            mise = misemax
+        elif int(imise) > msg["misemax"]:
+            mise = msg["misemax"]
         else:
             mise = int(imise)
     else:
@@ -119,35 +122,23 @@ def slots(param):
         msg["type"] = "NOK"
     elif sql.spam(PlayerID, GF.couldown_8s, "slots", "gems"):
         result = []
-        desc = lang_P.forge_msg(lang, "slots", [mise], False, 0)
+        msg["result"] = []
+        msg["mise"] = mise
         val = 0-mise
         slotsItem = [
-            "zero",
-            "zero",
-            "one",
-            "one",
-            "two",
-            "two",
-            "three",
-            "three",
-            "four",
-            "four",
-            "five",
-            "five",
-            "six",
-            "six",
-            "seven",
-            "seven",
-            "eight",
-            "eight",
-            "nine",
-            "nine",
+            "zero", "zero",
+            "one", "one",
+            "two", "two",
+            "three", "three",
+            "four", "four",
+            "five", "five",
+            "six", "six",
+            "seven", "seven",
+            "eight", "eight",
+            "nine", "nine",
             "gem",
-            "ticket",
-            "ticket",
-            "ticket",
-            "boom",
-            "boom",
+            "ticket", "ticket", "ticket",
+            "boom", "boom",
             "apple",
             "green_apple",
             "cherries",
@@ -163,21 +154,13 @@ def slots(param):
         # Creation de la machine à sous
         LSI = len(slotsItem)
         for i in range(0, 9):
-            if i == 3:
-                desc += "\n"
-            elif i == 6:
-                desc += " :arrow_backward:\n"
             nbrand = r.randint(0, LSI-1)
-            result.append(slotsItem[nbrand])
-            # if nbrand < LSI-2:
-            #     desc += ":{}:".format(result[i])
-            # else:
-            #     desc += "<:gem_{}:{}>".format(result[i], "{idmoji[" + result[i] + "]}")
-            if "gem_" in result[i]:
-                desc += "<:gem_{}:{}>".format(result[i], "{idmoji[" + result[i] + "]}")
+            if "gem_" in slotsItem[nbrand]:
+                msg["result"].append("<:{0}:{1}>".format(slotsItem[nbrand], "{idmoji[" + slotsItem[nbrand] + "]}"))
             else:
-                desc += ":{}:".format(result[i])
-        desc += "\n"
+                msg["result"].append(":{0}:".format(slotsItem[nbrand]))
+            result.append(slotsItem[nbrand])
+        desc = ""
 
         # ===================================================================
         # Attribution des prix
@@ -319,7 +302,7 @@ def slots(param):
         sql.updateComTime(PlayerID, "slots", "gems")
         sql.add(PlayerID, ["slots", "slots"], 1, "statgems")
         if gain >= 0:
-            lvl.addxp(PlayerID, gain + 1, "gems")
+            lvl.addxp(PlayerID, 1+int(gain//50), "gems")
         msg["type"] = "OK"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_8s)])
@@ -412,6 +395,10 @@ def roulette(param):
                         else:
                             desc["gain"] = int(-(pourcentage*mise))
             sql.addGems(PlayerID, desc["gain"])
+            if desc["gain"] > 0:
+                lvl.addxp(PlayerID, 1+int(desc["gain"]//50), "gems")
+            else:
+                lvl.addxp(PlayerID, 1, "gems")
             desc["VM"] = VM
             desc["VB"] = VB
 
