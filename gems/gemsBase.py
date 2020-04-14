@@ -107,7 +107,7 @@ def bal(param):
     msg = dict()
     msg["lang"] = lang
 
-    if sql.spam(PlayerID, GF.couldown_4s, "bal", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "bal", "gems"):
         msg["type"] = "OK"
         solde = sql.valueAtNumber(PlayerID, "gems", "gems")
         desc = "{} :gem:`gems`\n".format(solde)
@@ -120,7 +120,7 @@ def bal(param):
         print("Gems >> Balance de {} affichée".format(PlayerID))
     else:
         msg["type"] = "couldown"
-        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
     return msg
 
 
@@ -133,7 +133,7 @@ def baltop(param):
     msg = dict()
     msg["lang"] = lang
     baltop = ""
-    if sql.spam(PlayerID, GF.couldown_4s, "baltop", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "baltop", "gems"):
         sql.updateComTime(PlayerID, "baltop", "gems")
         if filtre == "gems" or filtre == "gem":# or filtre == "spinelles" or filtre == "spinelle":
             UserList = []
@@ -204,7 +204,7 @@ def baltop(param):
             msg["desc"] = lang_P.forge_msg(lang, "baltop")
     else:
         msg["type"] = "couldown"
-        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
     return msg
 
 
@@ -217,7 +217,7 @@ def buy(param):
     msg = dict()
     msg["lang"] = lang
 
-    if sql.spam(PlayerID, GF.couldown_4s, "buy", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "buy", "gems"):
         if int(nb) < 0:
             sql.addGems(PlayerID, -100)
             lvl.addxp(PlayerID, -10, "gems")
@@ -343,7 +343,7 @@ def buy(param):
             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
             msg["type"] = "NOK"
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
         msg["type"] = "couldown"
     msg["desc"] = desc
     return msg
@@ -358,7 +358,7 @@ def sell(param):
     msg = dict()
     msg["lang"] = lang
 
-    if sql.spam(PlayerID, GF.couldown_4s, "sell", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "sell", "gems"):
         nbItem = sql.valueAtNumber(PlayerID, item, "inventory")
         if int(nb) == -1:
             nb = nbItem
@@ -424,7 +424,7 @@ def sell(param):
         sql.add(PlayerID, ["sell", "sell"], 1, "statgems")
         msg["type"] = "OK"
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
         msg["type"] = "couldown"
     msg["desc"] = desc
     return msg
@@ -437,7 +437,7 @@ def inv(param):
     PlayerID = param["PlayerID"]
     msg = dict()
 
-    if sql.spam(PlayerID, GF.couldown_4s, "inv", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "inv", "gems"):
         if fct == "None" or fct == "principale" or fct == "main":
             # sql.add(PlayerID, ["inv", "inv"], 1, "statgems")
             invD = dict()
@@ -521,7 +521,7 @@ def inv(param):
             msg["lang"] = lang
             msg["desc"] = desc
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
         msg["type"] = "couldown"
         msg["lang"] = lang
         msg["desc"] = desc
@@ -536,13 +536,13 @@ def market(param):
     msg = dict()
     msg["lang"] = lang
 
-    if sql.spam(PlayerID, GF.couldown_4s, "market", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "market", "gems"):
         d_market = "{0}\n\n".format(lang_P.forge_msg(lang, "market", None, False, 2))
-        if sql.spam(GF.PlayerID_GetGems, GF.couldown_8h, "bourse", "gems"):
+        if sql.spam(GF.PlayerID_GetGems, GF.couldown("8h"), "bourse", "gems"):
             GF.loadItem()
         ComTime = sql.valueAtNumber(GF.PlayerID_GetGems, "bourse", "gems_com_time")
         time = float(ComTime)
-        time = time - (t.time()-GF.couldown_8h)
+        time = time - (t.time()-GF.couldown("8h"))
         timeH = int(time / 60 / 60)
         time = time - timeH * 3600
         timeM = int(time / 60)
@@ -704,7 +704,7 @@ def market(param):
                     msg["lootbox info"] += "\n{2}`{0} ▶ {1}`:gem:`gems`".format(c.min, c.max, prop_gain)
         sql.updateComTime(PlayerID, "market", "gems")
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
         msg["type"] = "couldown"
         msg["desc"] = desc
     return msg
@@ -721,7 +721,7 @@ def pay(param):
     msg = dict()
     msg["lang"] = lang
 
-    if sql.spam(PlayerID, GF.couldown_4s, "pay", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "pay", "gems"):
         try:
             if int(gain) > 0:
                 gain = int(gain)
@@ -760,7 +760,7 @@ def pay(param):
             msg["type"] = "NOK"
             pass
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
         msg["type"] = "couldown"
     msg["desc"] = desc
     return msg
@@ -784,7 +784,7 @@ def give(param):
         msg["desc"] = lang_P.forge_msg(lang, "give", None, False, 0)
         return msg
         return False
-    if sql.spam(PlayerID, GF.couldown_4s, "give", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "give", "gems"):
         try:
             if nb == None:
                 nb = 1
@@ -869,7 +869,7 @@ def give(param):
             msg["type"] = "NOK"
             pass
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
         msg["type"] = "couldown"
     msg["desc"] = desc
     return msg
@@ -884,7 +884,7 @@ def forge(param):
     msg = dict()
     msg["lang"] = lang
 
-    if sql.spam(PlayerID, GF.couldown_4s, "forge", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "forge", "gems"):
         if GF.testInvTaille(PlayerID):
             # -------------------------------------
             # Affichage des recettes disponible
@@ -1010,7 +1010,7 @@ def forge(param):
             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
             msg["type"] = "NOK"
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
         msg["type"] = "couldown"
     msg["desc"] = desc
     return msg

@@ -83,7 +83,7 @@ def itemBourse(item, type):
     PrixMini = 2
 
     # Verification pour l'actualisation de la bourse
-    if sql.spam(PlayerID_GetGems, couldown_8h, "bourse", "gems"):
+    if sql.spam(PlayerID_GetGems, couldown("8h"), "bourse", "gems"):
         # Gestion des exceptions
         if item in GI.exception:
             return pnow
@@ -292,7 +292,7 @@ def loadItem(F=False):
         Box("gift_heart", "Cadeau de la Saint Valentin", 0, 10000, 50000, "", 2)
     ]
 
-    if sql.spam(PlayerID_GetGems, couldown_8h, "bourse", "gems"):
+    if sql.spam(PlayerID_GetGems, couldown("8h"), "bourse", "gems"):
         sql.updateComTime(PlayerID_GetGems, "bourse", "gems")
         for x in objetItem:
             GS.csv_add(x.nom)
@@ -314,45 +314,42 @@ objetRecette = [
 ]
 
 
-# ========== Couldown pour la fonction antispam ==========
-couldown_72h = 86400*3
-couldown_48h = 86400*2
-couldown_36h = 86400 + 86400/2
-couldown_24h = 86400
-couldown_23h = 3600*23
-couldown_22h = 3600*22
-couldown_21h = 3600*21
-couldown_20h = 3600*20
-couldown_19h = 3600*19
-couldown_18h = 3600*18
-couldown_17h = 3600*17
-couldown_16h = 3600*16
-couldown_15h = 3600*15
-couldown_14h = 3600*14
-couldown_13h = 3600*13
-couldown_12h = 3600*12
-couldown_11h = 3600*11
-couldown_10h = 3600*10
-couldown_9h = 3600*9
-couldown_8h = 3600*8
-couldown_7h = 3600*7
-couldown_6h = 3600*6
-couldown_5h = 3600*5
-couldown_4h = 3600*4
-couldown_3h = 3600*3
-couldown_2h = 3600*2
-couldown_1h = 3600
-couldown_30m = 3600/2
-couldown_20m = 3600/3
-couldown_15m = 3600/4
-couldown_10m = 3600/6
-couldown_5m = 3600/12
-couldown_30s = 30
-couldown_15s = 15
-couldown_10s = 10
-couldown_8s = 8
-couldown_6s = 6
-couldown_4s = 4
+def couldown(couldown):
+    d = dict()
+    d["couldown"] = couldown.lower()
+    # ======= Jours =======
+    if "j" in d["couldown"]:
+        couldown_split(d, "j")
+        d["j"] = d["j"]*3600*24
+    else:
+        d["j"] = 0
+    # ======= Heures =======
+    if "h" in d["couldown"]:
+        couldown_split(d, "h")
+        d["h"] = d["h"]*3600
+    else:
+        d["h"] = 0
+    # ======= Minutes =======
+    if "m" in d["couldown"]:
+        couldown_split(d, "m")
+        d["m"] = d["m"]*60
+    else:
+        d["m"] = 0
+    # ======= Secondes =======
+    if "s" in d["couldown"]:
+        couldown_split(d, "s")
+    else:
+        d["s"] = 0
+    # ======= Résultat =======
+    n = d["j"] + d["h"] + d["m"] + d["s"]
+    return n
+
+
+def couldown_split(dict, s):
+    temp = dict["couldown"].split(s)
+    dict[s] = temp[0]
+    dict["couldown"] = temp[1]
+    return dict
 
 
 def recette(lang):
@@ -595,13 +592,13 @@ def param_prod(item):
             res["nbgain"] = r.randint(6, 12)
             res["gain"] = "grapes"
 
-        res["couldown"] = couldown_6h
+        res["couldown"] = couldown("6h")
         res["couldownMsg"] = ":clock6:`6h`"
     elif item == "pumpkinH":
         res["nbitem"] = 1
         res["gain"] = "pumpkin"
         res["nbgain"] = r.randint(2, 5)
-        res["couldown"] = couldown_4h
+        res["couldown"] = couldown("4h")
         res["couldownMsg"] = ":clock4:`4h`"
 
     # Items utilisé dans la production de la cave (ferment)
@@ -609,13 +606,13 @@ def param_prod(item):
         res["nbitem"] = 10
         res["gain"] = "wine_glass"
         res["nbgain"] = r.randint(1, 4)
-        res["couldown"] = couldown_3h
+        res["couldown"] = couldown("3h")
         res["couldownMsg"] = ":clock3:`3h`"
     elif item == "wheat":
         res["nbitem"] = 8
         res["gain"] = "beer"
         res["nbgain"] = r.randint(2, 6)
-        res["couldown"] = couldown_8h
+        res["couldown"] = couldown("8h")
         res["couldownMsg"] = ":clock8:`8h`"
 
     # Items utilisé dans la production de la cuisine (cooking)
@@ -623,25 +620,25 @@ def param_prod(item):
         res["nbitem"] = 6
         res["gain"] = "fries"
         res["nbgain"] = r.randint(1, 5)
-        res["couldown"] = couldown_3h
+        res["couldown"] = couldown("3h")
         res["couldownMsg"] = ":clock3:`3h`"
     elif item == "cacao":
         res["nbitem"] = 4
         res["gain"] = "chocolate"
         res["nbgain"] = r.randint(1, 5)
-        res["couldown"] = couldown_2h
+        res["couldown"] = couldown("2h")
         res["couldownMsg"] = ":clock2:`2h`"
     elif item == "chocolate":
         res["nbitem"] = 8
         res["gain"] = "cupcake"
         res["nbgain"] = r.randint(1, 4)
-        res["couldown"] = couldown_4h
+        res["couldown"] = couldown("4h")
         res["couldownMsg"] = ":clock4:`4h`"
     elif item == "pumpkin":
         res["nbitem"] = 12
         res["gain"] = "pumpkinpie"
         res["nbgain"] = r.randint(1, 4)
-        res["couldown"] = couldown_2h
+        res["couldown"] = couldown("2h")
         res["couldownMsg"] = ":clock2:`2h`"
 
     # Autre

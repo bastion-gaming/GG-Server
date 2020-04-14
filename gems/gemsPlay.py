@@ -98,7 +98,7 @@ def bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform):
     # Affiche le menu principal de la banque
     # !bank bal <nom d'un joueur> permet de visualiser l'état de la banque de ce joueur
     # =======================================================================
-    if sql.spam(PlayerID, GF.couldown_4s, "bank_bal", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "bank_bal", "gems"):
         msg["type"] = "bal"
         if ARG2 != "None":
             ID = sql.get_SuperID(sql.nom_ID(ARG2), platform)
@@ -121,7 +121,7 @@ def bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform):
         msg["help"] = desc
         sql.updateComTime(PlayerID, "bank_bal", "gems")
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
         msg["type"] = "couldown"
         msg["desc"] = desc
     return msg
@@ -137,7 +137,7 @@ def bank_add(PlayerID, lang, ARG, ARG2, Taille):
     # un nombre positif ajoute des Gems
     # un nombre négatif enlève des Gems
     # =======================================================================
-    if sql.spam(PlayerID, GF.couldown_4s, "bank_add", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "bank_add", "gems"):
         if ARG2 != "None":
             ARG2 = int(ARG2)
             gems = sql.valueAtNumber(PlayerID, "gems", "gems")
@@ -169,7 +169,7 @@ def bank_add(PlayerID, lang, ARG, ARG2, Taille):
             desc = lang_P.forge_msg(lang, "bank", None, False, 9)
             msg["type"] = "NOK"
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
         msg["type"] = "couldown"
     msg["desc"] = desc
     return msg
@@ -184,7 +184,7 @@ def bank_saving(PlayerID, lang, ARG, ARG2, Taille):
     # Fonction d'épargne
     # L'intéret est de 20% avec un bonus de 1% pour chanque bank_upgrade possédée
     # =======================================================================
-    if sql.spam(PlayerID, GF.couldown_4h, "bank_saving", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4h"), "bank_saving", "gems"):
         solde = sql.valueAtNumber(PlayerID, "Solde", "bank")
         if solde != 0:
             soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
@@ -224,7 +224,7 @@ def bank_saving(PlayerID, lang, ARG, ARG2, Taille):
             desc = lang_P.forge_msg(lang, "bank", [sql.valueAtNumber(PlayerID, "Solde", "bank")], False, 13)
     else:
         ComTime = sql.valueAtNumber(PlayerID, "bank_saving", "gems_com_time")
-        time = float(ComTime) - (t.time()-GF.couldown_4h)
+        time = float(ComTime) - (t.time()-GF.couldown("4h"))
         timeH = int(time / 60 / 60)
         time = time - timeH * 3600
         timeM = int(time / 60)
@@ -246,7 +246,7 @@ def stealing(param):
     if sql.valueAtNumber(GF.PlayerID_GetGems, "DailyMult", "daily") == 1:
         desc = ""
     else:
-        if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems") and name != "None":
+        if sql.spam(PlayerID, GF.couldown("14h"), "stealing", "gems") and name != "None":
             ID_Vol = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(name), param["name_pl"]))
             # Calcul du pourcentage
             if ID_Vol == GF.PlayerID_GetGems or ID_Vol == GF.PlayerID_Babot:
@@ -289,13 +289,13 @@ def stealing(param):
                 desc = lang_P.forge_msg(lang, "stealing", None, False, 3)
         else:
             ComTime = sql.valueAtNumber(PlayerID, "stealing", "gems_com_time")
-            time = float(ComTime) - (t.time()-GF.couldown_14h)
+            time = float(ComTime) - (t.time()-GF.couldown("14h"))
             timeH = int(time / 60 / 60)
             time = time - timeH * 3600
             timeM = int(time / 60)
             timeS = int(time - timeM * 60)
             desc = lang_P.forge_msg(lang, "stealing", [timeH, timeM, timeS], False, 0)
-            if sql.spam(PlayerID, GF.couldown_14h, "stealing", "gems"):
+            if sql.spam(PlayerID, GF.couldown("14h"), "stealing", "gems"):
                 desc = lang_P.forge_msg(lang, "stealing", None, False, 4)
     msg["type"] = "OK"
     msg["desc"] = desc
@@ -309,7 +309,7 @@ def crime(param):
 
     msg = dict()
     msg["lang"] = lang
-    if sql.spam(PlayerID, GF.couldown_6s, "crime", "gems"):
+    if sql.spam(PlayerID, GF.couldown("6s"), "crime", "gems"):
         # si 10 sec c'est écoulé depuis alors on peut en  faire une nouvelle
         if r.randint(0, 9) == 0:
             sql.add(PlayerID, ["divers", "DiscordCop Arrestation"], 1, "statgems")
@@ -345,7 +345,7 @@ def crime(param):
         sql.add(PlayerID, ["crime", "crime"], 1, "statgems")
         msg["type"] = "OK"
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("6s"))])
         msg["type"] = "couldown"
     msg["desc"] = desc
     return msg
@@ -360,7 +360,7 @@ def mine(param):
     nbMax = 0
     desc = ""
 
-    if sql.spam(PlayerID, GF.couldown_6s, "mine", "gems"):
+    if sql.spam(PlayerID, GF.couldown("6s"), "mine", "gems"):
         if GF.testInvTaille(PlayerID):
             # =====================================
             # Détection du meilleur outil
@@ -451,7 +451,7 @@ def mine(param):
             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
             msg["type"] = "NOK"
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("6s"))])
         msg["type"] = "couldown"
     msg["desc"] = desc
     return msg
@@ -466,7 +466,7 @@ def dig(param):
     nbMax = 0
     desc = ""
 
-    if sql.spam(PlayerID, GF.couldown_6s, "dig", "gems"):
+    if sql.spam(PlayerID, GF.couldown("6s"), "dig", "gems"):
         if GF.testInvTaille(PlayerID):
             # =====================================
             # Détection du meilleur outil
@@ -541,7 +541,7 @@ def dig(param):
             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
             msg["type"] = "NOK"
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("6s"))])
         msg["type"] = "couldown"
     msg["desc"] = desc
     return msg
@@ -556,7 +556,7 @@ def fish(param):
     nbMax = 0
     desc = ""
 
-    if sql.spam(PlayerID, GF.couldown_6s, "fish", "gems"):
+    if sql.spam(PlayerID, GF.couldown("6s"), "fish", "gems"):
         if GF.testInvTaille(PlayerID):
             # =====================================
             # Détection du meilleur outil
@@ -640,7 +640,7 @@ def fish(param):
             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 2)
             msg["type"] = "NOK"
     else:
-        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_6s)])
+        desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("6s"))])
         msg["type"] = "couldown"
     msg["desc"] = desc
     return msg
@@ -828,7 +828,7 @@ def hothouse(param):
     i = 1
     max = 50
 
-    if sql.spam(PlayerID, GF.couldown_4s, "hothouse", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "hothouse", "gems"):
         sql.updateComTime(PlayerID, "hothouse", "gems")
         nboutil = sql.valueAtNumber(PlayerID, "planting_plan", "inventory") + 1
         if nboutil >= max:
@@ -840,7 +840,7 @@ def hothouse(param):
             i += 1
     else:
         msg["type"] = "NOK"
-        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
     return msg
 
 
@@ -854,7 +854,7 @@ def ferment(param):
     i = 1
     max = 20
 
-    if sql.spam(PlayerID, GF.couldown_4s, "ferment", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "ferment", "gems"):
         sql.updateComTime(PlayerID, "ferment", "gems")
         nboutil = sql.valueAtNumber(PlayerID, "barrel", "inventory") + 1
         if nboutil >= max:
@@ -866,7 +866,7 @@ def ferment(param):
             i += 1
     else:
         msg["type"] = "NOK"
-        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
     return msg
 
 
@@ -891,7 +891,7 @@ def cooking(param):
             msg["desc"] = lang_P.forge_msg(lang, "cooking", None, False, 12)
             return msg
 
-    if sql.spam(PlayerID, GF.couldown_4s, "cooking", "gems"):
+    if sql.spam(PlayerID, GF.couldown("4s"), "cooking", "gems"):
         sql.updateComTime(PlayerID, "cooking", "gems")
         nboutil = sql.valueAtNumber(PlayerID, "furnace", "inventory") + 1
         if nboutil >= max:
@@ -903,5 +903,5 @@ def cooking(param):
             i += 1
     else:
         msg["type"] = "NOK"
-        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown_4s)])
+        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
     return msg
