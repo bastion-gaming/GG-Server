@@ -111,6 +111,12 @@
         "Account balance: {0} :gem:`gems`",
         "Savings rate: {0}%"
       ],
+    "marketbet":
+    [
+      "Bet placed, come back after the next market update !",
+      "You don't have enough :gem: `gems` !",
+      "This item doesn't exist or doesn't allow bet."
+    ],
     "mine":
       [
         "Too bad you broke your <:gem_{0}:{1}>`{0}`!",

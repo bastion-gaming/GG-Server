@@ -407,7 +407,7 @@ def roulette(param):
             return msg
         else:
             msg["type"] = "NOK"
-            desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 8)
+            desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 7)
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("8s"))])
         msg["type"] = "couldown"
@@ -417,22 +417,44 @@ def roulette(param):
 
 def marketbet(param):
     lang = param["lang"]
+    flag_test_item = False
     PlayerID = param["PlayerID"]
-    mise = param["mise"]
+    mise = int(param["mise"])
+    item = param["item"]
+    perCent = param["perCent"]
     msg = dict()
     msg["lang"] = lang
     desc = ""
-    gems = sql.valueAtNumber(PlayerID, "gems", "gems")
+    gems = int(sql.valueAtNumber(PlayerID, "gems", "gems"))
 
     if gems < mise:
-        desc = lang_P.forge_msg(lang, "gamble", None, False, 4)
+        desc = lang_P.forge_msg(lang, "marketbet", None, False, 1)
         msg["type"] = "NOK"
 
     elif sql.spam(PlayerID, GF.couldown("8s"), "marketbet", "gems"):
-        msg["type"] = "OK"
+        sql.updateComTime(PlayerID, "marketbet", "gems")
+
+        # Recherche l'item dans la liste des items
+        for c in GF.objetItem:
+            if item == c.nom:
+                flag_test_item = True
+
+        # S'il existe dans la liste alors on continue
+        if(flag_test_item):
+            if sql.updateField(PlayerID, "ItemMB", item, "casino") == 200 and sql.updateField(PlayerID, "perCentMB", perCent, "casino") and sql.updateField(PlayerID, "miseMB", mise, "casino") == 200:
+                msg["type"] = "OK"
+                desc = lang_P.forge_msg(lang, "marketbet", None, False, 0)
+            else:
+                msg["type"] = "OK"
+                desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 1)
+        else:
+            msg["type"] = "OK"
+            desc = lang_P.forge_msg(lang, "marketbet", None, False, 2)
+
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("8s"))])
         msg["type"] = "couldown"
+
     msg["desc"] = desc
     return msg
 

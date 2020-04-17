@@ -1,0 +1,13 @@
+{
+  "idgems":
+    "link_gems",
+
+  "ItemMB":
+    "PRIMARYKEY_TEXT",
+
+  "perCentMB":
+    "INTEGER",
+
+  "miseMB":
+    "INTEGER"
+}

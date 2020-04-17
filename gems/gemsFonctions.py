@@ -319,25 +319,25 @@ def couldown(couldown):
     d["couldown"] = couldown.lower()
     # ======= Jours =======
     if "j" in d["couldown"]:
-        couldown_split(d, "j")
-        d["j"] = d["j"]*3600*24
+        d["j"] = couldown_split(d, "j")["j"]
+        d["j"] = int(d["j"])*3600*24
     else:
         d["j"] = 0
     # ======= Heures =======
     if "h" in d["couldown"]:
-        couldown_split(d, "h")
-        d["h"] = d["h"]*3600
+        d["h"] = couldown_split(d, "h")["h"]
+        d["h"] = int(d["h"])*3600
     else:
         d["h"] = 0
     # ======= Minutes =======
     if "m" in d["couldown"]:
-        couldown_split(d, "m")
-        d["m"] = d["m"]*60
+        d["m"] = couldown_split(d, "m")["m"]
+        d["m"] = int(d["m"])*60
     else:
         d["m"] = 0
     # ======= Secondes =======
     if "s" in d["couldown"]:
-        couldown_split(d, "s")
+        d["s"] = int(couldown_split(d, "s")["s"])
     else:
         d["s"] = 0
     # ======= Résultat =======

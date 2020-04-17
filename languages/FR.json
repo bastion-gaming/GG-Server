@@ -14,10 +14,16 @@
       "Ton inventaire est plein.",
       "La commande est mal formulée.",
       "Bientôt disponible",
-      "Tu poccède deja un compte sur cette plateforme.",
+      "Tu possède deja un compte sur cette plateforme.",
       "Aucun compte utilisateur n'a été trouvé.",
       "Mise incorrecte!",
       "Valeur incorrecte!"
+    ],
+    "marketbet":
+    [
+      "Mise placée ! Revenez après la prochaine mise à jour du marché !",
+      "Tu n'as pas assez de :gem: `gems` !",
+      "Cet item n'exsite pas ou n'autorise pas les paries."
     ],
   "newPlayer":
     [
