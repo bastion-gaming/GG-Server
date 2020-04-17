@@ -866,7 +866,7 @@ def ferment(param):
         msg["type"] = "OK"
         msg["nboutil"] = "{}".format(nboutil)
         while i <= nboutil:
-            msg[i] = prod_HFC(PlayerID, lang, item, "hothouse", i)
+            msg[i] = prod_HFC(PlayerID, lang, item, "ferment", i)
             i += 1
     else:
         msg["type"] = "NOK"
@@ -903,7 +903,7 @@ def cooking(param):
         msg["type"] = "OK"
         msg["nboutil"] = "{}".format(nboutil)
         while i <= nboutil:
-            msg[i] = prod_HFC(PlayerID, lang, item, "hothouse", i)
+            msg[i] = prod_HFC(PlayerID, lang, item, "cooking", i)
             i += 1
     else:
         msg["type"] = "NOK"
