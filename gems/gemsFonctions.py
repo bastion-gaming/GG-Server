@@ -341,13 +341,14 @@ def couldown(couldown):
     else:
         d["s"] = 0
     # ======= Résultat =======
+    # print("{0}:{1}:{2}:{3}".format(d["j"], d["h"], d["m"], d["s"]))
     n = d["j"] + d["h"] + d["m"] + d["s"]
     return n
 
 
 def couldown_split(dict, s):
     temp = dict["couldown"].split(s)
-    dict[s] = temp[0]
+    dict[s] = int(temp[0])
     dict["couldown"] = temp[1]
     return dict
 
