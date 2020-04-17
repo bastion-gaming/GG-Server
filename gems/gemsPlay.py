@@ -107,7 +107,7 @@ def bank_bal(PlayerID, lang, ARG, ARG2, Taille, platform):
         soldeMax = sql.valueAtNumber(PlayerID, "SoldeMax", "bank")
         if soldeMax == 0:
             soldeMax = Taille
-        soldeMult = soldeMax/Taille
+        soldeMult = int(soldeMax/Taille)
         pourcentage = 0.049 + soldeMult*0.001
         if pourcentage > 0.6:
             pourcentage = 0.6
