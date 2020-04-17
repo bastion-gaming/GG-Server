@@ -1,4 +1,4 @@
-# gemsFonctions 
+# gemsFonctions
 ## class Item:
 
 ### def __init__(self, nom, vente, achat, poids, type):
@@ -20,6 +20,10 @@
 ## def ActuBourse():
 
 ## def loadItem(F=False):
+
+## def couldown(couldown):
+
+## def couldown_split(dict, s):
 
 ## def recette(lang):
 
@@ -44,4 +48,3 @@
 ## def param_prod(item):
 
 ## def time_aff(time):
-
