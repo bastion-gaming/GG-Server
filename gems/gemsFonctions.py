@@ -288,8 +288,8 @@ def loadItem(F=False):
         Box("raregems", "Gems Rare", 300, 100, 500, "gems", 2),
         Box("legendarygems", "Gems Legendary", 3000, 1000, 5000, "gems", 4),
 
-        Box("gift", "Items en folie", 50000, 100, 100000, "gems", 3),
-        Box("gift_heart", "Cadeau de la Saint Valentin", 0, 10000, 50000, "", 2)
+        Box("gift", "Items en folie", 50000, 100, 80000, "gems", 3),
+        Box("gift_heart", "Cadeau de la Saint Valentin", 0, 10000, 40000, "", 2)
     ]
 
     if sql.spam(PlayerID_GetGems, couldown("8h"), "bourse", "gems"):
@@ -341,13 +341,14 @@ def couldown(couldown):
     else:
         d["s"] = 0
     # ======= Résultat =======
+    # print("{0}:{1}:{2}:{3}".format(d["j"], d["h"], d["m"], d["s"]))
     n = d["j"] + d["h"] + d["m"] + d["s"]
     return n
 
 
 def couldown_split(dict, s):
     temp = dict["couldown"].split(s)
-    dict[s] = temp[0]
+    dict[s] = int(temp[0])
     dict["couldown"] = temp[1]
     return dict
 
@@ -489,22 +490,23 @@ def gift(PlayerID, lang, param = False):
 
 def lootbox(PlayerID, lang, param = False):
     desc = ""
-
-    D = r.randint(-40, 40)
-    if D == 0:
-        sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
-        sql.add(PlayerID, ["boxes", "lootbox | legendary gems | gain"], 1, "statgems")
-        desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 2)
-    elif (D == 10) or (D == -10):
-        sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
-        sql.add(PlayerID, ["boxes", "lootbox |  rare gems | gain"], 1, "statgems")
-        desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 1)
-    elif (D >= 29 and D <= 31) or (D >= -31 and D <= -29):
-        sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
-        sql.add(PlayerID, ["boxes", "lootbox | common gems | gain"], 1, "statgems")
-        desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 0)
-    elif param:
-        desc = gift(PlayerID, lang, True)
+    if sql.spam(PlayerID, couldown("3m"), "lootbox", "gems"):
+        D = r.randint(-60, 60)
+        if D == 0:
+            sql.add(PlayerID, "lootbox_legendarygems", 1, "inventory")
+            sql.add(PlayerID, ["boxes", "lootbox | legendary gems | gain"], 1, "statgems")
+            desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 2)
+        elif (D == 10) or (D == -10):
+            sql.add(PlayerID, "lootbox_raregems", 1, "inventory")
+            sql.add(PlayerID, ["boxes", "lootbox |  rare gems | gain"], 1, "statgems")
+            desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 1)
+        elif (D >= 29 and D <= 31) or (D >= -31 and D <= -29):
+            sql.add(PlayerID, "lootbox_commongems", 1, "inventory")
+            sql.add(PlayerID, ["boxes", "lootbox | common gems | gain"], 1, "statgems")
+            desc = lang_P.forge_msg(lang, "lootbox", ["{idmoji[gem_lootbox]}"], False, 0)
+        elif param:
+            desc = gift(PlayerID, lang, True)
+        sql.updateComTime(PlayerID, "lootbox", "gems")
 
     return desc
 
