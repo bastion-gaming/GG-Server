@@ -90,12 +90,8 @@ def slots(param):
     niveau = sql.valueAtNumber(PlayerID, "lvl", "gems")
     if niveau <= 5:
         msg["misemax"] = 50
-    elif niveau <= 10:
-        msg["misemax"] = 150
-    elif niveau <= 15:
-        msg["misemax"] = 360
     else:
-        msg["misemax"] = 500
+        msg["misemax"] = int(100*(2**(niveau-5)))
     if imise != "None":
         if int(imise) < 0:
             desc = lang_P.forge_msg(lang, "DiscordCop Amende")
@@ -302,7 +298,7 @@ def slots(param):
         sql.updateComTime(PlayerID, "slots", "gems")
         sql.add(PlayerID, ["slots", "slots"], 1, "statgems")
         if gain >= 0:
-            lvl.addxp(PlayerID, 1+int(gain//50), "gems")
+            lvl.addxp(PlayerID, 1+int(gain//msg["misemax"]), "gems")
         msg["type"] = "OK"
     else:
         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("8s"))])
@@ -327,6 +323,13 @@ def roulette(param):
     VM = []
     desc = dict()
     gems = sql.valueAtNumber(PlayerID, "gems", "gems")
+    niveau = sql.valueAtNumber(PlayerID, "lvl", "gems")
+    if niveau <= 5:
+        msg["misemax"] = 50
+    else:
+        msg["misemax"] = int(100*(2**(niveau-5)))
+    if int(mise) > msg["misemax"]:
+        mise = msg["misemax"]
 
     if mise <= 0:
         msg["type"] = "NOK"
@@ -396,7 +399,7 @@ def roulette(param):
                             desc["gain"] = int(-(pourcentage*mise))
             sql.addGems(PlayerID, desc["gain"])
             if desc["gain"] > 0:
-                lvl.addxp(PlayerID, 1+int(desc["gain"]//50), "gems")
+                lvl.addxp(PlayerID, 1+int(desc["gain"]//msg["misemax"]), "gems")
             else:
                 lvl.addxp(PlayerID, 1, "gems")
             desc["VM"] = VM
