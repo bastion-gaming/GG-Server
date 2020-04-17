@@ -19,7 +19,7 @@ def forge_msg(langue, nom_commande, liste_variables_texte = None, shuffle = Fals
     str nom_commande : doit correspondre au nom de la fonction dans les fichiers de langues
     list liste_variables_texte : Ensemble des elements qui seront rajouté au texte finale par exemple 'Bravo {0}, vous avez gagné {1} gems' les éléments qui vont remplacer 0 et 1 doivent être das cet ordre dans la liste.
     bool shuffle : par défaut sur false, si mis sur "true" va renvoyer au hasard les différents choix possibles pour cette fonction dans cette langue.
-    int number : par défaut -1, permet de de choisir quelle phrase choisir.
+    int number : par défaut -1, permet de choisir quelle phrase choisir.
 
     Return :
     str msg_res : Message forgé sous forme de string.

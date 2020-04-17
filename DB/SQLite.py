@@ -194,16 +194,16 @@ def get_SuperID(ID, name_pl):
 
 
 # -------------------------------------------------------------------------------
-def get_PlayerID(ID, nameDB = None):
+def get_PlayerID(SuperID, nameDB = None):
     """
     Permet de convertir un ID discord en PlayerID interne à la base de données
     """
     if nameDB == None:
         nameDB = "gems"
-    if ID == "Error 404":
+    if SuperID == "Error 404":
         return "Error 404"
 
-    script = "SELECT id{0} FROM {0} WHERE ID = {1}".format(nameDB, ID)
+    script = "SELECT id{0} FROM {0} WHERE ID = {1}".format(nameDB, SuperID)
     cursor = conn.cursor()
     # print(script)
     cursor.execute(script)
@@ -338,28 +338,9 @@ def newGuild(param):
         return ("Le serveur existe déjà")
 
 
-# -------------------------------------------------------------------------------
-def get_discord_guild_lang(IDGuild):
-    Lang = valueAtNumber(IDGuild, "Lang", "Guild")
-    if Lang == 0:
-        newGuild(IDGuild)
-        Lang = valueAtNumber(IDGuild, "Lang", "Guild")
-    return Lang
-
-
 # ===============================================================================
 # Compteur
 # ===============================================================================
-def countTotalMsg():
-    # Donne le nombre total de messages écrit sur le discord de Bastion
-    script = "SELECT SUM(nbmsg) FROM bastion"
-    cursor = conn.cursor()
-    cursor.execute(script)
-    for a in cursor.fetchall():
-        return a[0]
-
-
-# -------------------------------------------------------------------------------
 def countTotalGems():
     # Donne le nombre total de gems (somme des gems de tout les utilisateurs de Get Gems)
     script = "SELECT SUM(gems) FROM gems"
@@ -381,7 +362,7 @@ def countTotalSpinelles():
 
 # -------------------------------------------------------------------------------
 def taille(nameDB):
-    """Retourne la taille de la table selectionner"""
+    """Retourne la taille de la table selectionnée"""
     cursor = conn.cursor()
     cursor.execute("PRAGMA table_info({0});".format(nameDB))
     rows = cursor.fetchall()
