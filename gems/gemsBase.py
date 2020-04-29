@@ -10,7 +10,10 @@ from languages import lang as lang_P
 def begin(param):
     """Pour créer son compte joueur et obtenir son starter Kit!"""
     msg = dict()
-    desc = sql.newPlayer(param["ID"], "gems", param["name_pl"], param["name"])
+    name = param["name"]
+    while sql.value("IDs", "Pseudo", ["Pseudo"], [name]) is not False:
+        name = "User{0}".format(GF.gen_code(4))
+    desc = sql.newPlayer(param["ID"], "gems", param["name_pl"], name)
     SuperID = sql.get_SuperID(param["ID"], param["name_pl"])
     GF.startKit(SuperID)
     if desc == lang_P.forge_msg(param["lang"], "newPlayer", None, False, 0):
@@ -43,7 +46,7 @@ def connect(param):
 def infos(param):
     """**[nom]** | Affiche les informations sur un joueur"""
     lang = param["lang"]
-    PlayerID = sql.get_PlayerID(sql.get_SuperID(param["ID"], param["name_pl"]))
+    PlayerID = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(param["ID"]), param["name_pl"]))
     name = param["name"]
     pseudo = sql.valueAtNumber(PlayerID, "Pseudo", "IDs")
     msg = dict()
@@ -100,6 +103,28 @@ def infos(param):
     return msg
 
 
+def username(param):
+    """**{new username}** | Change ton nom d'utilisateur!"""
+    lang = param["lang"]
+    PlayerID = sql.get_PlayerID(sql.get_SuperID(param["ID"], param["name_pl"]))
+    msg = dict()
+    msg["lang"] = lang
+
+    if sql.spam(PlayerID, GF.couldown("10s"), "username", "gems"):
+        if sql.value("IDs", "Pseudo", ["Pseudo"], [param["NU"]]) is False:
+            sql.updateField(PlayerID, "Pseudo", param["NU"], "IDs")
+            msg["type"] = "OK"
+            msg["desc"] = lang_P.forge_msg(lang, "username", None, False, 0)
+        else:
+            msg["type"] = "NOK"
+            msg["desc"] = lang_P.forge_msg(lang, "username", None, False, 1)
+        sql.updateComTime(PlayerID, "username", "gems")
+    else:
+        msg["type"] = "couldown"
+        msg["desc"] = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("10s"))])
+    return msg
+
+
 def bal(param):
     """**[nom]** | Êtes vous riche ou pauvre ?"""
     lang = param["lang"]
@@ -135,7 +160,7 @@ def baltop(param):
     baltop = ""
     if sql.spam(PlayerID, GF.couldown("4s"), "baltop", "gems"):
         sql.updateComTime(PlayerID, "baltop", "gems")
-        if filtre == "gems" or filtre == "gem":# or filtre == "spinelles" or filtre == "spinelle":
+        if "gem" in filtre:
             UserList = []
             i = 1
             taille = sql.taille("gems")
@@ -151,10 +176,10 @@ def baltop(param):
                 else:
                     SuperID = 0
                 PlayerID = sql.get_PlayerID(SuperID)
-                if Pseudo is None or Pseudo == "" or True:
+                if Pseudo is None or Pseudo == "":
                     user = "<@{0}>".format(IDd)
                 else:
-                    user = "**{0}**".format(Pseudo)
+                    user = "`{0}`".format(Pseudo)
                 gems = sql.valueAtNumber(PlayerID, "gems", "gems")
                 spinelles = sql.valueAtNumber(PlayerID, "spinelles", "gems")
                 guilde = sql.valueAtNumber(PlayerID, "guilde", "gems")
@@ -171,17 +196,16 @@ def baltop(param):
             j = 1
             for one in UserList: # affichage des données trié
                 if j <= n:
-                    baltop += "{2} |{3} {0} {1}:gem:".format(one[0], one[1], j, one[3])
+                    baltop += "{2} |{3} {0}: {1} :gem:".format(one[0], one[1], j, one[3])
                     # if one[2] != 0:
-                    #     baltop += " | {0}<:spinelle:{1}>\n".format(one[2], "{idmoji[spinelle]}")
+                    #     baltop += " | {0} <:spinelle:{1}>\n".format(one[2], "{idmoji[spinelle]}")
                     # else:
                     #     baltop += "\n"
                     baltop += "\n"
                 j += 1
             msg["type"] = "OK"
             msg["baltop"] = baltop
-            # sql.add(PlayerID, ["baltop", "baltop"], 1, "statgems")
-        # elif filtre == "guild" or filtre == "guilde":
+        # elif "guild" in filtre:
         #     GuildList = []
         #     i = 1
         #     while i <= DB.get_endDocID("DB/guildesDB"):
@@ -714,7 +738,7 @@ def pay(param):
     """**[Nom_recu] [gain]** | Donner de l'argent à vos amis !"""
     nom = param["nom"]
     gain = param["gain"]
-    ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["name_pl"]))
+    ID_recu = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(param["ID_recu"]), param["name_pl"]))
     Nom_recu = param["Nom_recu"]
     lang = param["lang"]
     PlayerID = param["PlayerID"]
@@ -771,7 +795,7 @@ def give(param):
     nom = param["nom"]
     item = param["item"]
     nb = param["nb"]
-    ID_recu = sql.get_PlayerID(sql.get_SuperID(param["ID_recu"], param["name_pl"]))
+    ID_recu = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(param["ID_recu"]), param["name_pl"]))
     Nom_recu = param["Nom_recu"]
     lang = param["lang"]
     PlayerID = param["PlayerID"]
@@ -1050,7 +1074,7 @@ def godparent(param):
     """Permet d'ajouter un joueur comme parrain. En le faisant vous touchez un bonus et lui aussi"""
     lang = param["lang"]
     PlayerID = param["PlayerID"]
-    GPID = sql.get_PlayerID(sql.get_SuperID(param["GPID"], param["name_pl"]))
+    GPID = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(param["GPID"]), param["name_pl"]))
     msg = dict()
     msg["lang"] = lang
     myGP = sql.valueAtNumber(PlayerID, "godparent", "gems")

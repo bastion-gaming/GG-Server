@@ -370,5 +370,10 @@
       "**Échec**\nTu perd ta mise.\n",
       "**Victoire**\nTu gagne ta mise + {0}%\n",
       "**Défaite\n**Tu perd ta mise + {0}%\n"
+    ],
+  "username":
+    [
+      "Nom d'utilisateur modifié!",
+      "Nom d'utilisateur non disponible!"
     ]
 }

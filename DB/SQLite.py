@@ -9,6 +9,7 @@ DB_NOM = 'bastionDB'
 
 def nom_ID(nom):
     """Convertis un nom en ID discord """
+    nom = "{0}".format(nom)
     if len(nom) == 21:
         ID = int(nom[2:20])
     elif len(nom) == 22:
@@ -16,8 +17,13 @@ def nom_ID(nom):
     elif len(nom) == 18:
         ID = int(nom)
     else:
-        print("DB >> mauvais nom")
-        ID = -1
+        one = value("IDs", "ID_discord", ["Pseudo"], [nom])
+        if one is not False:
+            print(one)
+            ID = one
+        else:
+            print("DB >> mauvais nom")
+            ID = -1
     return(ID)
 
 
@@ -531,6 +537,44 @@ def valueAtNumber(PlayerID, fieldName, nameDB):
         return VAN
     else:
         return 0
+
+
+# -------------------------------------------------------------------------------
+def value(nameDB, fieldName, filtre = None, filtreValue = None, order = None):
+    """
+    nameDB: Nom de la table
+    fieldName: string du nom du/des champ(s) à chercher
+    filtre: liste des filtres WHERE
+    filtreValue: liste des valeurs de chaque filtre
+    order: paramètre de tri
+    """
+    value = []
+    conn = sql.connect('DB/{}.db'.format(DB_NOM))
+    cursor = conn.cursor()
+
+    try:
+        # Récupération de la valeur de fieldName dans la table nameDB
+        script = "SELECT {1} FROM {0}".format(nameDB, fieldName)
+        if filtre is not None:
+            script += " WHERE {0} = '{1}'".format(filtre[0], filtreValue[0])
+            for i in range(1, len(filtre)):
+                script += " AND {0} = '{1}'".format(filtre[i], filtreValue[i])
+        if order is not None:
+            script += " ORDER BY {0}".format(order)
+        print(script)
+        cursor.execute(script)
+        value = cursor.fetchall()
+    except:
+        # Aucune données n'a été trouvé
+        value = []
+
+    if value == []:
+        return False
+    else:
+        if len(value[0]) == 1:
+            return value[0][0]
+        else:
+            return value[0]
 
 
 # -------------------------------------------------------------------------------

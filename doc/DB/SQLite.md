@@ -75,6 +75,13 @@ La particularité de cette fonction est que, comparé a la fonction valueAt, ell
 Lorsqu'il n'y as qu'un seul élément dans la liste de la fonction valueAt, la fonction va alors retourner directement cette valeur.
 Dans le cas ou plusieurs éléments sont présent dans la liste, seul le premier élément sera retourner.
 
+## def value(nameDB, fieldName, filtre = None, filtreValue = None, order = None):
+nameDB: Nom de la table
+fieldName: string du nom du/des champ(s) à chercher
+filtre: liste des filtres WHERE
+filtreValue: liste des valeurs de chaque filtre
+order: paramètre de tri
+
 ## def addGems(PlayerID, nb):
 Ajoute des gems au compteur de gems d'un joueur.
 - PlayerID: Id du joueur dans le jeu

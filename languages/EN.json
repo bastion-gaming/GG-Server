@@ -369,5 +369,10 @@
         "**Failure**\nYou lose your bet.\n",
         "**Victory**\nYou win your bet + {0}%\n",
         "**Defeat\n**You lose your bet + {0}%\n"
+      ],
+    "username":
+      [
+        "Username changed!",
+        "Username not available!"
       ]
 }
