@@ -1,9 +1,11 @@
-# gemsBase 
+# gemsBase
 ## def begin(param):
 
 ## def connect(param):
 
 ## def infos(param):
+
+## def username(param):
 
 ## def bal(param):
 
@@ -26,4 +28,3 @@
 ## def lang(param):
 
 ## def godparent(param):
-
