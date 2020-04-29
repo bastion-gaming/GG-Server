@@ -48,3 +48,6 @@
 ## def param_prod(item):
 
 ## def time_aff(time):
+
+## def gen_code(max):
+Générateur de code aléatoire à x chiffres. la variable max correspond au nombre de chiffre du code aléatoire.

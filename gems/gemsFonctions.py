@@ -654,7 +654,7 @@ def param_prod(item):
 
 
 def time_aff(time):
-    # Traduit une valeur time en valeur HH:mm:ss
+    # Traduit une valeur time (en secondes) en valeur HH:mm:ss
     # (avec un emoji correspondant devant)
     dtime = dict()
     dtime["timeH"] = int(time / 60 / 60)
@@ -674,3 +674,11 @@ def time_aff(time):
             dtime["cl"] = (dtime["timeH"] % 12)+1
         dtime["cl"] = "clock{0}".format(dtime["cl"])
     return dtime
+
+
+def gen_code(max):
+    # Générateur de code aléatoire à x chiffres.
+    code = ""
+    for i in range(0, max):
+        code += "{}".format(r.randint(0, 9))
+    return code
