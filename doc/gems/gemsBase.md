@@ -11,17 +11,7 @@
 
 ## def baltop(param):
 
-## def buy(param):
-
-## def sell(param):
-
 ## def inv(param):
-
-## def market(param):
-
-## def pay(param):
-
-## def give(param):
 
 ## def forge(param):
 
