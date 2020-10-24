@@ -1,0 +1,12 @@
+{
+  "idgems":
+    "link_gems",
+  "IDhfc":
+    "PRIMARYKEY_INTEGER",
+  "Type":
+    "PRIMARYKEY_TEXT",
+  "Time":
+    "TEXT",
+  "Stock":
+    "TEXT"
+}

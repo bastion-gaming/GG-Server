@@ -1,0 +1,30 @@
+{
+  "idgems":
+    "PRIMARYKEY_INTEGER",
+  "ID_discord":
+    "INTEGER",
+  "Lang":
+    "TEXT",
+  "Pseudo":
+    "TEXT",
+  "Guilde":
+    "TEXT",
+  "Gems":
+    "INTEGER",
+  "Spinelles":
+    "INTEGER",
+  "Level":
+    "INTEGER",
+  "XP":
+    "INTEGER",
+  "DailyMult":
+    "INTEGER",
+  "DailyTime":
+    "TEXT",
+  "BankSolde":
+    "INTEGER",
+  "BankSMax":
+    "INTEGER",
+  "Godparent":
+    "INTEGER"
+}

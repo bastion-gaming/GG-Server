@@ -1,0 +1,10 @@
+{
+  "idgems":
+    "link_gems",
+  "Item":
+    "PRIMARYKEY_TEXT",
+  "Stock":
+    "INTEGER",
+  "Durability":
+    "INTEGER"
+}
