@@ -189,14 +189,14 @@ objetSuccess = [
     Success(12, 9, "Sell", 12, 16, "sell|total", 400000),
     Success(12, 10, "Sell", 12, 16, "sell|total", 1000000),
 
-    Success(23, 1, "Banquier", 29, 32, "buy|bank_upgrade", 1),
-    Success(23, 2, "Banquier", 29, 32, "buy|bank_upgrade", 2),
-    Success(23, 3, "Banquier", 29, 32, "buy|bank_upgrade", 5),
-    Success(23, 4, "Banquier", 29, 32, "buy|bank_upgrade", 10),
-    Success(23, 5, "Banquier", 29, 32, "buy|bank_upgrade", 15),
-    Success(23, 6, "Banquier", 30, 32, "buy|bank_upgrade", 25),
-    Success(23, 7, "Banquier", 31, 32, "buy|bank_upgrade", 40),
-    Success(23, 8, "Banquier", 32, 32, "buy|bank_upgrade", 60),
+    Success(23, 1, "Banquier", 29, 32, "buy|bank", 1),
+    Success(23, 2, "Banquier", 29, 32, "buy|bank", 2),
+    Success(23, 3, "Banquier", 29, 32, "buy|bank", 5),
+    Success(23, 4, "Banquier", 29, 32, "buy|bank", 10),
+    Success(23, 5, "Banquier", 29, 32, "buy|bank", 15),
+    Success(23, 6, "Banquier", 30, 32, "buy|bank", 25),
+    Success(23, 7, "Banquier", 31, 32, "buy|bank", 40),
+    Success(23, 8, "Banquier", 32, 32, "buy|bank", 60),
 
     Success(24, 1, "Rentré des classes", 25, 32, "buy|backpack", 1),
     Success(24, 2, "Rentré des classes", 25, 32, "buy|backpack", 5),
@@ -387,27 +387,27 @@ def checkSuccess(PlayerID, lang):
 
 
 # Commandes
-def stats(param):
-    nom = param["nom"]
-    if nom != "None":
-        nom = sql.nom_ID(nom)
-        ID = sql.get_PlayerID(nom, param["name_pl"])
-    else:
-        ID = sql.get_PlayerID(param["ID"], param["name_pl"])
-    lang = param["lang"]
-    if ID['error'] == 404:
-        msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
-        return {'error': 404, 'etat': 'Warning'}
-    PlayerID = ID['ID']
-    desc = []
-    stat = sql.valueAll(PlayerID, 'statgems', ['Nom', 'Type', 'Stock'])
-    if stat is not False or stat != []:
-        for x in stat:
-            desc.append(str(x))
-        msg = {'error': 0, 'etat': 'OK', 'lang': lang, 'stats': desc}
-    else:
-        msg = {'error': 1, 'etat': 'NOK', 'lang': lang, 'stats': False}
-    return msg
+# def stats(param):
+#     nom = param["nom"]
+#     if nom != "None":
+#         nom = sql.nom_ID(nom)
+#         ID = sql.get_PlayerID(nom, param["name_pl"])
+#     else:
+#         ID = sql.get_PlayerID(param["ID"], param["name_pl"])
+#     lang = param["lang"]
+#     if ID['error'] == 404:
+#         msg = ["WarningMsg", lang_P.forge_msg(lang, "WarningMsg", None, False, 0)]
+#         return {'error': 404, 'etat': 'Warning'}
+#     PlayerID = ID['ID']
+#     desc = []
+#     stat = sql.valueAll(PlayerID, 'statgems', ['Nom', 'Type', 'Stock'])
+#     if stat is not False or stat != []:
+#         for x in stat:
+#             desc.append(str(x))
+#         msg = {'error': 0, 'etat': 'OK', 'lang': lang, 'stats': desc}
+#     else:
+#         msg = {'error': 1, 'etat': 'NOK', 'lang': lang, 'stats': False}
+#     return msg
 
 
 def success(param):
@@ -430,56 +430,58 @@ def success(param):
                 type = x.type.split("|")
                 if type[0] == "gems" or type[0] == "daily":
                     myStat = sql.value(PlayerID, "gems", "{0}".format(type[1]))
-                    if type[0] == "gems":
-                        arg = None
-                    else:
-                        arg = [x.objectif]
+                    arg = [x.objectif]
 
                 elif type[0] == "broken":
-                    myStat = sql.value(PlayerID, "statgems", 'Stock, Type, Nom', 'Nom', "{0} | broken | {1}".format(type[1], type[2]))
+                    myStat = sql.value(PlayerID, "statgems", 'Stock', 'Nom', "{0} | broken | {1}".format(type[1], type[2]))
                     arg = [x.objectif, type[2], "{idmoji[gem_" + type[2] + "]}"]
 
                 elif type[0] == "mine" or type[0] == "dig" or type[0] == "fish":
-                    myStat = sql.value(PlayerID, "statgems", 'Stock, Type, Nom', 'Nom', "{0} | item | {1}".format(type[0], type[1]))
+                    myStat = sql.value(PlayerID, "statgems", 'Stock', 'Nom', "{0} | item | {1}".format(type[0], type[1]))
                     arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
 
                 elif type[0] == "buy" or type[0] == "sell":
                     if (type[0] == "buy" or type[0] == "sell") and type[1] != "total":
-                        myStat = sql.value(PlayerID, "statgems", 'Stock, Type, Nom', 'Nom', "{0} | item | {1}".format(type[0], type[1]))
-                        arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
+                        myStat = sql.value(PlayerID, "statgems", 'Stock', 'Nom', "{0} | item | {1}".format(type[0], type[1]))
+                        if type[1] != "bank":
+                            arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
+                        else:
+                            arg = [x.objectif, type[1], "{idmoji[upgrade_" + type[1] + "]}"]
                     else:
-                        myStat = sql.value(PlayerID, "statgems", 'Stock, Type, Nom', 'Nom', "{0} | {1}".format(type[0], type[1]))
+                        myStat = sql.value(PlayerID, "statgems", 'Stock', 'Nom', "{0} | {1}".format(type[0], type[1]))
                         arg = [x.objectif]
 
                 elif type[0] == "gamble" or type[0] == "stealing" or type[0] == "slots":
-                    myStat = sql.value(PlayerID, "statgems", 'Stock, Type, Nom', 'Nom', "{0} | {1}".format(type[0], type[1]))
+                    myStat = sql.value(PlayerID, "statgems", 'Stock', 'Nom', "{0} | {1}".format(type[0], type[1]))
                     arg = [x.objectif]
 
                 elif type[0] == "pay":
-                    myStat = sql.value(PlayerID, "statgems", 'Stock, Type, Nom', 'Nom', "pay | {0}".format(type[1]))
+                    myStat = sql.value(PlayerID, "statgems", 'Stock', 'Nom', "pay | {0}".format(type[1]))
                     arg = [x.objectif]
 
                 elif type[0] == "forge":
-                    myStat = sql.value(PlayerID, "statgems", 'Stock, Type, Nom', 'Nom', "forge | item | {0}".format(type[1]))
+                    myStat = sql.value(PlayerID, "statgems", 'Stock', 'Nom', "forge | item | {0}".format(type[1]))
                     arg = [x.objectif, type[1], "{idmoji[gem_" + type[1] + "]}"]
 
                 elif type[0] == "hothouse" or type[0] == "ferment" or type[0] == "cooking":
-                    myStat = sql.value(PlayerID, "statgems", 'Stock, Type, Nom', 'Nom', "{0} | {1} | item | {2}".format(type[0], type[1], type[2]))
+                    myStat = sql.value(PlayerID, "statgems", 'Stock', 'Nom', "{0} | {1} | item | {2}".format(type[0], type[1], type[2]))
                     if type[2] in GI.objetEmoji:
                         idmoji = ":{0}:".format(type[2])
                     else:
-                        idmoji = "<:gem_{0}:{1}>".format(type[2], "{idmoji[gem_" + type[2] + "]}")
+                        idmoji = "{0}".format("{idmoji[gem_" + type[2] + "]}")
                     arg = [x.objectif, type[2], idmoji]
 
                 elif type[0] == "inv":
-                    myStat = sql.value(PlayerID, "statgems", 'Stock, Type, Nom', 'Nom', "{0}".format(type[1]))
+                    myStat = sql.value(PlayerID, "statgems", 'Stock', 'Nom', "{0}".format(type[1]))
                     if type[1] in GI.objetEmoji:
                         idmoji = ":{0}:".format(type[1])
                     else:
-                        idmoji = "<:gem_{0}:{1}>".format(type[1], "{idmoji[gem_" + type[1] + "]}")
+                        idmoji = "{0}".format("{idmoji[gem_" + type[1] + "]}")
                     arg = [x.objectif, type[1], idmoji]
 
                 if x.sid == iS+1:
+                    if myStat is False:
+                        myStat = 0
                     result.append(lang_P.forge_msg(lang, "success titre", [GF.ChiffreRomain(x.sid)], False, x.titre))
                     desc = "{0} | `{1}`/`{2}`".format(lang_P.forge_msg(lang, "success desc", arg, False, x.desc), myStat, x.objectif)
                     result.append(desc)

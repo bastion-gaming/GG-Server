@@ -419,6 +419,7 @@ def value(PlayerID, nameDB, fieldName, filtre = None, filtreValue = None, order 
         # Aucune données n'a été trouvé
         value = []
 
+    # print("==== value ====")
     # print(value)
     if value == []:
         return False

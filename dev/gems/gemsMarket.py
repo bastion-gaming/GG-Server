@@ -325,9 +325,8 @@ def pay(param):
                 if solde >= gain:
                     sql.addGems(ID_recu, gain)
                     sql.addGems(PlayerID, don)
-                    # desc = lang_P.forge_msg(lang, "pay", [nom, gain, Nom_recu], False, 0)
                     # Message de réussite dans la console
-                    print("Gems >> {} a donné {} Gems à {}".format(nom, gain, Nom_recu))
+                    # print("Gems >> {} a donné {} Gems à {}".format(nom, gain, Nom_recu))
                     GF.addStats(PlayerID, ["pay", "pay"], 1)
                     GF.addStats(PlayerID, ["pay", "pay | nb gems"], gain)
                     donmax = sql.value(PlayerID, "statgems", "Stock", ["Nom", "Type"], ["pay | don max", "pay"])
@@ -339,123 +338,80 @@ def pay(param):
                     sql.updateComTime(PlayerID, "pay")
                     return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': gain, 'don': don}
                 else:
-                    # desc = lang_P.forge_msg(lang, "pay", [nom, gain, Nom_recu], False, 1)
                     return {'error': 4, 'etat': 'NOK', 'lang': lang, 'gain': False, 'don': -don}
             else :
-                # desc = lang_P.forge_msg(lang, "pay", None, False, 2)
                 return {'error': 3, 'etat': 'NOK', 'lang': lang, 'gain': False, 'don': False}
         except ValueError:
-            # desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 3)
             return {'error': 2, 'etat': 'Warning', 'lang': lang, 'gain': False, 'don': False}
             pass
     else:
         return {'error': 1, 'etat': 'couldown', 'lang': lang, 'gain': False, 'don': False, 'couldown': str(GF.couldown("4s"))}
 
 
-# def give(param):
-#     """**[nom] [item] [nombre]** | Donner des items à vos amis !"""
-#     nom = param["nom"]
-#     item = param["item"]
-#     nb = param["nb"]
-#     ID_recu = sql.get_PlayerID(sql.get_SuperID(sql.nom_ID(param["ID_recu"]), param["name_pl"]))
-#     Nom_recu = param["Nom_recu"]
-#     lang = param["lang"]
-#     PlayerID = param["PlayerID"]
-#     msg = dict()
-#     msg["lang"] = lang
-#
-#     checkLB = False
-#     if item == "bank_upgrade":
-#         msg["type"] = "NOK"
-#         msg["desc"] = lang_P.forge_msg(lang, "give", None, False, 0)
-#         return msg
-#         return False
-#     if sql.spam(PlayerID, GF.couldown("4s"), "give", "gems"):
-#         try:
-#             if nb == None:
-#                 nb = 1
-#             else:
-#                 nb = int(nb)
-#             if nb < 0 and nb != -1:
-#                 sql.addGems(PlayerID, -100)
-#                 desc = lang_P.forge_msg(lang, "DiscordCop Amende")
-#                 sql.add(PlayerID, ["divers", "DiscordCop Amende"], 1, "statgems")
-#                 msg["type"] = "anticheat"
-#                 msg["desc"] = desc
-#                 return msg
-#             elif nb > 0:
-#                 for lootbox in GF.objetBox:
-#                     if item == lootbox.nom:
-#                         checkLB = True
-#                         itemLB = lootbox.nom
-#                         item = "lootbox_{}".format(lootbox.nom)
-#                 nbItem = int(sql.valueAtNumber(PlayerID, item, "inventory"))
-#                 if nbItem >= nb and nb > 0:
-#                     if GF.testInvTaille(ID_recu) or item == "hyperpack" or item == "backpack":
-#                         sql.add(PlayerID, item, -nb, "inventory")
-#                         sql.add(ID_recu, item, nb, "inventory")
-#                         if checkLB:
-#                             desc = lang_P.forge_msg(lang, "give", [nom, nb, itemLB, "{idmoji[gem_" + itemLB + "]}", Nom_recu], False, 1)
-#                         else:
-#                             for c in GF.objetItem:
-#                                 if c.nom == item:
-#                                     if c.type == "emoji":
-#                                         desc = lang_P.forge_msg(lang, "give", [nom, nb, item, Nom_recu], False, 2)
-#                                     else:
-#                                         desc = lang_P.forge_msg(lang, "give", [nom, nb, item, "{idmoji[gem_" + item + "]}", Nom_recu], False, 3)
-#                             for c in GF.objetOutil:
-#                                 if c.nom == item:
-#                                     if c.type == "emoji":
-#                                         desc = lang_P.forge_msg(lang, "give", [nom, nb, item, Nom_recu], False, 2)
-#                                     else:
-#                                         desc = lang_P.forge_msg(lang, "give", [nom, nb, item, "{idmoji[gem_" + item + "]}", Nom_recu], False, 3)
-#                         # Message de réussite dans la console
-#                         print("Gems >> {0} a donné {1} {2} à {3}".format(nom, nb, item, Nom_recu))
-#                         sql.add(PlayerID, ["give", "give"], 1, "statgems")
-#                         sql.add(PlayerID, ["give", "give | nb items"], nb, "statgems")
-#                         sql.add(PlayerID, ["give", "give | item | {}".format(item)], nb, "statgems")
-#                     else:
-#                         desc = lang_P.forge_msg(lang, "give", [Nom_recu], False, 4)
-#                 else:
-#                     desc = lang_P.forge_msg(lang, "give", [nom, Nom_recu], False, 5)
-#                 msg["type"] = "OK"
-#             elif nb == -1:
-#                 nbItem = int(sql.valueAtNumber(PlayerID, item, "inventory"))
-#                 if nb > 0:
-#                     if GF.testInvTaille(ID_recu) or item == "hyperpack" or item == "backpack":
-#                         sql.add(PlayerID, item, -nb, "inventory")
-#                         sql.add(ID_recu, item, nb, "inventory")
-#                         for c in GF.objetItem:
-#                             if c.nom == item:
-#                                 if c.type == "emoji":
-#                                     desc = lang_P.forge_msg(lang, "give", [nom, nb, item, Nom_recu], False, 2)
-#                                 else:
-#                                     desc = lang_P.forge_msg(lang, "give", [nom, nb, item, "{idmoji[gem_" + item + "]}", Nom_recu], False, 3)
-#                         for c in GF.objetOutil:
-#                             if c.nom == item:
-#                                 if c.type == "emoji":
-#                                     desc = lang_P.forge_msg(lang, "give", [nom, nb, item, Nom_recu], False, 2)
-#                                 else:
-#                                     desc = lang_P.forge_msg(lang, "give", [nom, nb, item, "{idmoji[gem_" + item + "]}", Nom_recu], False, 3)
-#                         # Message de réussite dans la console
-#                         print("Gems >> {0} a donné {1} {2} à {3}".format(nom, nb, item, Nom_recu))
-#                         sql.add(PlayerID, ["give", "give"], 1, "statgems")
-#                         sql.add(PlayerID, ["give", "give | nb items"], nb, "statgems")
-#                     else:
-#                         desc = lang_P.forge_msg(lang, "give", [Nom_recu], False, 4)
-#                 else:
-#                     desc = lang_P.forge_msg(lang, "give", [nom, Nom_recu], False, 5)
-#                 msg["type"] = "OK"
-#             else :
-#                 desc = lang_P.forge_msg(lang, "give", None, False, 6)
-#                 msg["type"] = "NOK"
-#             sql.updateComTime(PlayerID, "give", "gems")
-#         except ValueError:
-#             desc = lang_P.forge_msg(lang, "WarningMsg", None, False, 3)
-#             msg["type"] = "NOK"
-#             pass
-#     else:
-#         desc = lang_P.forge_msg(lang, "couldown", [str(GF.couldown("4s"))])
-#         msg["type"] = "couldown"
-#     msg["desc"] = desc
-#     return msg
+def give(param):
+    """**[Nom_recu] [gain]** | Donner de l'argent à vos amis !"""
+    nom = param["nom"]
+    item = param["item"]
+    nb = param["nb"]
+    lang = param["lang"]
+    PlayerID = param["PlayerID"]
+    ID_recu = sql.get_PlayerID(sql.nom_ID(param["ID_recu"]), param["name_pl"])
+    if ID_recu['error'] == 404:
+        return {'error': 405, 'etat': 'PlayerID', 'lang': lang, 'gain': False, 'perte': False, 'success': False}
+    ID_recu = ID_recu['ID']
+    Nom_recu = sql.value(ID_recu, "gems", "Pseudo")
+    ItemSpeciaux = ["hyperpack", "backpack"]
+
+    for c in GF.objetUpgrade:
+        if c.nom == item:
+            return {'error': 7, 'etat': 'NOK', 'lang': lang}
+
+    if sql.spam(PlayerID, GF.couldown("4s"), "give"):
+        try:
+            if nb == "None":
+                nb = 1
+            else:
+                nb = int(nb)
+            sql.updateComTime(PlayerID, "give")
+            if nb < 0 and nb != -1:
+                sql.addGems(PlayerID, -100)
+                GF.addStats(PlayerID, ["divers", "DiscordCop Amende"], 1)
+                return {'error': 6, 'etat': 'anticheat', 'lang': lang, 'amende': 100}
+            if nb > 0:
+                nbItem = int(sql.value(PlayerID, "inventory", "Stock", "Item", item))
+                if nbItem >= nb and nb > 0:
+                    if GF.testInvTaille(ID_recu) or item in ItemSpeciaux:
+                        GF.addInventory(PlayerID, item, -nb)
+                        GF.addInventory(ID_recu, item, nb)
+                        # Message de réussite dans la console
+                        # print("Gems >> {0} a donné {1} {2} à {3}".format(nom, nb, item, Nom_recu))
+                        GF.addStats(PlayerID, ["give", "give"], 1)
+                        GF.addStats(PlayerID, ["give", "give | nb items"], nb)
+                        GF.addStats(PlayerID, ["give", "give | item | {}".format(item)], nb)
+                        return {'error': 0, 'etat': 'OK', 'lang': lang, 'nom': nom, 'nom_recu': Nom_recu, 'item': item, 'nb': nb}
+                    else:
+                        return {'error': 5, 'etat': 'NOK', 'lang': lang, 'nom_recu': Nom_recu}
+                else:
+                    return {'error': 4, 'etat': 'NOK', 'lang': lang, 'nom': nom, 'nom_recu': Nom_recu, 'item': item, 'nb': nb}
+            elif nb == -1:
+                nbItem = int(sql.value(PlayerID, "inventory", "Stock", "Item", item))
+                if nb > 0:
+                    if GF.testInvTaille(ID_recu) or item in ItemSpeciaux:
+                        GF.addInventory(PlayerID, item, -nb)
+                        GF.addInventory(ID_recu, item, nb)
+                        # Message de réussite dans la console
+                        # print("Gems >> {0} a donné {1} {2} à {3}".format(nom, nb, item, Nom_recu))
+                        GF.addStats(PlayerID, ["give", "give"], 1)
+                        GF.addStats(PlayerID, ["give", "give | nb items"], nb)
+                        return {'error': 0, 'etat': 'OK', 'lang': lang, 'nom': nom, 'nom_recu': Nom_recu, 'item': item, 'nb': nb}
+                    else:
+                        return {'error': 5, 'etat': 'NOK', 'lang': lang, 'nom_recu': Nom_recu}
+                else:
+                    return {'error': 4, 'etat': 'NOK', 'lang': lang, 'nom': nom, 'nom_recu': Nom_recu, 'item': item, 'nb': nb}
+            else :
+                return {'error': 3, 'etat': 'NOK', 'lang': lang}
+        except ValueError:
+            return {'error': 2, 'etat': 'Warning', 'lang': lang, 'gain': False, 'don': False}
+            pass
+    else:
+        return {'error': 1, 'etat': 'couldown', 'lang': lang, 'gain': False, 'don': False, 'couldown': str(GF.couldown("4s"))}

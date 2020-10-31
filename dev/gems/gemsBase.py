@@ -144,7 +144,7 @@ def inventory(param):
         'items': {
             'special': {},
             'minerai': {},
-            'piosson': {},
+            'poisson': {},
             'plante': {},
             'consommable': {},
             'emoji': {},
@@ -157,7 +157,6 @@ def inventory(param):
         try:
             tailleMax = GF.invMax
             tailletot = 0
-            invD = {'error': 0, 'etat': 'OK', 'lang': lang}
             inv = sql.valueAll(PlayerID, "inventory", "Item, Stock, Durability")
             for c in GF.objetOutil:
                 for x in inv:
@@ -188,9 +187,7 @@ def inventory(param):
                             else:
                                 tailletot += c.poids * int(x[1])
 
-            invD['taille'] = [tailletot, tailleMax]
-            invD['inventory'] = cat
-            return invD
+            return {'error': 0, 'etat': 'OK', 'lang': lang, 'taille': [int(tailletot), tailleMax], 'inventory': cat}
         except:
             return {'error': 2, 'etat': 'NOK', 'lang': lang}
     else:
@@ -205,7 +202,7 @@ def forge(param):
     PlayerID = param["PlayerID"]
 
     if sql.spam(PlayerID, GF.couldown("4s"), "forge"):
-        if GF.testInvTaille(PlayerID):
+        if GF.testInvTaille(PlayerID) or item == "None":
             sql.updateComTime(PlayerID, "forge")
             # -------------------------------------
             # Affichage des recettes disponible
@@ -225,9 +222,11 @@ def forge(param):
                         for x in c.items:
                             GF.addInventory(PlayerID, x, (-1*(c.items[x]))*nb)
                         GF.addInventory(PlayerID, item, nb)
+                        for y in GF.objetOutil:
+                            if item == y.nom:
+                                sql.update(PlayerID, "inventory", "Durability", y.durabilite, "Item", item)
                         return {'error': 0, 'etat': 'OK', 'lang': lang}
-                    else:
-                        return {'error': 3, 'etat': 'NOK', 'lang': lang}
+                return {'error': 3, 'etat': 'NOK', 'lang': lang}
         else:
             return {'error': 2, 'etat': 'NOK', 'lang': lang}
     else:

@@ -629,14 +629,41 @@ def addSuccess(PlayerID, fieldName, fieldValue):
         return False
 
 
+def updateHFC(PlayerID, type, ID, time, stock):
+    nameDB = 'hfc'
+    # try:
+    value = sql.value(PlayerID, nameDB, "Stock", ["IDhfc", "Type"], [ID, type])
+    # print(value)
+    if value is not False:
+        # print("{0}|{1}|{2}|{3}".format(type, ID, time, stock))
+        if sql.update(PlayerID, nameDB, ["Stock", "Time"], [stock, time], ["IDhfc", "Type"], [ID, type]):
+            # print("Update True")
+            return True
+        else:
+            # print("Update False")
+            return False
+    else:
+        if sql.create(PlayerID, nameDB, ["IDhfc", "Type", "Time", "Stock"], [ID, type, time, stock]):
+            # print("Create True")
+            return True
+        else:
+            # print("Create False")
+            return False
+    # except:
+    #     print("Error")
+    #     return False
+
+
 def durability(PlayerID, outil):
     # gestion de la durabilité d'un outil
     stock = sql.value(PlayerID, "inventory", "Stock", "Item", outil)
     if stock is not False:
         nb = int(stock)
         if nb > 0:
-            sql.update(PlayerID, "inventory", "Durability", -1, "Item", outil)
-            if sql.value(PlayerID, "inventory", "Durability", "Item", outil) <= 0:
+            oldDurability = sql.value(PlayerID, "inventory", "Durability", "Item", outil)
+            new_value = int(oldDurability) - 1
+            sql.update(PlayerID, "inventory", "Durability", new_value, "Item", outil)
+            if new_value <= 0:
                 for c in objetOutil:
                     if c.nom == outil:
                         sql.update(PlayerID, "inventory", "Durability", c.durabilite, "Item", outil)

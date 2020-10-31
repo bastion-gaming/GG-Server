@@ -86,9 +86,11 @@ def roulette(param):
         GF.addStats(PlayerID, ["divers", "DiscordCop Amende"], 1)
         if gems > 100 :
             sql.addGems(PlayerID, -100)
+            amende = 100
         else :
             sql.addGems(PlayerID, -gems)
-        return {'error': 2, 'etat': 'anticheat', 'lang': lang}
+            amende = gems
+        return {'error': 2, 'etat': 'anticheat', 'lang': lang, 'amende': amende}
 
     elif gems < mise:
         return {'error': 3, 'etat': 'NOK', 'lang': lang}
@@ -135,6 +137,7 @@ def roulette(param):
                     V = -V
                 pourcentage = (10-V)/10
                 # desc["desc"] = lang_P.forge_msg(lang, "roulette", [int(pourcentage*100)], False, 1)
+                d['etat'] = "Victoire"
                 if myV == VB:
                     gain = 2*mise
                 else:
@@ -145,6 +148,7 @@ def roulette(param):
                 GF.addStats(PlayerID, ["roulette", "roulette | gain"], gain)
             else:
                 # desc["desc"] = lang_P.forge_msg(lang, "roulette", None, False, 0)
+                d['etat'] = "Echec"
                 gain = 0
                 pourcentage = 0
                 for one in VM:
@@ -154,6 +158,7 @@ def roulette(param):
                             V = -V
                         pourcentage = (10-V)/10
                         # desc["desc"] = lang_P.forge_msg(lang, "roulette", [int(pourcentage*100)], False, 2)
+                        d['etat'] = "Defaite"
                         if myV == one:
                             gain = -mise
                         else:
@@ -194,9 +199,11 @@ def slots(param):
             GF.addStats(PlayerID, ["divers", "DiscordCop Amende"], 1)
             if gems > 100 :
                 sql.addGems(PlayerID, -100)
+                amende = 100
             else :
                 sql.addGems(PlayerID, -gems)
-            return {'error': 2, 'etat': 'anticheat', 'lang': lang}
+                amende = gems
+            return {'error': 2, 'etat': 'anticheat', 'lang': lang, 'amende': amende}
         elif int(imise) < 10:
             mise = 10
         elif int(imise) > d["misemax"]:
@@ -244,6 +251,8 @@ def slots(param):
             nbrand = r.randint(0, LSI-1)
             result.append(slotsItem[nbrand])
         d['result'] = result
+        d['ruby'] = False
+        d['beer'] = False
 
         # ===================================================================
         # Attribution des prix
@@ -253,6 +262,7 @@ def slots(param):
             GF.addInventory(PlayerID, "ruby", 1)
             GF.addStats(PlayerID, ["slots", "slots | ruby"], 1)
             gain = 16
+            d['ruby'] = True
         # ===================================================================
         # Super gain, 3 chiffres identique
         elif result[3] == "seven" and result[4] == "seven" and result[5] == "seven":
@@ -281,6 +291,7 @@ def slots(param):
         elif (result[3] == "beer" and result[4] == "beer") or (result[4] == "beer" and result[5] == "beer") or (result[3] == "beer" and result[5] == "beer"):
             GF.addStats(PlayerID, ["slots", "slots | Beer"], 1)
             gain = 5
+            d['beer'] = True
         # ===================================================================
         # Explosion de la machine
         elif result[3] == "boom" and result[4] == "boom" and result[5] == "boom":
@@ -338,7 +349,7 @@ def slots(param):
             if GF.testInvTaille(PlayerID):
                 GF.addInventory(PlayerID, "grapes", nbGrapes)
                 GF.addStats(PlayerID, ["slots", "slots | Grapes"], nbGrapes)
-                d['grapes'] = nbCookie
+                d['grapes'] = nbGrapes
             else:
                 d['grapes'] = 0
         else:
@@ -351,11 +362,12 @@ def slots(param):
             for c in GF.objetItem:
                 if c.nom == "backpack":
                     p = c.poids
-            d['backpack'] = [1, p]
+            d['backpack'] = p
         else:
             d['backpack'] = False
 
         # Calcul du prix
+        d['gain'] = gain
         d['prix'] = gain * mise
         sql.addGems(PlayerID, val)
         GF.addStats(PlayerID, ["slots", "slots | perte"], mise)

@@ -1,141 +1,141 @@
 {
     "cobblestone": {
-        "vente": 9,
+        "vente": 8,
         "achat": 9,
         "precVente": 9,
-        "precAchat": 10
+        "precAchat": 9
     },
     "iron": {
-        "vente": 17,
-        "achat": 168,
-        "precVente": 17,
-        "precAchat": 155
+        "vente": 15,
+        "achat": 134,
+        "precVente": 15,
+        "precAchat": 139
     },
     "gold": {
         "vente": 32,
-        "achat": 156,
-        "precVente": 32,
-        "precAchat": 168
+        "achat": 170,
+        "precVente": 34,
+        "precAchat": 170
     },
     "diamond": {
-        "vente": 24,
-        "achat": 282,
-        "precVente": 25,
-        "precAchat": 259
+        "vente": 26,
+        "achat": 345,
+        "precVente": 23,
+        "precAchat": 290
     },
     "emerald": {
-        "vente": 168,
-        "achat": 212,
-        "precVente": 170,
-        "precAchat": 193
+        "vente": 165,
+        "achat": 222,
+        "precVente": 169,
+        "precAchat": 220
     },
     "ruby": {
-        "vente": 1027,
-        "achat": 5508,
-        "precVente": 1059,
-        "precAchat": 5798
+        "vente": 980,
+        "achat": 4168,
+        "precVente": 934,
+        "precAchat": 4791
     },
     "fish": {
-        "vente": 11,
-        "achat": 36,
-        "precVente": 11,
-        "precAchat": 35
+        "vente": 12,
+        "achat": 372,
+        "precVente": 12,
+        "precAchat": 396
     },
     "tropicalfish": {
-        "vente": 50,
-        "achat": 144,
-        "precVente": 58,
-        "precAchat": 136
+        "vente": 47,
+        "achat": 123,
+        "precVente": 43,
+        "precAchat": 131
     },
     "blowfish": {
-        "vente": 33,
-        "achat": 143,
-        "precVente": 36,
-        "precAchat": 146
+        "vente": 30,
+        "achat": 36,
+        "precVente": 32,
+        "precAchat": 32
     },
     "octopus": {
-        "vente": 92,
-        "achat": 212,
-        "precVente": 87,
-        "precAchat": 226
+        "vente": 94,
+        "achat": 94,
+        "precVente": 95,
+        "precAchat": 197
     },
     "seed": {
-        "vente": 10,
-        "achat": 369,
+        "vente": 9,
+        "achat": 284,
         "precVente": 10,
-        "precAchat": 342
+        "precAchat": 306
     },
     "cacao": {
         "vente": 10,
-        "achat": 227,
+        "achat": 217,
         "precVente": 10,
-        "precAchat": 209
+        "precAchat": 229
     },
     "potato": {
-        "vente": 14,
-        "achat": 24,
-        "precVente": 14,
-        "precAchat": 164
+        "vente": 11,
+        "achat": 28,
+        "precVente": 12,
+        "precAchat": 28
     },
     "oak": {
-        "vente": 78,
+        "vente": 75,
         "achat": 82,
-        "precVente": 78,
-        "precAchat": 78
+        "precVente": 82,
+        "precAchat": 82
     },
     "spruce": {
-        "vente": 47,
-        "achat": 78,
-        "precVente": 49,
-        "precAchat": 75
+        "vente": 42,
+        "achat": 75,
+        "precVente": 46,
+        "precAchat": 80
     },
     "palm": {
-        "vente": 109,
-        "achat": 109,
-        "precVente": 101,
-        "precAchat": 109
+        "vente": 98,
+        "achat": 119,
+        "precVente": 109,
+        "precAchat": 110
     },
     "wheat": {
-        "vente": 43,
-        "achat": 79,
-        "precVente": 44,
-        "precAchat": 86
+        "vente": 45,
+        "achat": 85,
+        "precVente": 42,
+        "precAchat": 85
     },
     "grapes": {
-        "vente": 9,
-        "achat": 38,
+        "vente": 8,
+        "achat": 31,
         "precVente": 9,
-        "precAchat": 46
+        "precAchat": 39
     },
     "wine_glass": {
-        "vente": 167,
-        "achat": 223,
-        "precVente": 164,
-        "precAchat": 205
+        "vente": 136,
+        "achat": 204,
+        "precVente": 150,
+        "precAchat": 209
     },
     "beer": {
-        "vente": 48,
-        "achat": 3793,
-        "precVente": 40,
-        "precAchat": 4570
+        "vente": 45,
+        "achat": 3030,
+        "precVente": 43,
+        "precAchat": 3224
     },
     "chocolate": {
-        "vente": 250,
-        "achat": 901,
-        "precVente": 243,
-        "precAchat": 959
+        "vente": 819,
+        "achat": 819,
+        "precVente": 242,
+        "precAchat": 819
     },
     "fries": {
-        "vente": 165,
-        "achat": 166,
-        "precVente": 159,
-        "precAchat": 179
+        "vente": 172,
+        "achat": 172,
+        "precVente": 166,
+        "precAchat": 172
     },
     "cookie": {
-        "vente": 42,
-        "achat": 69,
-        "precVente": 39,
-        "precAchat": 77
+        "vente": 44,
+        "achat": 65,
+        "precVente": 43,
+        "precAchat": 81
     },
     "candy": {
         "vente": 1,
@@ -169,15 +169,15 @@
     },
     "pumpkin": {
         "vente": 57,
-        "achat": 65,
-        "precVente": 64,
-        "precAchat": 64
+        "achat": 64,
+        "precVente": 59,
+        "precAchat": 59
     },
     "pumpkinpie": {
-        "vente": 945,
-        "achat": 1030,
-        "precVente": 945,
-        "precAchat": 1020
+        "vente": 913,
+        "achat": 913,
+        "precVente": 878,
+        "precAchat": 937
     },
     "cupcake": {
         "vente": 1700,
@@ -204,46 +204,46 @@
         "precAchat": 100
     },
     "iron_pickaxe": {
-        "vente": 16,
-        "achat": 3204,
-        "precVente": 16,
-        "precAchat": 2995
+        "vente": 2,
+        "achat": 3268,
+        "precVente": 17,
+        "precAchat": 3236
     },
     "diamond_pickaxe": {
-        "vente": 175,
-        "achat": 37359,
-        "precVente": 164,
-        "precAchat": 41977
+        "vente": 187,
+        "achat": 32658,
+        "precVente": 182,
+        "precAchat": 35117
     },
     "iron_shovel": {
-        "vente": 89,
-        "achat": 412,
-        "precVente": 86,
-        "precAchat": 347
+        "vente": 76,
+        "achat": 437,
+        "precVente": 80,
+        "precAchat": 486
     },
     "diamond_shovel": {
-        "vente": 1345,
-        "achat": 13770,
-        "precVente": 1462,
-        "precAchat": 16591
+        "vente": 1005,
+        "achat": 13736,
+        "precVente": 1156,
+        "precAchat": 15973
     },
     "planting_plan": {
-        "vente": 150,
-        "achat": 158,
-        "precVente": 148,
-        "precAchat": 157
+        "vente": 153,
+        "achat": 153,
+        "precVente": 158,
+        "precAchat": 158
     },
     "barrel": {
-        "vente": 484,
-        "achat": 1217,
-        "precVente": 480,
-        "precAchat": 1338
+        "vente": 533,
+        "achat": 983,
+        "precVente": 508,
+        "precAchat": 1131
     },
     "furnace": {
-        "vente": 130,
-        "achat": 156,
-        "precVente": 120,
-        "precAchat": 186
+        "vente": 149,
+        "achat": 149,
+        "precVente": 136,
+        "precAchat": 160
     },
     "bank_upgrade": {
         "vente": 0,
