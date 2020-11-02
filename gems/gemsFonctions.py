@@ -3,7 +3,7 @@ import datetime as dt
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
 from database import SQLite as sql
-from gems import gemsItems as GI, gemsStats as GS
+from gems import gemsItems as GI, gemsStats as GS, gemsCasino as GC
 import json
 from languages import lang as lang_P
 # from gems import gemsItems as GI, gemsStats as GS
@@ -284,6 +284,7 @@ def loadItem(F=False):
             GS.csv_add(x.nom)
         for x in objetOutil:
             GS.csv_add(x.nom)
+        GC.checkMB()
     ActuBourse()
 # <<< def loadItem(F = None):
 
@@ -342,6 +343,7 @@ objetCommande = [
     Commande("gamble", 7),
     Commande("slots", 7),
     Commande("roulette", 7),
+    Commande("marketbet", 7),
 
     Commande("success", 0)
 ]
@@ -684,27 +686,52 @@ def addSuccess(PlayerID, fieldName, fieldValue):
 
 def updateHFC(PlayerID, type, ID, time, stock):
     nameDB = 'hfc'
-    # try:
-    value = sql.value(PlayerID, nameDB, "Stock", ["IDhfc", "Type"], [ID, type])
-    # print(value)
-    if value is not False:
-        # print("{0}|{1}|{2}|{3}".format(type, ID, time, stock))
-        if sql.update(PlayerID, nameDB, ["Stock", "Time"], [stock, time], ["IDhfc", "Type"], [ID, type]):
-            # print("Update True")
-            return True
+    try:
+        value = sql.value(PlayerID, nameDB, "Stock", ["IDhfc", "Type"], [ID, type])
+        # print(value)
+        if value is not False:
+            # print("{0}|{1}|{2}|{3}".format(type, ID, time, stock))
+            if sql.update(PlayerID, nameDB, ["Stock", "Time"], [stock, time], ["IDhfc", "Type"], [ID, type]):
+                # print("Update True")
+                return True
+            else:
+                # print("Update False")
+                return False
         else:
-            # print("Update False")
-            return False
-    else:
-        if sql.create(PlayerID, nameDB, ["IDhfc", "Type", "Time", "Stock"], [ID, type, time, stock]):
-            # print("Create True")
-            return True
+            if sql.create(PlayerID, nameDB, ["IDhfc", "Type", "Time", "Stock"], [ID, type, time, stock]):
+                # print("Create True")
+                return True
+            else:
+                # print("Create False")
+                return False
+    except:
+        print("Error")
+        return False
+
+
+def updateMb(PlayerID, Item, perCent, mise):
+    nameDB = 'casino'
+    try:
+        value = sql.value(PlayerID, nameDB, "miseMB", "ItemMB", Item)
+        # print(value)
+        if value is not False:
+            # print("{0}|{1}|{2}|{3}".format(type, ID, time, stock))
+            if sql.update(PlayerID, nameDB, ["miseMB", "perCentMB"], [mise, perCent], "ItemMB", Item):
+                # print("Update True")
+                return True
+            else:
+                # print("Update False")
+                return False
         else:
-            # print("Create False")
-            return False
-    # except:
-    #     print("Error")
-    #     return False
+            if sql.create(PlayerID, nameDB, ["ItemMB", "perCentMB", "miseMB"], [Item, perCent, mise]):
+                # print("Create True")
+                return True
+            else:
+                # print("Create False")
+                return False
+    except:
+        print("Error")
+        return False
 
 
 def durability(PlayerID, outil):

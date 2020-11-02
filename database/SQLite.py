@@ -219,7 +219,35 @@ def get_Godchilds(PlayerID):
 
 # -------------------------------------------------------------------------------
 def in_gems(fieldName, filtre = None, filtreValue = None):
-    script = "SELECT {0} FROM gems".format(fieldName)
+    """
+    string/tab      fieldname
+    string/tab      filtre
+    string/tab      filtreValue
+    """
+    return in_table("gems", fieldName, filtre, filtreValue)
+
+
+# -------------------------------------------------------------------------------
+def in_table(nameDB, fieldName, filtre = None, filtreValue = None):
+    """
+    string          nameDB
+    string/tab      fieldname
+    string/tab      filtre
+    string/tab      filtreValue
+    """
+    with open("{0}/DBlist.json".format(DIR), "r") as f:
+        list = json.load(f)
+    if nameDB not in list:
+        return False
+
+    if type(fieldName) is str:
+        script = "SELECT {0} FROM {1}".format(fieldName, nameDB)
+    elif type(fieldName) is list:
+        script += "SELECT {0}".format(fieldName[0])
+        for i in range(1, len(filtre)):
+            script += ",{0}".format(fieldName[i])
+        script += " FROM {0}".format(nameDB)
+
     if filtre is not None:
         if type(filtre) is list:
             script += " WHERE {0} = '{1}'".format(filtre[0], filtreValue[0])

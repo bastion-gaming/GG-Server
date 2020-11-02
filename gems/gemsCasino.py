@@ -1,7 +1,8 @@
 import random as r
 from database import SQLite as sql
-from gems import gemsFonctions as GF
+from gems import gemsFonctions as GF, gemsItems as GI
 from core import level as lvl
+import json
 
 
 def gamble(param):
@@ -407,3 +408,89 @@ def slots(param):
         return {'error': 0, 'etat': 'OK', 'lang': lang, 'slots': d}
     else:
         return {'error': 1, 'etat': 'couldown', 'lang': lang, 'couldown': GF.couldown("8s")}
+
+
+def marketbet(param):
+    lang = param["lang"]
+    flag_test_item = False
+    PlayerID = param["PlayerID"]
+    mise = int(param["mise"])
+    item = param["item"]
+    perCent = int(param["perCent"])
+    gems = int(sql.value(PlayerID, "gems", "Gems"))
+
+    if GF.LevelCommande(PlayerID, "marketbet"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
+    if mise < 0:
+        lvl.addxp(PlayerID, -10)
+        GF.addStats(PlayerID, ["divers", "DiscordCop Amende"], 1)
+        if gems > 100 :
+            sql.addGems(PlayerID, -100)
+            amende = 100
+        else :
+            sql.addGems(PlayerID, -gems)
+            amende = gems
+        return {'error': 2, 'etat': 'anticheat', 'lang': lang, 'amende': amende}
+
+    elif gems < mise:
+        # desc = lang_P.forge_msg(lang, "marketbet", None, False, 1)
+        return {'error': 3, 'etat': 'NOK', 'lang': lang}
+
+    elif sql.spam(PlayerID, GF.couldown("8s"), "marketbet"):
+        sql.updateComTime(PlayerID, "marketbet")
+
+        # Recherche l'item dans la liste des items
+        for c in GF.objetItem:
+            if item == c.nom:
+                flag_test_item = True
+        for c in GF.objetOutil:
+            if item == c.nom:
+                flag_test_item = True
+
+        # S'il existe dans la liste alors on continue
+        if(flag_test_item):
+            if GF.updateMb(PlayerID, item, perCent, mise):
+                {'error': 0, 'etat': 'OK', 'lang': lang}
+            else:
+                {'error': 5, 'etat': 'NOK', 'lang': lang}
+        else:
+            {'error': 4, 'etat': 'NOK', 'lang': lang}
+
+    else:
+        return {'error': 1, 'etat': 'couldown', 'lang': lang, 'couldown': GF.couldown("8s")}
+
+
+def checkMB():
+    # Récupération de tous les paries
+    paries = sql.in_table("casino", ["idgems", "ItemMB", "perCentMB", "miseMB"])
+    if paries is []:
+        return False
+    # Récuperation des valeurs de la bourse
+    with open('gems/bourse.json', 'r') as fp:
+        bourse = json.load(fp)
+    for one in paries:
+        PlayerID = one[0]
+        item = one[1]
+        perCent = one[2]
+        mise = one[3]
+        if mise > 0:
+            # Calcul du pourcentage
+            for c in GF.objetItem:
+                if item == c.nom:
+                    itemB = bourse[c.nom]
+                    percentV = ((c.vente*100)//itemB["precVente"])-100
+                    percentA = ((c.achat*100)//itemB["precAchat"])-100
+            for c in GF.objetOutil:
+                if item == c.nom:
+                    itemB = bourse[c.nom]
+                    percentV = ((c.vente*100)//itemB["precVente"])-100
+                    percentA = ((c.achat*100)//itemB["precAchat"])-100
+            if perCent == percentA or perCent == percentV:
+                sql.addGems(PlayerID, 5*mise)
+            elif (perCent > (percentA - 3) and perCent < (percentA + 3)) or (perCent > (percentV - 3) and perCent < (percentV + 3)):
+                sql.addGems(PlayerID, 3*mise)
+            elif (perCent > (percentA - 6) and perCent < (percentA + 6)) or (perCent > (percentV - 6) and perCent < (percentV + 6)):
+                sql.addGems(PlayerID, 2*mise)
+        GF.updateMb(PlayerID, item, 0, 0)
+    return True
