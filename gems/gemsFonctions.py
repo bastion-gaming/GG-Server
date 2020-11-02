@@ -5,6 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from database import SQLite as sql
 from gems import gemsItems as GI, gemsStats as GS
 import json
+from languages import lang as lang_P
 # from gems import gemsItems as GI, gemsStats as GS
 
 idGetGems = 620558080551157770
@@ -20,32 +21,35 @@ invMax = 5000
 # Définition des classes
 class Item:
 
-    def __init__(self, nom, vente, achat, poids, type):
+    def __init__(self, nom, vente, achat, poids, type, level):
         self.nom = nom
         self.vente = vente
         self.achat = achat
         self.poids = poids
         self.type = type
+        self.level = level
 
 
 class Outil:
 
-    def __init__(self, nom, vente, achat, poids, durabilite, type):
+    def __init__(self, nom, vente, achat, poids, durabilite, type, level):
         self.nom = nom
         self.vente = vente
         self.achat = achat
         self.poids = poids
         self.durabilite = durabilite
         self.type = type
+        self.level = level
 
 
 class Upgrade:
 
-    def __init__(self, nom, vente, achat, type):
+    def __init__(self, nom, vente, achat, type, level):
         self.nom = nom
         self.vente = vente
         self.achat = achat
         self.type = type
+        self.level = level
 
 
 class Recette:
@@ -54,6 +58,13 @@ class Recette:
         self.nom = nom
         self.type = type
         self.items = items
+
+
+class Commande:
+
+    def __init__(self, nom, level):
+        self.nom = nom
+        self.level = level
 
 
 def itemBourse(item, type):
@@ -193,41 +204,42 @@ def loadItem(F=False):
     # ========== Items ==========
 
     global objetItem
+    # nom, vente, achat, poids, type, level
     objetItem = [
-        Item("backpack", m*itemBourse("backpack", "vente"), m*itemBourse("backpack", "achat"), -200, "special"),
-        Item("hyperpack", m*itemBourse("hyperpack", "vente"), m*itemBourse("hyperpack", "achat"), -2000, "special"),
-        Item("fishhook", m*itemBourse("fishhook", "vente"), m*itemBourse("fishhook", "achat"), 1, "special"),
+        Item("backpack", m*itemBourse("backpack", "vente"), m*itemBourse("backpack", "achat"), -200, "special", 1),
+        Item("hyperpack", m*itemBourse("hyperpack", "vente"), m*itemBourse("hyperpack", "achat"), -2000, "special", 8),
+        Item("fishhook", m*itemBourse("fishhook", "vente"), m*itemBourse("fishhook", "achat"), 1, "special", 9),
 
-        Item("cobblestone", m*itemBourse("cobblestone", "vente"), m*itemBourse("cobblestone", "achat"), 4, "minerai"),
-        Item("iron", m*itemBourse("iron", "vente"), m*itemBourse("iron", "achat"), 10, "minerai"),
-        Item("gold", m*itemBourse("gold", "vente"), m*itemBourse("gold", "achat"), 20, "minerai"),
-        Item("diamond", m*itemBourse("diamond", "vente"), m*itemBourse("diamond", "achat"), 40, "minerai"),
-        Item("emerald", m*itemBourse("emerald", "vente"), m*itemBourse("emerald", "achat"), 50, "minerai"),
-        Item("ruby", m*itemBourse("ruby", "vente"), m*itemBourse("ruby", "achat"), 70, "minerai"),
+        Item("cobblestone", m*itemBourse("cobblestone", "vente"), m*itemBourse("cobblestone", "achat"), 4, "minerai", 0),
+        Item("iron", m*itemBourse("iron", "vente"), m*itemBourse("iron", "achat"), 10, "minerai", 0),
+        Item("gold", m*itemBourse("gold", "vente"), m*itemBourse("gold", "achat"), 20, "minerai", 5),
+        Item("diamond", m*itemBourse("diamond", "vente"), m*itemBourse("diamond", "achat"), 40, "minerai", 5),
+        Item("emerald", m*itemBourse("emerald", "vente"), m*itemBourse("emerald", "achat"), 50, "minerai", 11),
+        Item("ruby", m*itemBourse("ruby", "vente"), m*itemBourse("ruby", "achat"), 70, "minerai", 7),
 
-        Item("fish", m*itemBourse("fish", "vente"), m*itemBourse("fish", "achat"), 2, "poisson"),
-        Item("tropicalfish", m*itemBourse("tropicalfish", "vente"), m*itemBourse("tropicalfish", "achat"), 8, "poisson"),
-        Item("blowfish", m*itemBourse("blowfish", "vente"), m*itemBourse("blowfish", "achat"), 8, "poisson"),
-        Item("octopus", m*itemBourse("octopus", "vente"), m*itemBourse("octopus", "achat"), 16, "poisson"),
+        Item("fish", m*itemBourse("fish", "vente"), m*itemBourse("fish", "achat"), 2, "poisson", 3),
+        Item("tropicalfish", m*itemBourse("tropicalfish", "vente"), m*itemBourse("tropicalfish", "achat"), 8, "poisson", 3),
+        Item("blowfish", m*itemBourse("blowfish", "vente"), m*itemBourse("blowfish", "achat"), 8, "poisson", 9),
+        Item("octopus", m*itemBourse("octopus", "vente"), m*itemBourse("octopus", "achat"), 16, "poisson", 9),
 
-        Item("seed", m*itemBourse("seed", "vente"), m*itemBourse("seed", "achat"), 0.5, "plante"),
-        Item("cacao", m*itemBourse("cacao", "vente"), m*itemBourse("cacao", "achat"), 1, "plante"),
-        Item("potato", m*itemBourse("potato", "vente"), m*itemBourse("potato", "achat"), 1, "plante"),
+        Item("seed", m*itemBourse("seed", "vente"), m*itemBourse("seed", "achat"), 0.5, "plante", 6),
+        Item("cacao", m*itemBourse("cacao", "vente"), m*itemBourse("cacao", "achat"), 1, "plante", 9),
+        Item("potato", m*itemBourse("potato", "vente"), m*itemBourse("potato", "achat"), 1, "plante", 9),
 
-        Item("oak", m*itemBourse("oak", "vente"), m*itemBourse("oak", "achat"), 50, "plante"),
-        Item("spruce", m*itemBourse("spruce", "vente"), m*itemBourse("spruce", "achat"), 70, "plante"),
-        Item("palm", m*itemBourse("palm", "vente"), m*itemBourse("palm", "achat"), 60, "plante"),
-        Item("wheat", m*itemBourse("wheat", "vente"), m*itemBourse("wheat", "achat"), 3, "plante"),
-        Item("grapes", m*itemBourse("grapes", "vente"), m*itemBourse("grapes", "achat"), 1, "plante"),
+        Item("oak", m*itemBourse("oak", "vente"), m*itemBourse("oak", "achat"), 50, "plante", 10),
+        Item("spruce", m*itemBourse("spruce", "vente"), m*itemBourse("spruce", "achat"), 70, "plante", 10),
+        Item("palm", m*itemBourse("palm", "vente"), m*itemBourse("palm", "achat"), 60, "plante", 10),
+        Item("wheat", m*itemBourse("wheat", "vente"), m*itemBourse("wheat", "achat"), 3, "plante", 10),
+        Item("grapes", m*itemBourse("grapes", "vente"), m*itemBourse("grapes", "achat"), 1, "plante", 7),
 
-        Item("wine_glass", m*itemBourse("wine_glass", "vente"), m*itemBourse("wine_glass", "achat"), 2, "consommable"),
-        Item("beer", m*itemBourse("beer", "vente"), m*itemBourse("beer", "achat"), 2, "consommable"),
+        Item("wine_glass", m*itemBourse("wine_glass", "vente"), m*itemBourse("wine_glass", "achat"), 2, "consommable", 10),
+        Item("beer", m*itemBourse("beer", "vente"), m*itemBourse("beer", "achat"), 2, "consommable", 7),
 
-        Item("chocolate", m*itemBourse("chocolate", "vente"), m*itemBourse("chocolate", "achat"), 3, "consommable"),
-        Item("fries", m*itemBourse("fries", "vente"), m*itemBourse("fries", "achat"), 30, "consommable"),
-        Item("cookie", m*itemBourse("cookie", "vente"), m*itemBourse("cookie", "achat"), 1, "consommable"),
-        Item("candy", m*itemBourse("candy", "vente"), m*itemBourse("candy", "achat"), 1, "consommable"),
-        Item("lollipop", m*itemBourse("lollipop", "vente"), m*itemBourse("lollipop", "achat"), 2, "consommable")
+        Item("chocolate", m*itemBourse("chocolate", "vente"), m*itemBourse("chocolate", "achat"), 3, "consommable", 10),
+        Item("fries", m*itemBourse("fries", "vente"), m*itemBourse("fries", "achat"), 30, "consommable", 10),
+        Item("cookie", m*itemBourse("cookie", "vente"), m*itemBourse("cookie", "achat"), 1, "consommable", 7),
+        Item("candy", m*itemBourse("candy", "vente"), m*itemBourse("candy", "achat"), 1, "consommable", 4),
+        Item("lollipop", m*itemBourse("lollipop", "vente"), m*itemBourse("lollipop", "achat"), 2, "consommable", 4)
     ]
 
     if not (jour.month == 10 and jour.day >= 22) or (jour.month == 11 and jour.day <= 10):
@@ -238,31 +250,32 @@ def loadItem(F=False):
             ObjetEventEnd.append(one)
 
     objetItem += [
-        Item("pumpkin", m*itemBourse("pumpkin", "vente"), m*itemBourse("pumpkin", "achat"), 5, "halloween"),
-        Item("pumpkinpie", m*itemBourse("pumpkinpie", "vente"), m*itemBourse("pumpkinpie", "achat"), 30, "halloween")
+        Item("pumpkin", m*itemBourse("pumpkin", "vente"), m*itemBourse("pumpkin", "achat"), 5, "halloween", 10),
+        Item("pumpkinpie", m*itemBourse("pumpkinpie", "vente"), m*itemBourse("pumpkinpie", "achat"), 30, "halloween", 10)
     ]
 
     objetItem += [
-        Item("cupcake", m*itemBourse("cupcake", "vente"), m*itemBourse("cupcake", "achat"), 10, "christmas")
+        Item("cupcake", m*itemBourse("cupcake", "vente"), m*itemBourse("cupcake", "achat"), 10, "christmas", 10)
     ]
 
     # ========== Outils ==========
 
     global objetOutil
+    # nom, vente, achat, poids, durabilite, type, level
     objetOutil = [
-        Outil("fishingrod", itemBourse("fishingrod", "vente"), itemBourse("fishingrod", "achat"), 25, 100, ""),
+        Outil("fishingrod", itemBourse("fishingrod", "vente"), itemBourse("fishingrod", "achat"), 25, 100, "", 3),
 
-        Outil("pickaxe", itemBourse("pickaxe", "vente"), itemBourse("pickaxe", "achat"), 15, 75, ""),
-        Outil("iron_pickaxe", itemBourse("iron_pickaxe", "vente"), itemBourse("iron_pickaxe", "achat"), 70, 200, "forge"),
-        Outil("diamond_pickaxe", itemBourse("diamond_pickaxe", "vente"), itemBourse("diamond_pickaxe", "achat"), 150, 450, "forge"),
+        Outil("pickaxe", itemBourse("pickaxe", "vente"), itemBourse("pickaxe", "achat"), 15, 75, "", 0),
+        Outil("iron_pickaxe", itemBourse("iron_pickaxe", "vente"), itemBourse("iron_pickaxe", "achat"), 70, 200, "forge", 5),
+        Outil("diamond_pickaxe", itemBourse("diamond_pickaxe", "vente"), itemBourse("diamond_pickaxe", "achat"), 150, 450, "forge", 11),
 
-        Outil("shovel", itemBourse("shovel", "vente"), itemBourse("shovel", "achat"), 10, 35, ""),
-        Outil("iron_shovel", itemBourse("iron_shovel", "vente"), itemBourse("iron_shovel", "achat"), 60, 100, "forge"),
-        Outil("diamond_shovel", itemBourse("diamond_shovel", "vente"), itemBourse("diamond_shovel", "achat"), 120, 240, "forge"),
+        Outil("shovel", itemBourse("shovel", "vente"), itemBourse("shovel", "achat"), 10, 35, "", 6),
+        Outil("iron_shovel", itemBourse("iron_shovel", "vente"), itemBourse("iron_shovel", "achat"), 60, 100, "forge", 9),
+        Outil("diamond_shovel", itemBourse("diamond_shovel", "vente"), itemBourse("diamond_shovel", "achat"), 120, 240, "forge", 11),
 
-        Outil("planting_plan", itemBourse("planting_plan", "vente"), itemBourse("planting_plan", "achat"), 4, 4, "consommable"),
-        Outil("barrel", itemBourse("barrel", "vente"), itemBourse("barrel", "achat"), 3, 3, "consommable"),
-        Outil("furnace", itemBourse("furnace", "vente"), itemBourse("furnace", "achat"), 2, 2, "consommable")
+        Outil("planting_plan", itemBourse("planting_plan", "vente"), itemBourse("planting_plan", "achat"), 4, 4, "consommable", 10),
+        Outil("barrel", itemBourse("barrel", "vente"), itemBourse("barrel", "achat"), 3, 3, "consommable", 10),
+        Outil("furnace", itemBourse("furnace", "vente"), itemBourse("furnace", "achat"), 2, 2, "consommable", 10)
     ]
 
     if sql.spam(PlayerID_GetGems, couldown("8h"), "bourse"):
@@ -289,8 +302,48 @@ objetRecette = [
 # ========== Upgrade ==========
 
 global objetUpgrade
+# nom, vente, achat, type, level
 objetUpgrade = [
-    Upgrade("bank", 0, 10000, "bank")
+    Upgrade("bank", 0, 10000, "bank", 8)
+]
+
+# ========== Commande ==========
+
+global objetCommande
+# nom, level
+objetCommande = [
+    Commande("begin", 0),
+    Commande("connect", 0),
+    Commande("infos", 0),
+    Commande("username", 0),
+    Commande("baltop", 2),
+    Commande("inventory", 1),
+    Commande("lang", 0),
+    Commande("godparent", 0),
+    Commande("forge", 5),
+
+    Commande("market", 1),
+    Commande("buy", 1),
+    Commande("sell", 1),
+    Commande("pay", 2),
+    Commande("give", 2),
+
+    Commande("daily", 0),
+    Commande("bank", 8),
+    Commande("stealing", 4),
+    Commande("crime", 4),
+    Commande("mine", 0),
+    Commande("dig", 6),
+    Commande("fish", 3),
+    Commande("hothouse", 10),
+    Commande("ferment", 10),
+    Commande("cooking", 10),
+
+    Commande("gamble", 7),
+    Commande("slots", 7),
+    Commande("roulette", 7),
+
+    Commande("success", 0)
 ]
 
 
@@ -390,11 +443,11 @@ def startKit(ID):
     if gems == 0:
         sql.addGems(ID, 100)
         addInventory(ID, "pickaxe", 1)
-        addInventory(ID, "fishingrod", 1)
-        addInventory(ID, "shovel", 1)
-        sql.update(ID, "inventory", "Durability", 20, "Item", "pickaxe")
-        sql.update(ID, "inventory", "Durability", 20, "Item", "fishingrod")
-        sql.update(ID, "inventory", "Durability", 20, "Item", "shovel")
+        # addInventory(ID, "fishingrod", 1)
+        # addInventory(ID, "shovel", 1)
+        sql.update(ID, "inventory", "Durability", 35, "Item", "pickaxe")
+        # sql.update(ID, "inventory", "Durability", 20, "Item", "fishingrod")
+        # sql.update(ID, "inventory", "Durability", 20, "Item", "shovel")
 
 
 def ChiffreRomain(nb):
@@ -670,3 +723,55 @@ def durability(PlayerID, outil):
                 addInventory(PlayerID, outil, -1)
                 return True
     return False
+
+
+def LevelCommande(PlayerID, commande):
+    lvl = int(sql.value(PlayerID, "gems", "Level"))
+    lvlcomm = False
+    for comm in objetCommande:
+        if comm.nom == commande:
+            lvlcomm = comm.level
+    if lvlcomm is False:
+        return True # Aucune commande n'a été trouvée
+    if lvl >= lvlcomm:
+        return False # Le niveau de l'utilisateur est suffisant
+    else:
+        return True # Le niveau de l'utilisateur est insuffisant
+
+
+def LevelObjet(PlayerID, nameObjet):
+    lvl = int(sql.value(PlayerID, "gems", "Level"))
+    lvlObjet = False
+    for o in objetItem:
+        if o.nom == nameObjet:
+            lvlObjet = o.level
+    for o in objetOutil:
+        if o.nom == nameObjet:
+            lvlObjet = o.level
+    for o in objetUpgrade:
+        if o.nom == nameObjet:
+            lvlObjet = o.level
+    if lvlObjet is False:
+        return True # Aucun objet n'a été trouvé
+    if lvl >= lvlObjet:
+        return False # Le niveau de l'utilisateur est suffisant
+    else:
+        return True # Le niveau de l'utilisateur est insuffisant
+
+
+def LevelUPLoot(PlayerID, lang):
+    msg = {'Commandes': [], 'Objets': {lang_P.forge_msg(lang, "level loot", None, False, 0): [], lang_P.forge_msg(lang, "level loot", None, False, 1): [], lang_P.forge_msg(lang, "level loot", None, False, 2): []}}
+    lvl = int(sql.value(PlayerID, "gems", "Level"))
+    for x in objetCommande:
+        if x.level == lvl+1:
+            msg['Commandes'].append(x.nom)
+    for x in objetItem:
+        if x.level == lvl+1:
+            msg['Objets'][lang_P.forge_msg(lang, "level loot", None, False, 0)].append(x.nom)
+    for x in objetOutil:
+        if x.level == lvl+1:
+            msg['Objets'][lang_P.forge_msg(lang, "level loot", None, False, 1)].append(x.nom)
+    for x in objetUpgrade:
+        if x.level == lvl+1:
+            msg['Objets'][lang_P.forge_msg(lang, "level loot", None, False, 2)].append(x.nom)
+    return msg

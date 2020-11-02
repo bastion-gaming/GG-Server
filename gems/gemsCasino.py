@@ -11,6 +11,9 @@ def gamble(param):
     valeur = int(param["valeur"])
     gems = sql.value(PlayerID, "gems", "Gems")
 
+    if GF.LevelCommande(PlayerID, "gamble"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if valeur < 0:
         # desc = lang_P.forge_msg(lang, "DiscordCop Amende")
         GF.addStats(PlayerID, ["divers", "DiscordCop Amende"], 1)
@@ -62,6 +65,10 @@ def gamble(param):
 def roulette(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
+
+    if GF.LevelCommande(PlayerID, "roulette"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     try:
         myV = int(param["valeur"])
     except:
@@ -189,6 +196,10 @@ def slots(param):
     d = dict()
     gems = sql.value(PlayerID, "gems", "Gems")
     niveau = sql.value(PlayerID, "gems", "Level")
+
+    if GF.LevelCommande(PlayerID, "slots"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if niveau <= 5:
         d["misemax"] = 50
     else:

@@ -80,5 +80,11 @@
       "Having {0} {1} in his inventory",
       "Run the command `daily` {0} consecutive days",
       ""
+    ],
+  "level loot":
+    [
+      "Items",
+      "Tools",
+      "Upgrades"
     ]
 }

@@ -12,6 +12,9 @@ def buy(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
 
+    if GF.LevelCommande(PlayerID, "buy"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if sql.spam(PlayerID, GF.couldown("4s"), "buy"):
         if int(nb) < 0:
             sql.addGems(PlayerID, -100)
@@ -25,6 +28,8 @@ def buy(param):
             soldeSpinelles = sql.value(PlayerID, "gems", "Spinelles")
             for c in GF.objetItem :
                 if item == c.nom :
+                    if GF.LevelObjet(PlayerID, item):
+                        return {'error': 98, 'etat': 'Level Objet NOK', 'lang': lang, 'item': item}
                     check = False
                     prix = (c.achat*nb)
                     if c.type != "spinelle":
@@ -51,6 +56,8 @@ def buy(param):
                     break
             for c in GF.objetOutil :
                 if item == c.nom :
+                    if GF.LevelObjet(PlayerID, item):
+                        return {'error': 98, 'etat': 'Level Objet NOK', 'lang': lang, 'item': item}
                     check = False
                     prix = c.achat*nb
                     if c.type != "spinelle":
@@ -76,6 +83,8 @@ def buy(param):
                     break
             for c in GF.objetUpgrade:
                 if item == c.nom :
+                    if GF.LevelObjet(PlayerID, item):
+                        return {'error': 98, 'etat': 'Level Objet NOK', 'lang': lang, 'item': item}
                     check = False
                     if c.type == "bank":
                         soldeMax = sql.value(PlayerID, "gems", "BankSMax")
@@ -131,6 +140,9 @@ def sell(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
 
+    if GF.LevelCommande(PlayerID, "sell"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if sql.spam(PlayerID, GF.couldown("4s"), "sell"):
         nbItem = sql.value(PlayerID, "inventory", "Stock", "Item", item)
         if nbItem is False:
@@ -141,9 +153,13 @@ def sell(param):
         check = False
         for c in GF.objetItem:
             if item == c.nom:
+                if GF.LevelObjet(PlayerID, item):
+                    return {'error': 98, 'etat': 'Level Objet NOK', 'lang': lang, 'item': item}
                 check = True
         for c in GF.objetOutil:
             if item == c.nom:
+                if GF.LevelObjet(PlayerID, item):
+                    return {'error': 98, 'etat': 'Level Objet NOK', 'lang': lang, 'item': item}
                 check = True
         if nbItem >= nb and nb > 0:
             for c in GF.objetItem:
@@ -209,6 +225,9 @@ def market(param):
             'event': {}
         }
     }
+    if GF.LevelCommande(PlayerID, "market"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if sql.spam(PlayerID, GF.couldown("4s"), "market"):
         if sql.spam(GF.PlayerID_GetGems, GF.couldown("8h"), "bourse"):
             GF.loadItem()
@@ -253,15 +272,16 @@ def market(param):
                     else:
                         pourcentageA = ""
             # =======================================================================================
-            if c.type == "consommable":
+            if c.type == "consommable" and not GF.LevelObjet(PlayerID, c.nom):
                 Market['market']['special'][c.nom] = {'achat': c.achat, 'PA': pourcentageA, 'vente': c.vente, 'PV': pourcentageV, 'durability': c.durabilite, 'poids': c.poids}
             # =======================================================================================
-            else:
+            elif not GF.LevelObjet(PlayerID, c.nom):
                 Market['market']['outils'][c.nom] = {'achat': c.achat, 'PA': pourcentageA, 'vente': c.vente, 'PV': pourcentageV, 'durability': c.durabilite, 'poids': c.poids}
 
         # Les upgrades
         for c in GF.objetUpgrade:
-            Market['market']['upgrade'][c.nom] = {'achat': c.achat, 'vente': c.vente, 'info': 0}
+            if not GF.LevelObjet(PlayerID, c.nom):
+                Market['market']['upgrade'][c.nom] = {'achat': c.achat, 'vente': c.vente, 'info': 0}
 
         # Les items
         for c in GF.objetItem:
@@ -291,10 +311,10 @@ def market(param):
                     else:
                         pourcentageA = ""
             # =======================================================================================
-            if c.type == "halloween" or c.type == "christmas" or c.type == "event":
+            if (c.type == "halloween" or c.type == "christmas" or c.type == "event") and not GF.LevelObjet(PlayerID, c.nom):
                 Market['market']['items']['event'][c.nom] = {'achat': c.achat, 'PA': pourcentageA, 'vente': c.vente, 'PV': pourcentageV, 'poids': c.poids}
             # =======================================================================================
-            else:
+            elif not GF.LevelObjet(PlayerID, c.nom):
                 Market['market']['items'][c.type][c.nom] = {'achat': c.achat, 'PA': pourcentageA, 'vente': c.vente, 'PV': pourcentageV, 'poids': c.poids}
 
         sql.updateComTime(PlayerID, "market")
@@ -314,6 +334,9 @@ def pay(param):
         return {'error': 405, 'etat': 'PlayerID', 'lang': lang, 'gain': False, 'perte': False, 'success': False}
     ID_recu = ID_recu['ID']
     Nom_recu = sql.value(ID_recu, "gems", "Pseudo")
+
+    if GF.LevelCommande(PlayerID, "pay"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
 
     if sql.spam(PlayerID, GF.couldown("4s"), "pay"):
         try:
@@ -365,6 +388,13 @@ def give(param):
     for c in GF.objetUpgrade:
         if c.nom == item:
             return {'error': 7, 'etat': 'NOK', 'lang': lang}
+
+    if GF.LevelCommande(PlayerID, "give"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+    if GF.LevelObjet(PlayerID, item):
+        return {'error': 98, 'etat': 'Level Objet NOK', 'lang': lang, 'item': item}
+    elif GF.LevelObjet(ID_recu, item):
+        return {'error': 97, 'etat': 'Level Objet NOK', 'lang': lang, 'item': item, 'Nom_recu': Nom_recu}
 
     if sql.spam(PlayerID, GF.couldown("4s"), "give"):
         try:

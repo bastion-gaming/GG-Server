@@ -36,6 +36,9 @@ def infos(param):
     PlayerID = sql.get_PlayerID(sql.nom_ID(ID), param["name_pl"])
 
     if PlayerID['error'] != 404:
+        if GF.LevelCommande(PlayerID, "infos"):
+            return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
         PlayerID = PlayerID['ID']
         info = dict()
         # PlayerID
@@ -54,6 +57,8 @@ def infos(param):
         P = sql.value(PlayerID, "gems", "Godparent")
         info['Godparent'] = sql.value(P, "gems", "Pseudo")
         info['Godchilds'] = sql.get_Godchilds(PlayerID)
+        # Info loot du prochain niveau
+        info['LevelLoot'] = GF.LevelUPLoot(PlayerID, lang)
 
         return {'error': 0, 'etat': 'OK', 'lang': lang, 'info': info}
         # Message de réussite dans la console
@@ -67,6 +72,9 @@ def username(param):
     """**{new username}** | Change ton nom d'utilisateur!"""
     lang = param["lang"]
     PlayerID = sql.get_PlayerID(param["ID"], param["name_pl"])['ID']
+
+    if GF.LevelCommande(PlayerID, "username"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
 
     if sql.spam(PlayerID, GF.couldown("10s"), "username"):
         if sql.in_gems("Pseudo", "Pseudo", param["NU"]) is False:
@@ -91,6 +99,9 @@ def lang(param):
         return {'error': 1, 'etat': 'warning', 'lang': lang}
     PlayerID = ID['ID']
 
+    if GF.LevelCommande(PlayerID, "lang"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if langue == "NONE":
         return {'error': 0, 'etat': 'OK', 'lang': lang, 'list': langlist}
     else:
@@ -107,6 +118,9 @@ def godparent(param):
     """Permet d'ajouter un joueur comme parrain. En le faisant vous touchez un bonus et lui aussi"""
     lang = param["lang"]
     PlayerID = param["PlayerID"]
+    if GF.LevelCommande(PlayerID, "godparent"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     ID = sql.in_gems("ID_{}".format(param["name_pl"]), "Pseudo", param["GPID"])
     if ID is not False:
         ID = ID[0][0]
@@ -151,6 +165,8 @@ def inventory(param):
             'event': {}
         }
     }
+    if GF.LevelCommande(PlayerID, "inventory"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
 
     if sql.spam(PlayerID, GF.couldown("4s"), "inv"):
         sql.updateComTime(PlayerID, "inv")
@@ -201,6 +217,9 @@ def forge(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
 
+    if GF.LevelCommande(PlayerID, "forge"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if sql.spam(PlayerID, GF.couldown("4s"), "forge"):
         if GF.testInvTaille(PlayerID) or item == "None":
             sql.updateComTime(PlayerID, "forge")
@@ -209,12 +228,15 @@ def forge(param):
             if item == "None":
                 recettes = {}
                 for one in GF.objetRecette:
-                    recettes[one.nom] = one.items
+                    if not GF.LevelObjet(PlayerID, one.nom):
+                        recettes[one.nom] = one.items
                 return {'error': 0, 'etat': 'OK', 'lang': lang, 'recettes': recettes}
             # -------------------------------------
             else:
                 for c in GF.objetRecette:
                     if item == c.nom:
+                        if GF.LevelObjet(PlayerID, item):
+                            return {'error': 98, 'etat': 'Level Objet NOK', 'lang': lang, 'item': item}
                         for x in c.items:
                             xStock = sql.value(PlayerID, "inventory", "Stock", "Item", x)
                             if int(xStock)*nb < (c.items[x])*nb:
@@ -238,6 +260,10 @@ def baltop(param):
     filtre = param["filtre"]
     lang = param["lang"]
     PlayerID = param["PlayerID"]
+
+    if GF.LevelCommande(PlayerID, "baltop"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if sql.spam(PlayerID, GF.couldown("4s"), "baltop"):
         sql.updateComTime(PlayerID, "baltop")
         UserList = []

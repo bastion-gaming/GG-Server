@@ -1,7 +1,7 @@
 from database import SQLite as sql
-from gems import gemsSuccess as success
+from gems import gemsSuccess as success, gemsFonctions as GF
 
-# Un = 100 × (1.4)^n
+# Un = 24 × (1.4)^n
 
 
 def addxp(ID, nb):
@@ -32,11 +32,13 @@ def checklevel(ID, platform):
         xp = sql.value(PlayerID, "gems", "XP")
         palier = lvlPalier(lvl)
         if xp >= palier:
+            lvlloot = GF.LevelUPLoot(PlayerID, lang)
             lvl = lvl+1
             sql.update(PlayerID, "gems", "Level", lvl)
+            sql.update(PlayerID, "gems", "XP", 0)
             nbG = 100*lvl
             sql.addGems(PlayerID, nbG)
-            msg = {'error': 0, 'etat': 'Level UP', 'lang': lang, 'gain': {'gems': nbG, 'level': lvl}, 'perte': False, 'success': False}
+            msg = {'error': 0, 'etat': 'Level UP', 'lang': lang, 'gain': {'gems': nbG, 'level': lvl}, 'perte': False, 'success': False, 'LevelLoot': lvlloot}
         else:
             msg = {'error': 0, 'etat': 'Level OK', 'lang': lang, 'gain': False, 'perte': False, 'success': False}
         if S != []:
@@ -48,7 +50,4 @@ def checklevel(ID, platform):
 
 
 def lvlPalier(lvl):
-    if lvl > 0:
-        return int(100 * (1.4)**lvl)
-    else:
-        return 60
+    return int(24 * (1.4)**lvl)

@@ -61,6 +61,9 @@ def bank(param):
     ARG2 = param["ARG2"]
     platform = param["name_pl"]
 
+    if GF.LevelCommande(PlayerID, "bank"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if ARG != "None":
         mARG = ARG.lower()
     else:
@@ -196,6 +199,9 @@ def stealing(param):
     lang = param["lang"]
     PlayerID = param["PlayerID"]
 
+    if GF.LevelCommande(PlayerID, "stealing"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if sql.value(GF.PlayerID_GetGems, "gems", "DailyMult") == 1:
         return {'error': -1, 'etat': 'Not Activate', 'lang': lang}
     else:
@@ -262,6 +268,9 @@ def crime(param):
     PlayerID = param["PlayerID"]
     result = {'DiscordCop': False, 'gain': False, 'perte': False, 'event': False}
 
+    if GF.LevelCommande(PlayerID, "crime"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if sql.spam(PlayerID, GF.couldown("6s"), "crime"):
         # si 10 sec c'est écoulé depuis alors on peut en  faire une nouvelle
         if r.randint(0, 9) == 0:
@@ -310,6 +319,9 @@ def mine(param):
     PlayerID = param["PlayerID"]
     nbMax = 0
     gain = {}
+
+    if GF.LevelCommande(PlayerID, "mine"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
 
     if sql.spam(PlayerID, GF.couldown("6s"), "mine"):
         if GF.testInvTaille(PlayerID):
@@ -374,10 +386,11 @@ def mine(param):
                         nbrand = 0
 
                 if nbrand != 0:
-                    nbrand = int(nbrand*mult)
-                    GF.addInventory(PlayerID, add_item, nbrand)
-                    GF.addStats(PlayerID, ["mine", "mine | item | {}".format(add_item)], nbrand)
-                    gain[add_item] = nbrand
+                    if not GF.LevelObjet(PlayerID, add_item):
+                        nbrand = int(nbrand*mult)
+                        GF.addInventory(PlayerID, add_item, nbrand)
+                        GF.addStats(PlayerID, ["mine", "mine | item | {}".format(add_item)], nbrand)
+                        gain[add_item] = nbrand
 
                 nbcobble = r.randint(1, 10)
                 nbcobble = int(nbcobble*mult)
@@ -403,6 +416,9 @@ def dig(param):
     PlayerID = param["PlayerID"]
     nbMax = 0
     gain = {}
+
+    if GF.LevelCommande(PlayerID, "dig"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
 
     if sql.spam(PlayerID, GF.couldown("6s"), "dig"):
         if GF.testInvTaille(PlayerID):
@@ -454,10 +470,11 @@ def dig(param):
                     nbrand = 0
 
                 if nbrand != 0:
-                    nbrand = int(nbrand*mult)
-                    GF.addInventory(PlayerID, add_item, nbrand)
-                    GF.addStats(PlayerID, ["dig", "dig | item | {}".format(add_item)], nbrand)
-                    gain[add_item] = nbrand
+                    if not GF.LevelObjet(PlayerID, add_item):
+                        nbrand = int(nbrand*mult)
+                        GF.addInventory(PlayerID, add_item, nbrand)
+                        GF.addStats(PlayerID, ["dig", "dig | item | {}".format(add_item)], nbrand)
+                        gain[add_item] = nbrand
 
                 GF.addStats(PlayerID, ["dig", "dig"], 1)
                 return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': gain}
@@ -477,6 +494,9 @@ def fish(param):
     nbMax = 0
     gain = {}
 
+    if GF.LevelCommande(PlayerID, "fish"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if sql.spam(PlayerID, GF.couldown("6s"), "fish"):
         if GF.testInvTaille(PlayerID):
             # =====================================
@@ -486,7 +506,7 @@ def fish(param):
                 nbMax = 100
                 outil = "fishingrod"
                 nbfishhook = sql.value(PlayerID, "inventory", "Stock", "Item", "fishhook")
-                if nbfishhook >= 1:
+                if nbfishhook >= 1 and not GF.LevelObjet(PlayerID, "fishhook"):
                     mult = r.randint(-1, 5)
                     if mult < 2:
                         mult = 2
@@ -528,10 +548,11 @@ def fish(param):
 
                 if nbrand != 0 or add_item == "fish":
                     if add_item != "fish":
-                        nbrand = int(nbrand*mult)
-                        GF.addInventory(PlayerID, add_item, nbrand)
-                        GF.addStats(PlayerID, ["fish", "fish | item | {}".format(add_item)], nbrand)
-                        gain[add_item] = nbrand
+                        if not GF.LevelObjet(PlayerID, add_item):
+                            nbrand = int(nbrand*mult)
+                            GF.addInventory(PlayerID, add_item, nbrand)
+                            GF.addStats(PlayerID, ["fish", "fish | item | {}".format(add_item)], nbrand)
+                            gain[add_item] = nbrand
                     nb = r.randint(1, 8)
                     nb = int(nb*mult)
                     GF.addInventory(PlayerID, "fish", nb)
@@ -632,6 +653,9 @@ def hothouse(param):
     i = 1
     max = 50
 
+    if GF.LevelCommande(PlayerID, "hothouse"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if sql.spam(PlayerID, GF.couldown("4s"), "hothouse"):
         sql.updateComTime(PlayerID, "hothouse")
         nboutil = sql.value(PlayerID, "inventory", "Stock", "Item", "planting_plan") + 1
@@ -655,6 +679,9 @@ def ferment(param):
     i = 1
     max = 20
 
+    if GF.LevelCommande(PlayerID, "ferment"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if sql.spam(PlayerID, GF.couldown("4s"), "ferment"):
         sql.updateComTime(PlayerID, "ferment")
         nboutil = sql.value(PlayerID, "inventory", "Stock", "Item", "barrel") + 1
@@ -677,6 +704,9 @@ def cooking(param):
     i = 1
     jour = dt.date.today()
     max = 20
+    if GF.LevelCommande(PlayerID, "cooking"):
+        return {'error': 99, 'etat': 'Level Commande NOK', 'lang': lang}
+
     if item == "pumpkin":
         if not ((jour.month == 10 and jour.day >= 26) or (jour.month == 11 and jour.day <= 10)):
             # msg["desc"] = lang_P.forge_msg(lang, "cooking", None, False, 11)

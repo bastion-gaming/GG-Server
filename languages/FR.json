@@ -80,5 +80,11 @@
       "Avoir {0} {2}`{1}` dans son inventaire",
       "Exécuter la commande `daily` {0} jours consécutifs",
       ""
+    ],
+  "level loot":
+    [
+      "Articles",
+      "Outils",
+      "Améliorations"
     ]
 }
