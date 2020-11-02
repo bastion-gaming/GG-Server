@@ -229,10 +229,10 @@ def loadItem(F=False):
         Item("oak", m*itemBourse("oak", "vente"), m*itemBourse("oak", "achat"), 50, "plante", 10),
         Item("spruce", m*itemBourse("spruce", "vente"), m*itemBourse("spruce", "achat"), 70, "plante", 10),
         Item("palm", m*itemBourse("palm", "vente"), m*itemBourse("palm", "achat"), 60, "plante", 10),
-        Item("wheat", m*itemBourse("wheat", "vente"), m*itemBourse("wheat", "achat"), 3, "plante", 10),
+        Item("hops", m*itemBourse("hops", "vente"), m*itemBourse("hops", "achat"), 3, "plante", 10),
         Item("grapes", m*itemBourse("grapes", "vente"), m*itemBourse("grapes", "achat"), 1, "plante", 7),
 
-        Item("wine_glass", m*itemBourse("wine_glass", "vente"), m*itemBourse("wine_glass", "achat"), 2, "consommable", 10),
+        Item("wine", m*itemBourse("wine", "vente"), m*itemBourse("wine", "achat"), 2, "consommable", 10),
         Item("beer", m*itemBourse("beer", "vente"), m*itemBourse("beer", "achat"), 2, "consommable", 7),
 
         Item("chocolate", m*itemBourse("chocolate", "vente"), m*itemBourse("chocolate", "achat"), 3, "consommable", 10),
@@ -516,7 +516,7 @@ def param_prod(item):
             res["gain"] = "palm"
         elif De > 12 and De <= 14:
             res["nbgain"] = r.randint(4, 10)
-            res["gain"] = "wheat"
+            res["gain"] = "hops"
         elif De > 14:
             res["nbgain"] = r.randint(6, 12)
             res["gain"] = "grapes"
@@ -533,11 +533,11 @@ def param_prod(item):
     # Items utilisé dans la production de la cave (ferment)
     elif item == "grapes":
         res["nbitem"] = 10
-        res["gain"] = "wine_glass"
+        res["gain"] = "wine"
         res["nbgain"] = r.randint(1, 4)
         res["couldown"] = couldown("3h")
         res["couldownMsg"] = ":clock3:`3h`"
-    elif item == "wheat":
+    elif item == "hops":
         res["nbitem"] = 8
         res["gain"] = "beer"
         res["nbgain"] = r.randint(2, 6)

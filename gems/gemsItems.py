@@ -35,10 +35,10 @@ PrixItem = [
     Item("oak", 60, 70),
     Item("spruce", 70, 82),
     Item("palm", 85, 90),
-    Item("wheat", 60, 80),
+    Item("hops", 60, 80),
     Item("grapes", 12, 20),
 
-    Item("wine_glass", 150, 170),
+    Item("wine", 150, 170),
     Item("beer", 404, 1664),
 
     Item("chocolate", 201, 250),

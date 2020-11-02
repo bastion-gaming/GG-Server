@@ -661,7 +661,7 @@ def hothouse(param):
         nboutil = sql.value(PlayerID, "inventory", "Stock", "Item", "planting_plan") + 1
         if nboutil >= max:
             nboutil = max
-        while i <= nboutil+1:
+        while i <= nboutil:
             # print(i)
             result[i] = prod_HFC(PlayerID, lang, item, "hothouse", i)
             i += 1

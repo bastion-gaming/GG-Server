@@ -49,7 +49,7 @@ def buy(param):
                         GF.addStats(PlayerID, ["buy", "buy | total"], nb)
                         GF.addStats(PlayerID, ["buy", "buy"], 1)
                         sql.updateComTime(PlayerID, "buy")
-                        return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': {c.nom: nb}, 'perte': {argent: prix}}
+                        return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': {c.nom: nb}, 'perte': {argent: prix}, 'item': c.nom}
                     else :
                         sql.updateComTime(PlayerID, "buy")
                         return {'error': 4, 'etat': 'NOK', 'lang': lang, 'gain': False, 'perte': False, 'device': argent}
@@ -73,11 +73,12 @@ def buy(param):
                             check = True
                     if check:
                         GF.addInventory(PlayerID, c.nom, nb)
+                        sql.update(PlayerID, "inventory", "Durability", c.durabilite, "Item", c.nom)
                         GF.addStats(PlayerID, ["buy", "buy"], 1)
                         GF.addStats(PlayerID, ["buy", "buy | item | {}".format(c.nom)], nb)
                         GF.addStats(PlayerID, ["buy", "buy | total"], nb)
                         sql.updateComTime(PlayerID, "buy")
-                        return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': {c.nom: nb}, 'perte': {argent: prix}}
+                        return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': {c.nom: nb}, 'perte': {argent: prix}, 'item': c.nom}
                     else :
                         return {'error': 4, 'etat': 'NOK', 'lang': lang, 'gain': False, 'perte': False, 'device': argent}
                     break
@@ -121,7 +122,7 @@ def buy(param):
                         GF.addStats(PlayerID, ["buy", "buy | total"], nb)
                         GF.addStats(PlayerID, ["buy", "buy"], 1)
                         sql.updateComTime(PlayerID, "buy")
-                        return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': {c.nom: nb}, 'perte': {argent: prix}}
+                        return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': {c.nom: nb}, 'perte': {argent: prix}, 'item': c.nom}
                     else :
                         sql.updateComTime(PlayerID, "buy")
                         return {'error': 4, 'etat': 'NOK', 'lang': lang, 'gain': False, 'perte': False, 'device': argent}
@@ -177,7 +178,7 @@ def sell(param):
                     GF.addStats(PlayerID, ["sell", "sell"], 1)
                     sql.updateComTime(PlayerID, "sell")
                     GF.addInventory(PlayerID, item, -nb)
-                    return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': {argent: gain}, 'perte': {c.nom: nb}}
+                    return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': {argent: gain}, 'perte': {c.nom: nb}, 'item': c.nom}
 
             for c in GF.objetOutil:
                 if item == c.nom:
@@ -198,10 +199,10 @@ def sell(param):
                     GF.addStats(PlayerID, ["sell", "sell"], 1)
                     sql.updateComTime(PlayerID, "sell")
                     GF.addInventory(PlayerID, item, -nb)
-                    return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': {argent: gain}, 'perte': {c.nom: nb}}
+                    return {'error': 0, 'etat': 'OK', 'lang': lang, 'gain': {argent: gain}, 'perte': {c.nom: nb}, 'item': c.nom}
         else:
             if check:
-                return {'error': 2, 'etat': 'Warning', 'lang': lang, 'gain': False, 'perte': False, 'nbItem': nbItem}
+                return {'error': 2, 'etat': 'Warning', 'lang': lang, 'gain': False, 'perte': False, 'nbItem': nbItem, 'item': item}
             else:
                 return {'error': 5, 'etat': 'NOK', 'lang': lang, 'gain': False, 'perte': False}
     else:
