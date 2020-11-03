@@ -1,3 +1,5 @@
+# Module SQLite
+# Version 2.0
 import sqlite3 as sql
 import json
 import time as t
