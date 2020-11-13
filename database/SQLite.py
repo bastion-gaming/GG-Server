@@ -241,6 +241,7 @@ def in_table(nameDB, fieldName, filtre = None, filtreValue = None):
         list = json.load(f)
     if nameDB not in list:
         return False
+    script = ""
 
     if type(fieldName) is str:
         script = "SELECT {0} FROM {1}".format(fieldName, nameDB)
